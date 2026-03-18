@@ -3,9 +3,9 @@
   data-site-header
 >
   {% set leftNavItems = [{ label: "Company", href: "/company/" }, { label: "Brands", href: "/brands/" }, { label: "Stores", href: "/stores/" }] %}
-  {% set rightNavItems = [{ label: "Agenda", href: "/agenda/" }, { label: "Contact", href: "/contact/" }] %}
+  {% set rightNavItems = [{ label: "The WEARHOUSE", href: "/wearhouse/" }, { label: "Agenda", href: "/agenda/" }, { label: "Contact", href: "/contact/" }] %}
   {% set mobileNavItems = leftNavItems.concat(rightNavItems) %}
-  <div class="mx-auto grid w-full max-w-[1600px] grid-cols-[auto_1fr] items-center px-5 py-4 sm:px-8 lg:grid-cols-[1fr_auto_1fr] lg:px-12 lg:py-5">
+  <div class="mx-auto flex w-full max-w-[1600px] items-center justify-between px-5 py-4 sm:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:px-12 lg:py-5">
     <nav aria-label="Primary navigation left" class="hidden lg:block">
       <ul class="flex items-center gap-7 text-[0.68rem] font-medium uppercase tracking-manifesto text-bone/88">
         {% for item in leftNavItems %}
@@ -21,7 +21,7 @@
       </ul>
     </nav>
 
-    <a href="/" class="inline-flex items-center justify-self-start lg:justify-self-center" aria-label="Bollag Guggenheim home">
+    <a href="/" class="inline-flex items-center lg:justify-self-center" aria-label="Bollag Guggenheim home">
       <img
         src="/assets/media/logo-white.svg"
         alt="Bollag Guggenheim"
@@ -31,7 +31,7 @@
 
     <button
       type="button"
-      class="mobile-nav-toggle inline-flex h-11 w-11 items-center justify-center text-bone lg:hidden"
+      class="mobile-nav-toggle inline-flex h-11 w-11 shrink-0 items-center justify-center text-bone lg:hidden"
       aria-expanded="false"
       aria-controls="mobile-menu"
       aria-label="Open navigation"
@@ -67,13 +67,14 @@
     aria-hidden="true"
     data-mobile-menu
   >
-    <div class="w-full border-y border-white/10 bg-[rgba(5,5,5,0.94)] px-6 py-8 shadow-[0_24px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:px-8">
+    <div class="w-full border-b border-black/8 bg-[linear-gradient(180deg,rgba(250,248,246,0.96),rgba(244,239,232,0.94))] px-5 py-5 shadow-[0_24px_60px_rgba(0,0,0,0.08)] backdrop-blur-xl sm:px-8">
       <nav aria-label="Mobile primary navigation">
-        <ul class="space-y-[4.05rem] font-display text-[1.95rem] leading-[0.92] tracking-[-0.05em] text-bone sm:text-[2.15rem]">
+        <ul class="font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[0.98rem] font-medium uppercase tracking-[0.18em] text-black/82">
           {% for item in mobileNavItems %}
-            <li>
-              <a href="{{ item.href }}" class="mobile-menu__link inline-flex" data-mobile-menu-link>
+            <li class="border-b border-black/8 last:border-b-0">
+              <a href="{{ item.href }}" class="mobile-menu__link flex items-center justify-between py-4 text-black/88" data-mobile-menu-link>
                 {{ item.label }}
+                <span aria-hidden="true" class="text-black/34">→</span>
               </a>
             </li>
           {% endfor %}

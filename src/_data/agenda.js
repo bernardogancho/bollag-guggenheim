@@ -3,7 +3,7 @@ module.exports = {
     eyebrow: "Agenda",
     title: "What is next across the brand calendar.",
     summary: "Upcoming showroom appointments and collection windows across the Bollag Guggenheim portfolio, presented as one continuous seasonal schedule.",
-    quote: "What's Next",
+    quote: "",
     image: "/assets/media/page-heroes/agenda-hero.jpg"
   },
   months: [

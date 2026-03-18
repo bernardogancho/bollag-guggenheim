@@ -62,7 +62,7 @@ module.exports = {
       stores: [
         {
           name: "Schonenwerd",
-          image: "/assets/media/stores/gallery-outlet.jpg",
+          image: "/assets/media/stores/schonenwerd-2023-01-02.webp",
           address: ["Fashion Fish / Bally Areal", "Parkstrasse 1", "5012 Schonenwerd"],
           phoneLabel: "+41 62 849 90 30",
           phoneHref: "tel:+41628499030",

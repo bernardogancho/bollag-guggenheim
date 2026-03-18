@@ -4,11 +4,15 @@ title: Brands | Bollag Guggenheim
 ---
 {% include "components/site-header.njk" %}
 {% set featuredBrand = brandProfiles[0] %}
+{% set heroBrand = {
+  "name": "Rich & Royal",
+  "heroImage": "/assets/media/brand-pages/rich-royal-header.jpg"
+} %}
 
 <section class="relative isolate overflow-hidden bg-ink text-bone">
   <div class="absolute inset-0">
-    {% if featuredBrand.heroImage %}
-      <img src="{{ featuredBrand.heroImage }}" alt="{{ featuredBrand.name }} editorial look" class="h-full w-full object-cover object-center">
+    {% if heroBrand.heroImage %}
+      <img src="{{ heroBrand.heroImage }}" alt="{{ heroBrand.name }} editorial look" class="h-full w-full object-cover object-center">
     {% endif %}
     <div class="page-hero-overlay absolute inset-0"></div>
     <div class="absolute inset-x-0 top-[14vh] mx-auto h-44 w-[min(78vw,72rem)] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.07),transparent_70%)] blur-3xl"></div>

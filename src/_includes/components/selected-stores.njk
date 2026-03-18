@@ -9,7 +9,7 @@
       </h2>
     </div>
 
-    <div class="grid gap-4 md:grid-cols-2 md:auto-rows-[14rem] xl:grid-cols-4 xl:auto-rows-[9rem]">
+    <div class="grid gap-4 md:grid-cols-2 md:auto-rows-[14rem] xl:grid-flow-dense xl:grid-cols-4 xl:auto-rows-[9rem]">
       {% for item in selection %}
         {% set cardClass = 'min-h-[18rem] xl:col-span-1 xl:row-span-2' %}
         {% if item.size == 'feature' %}
@@ -21,7 +21,7 @@
         {% endif %}
         <a href="{{ item.href }}" class="group relative block overflow-hidden bg-white/5 {{ cardClass }}" data-reveal>
           <img src="{{ item.image }}" alt="{{ item.brand }}" class="h-full w-full object-cover transition duration-[900ms] group-hover:scale-[1.045] group-hover:opacity-88">
-          <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0.72)_100%)]"></div>
+          <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.03),rgba(0,0,0,0.42)_100%)]"></div>
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.14),transparent_34%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
           <div class="absolute inset-x-0 bottom-0 p-4 lg:p-5">
             <p class="mb-2 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[0.68rem] uppercase tracking-[0.28em] text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.28)]">{{ item.brand }}</p>

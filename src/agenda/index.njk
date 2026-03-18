@@ -12,9 +12,11 @@ title: Agenda | Bollag Guggenheim
   <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[64rem]">
       <p class="mb-4 text-[0.72rem] uppercase tracking-[0.3em] text-bone/54" data-reveal>{{ agenda.hero.eyebrow }}</p>
+      {% if agenda.hero.quote %}
       <div class="mb-7 font-display text-[1.45rem] italic leading-none tracking-[-0.03em] text-bone/72 sm:text-[1.8rem]" data-reveal>
         {{ agenda.hero.quote }}
       </div>
+      {% endif %}
       <h1 class="max-w-[12ch] font-display text-[2.25rem] leading-[0.9] tracking-[-0.055em] sm:text-[3.45rem] lg:text-[4.5rem]" data-reveal>
         {{ agenda.hero.title }}
       </h1>
@@ -69,7 +71,7 @@ title: Agenda | Bollag Guggenheim
 
 <section class="bg-[#FAF7F4] text-ink">
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
-    <div class="grid gap-8 border-t border-white/10 pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+    <div class="grid gap-8 border-t border-black/10 pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
       <div>
         <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/42" data-reveal>Appointments</p>
         <h2 class="max-w-[14ch] font-display text-[1.7rem] leading-[0.94] tracking-[-0.04em] text-black sm:text-[2.25rem] lg:text-[2.8rem]" data-reveal>

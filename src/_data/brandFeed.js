@@ -130,7 +130,7 @@ module.exports = {
       {
         "image": "/assets/media/feed/more-and-more-social-5.jpg",
         "note": "More & More editorial portrait from the previous site wall.",
-        "source": "https://c-cdn.contentfry.com/media/cdn/t/20193/con/22244/18092188948804390.jpg"
+        "source": "/assets/media/feed/more-and-more-social-5.jpg"
       },
       {
         "image": "/assets/media/feed/more-and-more-social-1.jpg",

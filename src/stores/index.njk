@@ -6,23 +6,37 @@ title: Stores | Bollag Guggenheim
 
 <section class="relative isolate overflow-hidden bg-ink text-bone">
   <div class="absolute inset-0 overflow-hidden">
-    <img src="{{ stores.hero.image }}" alt="Bollag Guggenheim retail environment" class="hero-image h-full w-full object-cover object-center">
+    <video
+      class="hero-image h-full w-full object-cover object-center"
+      autoplay
+      muted
+      loop
+      playsinline
+      poster="{{ stores.hero.image }}"
+      aria-hidden="true"
+    >
+      <source src="/assets/media/stores/stores-hero.mp4" type="video/mp4">
+      <img src="{{ stores.hero.image }}" alt="Bollag Guggenheim retail environment" class="hero-image h-full w-full object-cover object-center">
+    </video>
     <div class="page-hero-overlay absolute inset-0"></div>
   </div>
   <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
-    <div class="max-w-[62rem]">
-      <p class="mb-4 text-[0.72rem] uppercase tracking-[0.3em] text-bone/54" data-reveal>{{ stores.hero.eyebrow }}</p>
-      <h1 class="max-w-[12ch] font-display text-[2.25rem] leading-[0.9] tracking-[-0.055em] sm:text-[3.45rem] lg:text-[4.5rem]" data-reveal>
+    <div class="relative max-w-[62rem]">
+      <div class="absolute -left-16 bottom-[-3rem] h-[24rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(6,8,10,0.5),rgba(6,8,10,0.3)_42%,rgba(6,8,10,0.12)_68%,transparent_100%)] blur-3xl sm:h-[28rem] sm:w-[40rem]"></div>
+      <div class="relative">
+      <p class="mb-4 text-[0.72rem] uppercase tracking-[0.3em] text-bone/64 [text-shadow:0_3px_12px_rgba(0,0,0,0.4)]" data-reveal>{{ stores.hero.eyebrow }}</p>
+      <h1 class="max-w-[12ch] font-display text-[2.25rem] leading-[0.9] tracking-[-0.055em] [text-shadow:0_12px_32px_rgba(0,0,0,0.58)] sm:text-[3.45rem] lg:text-[4.5rem]" data-reveal>
         {{ stores.hero.title }}
       </h1>
-      <p class="mt-6 max-w-[42rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-base leading-relaxed text-bone/82 sm:text-lg lg:text-[1.08rem]" data-reveal>
+      <p class="mt-6 max-w-[42rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-base leading-relaxed text-bone/88 [text-shadow:0_8px_20px_rgba(0,0,0,0.46)] sm:text-lg lg:text-[1.08rem]" data-reveal>
         {{ stores.hero.summary }}
       </p>
-      <div class="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-[0.72rem] uppercase tracking-[0.24em] text-bone/48" data-reveal>
+      <div class="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-[0.72rem] uppercase tracking-[0.24em] text-bone/60 [text-shadow:0_5px_16px_rgba(0,0,0,0.42)]" data-reveal>
         <span>2 Monobrand Stores</span>
         <span>2 Multibrand Stores</span>
         <span>1 Outlet</span>
         <span>1 Online Shop</span>
+      </div>
       </div>
     </div>
   </div>
