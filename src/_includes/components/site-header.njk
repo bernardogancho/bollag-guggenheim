@@ -1,0 +1,84 @@
+<header
+  class="fixed inset-x-0 top-0 z-50 transition-all duration-500"
+  data-site-header
+>
+  {% set leftNavItems = [{ label: "Company", href: "/company/" }, { label: "Brands", href: "/brands/" }, { label: "Stores", href: "/stores/" }] %}
+  {% set rightNavItems = [{ label: "Agenda", href: "/agenda/" }, { label: "Contact", href: "/contact/" }] %}
+  {% set mobileNavItems = leftNavItems.concat(rightNavItems) %}
+  <div class="mx-auto grid w-full max-w-[1600px] grid-cols-[auto_1fr] items-center px-5 py-4 sm:px-8 lg:grid-cols-[1fr_auto_1fr] lg:px-12 lg:py-5">
+    <nav aria-label="Primary navigation left" class="hidden lg:block">
+      <ul class="flex items-center gap-7 text-[0.68rem] font-medium uppercase tracking-manifesto text-bone/88">
+        {% for item in leftNavItems %}
+          <li>
+            <a
+              href="{{ item.href }}"
+              class="nav-link inline-flex border-b border-transparent pb-1 transition duration-300 hover:border-bone/80 hover:text-bone"
+            >
+              {{ item.label }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <a href="/" class="inline-flex items-center justify-self-start lg:justify-self-center" aria-label="Bollag Guggenheim home">
+      <img
+        src="/assets/media/logo-white.svg"
+        alt="Bollag Guggenheim"
+        class="h-[2.2575rem] w-auto md:h-[2.58rem]"
+      >
+    </a>
+
+    <button
+      type="button"
+      class="mobile-nav-toggle inline-flex h-11 w-11 items-center justify-center text-bone lg:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open navigation"
+      data-mobile-nav-toggle
+    >
+      <span class="sr-only">Menu</span>
+      <span class="mobile-nav-toggle__lines" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <nav aria-label="Primary navigation right" class="hidden justify-self-end lg:block">
+      <ul class="flex items-center justify-end gap-7 text-[0.68rem] font-medium uppercase tracking-manifesto text-bone/88">
+        {% for item in rightNavItems %}
+          <li>
+            <a
+              href="{{ item.href }}"
+              class="nav-link inline-flex border-b border-transparent pb-1 transition duration-300 hover:border-bone/80 hover:text-bone"
+            >
+              {{ item.label }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+
+  <div
+    id="mobile-menu"
+    class="mobile-menu pointer-events-none absolute inset-x-0 top-full opacity-0 lg:hidden"
+    aria-hidden="true"
+    data-mobile-menu
+  >
+    <div class="w-full border-y border-white/10 bg-[rgba(5,5,5,0.94)] px-6 py-8 shadow-[0_24px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:px-8">
+      <nav aria-label="Mobile primary navigation">
+        <ul class="space-y-[4.05rem] font-display text-[1.95rem] leading-[0.92] tracking-[-0.05em] text-bone sm:text-[2.15rem]">
+          {% for item in mobileNavItems %}
+            <li>
+              <a href="{{ item.href }}" class="mobile-menu__link inline-flex" data-mobile-menu-link>
+                {{ item.label }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>

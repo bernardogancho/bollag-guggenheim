@@ -1,0 +1,20 @@
+module.exports = [
+  { brand: 'Closed', image: '/assets/media/selection/closed.jpg', href: '/brands/closed/', note: 'Tailored silhouettes and denim essentials', size: 'feature' },
+  { brand: 'Drykorn', image: '/assets/media/selection/drykorn.jpg', href: '/brands/drykorn/', note: 'Contemporary structure with sharper lines', size: 'wide' },
+  { brand: 'Coccinelle', image: '/assets/media/selection/coccinelle.jpg', href: '/brands/coccinelle/', note: 'Leather accessories and seasonal accents', size: 'tall' },
+  { brand: 'YAYA', image: '/assets/media/selection/yaya.jpg', href: '/brands/yaya/', note: 'Soft layering and modern everyday dressing', size: 'standard' },
+  { brand: 'Closed', image: '/assets/media/selection/closed-2.jpg', href: '/brands/closed/', note: 'Material-led wardrobe foundations', size: 'standard' },
+  { brand: 'Coccinelle', image: '/assets/media/selection/coccinelle-2.jpg', href: '/brands/coccinelle/', note: 'Refined color and accessory focus', size: 'standard' },
+  { brand: 'Drykorn', image: '/assets/media/selection/drykorn-2.jpg', href: '/brands/drykorn/', note: 'Sharper tailoring in motion', size: 'wide' },
+  { brand: 'YAYA', image: '/assets/media/selection/yaya-2.jpg', href: '/brands/yaya/', note: 'Layered softness with clean volume', size: 'standard' },
+  { brand: 'Closed', image: '/assets/media/selection/closed-3.jpg', href: '/brands/closed/', note: 'Seasonal outerwear and core pieces', size: 'standard' },
+  { brand: 'Coccinelle', image: '/assets/media/selection/coccinelle-3.jpg', href: '/brands/coccinelle/', note: 'Statement accessories in softer tones', size: 'wide' },
+  { brand: 'Drykorn', image: '/assets/media/selection/drykorn-3.jpg', href: '/brands/drykorn/', note: 'Urban tailoring with darker contrast', size: 'standard' },
+  { brand: 'YAYA', image: '/assets/media/selection/yaya-3.jpg', href: '/brands/yaya/', note: 'Relaxed proportions and tonal layering', size: 'tall' },
+  { brand: 'Closed', image: '/assets/media/selection/closed-4.jpg', href: '/brands/closed/', note: 'Sharper denim and outer layers', size: 'standard' },
+  { brand: 'Coccinelle', image: '/assets/media/selection/coccinelle-4.jpg', href: '/brands/coccinelle/', note: 'Accessory detail and color punctuation', size: 'standard' },
+  { brand: 'Drykorn', image: '/assets/media/selection/drykorn-4.jpg', href: '/brands/drykorn/', note: 'Structured tailoring in lighter tones', size: 'standard' },
+  { brand: 'YAYA', image: '/assets/media/selection/yaya-4.jpg', href: '/brands/yaya/', note: 'Soft textures with daily wearability', size: 'standard' },
+  { brand: 'Coccinelle', image: '/assets/media/selection/coccinelle-5.jpg', href: '/brands/coccinelle/', note: 'Leather pieces with polished finish', size: 'wide' },
+  { brand: 'Drykorn', image: '/assets/media/selection/drykorn-5.jpg', href: '/brands/drykorn/', note: 'Clean tailoring with editorial edge', size: 'standard' }
+];

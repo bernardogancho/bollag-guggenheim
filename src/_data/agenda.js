@@ -1,0 +1,138 @@
+module.exports = {
+  hero: {
+    eyebrow: "Agenda",
+    title: "What is next across the brand calendar.",
+    summary: "Upcoming showroom appointments and collection windows across the Bollag Guggenheim portfolio, presented as one continuous seasonal schedule.",
+    quote: "What's Next",
+    image: "/assets/media/page-heroes/agenda-hero.jpg"
+  },
+  months: [
+    {
+      month: "March 2026",
+      events: [
+        {
+          dateLabel: "13 - 27 March 2026",
+          brand: "More & More",
+          detail: "Collection Winter 2026, delivery September - October 2026",
+          location: "Showroom Zurich"
+        },
+        {
+          dateLabel: "23 March - 10 April 2026",
+          brand: "Rich & Royal",
+          detail: "Collection Main Winter 2026, delivery September - November 2026",
+          location: "Showroom Zurich"
+        },
+        {
+          dateLabel: "23 March - 20 April 2026",
+          brand: "YAYA",
+          detail: "Collection Winter 2026, delivery October - November 2026",
+          location: "Showroom Zurich"
+        }
+      ]
+    },
+    {
+      month: "May 2026",
+      events: [
+        {
+          dateLabel: "4 - 29 May 2026",
+          brand: "GUESS",
+          detail: "Collection Pre Spring 2027, delivery November 2026 - January 2027",
+          location: "Showroom Zurich"
+        },
+        {
+          dateLabel: "12 May - 5 June 2026",
+          brand: "Closed",
+          detail: "Collection Pre Spring 2027, delivery November 2026 - January 2027",
+          location: "Showroom Zurich"
+        },
+        {
+          dateLabel: "18 - 29 May 2026",
+          brand: "More & More",
+          detail: "Collection High Winter 2026 and Pre Spring 2027, delivery November - December 2026",
+          location: "Showroom Zurich"
+        },
+        {
+          dateLabel: "25 May - 3 June 2026",
+          brand: "Drykorn",
+          detail: "Collection Pre Spring 2027, delivery November - December 2026",
+          location: "Showroom Zurich"
+        },
+        {
+          dateLabel: "27 May - 15 June 2026",
+          brand: "YAYA",
+          detail: "Collection Pre Spring 2027, delivery January 2027",
+          location: "Showroom Zurich"
+        }
+      ]
+    },
+    {
+      month: "July 2026",
+      events: [
+        {
+          dateLabel: "6 July - 14 August 2026",
+          brand: "GUESS",
+          detail: "Collection Spring/Summer 2027, delivery January - March 2027",
+          location: "Showroom Zurich"
+        },
+        {
+          dateLabel: "15 July - 14 August 2026",
+          brand: "Closed",
+          detail: "Collection Spring 2027, delivery February - March 2027",
+          location: "Showroom Zurich"
+        },
+        {
+          dateLabel: "20 - 31 July 2026",
+          brand: "More & More",
+          detail: "Collection Pre Spring 2027, delivery January - February 2027",
+          location: "Showroom Zurich"
+        },
+        {
+          dateLabel: "27 July - 17 August 2026",
+          brand: "YAYA",
+          detail: "Collection Spring 2027, delivery February - March 2027",
+          location: "Showroom Zurich"
+        }
+      ]
+    },
+    {
+      month: "September 2026",
+      events: [
+        {
+          dateLabel: "21 September - 2 October 2026",
+          brand: "More & More",
+          detail: "Collection Summer 2027, delivery March - April 2027",
+          location: "Showroom Zurich"
+        },
+        {
+          dateLabel: "23 September - 9 October 2026",
+          brand: "YAYA",
+          detail: "Collection Summer 2027, delivery April - May 2027",
+          location: "Showroom Zurich"
+        }
+      ]
+    },
+    {
+      month: "November 2026",
+      events: [
+        {
+          dateLabel: "2 - 27 November 2026",
+          brand: "GUESS",
+          detail: "Collection Pre Fall 2027, delivery May - July 2027",
+          location: "Showroom Zurich"
+        },
+        {
+          dateLabel: "16 - 27 November 2026",
+          brand: "More & More",
+          detail: "Collection High Summer and Pre Fall 2027, delivery March - June 2027",
+          location: "Showroom Zurich"
+        },
+        {
+          dateLabel: "18 November - 14 December 2026",
+          brand: "YAYA",
+          detail: "Collection Pre Fall 2027, delivery June - July 2027",
+          location: "Showroom Zurich"
+        }
+      ]
+    }
+  ]
+};

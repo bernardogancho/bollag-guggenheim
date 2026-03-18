@@ -1,0 +1,132 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: brandProfiles
+  size: 1
+  alias: brand
+permalink: "brands/{{ brand.slug }}/index.html"
+eleventyComputed:
+  title: "{{ brand.name }} | Bollag Guggenheim"
+---
+{% include "components/site-header.njk" %}
+
+<section class="relative isolate overflow-hidden bg-ink text-bone">
+  <div class="absolute inset-0">
+    {% if brand.detailHeroImage %}
+      {% set detailHeroObjectClass = 'object-center' %}
+      {% if brand.slug == 'more-and-more' %}
+        {% set detailHeroObjectClass = 'object-[50%_12%]' %}
+      {% endif %}
+      <img src="{{ brand.detailHeroImage }}" alt="{{ brand.name }} editorial view" class="h-full w-full object-cover {{ detailHeroObjectClass }}">
+      <div class="page-hero-overlay absolute inset-0"></div>
+    {% else %}
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_28%),linear-gradient(160deg,#4a433d,#1f1a17_55%,#3d3631)]"></div>
+      <div class="page-hero-overlay absolute inset-0"></div>
+    {% endif %}
+  </div>
+  <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
+    <div class="max-w-[60rem]">
+      <p class="mb-4 text-[0.72rem] uppercase tracking-[0.3em] text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>{{ brand.eyebrow }}</p>
+      <div class="mb-7 max-w-[14rem]" data-reveal>
+        <img src="/assets/media/brands/{{ brand.slug }}.svg" alt="{{ brand.name }}" class="max-h-10 w-auto brightness-0 invert drop-shadow-[0_8px_22px_rgba(0,0,0,0.28)]">
+      </div>
+      <h1 class="max-w-[14ch] font-display text-[2.25rem] leading-[0.9] tracking-[-0.055em] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)] sm:text-[3.45rem] lg:text-[4.5rem]" data-reveal>
+        {{ brand.heroTitle or brand.summary }}
+      </h1>
+      <p class="mt-6 max-w-[40rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-base leading-relaxed text-bone/82 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)] sm:text-lg lg:text-[1.08rem]" data-reveal>
+        {{ brand.summary }}
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="bg-[#FAF8F6] text-ink">
+  <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,0.86fr)_minmax(24rem,34rem)] lg:items-center xl:gap-20">
+      <div class="max-w-[44rem]">
+        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/42" data-reveal>Brand Overview</p>
+        <div class="space-y-6 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[1rem] leading-[1.8] text-black/72 lg:text-[1.08rem]">
+          <p data-reveal>{{ brand.intro }}</p>
+          <p data-reveal>{{ brand.focus }}</p>
+        </div>
+        <div class="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-[0.72rem] uppercase tracking-[0.24em] text-black/44" data-reveal>
+          <span>{{ brand.atmosphere }}</span>
+          {% for item in brand.categories %}
+            {% if loop.index0 < 2 %}
+              <span>{{ item }}</span>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% if brand.detailGallery.length > 1 %}
+        <figure class="overview-image relative hidden aspect-[4/5] overflow-hidden shadow-[0_34px_90px_rgba(20,18,16,0.14)] lg:block" data-reveal data-scroll-drift>
+          <img src="{{ brand.detailGallery[1].image }}" alt="{{ brand.name }} editorial portrait" class="overview-image__media h-full w-full object-cover object-center">
+        </figure>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% if brand.detailGallery.length %}
+<section class="bg-[#FAF7F4] text-ink">
+  <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
+    <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
+      <div class="max-w-[34rem]">
+        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/40" data-reveal>Visual Journal</p>
+        <h2 class="max-w-[10ch] font-display text-[1.75rem] leading-[0.94] tracking-[-0.045em] text-black sm:text-[2.4rem] lg:text-[3.1rem]" data-reveal>
+          A broader image world for {{ brand.name }}.
+        </h2>
+      </div>
+      <p class="max-w-[24rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm leading-relaxed text-black/58 lg:text-[0.98rem]" data-reveal>
+        A wider visual narrative that expands the world of the brand.
+      </p>
+    </div>
+    <div class="brand-editorial-columns">
+      {% for frame in brand.detailGallery %}
+        {% set pattern = loop.index0 % 7 %}
+        {% set cardClass = 'aspect-[4/5]' %}
+        {% if pattern == 0 %}
+          {% set cardClass = 'aspect-[4/5]' %}
+        {% elif pattern == 1 %}
+          {% set cardClass = 'aspect-[5/7]' %}
+        {% elif pattern == 2 %}
+          {% set cardClass = 'aspect-[3/4]' %}
+        {% elif pattern == 3 %}
+          {% set cardClass = 'aspect-[3/2]' %}
+        {% elif pattern == 4 %}
+          {% set cardClass = 'aspect-[4/5]' %}
+        {% elif pattern == 5 %}
+          {% set cardClass = 'aspect-[1/1]' %}
+        {% elif pattern == 6 %}
+          {% set cardClass = 'aspect-[5/4]' %}
+        {% endif %}
+        <figure class="brand-editorial-item group relative overflow-hidden bg-white/[0.04] {{ cardClass }}" data-reveal>
+          <img src="{{ frame.image }}" alt="{{ brand.name }} editorial image {{ loop.index }}" class="h-full w-full object-cover transition duration-[900ms] group-hover:scale-[1.035] group-hover:opacity-92">
+          <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.36)_100%)]"></div>
+          <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.12),transparent_32%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
+          <figcaption class="sr-only">{{ frame.note }}</figcaption>
+        </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="bg-[#FAF8F6] text-ink">
+  <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
+    <div class="flex flex-col gap-8 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/42" data-reveal>Explore More</p>
+        <h2 class="max-w-[12ch] font-display text-[1.7rem] leading-[0.94] tracking-[-0.04em] sm:text-[2.25rem] lg:text-[2.8rem]" data-reveal>
+          Continue through the full brand portfolio.
+        </h2>
+      </div>
+      <a href="/brands/" class="cta-button cta-button--dark" data-reveal>
+        <span>Back to Brands</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% include "components/site-footer.njk" %}

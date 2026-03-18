@@ -1,0 +1,37 @@
+<section class="relative overflow-hidden bg-[#FAF7F4] text-ink">
+  <div class="relative mx-auto w-full max-w-[1600px] px-6 pb-28 pt-8 sm:px-10 lg:px-16 lg:pb-36 lg:pt-10">
+    <div class="mb-10 border-t border-black/10 pt-8 lg:mb-12">
+      <div class="max-w-[42rem]">
+        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/40" data-reveal>
+          Brand Portfolio
+        </p>
+        <h2 class="max-w-[11ch] font-display text-[1.9rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.55rem] lg:text-[3.4rem]" data-reveal>
+          Bollag Guggenheim portfolio
+        </h2>
+        <p class="mt-5 max-w-[34rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[0.98rem] leading-[1.8] text-black/64 lg:text-[1.04rem]" data-reveal>
+          Each label brings its own identity, product world, and commercial energy into the Bollag Guggenheim portfolio.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 border border-black/12 bg-white/28 backdrop-blur-[2px] sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      {% for brand in brandProfiles %}
+        <a href="/brands/{{ brand.slug }}/" class="group relative flex min-h-40 items-center justify-center overflow-hidden border-b border-r border-black/12 px-6 py-10 transition duration-500 hover:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.05)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black/30 sm:min-h-44 lg:min-h-48" data-reveal aria-label="View {{ brand.name }} brand page">
+          {% if brand.heroImage %}
+            <img
+              src="{{ brand.heroImage }}"
+              alt=""
+              class="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"
+            >
+            <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.16),rgba(0,0,0,0.46)_100%)] opacity-0 transition duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"></div>
+          {% endif %}
+          <img
+            src="/assets/media/brands/{{ brand.slug }}.svg"
+            alt="{{ brand.name }}"
+            class="relative z-10 max-h-10 w-auto max-w-[10rem] opacity-85 grayscale transition duration-500 group-hover:-translate-y-1 group-hover:opacity-100 group-hover:grayscale-0 group-hover:brightness-0 group-hover:invert group-focus-visible:-translate-y-1 group-focus-visible:opacity-100 group-focus-visible:grayscale-0 group-focus-visible:brightness-0 group-focus-visible:invert"
+          >
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
