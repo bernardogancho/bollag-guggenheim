@@ -33,10 +33,10 @@ const startHeroTypewriter = () => {
 
       heroTypewriter.textContent += fullText[index];
       index += 1;
-      window.setTimeout(typeNextCharacter, index === 6 ? 180 : 95);
+      window.setTimeout(typeNextCharacter, index === 6 ? 270 : 143);
     };
 
-    window.setTimeout(typeNextCharacter, 420);
+    window.setTimeout(typeNextCharacter, 630);
   }
 };
 
