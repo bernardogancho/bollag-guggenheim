@@ -1,6 +1,17 @@
 <section class="relative isolate min-h-[76svh] overflow-hidden bg-ink text-bone">
   <div class="absolute inset-0 overflow-hidden">
-    <img src="/assets/media/company/company-hero.jpg" alt="Bollag Guggenheim showroom" class="hero-image h-full w-full object-cover object-center md:object-[center_30%]">
+    <video
+      class="hero-image h-full w-full object-cover object-center md:object-[center_30%]"
+      autoplay
+      muted
+      loop
+      playsinline
+      poster="/assets/media/company/company-hero.jpg"
+      aria-hidden="true"
+    >
+      <source src="/assets/media/company/company-hero.mp4" type="video/mp4">
+      <img src="/assets/media/company/company-hero.jpg" alt="Bollag Guggenheim showroom" class="hero-image h-full w-full object-cover object-center md:object-[center_30%]">
+    </video>
     <div class="page-hero-overlay absolute inset-0"></div>
   </div>
   <div class="relative mx-auto flex min-h-[76svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-28 sm:px-10 lg:px-16 lg:pb-16">

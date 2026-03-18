@@ -6,7 +6,18 @@ title: Agenda | Bollag Guggenheim
 
 <section class="relative isolate overflow-hidden bg-ink text-bone">
   <div class="absolute inset-0 overflow-hidden">
-    <img src="{{ agenda.hero.image }}" alt="Bollag Guggenheim agenda view" class="hero-image h-full w-full object-cover object-center">
+    <video
+      class="hero-image h-full w-full object-cover object-center"
+      autoplay
+      muted
+      loop
+      playsinline
+      poster="{{ agenda.hero.image }}"
+      aria-hidden="true"
+    >
+      <source src="/assets/media/page-heroes/agenda-hero.mp4" type="video/mp4">
+      <img src="{{ agenda.hero.image }}" alt="Bollag Guggenheim agenda view" class="hero-image h-full w-full object-cover object-center">
+    </video>
     <div class="page-hero-overlay absolute inset-0"></div>
   </div>
   <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
