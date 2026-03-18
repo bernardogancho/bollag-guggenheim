@@ -3,7 +3,7 @@ module.exports = {
     eyebrow: "Stores",
     title: "Retail presence across Switzerland.",
     summary: "A store network that brings Bollag Guggenheim's brand portfolio into direct contact with customers through monobrand, multibrand, and outlet formats.",
-    image: "/assets/media/stores/gallery-zurich.jpg"
+    image: "/assets/media/stores/stores-hero-poster.jpg"
   },
   groups: [
     {

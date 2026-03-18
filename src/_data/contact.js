@@ -4,7 +4,7 @@ module.exports = {
     quote: "",
     title: "A direct line to Bollag Guggenheim.",
     summary: "For showroom visits, brand enquiries, or general contact, the team is based in Glattpark and available through the channels below.",
-    image: "/assets/media/page-heroes/contact-hero.jpg"
+    image: "/assets/media/page-heroes/contact-hero-poster.jpg"
   },
   office: {
     name: "Bollag-Guggenheim AG",
