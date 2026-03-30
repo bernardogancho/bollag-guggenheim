@@ -44,47 +44,17 @@ title: Brands | Bollag Guggenheim
           A portfolio shaped by distinct points of view.
         </h2>
       </div>
-      <p class="max-w-[24rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm leading-relaxed text-black/58 lg:text-[0.98rem]" data-reveal>
-        From established lifestyle labels to directional contemporary brands, each house contributes its own identity.
-      </p>
     </div>
 
-    <div class="grid auto-rows-[24rem] gap-5 md:grid-cols-2 xl:grid-cols-12">
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {% for brand in brandProfiles %}
-        {% set cardClass = 'xl:col-span-4' %}
         {% set logoClass = 'h-10 sm:h-12 lg:h-14 w-auto max-w-[12rem] object-contain object-left' %}
         {% set bodyClass = 'max-w-[24rem] text-sm lg:text-[0.98rem]' %}
         {% set imageClass = 'object-center' %}
-        {% if loop.index0 == 0 %}
-          {% set cardClass = 'md:col-span-2 xl:col-span-7 xl:row-span-2' %}
-          {% set logoClass = 'h-12 sm:h-16 lg:h-20 w-auto max-w-[16rem] object-contain object-left' %}
-          {% set bodyClass = 'max-w-[28rem] text-base lg:text-[1.02rem]' %}
-        {% elif loop.index0 == 1 %}
-          {% set cardClass = 'xl:col-span-5' %}
-          {% set logoClass = 'h-11 sm:h-14 lg:h-16 w-auto max-w-[14rem] object-contain object-left' %}
-          {% set bodyClass = 'max-w-[25rem] text-sm lg:text-[1rem]' %}
-        {% elif loop.index0 == 2 %}
-          {% set cardClass = 'xl:col-span-5' %}
-          {% set logoClass = 'h-11 sm:h-14 lg:h-16 w-auto max-w-[14rem] object-contain object-left' %}
-        {% elif loop.index0 == 3 %}
-          {% set cardClass = 'md:col-span-2 xl:col-span-7' %}
-          {% set logoClass = 'h-11 sm:h-14 lg:h-16 w-auto max-w-[15rem] object-contain object-left' %}
-        {% elif brand.slug == 'g-lab' or brand.slug == 'malina' or brand.slug == 'puntododici' or brand.slug == '0039-italy' %}
-          {% set cardClass = 'xl:col-span-3' %}
-          {% set logoClass = 'h-9 sm:h-10 lg:h-11 w-auto max-w-[11rem] object-contain object-left' %}
-          {% set bodyClass = 'max-w-[18rem] text-[0.92rem]' %}
-        {% elif brand.slug == 'rich-royal' or brand.slug == 'more-and-more' %}
-          {% set cardClass = 'xl:col-span-6' %}
-          {% set logoClass = 'h-10 sm:h-12 lg:h-14 w-auto max-w-[13rem] object-contain object-left' %}
-          {% set bodyClass = 'max-w-[24rem] text-sm lg:text-[0.98rem]' %}
-          {% if brand.slug == 'more-and-more' %}
-            {% set imageClass = 'object-[58%_24%]' %}
-          {% endif %}
-        {% elif brand.slug == 'yaya' %}
-          {% set cardClass = 'xl:col-span-6' %}
-          {% set logoClass = 'h-11 sm:h-14 lg:h-16 w-auto max-w-[14rem] object-contain object-left' %}
+        {% if brand.slug == 'more-and-more' %}
+          {% set imageClass = 'object-[58%_24%]' %}
         {% endif %}
-        <a href="{{ brand.href }}" class="group relative block overflow-hidden border border-black/5 bg-[#FAF7F4] {{ cardClass }}" data-reveal>
+        <a href="{{ brand.href }}" class="group relative block min-h-[24rem] overflow-hidden border border-black/5 bg-[#FAF7F4]" data-reveal>
           <img src="{{ brand.heroImage }}" alt="{{ brand.name }} image" class="absolute inset-0 h-full w-full object-cover {{ imageClass }} transition duration-[1100ms] group-hover:scale-[1.04] group-hover:opacity-92">
           <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.22),rgba(0,0,0,0.34)_28%,rgba(0,0,0,0.86)_100%)]"></div>
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_34%),linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0)_30%,rgba(0,0,0,0.24)_100%)] opacity-90"></div>

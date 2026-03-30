@@ -229,6 +229,11 @@
     position: relative;
   }
 
+  .nav-contact {
+    position: relative;
+    line-height: 1;
+  }
+
   .nav-link::after {
     position: absolute;
     left: 0;
@@ -245,6 +250,20 @@
   .nav-link:hover::after,
   .nav-link:focus-visible::after {
     transform: scaleX(1);
+  }
+
+  .mobile-menu__contact {
+    transition: color 220ms ease, border-color 220ms ease, transform 220ms ease;
+  }
+
+  .mobile-menu__contact:hover,
+  .mobile-menu__contact:focus-visible {
+    color: rgba(0, 0, 0, 0.98);
+  }
+
+  .mobile-menu__contact:hover span[aria-hidden="true"],
+  .mobile-menu__contact:focus-visible span[aria-hidden="true"] {
+    transform: translateX(0.2rem);
   }
 
   [data-reveal] {
