@@ -19,14 +19,14 @@ title: Brands | Bollag Guggenheim
   </div>
   <div class="relative mx-auto flex min-h-[82svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[62rem]">
-      <p class="mb-4 text-[0.72rem] uppercase tracking-[0.32em] text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>Brand Portfolio</p>
-      <h1 class="max-w-[11ch] font-display text-[2.25rem] leading-[0.9] tracking-[-0.055em] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)] sm:text-[3.5rem] lg:text-[4.5rem]" data-reveal>
+      <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>Brand Portfolio</p>
+      <h1 class="type-hero-title max-w-[11ch] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)] sm:text-[3.5rem]" data-reveal>
         A curated landscape of premium fashion labels.
       </h1>
-      <p class="mt-6 max-w-[41rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-base leading-relaxed text-bone/72 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)] sm:text-lg lg:text-[1.08rem]" data-reveal>
+      <p class="type-body-lg mt-6 max-w-[41rem] text-bone/72 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)]" data-reveal>
         Each brand enters the portfolio with its own visual language, commercial role, and emotional register. Explore them as individual chapters rather than a single uniform catalog.
       </p>
-      <div class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-[0.72rem] uppercase tracking-[0.28em] text-bone/42 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>
+      <div class="type-meta mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-bone/42 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>
         <span>13 labels</span>
         <span>Wholesale and retail</span>
         <span>Switzerland since 1947</span>
@@ -39,8 +39,8 @@ title: Brands | Bollag Guggenheim
   <div class="relative mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[38rem]">
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/40" data-reveal>Brand Portfolio</p>
-        <h2 class="max-w-[11ch] font-display text-[1.9rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.55rem] lg:text-[3.4rem]" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal>Brand Portfolio</p>
+        <h2 class="type-section-title max-w-[15ch] text-black" data-reveal>
           A portfolio shaped by distinct points of view.
         </h2>
       </div>
@@ -49,7 +49,7 @@ title: Brands | Bollag Guggenheim
     <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {% for brand in brandProfiles %}
         {% set logoClass = 'h-10 sm:h-12 lg:h-14 w-auto max-w-[12rem] object-contain object-left' %}
-        {% set bodyClass = 'max-w-[24rem] text-sm lg:text-[0.98rem]' %}
+        {% set bodyClass = 'type-body-sm max-w-[24rem]' %}
         {% set imageClass = 'object-center' %}
         {% if brand.slug == 'more-and-more' %}
           {% set imageClass = 'object-[58%_24%]' %}
@@ -63,11 +63,11 @@ title: Brands | Bollag Guggenheim
                             <span class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/16 bg-white/10 text-sm text-white/72 transition duration-300 group-hover:bg-white group-hover:text-black">→</span>
             </div>
             <div class="max-w-[28rem]">
-              <p class="mb-3 text-[0.68rem] uppercase tracking-[0.3em] text-white/80">{{ brand.eyebrow }}</p>
+              <p class="type-label mb-3 text-white/80">{{ brand.eyebrow }}</p>
               <div class="mb-4 flex max-w-full items-center">
                 <img src="/assets/media/brands/{{ brand.slug }}.svg" alt="{{ brand.name }}" class="block brightness-0 invert drop-shadow-[0_8px_22px_rgba(0,0,0,0.38)] {{ logoClass }}">
               </div>
-              <p class="font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] leading-relaxed text-white {{ bodyClass }}">{{ brand.summary }}</p>
+              <p class="text-white {{ bodyClass }}">{{ brand.summary }}</p>
             </div>
           </div>
         </a>

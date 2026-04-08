@@ -2,8 +2,8 @@
   class="fixed inset-x-0 top-0 z-50 transition-all duration-500"
   data-site-header
 >
-  {% set leftNavItems = [{ label: "Company", href: "/company/" }, { label: "Brands", href: "/brands/" }, { label: "Stores", href: "/stores/" }] %}
-  {% set rightNavItems = [{ label: "The WEARHOUSE", href: "/wearhouse/" }, { label: "Agenda", href: "/agenda/" }, { label: "Contact", href: "/contact/" }] %}
+  {% set leftNavItems = [{ label: "Company", href: "/company/" }, { label: "The WEARHOUSE", href: "/wearhouse/" }, { label: "Brands", href: "/brands/" }] %}
+  {% set rightNavItems = [{ label: "Stores", href: "/stores/" }, { label: "Agenda", href: "/agenda/" }, { label: "Contact", href: "/contact/" }] %}
   {% set mobileNavItems = leftNavItems.concat(rightNavItems) %}
   <div class="mx-auto flex w-full max-w-[1600px] items-center justify-between px-5 py-4 sm:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:px-12 lg:py-5">
     <nav aria-label="Primary navigation left" class="hidden lg:block">
@@ -69,7 +69,7 @@
   >
     <div class="w-full border-b border-black/8 bg-[linear-gradient(180deg,rgba(250,248,246,0.96),rgba(244,239,232,0.94))] px-5 py-5 shadow-[0_24px_60px_rgba(0,0,0,0.08)] backdrop-blur-xl sm:px-8">
       <nav aria-label="Mobile primary navigation">
-        <ul class="font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[0.98rem] font-medium uppercase tracking-[0.18em] text-black/82">
+        <ul class="font-['Helvetica_Neue',_Arial,_sans-serif] text-[0.98rem] font-medium uppercase tracking-[0.18em] text-black/82">
           {% for item in mobileNavItems %}
             <li class="border-b border-black/8 last:border-b-0">
               <a href="{{ item.href }}" class="mobile-menu__link flex items-center justify-between py-4 text-black/88" data-mobile-menu-link>

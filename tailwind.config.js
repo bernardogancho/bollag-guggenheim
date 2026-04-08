@@ -10,7 +10,7 @@ module.exports = {
         smoke: "#b8b2aa"
       },
       fontFamily: {
-        display: ["Bodoni 72", "Didot", "Times New Roman", "serif"],
+        display: ["Helvetica Neue", "Arial", "sans-serif"],
         sans: ["Helvetica Neue", "Arial", "sans-serif"]
       },
       letterSpacing: {

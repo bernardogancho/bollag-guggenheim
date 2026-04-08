@@ -24,14 +24,14 @@ title: Stores | Bollag Guggenheim
     <div class="relative max-w-[62rem]">
       <div class="absolute -left-16 bottom-[-3rem] h-[24rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(6,8,10,0.5),rgba(6,8,10,0.3)_42%,rgba(6,8,10,0.12)_68%,transparent_100%)] blur-3xl sm:h-[28rem] sm:w-[40rem]"></div>
       <div class="relative">
-      <p class="mb-4 text-[0.72rem] uppercase tracking-[0.3em] text-bone/64 [text-shadow:0_3px_12px_rgba(0,0,0,0.4)]" data-reveal>{{ stores.hero.eyebrow }}</p>
-      <h1 class="max-w-[12ch] font-display text-[2.25rem] leading-[0.9] tracking-[-0.055em] [text-shadow:0_12px_32px_rgba(0,0,0,0.58)] sm:text-[3.45rem] lg:text-[4.5rem]" data-reveal>
+      <p class="type-eyebrow-hero mb-4 text-bone/64 [text-shadow:0_3px_12px_rgba(0,0,0,0.4)]" data-reveal>{{ stores.hero.eyebrow }}</p>
+      <h1 class="type-hero-title max-w-[12ch] [text-shadow:0_12px_32px_rgba(0,0,0,0.58)]" data-reveal>
         {{ stores.hero.title }}
       </h1>
-      <p class="mt-6 max-w-[42rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-base leading-relaxed text-bone/88 [text-shadow:0_8px_20px_rgba(0,0,0,0.46)] sm:text-lg lg:text-[1.08rem]" data-reveal>
+      <p class="type-body-lg mt-6 max-w-[42rem] text-bone/88 [text-shadow:0_8px_20px_rgba(0,0,0,0.46)]" data-reveal>
         {{ stores.hero.summary }}
       </p>
-      <div class="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-[0.72rem] uppercase tracking-[0.24em] text-bone/60 [text-shadow:0_5px_16px_rgba(0,0,0,0.42)]" data-reveal>
+      <div class="type-meta mt-8 flex flex-wrap gap-x-8 gap-y-3 text-bone/60 [text-shadow:0_5px_16px_rgba(0,0,0,0.42)]" data-reveal>
         <span>2 Monobrand Stores</span>
         <span>2 Multibrand Stores</span>
         <span>1 Outlet</span>
@@ -46,12 +46,12 @@ title: Stores | Bollag Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[38rem]">
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/40" data-reveal>Store Network</p>
-        <h2 class="max-w-[11ch] font-display text-[1.9rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.55rem] lg:text-[3.4rem]" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal>Store Network</p>
+        <h2 class="type-section-title max-w-[11ch] text-black" data-reveal>
           Physical retail with a sharper point of view.
         </h2>
       </div>
-      <p class="max-w-[24rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm leading-relaxed text-black/58 lg:text-[0.98rem]" data-reveal>
+      <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal>
         From Zurich to Spreitenbach and Schonenwerd, the network connects brand presentation, customer insight, and direct retail experience.
       </p>
     </div>
@@ -60,9 +60,9 @@ title: Stores | Bollag Guggenheim
       {% for group in stores.groups %}
         <section class="grid gap-10 lg:grid-cols-[minmax(0,0.34fr)_minmax(0,0.66fr)] lg:gap-12">
           <div class="lg:sticky lg:top-28 lg:self-start">
-            <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/40" data-reveal>{{ group.label }}</p>
-            <h3 class="font-display text-[2.2rem] leading-[0.94] tracking-[-0.04em] text-black sm:text-[2.8rem] lg:text-[3.5rem]" data-reveal>{{ group.title }}</h3>
-            <p class="mt-5 max-w-[22rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[0.98rem] leading-[1.8] text-black/68" data-reveal>{{ group.intro }}</p>
+            <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ group.label }}</p>
+            <h3 class="type-section-title-block text-black" data-reveal>{{ group.title }}</h3>
+            <p class="type-body mt-5 max-w-[22rem] text-black/68" data-reveal>{{ group.intro }}</p>
           </div>
 
           <div class="grid gap-5 {% if group.stores | length > 1 %}xl:grid-cols-2{% endif %}">
@@ -72,14 +72,14 @@ title: Stores | Bollag Guggenheim
                   <img src="{{ store.image }}" alt="{{ store.name }}" class="h-full w-full object-cover transition duration-[900ms] group-hover:scale-[1.035] group-hover:opacity-92">
                   <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.06),rgba(0,0,0,0.42)_100%)]"></div>
                   <div class="absolute inset-x-0 bottom-0 p-5 lg:p-6">
-                    <p class="text-[0.68rem] uppercase tracking-[0.28em] text-white/60">{{ group.title }}</p>
-                    <h4 class="mt-2 font-display text-[2rem] leading-[0.95] tracking-[-0.04em] text-white">{{ store.name }}</h4>
+                    <p class="type-label text-white/60">{{ group.title }}</p>
+                    <h4 class="type-subcard-title mt-2 text-white">{{ store.name }}</h4>
                   </div>
                 </div>
                 <div class="grid gap-8 p-5 lg:p-6">
                   <div>
-                    <p class="mb-3 text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Address</p>
-                    <div class="font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[0.98rem] leading-[1.75] text-black/74">
+                    <p class="type-label mb-3 text-black/38">Address</p>
+                    <div class="type-body text-black/74">
                       {% for line in store.address %}
                         <p>{{ line }}</p>
                       {% endfor %}
@@ -87,12 +87,12 @@ title: Stores | Bollag Guggenheim
                   </div>
                   <div class="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
                     <div>
-                      <p class="mb-3 text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Contact</p>
+                      <p class="type-label mb-3 text-black/38">Contact</p>
                       <a href="{{ store.phoneHref }}" class="cta-button cta-button--dark">{{ store.phoneLabel }}</a>
                     </div>
                     <div>
-                      <p class="mb-3 text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Opening Hours</p>
-                      <div class="font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm leading-[1.8] text-black/66">
+                      <p class="type-label mb-3 text-black/38">Opening Hours</p>
+                      <div class="type-body-sm text-black/66">
                         {% for line in store.hours %}
                           <p>{{ line }}</p>
                         {% endfor %}

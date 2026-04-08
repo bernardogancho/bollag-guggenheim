@@ -26,14 +26,14 @@ eleventyComputed:
   </div>
   <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[60rem]">
-      <p class="mb-4 text-[0.72rem] uppercase tracking-[0.3em] text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>{{ brand.eyebrow }}</p>
+      <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>{{ brand.eyebrow }}</p>
       <div class="mb-7 max-w-[14rem]" data-reveal>
         <img src="/assets/media/brands/{{ brand.slug }}.svg" alt="{{ brand.name }}" class="max-h-10 w-auto brightness-0 invert drop-shadow-[0_8px_22px_rgba(0,0,0,0.28)]">
       </div>
-      <h1 class="max-w-[14ch] font-display text-[2.25rem] leading-[0.9] tracking-[-0.055em] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)] sm:text-[3.45rem] lg:text-[4.5rem]" data-reveal>
+      <h1 class="type-hero-title max-w-[14ch] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)]" data-reveal>
         {{ brand.heroTitle or brand.summary }}
       </h1>
-      <p class="mt-6 max-w-[40rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-base leading-relaxed text-bone/82 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)] sm:text-lg lg:text-[1.08rem]" data-reveal>
+      <p class="type-body-lg mt-6 max-w-[40rem] text-bone/82 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)]" data-reveal>
         {{ brand.summary }}
       </p>
     </div>
@@ -44,12 +44,12 @@ eleventyComputed:
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="grid gap-12 lg:grid-cols-[minmax(0,0.86fr)_minmax(24rem,34rem)] lg:items-center xl:gap-20">
       <div class="max-w-[44rem]">
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/42" data-reveal>Brand Overview</p>
-        <div class="space-y-6 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[1rem] leading-[1.8] text-black/72 lg:text-[1.08rem]">
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal>Brand Overview</p>
+        <div class="type-body-lg type-body-stack text-black/72">
           <p data-reveal>{{ brand.intro }}</p>
           <p data-reveal>{{ brand.focus }}</p>
         </div>
-        <div class="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-[0.72rem] uppercase tracking-[0.24em] text-black/44" data-reveal>
+        <div class="type-meta mt-8 flex flex-wrap gap-x-6 gap-y-3 text-black/44" data-reveal>
           <span>{{ brand.atmosphere }}</span>
           {% for item in brand.categories %}
             {% if loop.index0 < 2 %}
@@ -72,8 +72,8 @@ eleventyComputed:
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[34rem]">
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/40" data-reveal>Visual Journal</p>
-        <h2 class="max-w-[10ch] font-display text-[1.75rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.4rem] lg:text-[3.1rem]" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal>Visual Journal</p>
+        <h2 class="type-section-title-md max-w-[10ch] text-black" data-reveal>
           A broader image world for {{ brand.name }}.
         </h2>
       </div>
@@ -113,8 +113,8 @@ eleventyComputed:
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
     <div class="flex flex-col gap-8 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div>
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/42" data-reveal>Explore More</p>
-        <h2 class="max-w-[12ch] font-display text-[1.7rem] leading-[0.92] tracking-[-0.045em] sm:text-[2.25rem] lg:text-[2.8rem]" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal>Explore More</p>
+        <h2 class="type-section-title-sm max-w-[12ch] text-black" data-reveal>
           Continue through the full brand portfolio.
         </h2>
       </div>

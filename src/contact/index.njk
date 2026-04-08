@@ -22,16 +22,16 @@ title: Contact | Bollag Guggenheim
   </div>
   <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[64rem]">
-      <p class="mb-4 text-[0.72rem] uppercase tracking-[0.3em] text-bone/54" data-reveal>{{ contact.hero.eyebrow }}</p>
+      <p class="type-eyebrow-hero mb-4 text-bone/54" data-reveal>{{ contact.hero.eyebrow }}</p>
       {% if contact.hero.quote %}
       <div class="mb-7 font-display text-[1.45rem] italic leading-none tracking-[-0.03em] text-bone/72 sm:text-[1.8rem]" data-reveal>
         {{ contact.hero.quote }}
       </div>
       {% endif %}
-      <h1 class="max-w-[12ch] font-display text-[2.25rem] leading-[0.9] tracking-[-0.055em] sm:text-[3.45rem] lg:text-[4.5rem]" data-reveal>
+      <h1 class="type-hero-title max-w-[12ch]" data-reveal>
         {{ contact.hero.title }}
       </h1>
-      <p class="mt-6 max-w-[42rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-base leading-relaxed text-bone/82 sm:text-lg lg:text-[1.08rem]" data-reveal>
+      <p class="type-body-lg mt-6 max-w-[42rem] text-bone/82" data-reveal>
         {{ contact.hero.summary }}
       </p>
     </div>
@@ -42,12 +42,12 @@ title: Contact | Bollag Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[38rem]">
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/40" data-reveal>Office</p>
-        <h2 class="max-w-[11ch] font-display text-[1.9rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.55rem] lg:text-[3.4rem]" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal>Office</p>
+        <h2 class="type-section-title max-w-[11ch] text-black" data-reveal>
           Visit, call, or write to the team.
         </h2>
       </div>
-      <p class="max-w-[24rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm leading-relaxed text-black/58 lg:text-[0.98rem]" data-reveal>
+      <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal>
         The office and showroom base are located in Glattpark, with direct access information and contact channels below.
       </p>
     </div>
@@ -55,20 +55,20 @@ title: Contact | Bollag Guggenheim
     <div class="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-8">
       <div class="grid gap-6">
         <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
-          <p class="mb-4 text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Main Office</p>
-          <h3 class="font-display text-[2.2rem] leading-[0.94] tracking-[-0.04em] text-black">{{ contact.office.name }}</h3>
+          <p class="type-label mb-4 text-black/38">Main Office</p>
+          <h3 class="type-section-title-block text-black">{{ contact.office.name }}</h3>
           <div class="mt-8 grid gap-8 lg:grid-cols-2">
             <div>
-              <p class="mb-3 text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Address</p>
-              <div class="font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[1rem] leading-[1.8] text-black/72">
+              <p class="type-label mb-3 text-black/38">Address</p>
+              <div class="type-body-lg text-black/72">
                 {% for line in contact.office.address %}
                   <p>{{ line }}</p>
                 {% endfor %}
               </div>
             </div>
             <div>
-              <p class="mb-3 text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Contact</p>
-              <div class="space-y-3 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[1rem] leading-[1.75] text-black/72">
+              <p class="type-label mb-3 text-black/38">Contact</p>
+              <div class="type-body-lg type-body-stack-tight text-black/72">
                 <p><a href="{{ contact.office.phoneHref }}" class="transition hover:text-black">{{ contact.office.phoneLabel }}</a></p>
                 <p>Fax {{ contact.office.fax }}</p>
                 <p><a href="{{ contact.office.emailHref }}" class="transition hover:text-black">{{ contact.office.emailLabel }}</a></p>
@@ -88,20 +88,20 @@ title: Contact | Bollag Guggenheim
         </section>
 
         <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
-          <p class="mb-4 text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Partner Contact</p>
-          <h3 class="font-display text-[2.2rem] leading-[0.94] tracking-[-0.04em] text-black">The Wearhouse Fashion Trade GmbH</h3>
+          <p class="type-label mb-4 text-black/38">Partner Contact</p>
+          <h3 class="type-section-title-block text-black">The Wearhouse Fashion Trade GmbH</h3>
           <div class="mt-8 grid gap-8 lg:grid-cols-2">
             <div>
-              <p class="mb-3 text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Address</p>
-              <div class="font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[1rem] leading-[1.8] text-black/72">
+              <p class="type-label mb-3 text-black/38">Address</p>
+              <div class="type-body-lg text-black/72">
                 <p>Seestrasse 78</p>
                 <p>8703 Erlenbach</p>
                 <p>Schweiz</p>
               </div>
             </div>
             <div>
-              <p class="mb-3 text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Contact</p>
-              <div class="space-y-3 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[1rem] leading-[1.75] text-black/72">
+              <p class="type-label mb-3 text-black/38">Contact</p>
+              <div class="type-body-lg type-body-stack-tight text-black/72">
                 <p><a href="tel:+41449121200" class="transition hover:text-black">+41 44 912 12 00</a></p>
                 <p><a href="mailto:wearhouse@wearhouse.ch" class="transition hover:text-black">wearhouse@wearhouse.ch</a></p>
               </div>
@@ -117,42 +117,42 @@ title: Contact | Bollag Guggenheim
       </div>
 
       <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
-        <p class="mb-4 text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Enquiry Form</p>
+        <p class="type-label mb-4 text-black/38">Enquiry Form</p>
         <div class="mb-8 max-w-[28rem]">
-          <h3 class="font-display text-[2.2rem] leading-[0.94] tracking-[-0.04em] text-black">A direct enquiry, prepared for launch.</h3>
-          <p class="mt-4 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[0.98rem] leading-[1.8] text-black/68">The submission flow is not connected yet, but the form structure is now in place. For immediate contact, use the phone or email details on this page.</p>
+          <h3 class="type-section-title-block text-black">A direct enquiry, prepared for launch.</h3>
+          <p class="type-body mt-4 text-black/68">The submission flow is not connected yet, but the form structure is now in place. For immediate contact, use the phone or email details on this page.</p>
         </div>
         <form class="space-y-5" onsubmit="return false;" aria-label="Contact enquiry form">
           <div class="grid gap-5 sm:grid-cols-2">
             <label class="block">
-              <span class="mb-3 block text-[0.68rem] uppercase tracking-[0.28em] text-black/38">First Name</span>
-              <input type="text" name="first_name" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="First name">
+              <span class="type-label mb-3 block text-black/38">First Name</span>
+              <input type="text" name="first_name" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="First name">
             </label>
             <label class="block">
-              <span class="mb-3 block text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Last Name</span>
-              <input type="text" name="last_name" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="Last name">
+              <span class="type-label mb-3 block text-black/38">Last Name</span>
+              <input type="text" name="last_name" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="Last name">
             </label>
           </div>
           <div class="grid gap-5 sm:grid-cols-2">
             <label class="block">
-              <span class="mb-3 block text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Email</span>
-              <input type="email" name="email" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="name@company.com">
+              <span class="type-label mb-3 block text-black/38">Email</span>
+              <input type="email" name="email" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="name@company.com">
             </label>
             <label class="block">
-              <span class="mb-3 block text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Company</span>
-              <input type="text" name="company" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="Company name">
+              <span class="type-label mb-3 block text-black/38">Company</span>
+              <input type="text" name="company" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="Company name">
             </label>
           </div>
           <label class="block">
-            <span class="mb-3 block text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Subject</span>
-            <input type="text" name="subject" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="What is this regarding?">
+            <span class="type-label mb-3 block text-black/38">Subject</span>
+            <input type="text" name="subject" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="What is this regarding?">
           </label>
           <label class="block">
-            <span class="mb-3 block text-[0.68rem] uppercase tracking-[0.28em] text-black/38">Message</span>
-            <textarea name="message" rows="7" class="w-full resize-none border border-black/10 bg-white/70 px-4 py-4 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm leading-[1.8] text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="Tell us about your enquiry."></textarea>
+            <span class="type-label mb-3 block text-black/38">Message</span>
+            <textarea name="message" rows="7" class="w-full resize-none border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm leading-[1.8] text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="Tell us about your enquiry."></textarea>
           </label>
           <div class="flex flex-col gap-4 border-t border-black/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
-            <p class="max-w-[24rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm leading-relaxed text-black/56">Submission is not active yet. For now, please contact the team directly by email or phone.</p>
+            <p class="type-body-sm max-w-[24rem] text-black/56">Submission is not active yet. For now, please contact the team directly by email or phone.</p>
             <button type="button" class="cta-button cta-button--dark">
               <span>Send Enquiry</span>
               <span aria-hidden="true">→</span>
@@ -168,8 +168,8 @@ title: Contact | Bollag Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
     <div class="grid gap-8 border-t border-black/10 pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
       <div>
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/42" data-reveal>Next Step</p>
-        <h2 class="max-w-[14ch] font-display text-[1.7rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.25rem] lg:text-[2.8rem]" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal>Next Step</p>
+        <h2 class="type-section-title-sm max-w-[14ch] text-black" data-reveal>
           Explore the brands, stores, and showroom calendar.
         </h2>
       </div>

@@ -5,6 +5,8 @@
 @layer base {
   :root {
     color-scheme: light;
+    --font-sans-ui: "Helvetica Neue", Arial, sans-serif;
+    --font-display-ui: "Helvetica Neue", Arial, sans-serif;
   }
 
   html {
@@ -13,7 +15,7 @@
   }
 
   body {
-    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-sans-ui);
   }
 
   html.js body {
@@ -183,6 +185,211 @@
 
   .page-hero-overlay {
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.16) 0%, rgba(0, 0, 0, 0.04) 34%, rgba(0, 0, 0, 0.32) 100%);
+  }
+
+  .type-eyebrow {
+    font-family: var(--font-sans-ui);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  .type-eyebrow-hero {
+    font-family: var(--font-sans-ui);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  .type-label {
+    font-family: var(--font-sans-ui);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  .type-meta {
+    font-family: var(--font-sans-ui);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .type-body-lg,
+  .type-body,
+  .type-body-sm,
+  .type-body-xs {
+    font-family: var(--font-sans-ui);
+  }
+
+  .type-body-lg {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .type-body {
+    font-size: 0.98rem;
+    line-height: 1.8;
+  }
+
+  .type-body-sm {
+    font-size: 0.875rem;
+    line-height: 1.8;
+  }
+
+  .type-body-xs {
+    font-size: 0.82rem;
+    line-height: 1.75;
+  }
+
+  .type-hero-title,
+  .type-display-lead,
+  .type-section-title,
+  .type-section-title-md,
+  .type-section-title-sm,
+  .type-section-title-block,
+  .type-card-title,
+  .type-subcard-title {
+    font-family: var(--font-display-ui);
+    font-weight: 400;
+    color: inherit;
+    text-wrap: balance;
+  }
+
+  .type-hero-title {
+    font-size: 2.25rem;
+    line-height: 0.9;
+    letter-spacing: -0.055em;
+  }
+
+  .type-display-lead {
+    font-size: 2.1rem;
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+  }
+
+  .type-section-title {
+    font-size: 1.9rem;
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+  }
+
+  .type-section-title-md {
+    font-size: 1.75rem;
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+  }
+
+  .type-section-title-sm {
+    font-size: 1.7rem;
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+  }
+
+  .type-section-title-block {
+    font-size: 2.2rem;
+    line-height: 0.97;
+    letter-spacing: -0.04em;
+  }
+
+  .type-card-title {
+    font-size: 1.45rem;
+    line-height: 0.97;
+    letter-spacing: -0.04em;
+  }
+
+  .type-subcard-title {
+    font-size: 2rem;
+    line-height: 0.97;
+    letter-spacing: -0.04em;
+  }
+
+  .type-body-stack > * + * {
+    margin-top: 1.5rem;
+  }
+
+  .type-body-stack-tight > * + * {
+    margin-top: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .type-hero-title {
+      font-size: 3.45rem;
+    }
+
+    .type-display-lead {
+      font-size: 3rem;
+    }
+
+    .type-section-title {
+      font-size: 2.55rem;
+    }
+
+    .type-section-title-md {
+      font-size: 2.4rem;
+    }
+
+    .type-section-title-sm {
+      font-size: 2.25rem;
+    }
+
+    .type-section-title-block {
+      font-size: 2.8rem;
+    }
+
+    .type-card-title {
+      font-size: 1.6rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .type-body-lg {
+      font-size: 1.08rem;
+    }
+
+    .type-body {
+      font-size: 1.04rem;
+    }
+
+    .type-body-sm {
+      font-size: 0.98rem;
+    }
+
+    .type-hero-title {
+      font-size: 4.5rem;
+    }
+
+    .type-display-lead {
+      font-size: 4.15rem;
+    }
+
+    .type-section-title {
+      font-size: 3.4rem;
+    }
+
+    .type-section-title-md {
+      font-size: 3.1rem;
+    }
+
+    .type-section-title-sm {
+      font-size: 2.8rem;
+    }
+
+    .type-section-title-block {
+      font-size: 3.5rem;
+    }
+
+    .type-card-title {
+      font-size: 1.75rem;
+    }
   }
 
   .hero-typewriter-block {

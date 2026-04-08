@@ -1,10 +1,10 @@
 <section class="bg-[{{ selectedStoresTone or '#FAF7F4' }}] text-ink">
   <div class="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 lg:px-16 lg:py-28">
     <div class="mb-12 border-t border-black/10 pt-8 lg:mb-16">
-      <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/38" data-reveal>
+      <p class="type-eyebrow mb-4 text-black/38" data-reveal>
         Editorial Selection
       </p>
-      <h2 class="max-w-[14ch] font-display text-[1.7rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.25rem] lg:text-[3.1rem]" data-reveal>
+      <h2 class="type-section-title-sm max-w-[14ch] text-black lg:text-[3.1rem]" data-reveal>
         A selection from our brands.
       </h2>
     </div>
@@ -24,8 +24,8 @@
           <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.03),rgba(0,0,0,0.42)_100%)]"></div>
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.14),transparent_34%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
           <div class="absolute inset-x-0 bottom-0 p-4 lg:p-5">
-            <p class="mb-2 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[0.68rem] uppercase tracking-[0.28em] text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.28)]">{{ item.brand }}</p>
-            <p class="max-w-[17rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm leading-relaxed text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.34)] transition duration-500 group-hover:text-white">{{ item.note }}</p>
+            <p class="type-label mb-2 text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.28)]">{{ item.brand }}</p>
+            <p class="type-body-sm max-w-[17rem] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.34)] transition duration-500 group-hover:text-white">{{ item.note }}</p>
           </div>
         </a>
       {% endfor %}

@@ -11,11 +11,11 @@ title: Wearhouse | Bollag Guggenheim
   <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="relative max-w-[62rem]">
       <div class="relative">
-      <p class="mb-4 text-[0.72rem] uppercase tracking-[0.32em] text-bone/62 [text-shadow:0_3px_12px_rgba(0,0,0,0.38)]" data-reveal>Agency Overview</p>
-      <p class="max-w-[42rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-base leading-relaxed text-bone/86 [text-shadow:0_8px_20px_rgba(0,0,0,0.44)] sm:text-lg lg:text-[1.08rem]" data-reveal>
+      <p class="type-eyebrow-hero mb-4 text-bone/62 [text-shadow:0_3px_12px_rgba(0,0,0,0.38)]" data-reveal>Agency Overview</p>
+      <p class="type-body-lg max-w-[42rem] text-bone/86 [text-shadow:0_8px_20px_rgba(0,0,0,0.44)]" data-reveal>
         {{ wearhouse.hero.summary }}
       </p>
-      <div class="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-[0.72rem] uppercase tracking-[0.24em] text-bone/56 [text-shadow:0_5px_16px_rgba(0,0,0,0.4)]" data-reveal>
+      <div class="type-meta mt-8 flex flex-wrap gap-x-8 gap-y-3 text-bone/56 [text-shadow:0_5px_16px_rgba(0,0,0,0.4)]" data-reveal>
         <span>{{ wearhouse.brands | length }} labels</span>
         <span>Erlenbach</span>
         <span>Women, men and accessories</span>
@@ -29,15 +29,15 @@ title: Wearhouse | Bollag Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="grid gap-10 lg:grid-cols-[minmax(0,0.98fr)_minmax(20rem,0.62fr)] lg:items-center lg:gap-16">
       <div class="max-w-[62rem]">
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/42" data-reveal>{{ wearhouse.hero.eyebrow }}</p>
-        <h2 class="max-w-[14ch] font-display text-[2.1rem] leading-[0.92] tracking-[-0.045em] text-black sm:max-w-[16ch] sm:text-[3rem] lg:max-w-[15ch] lg:text-[4.1rem]" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ wearhouse.hero.eyebrow }}</p>
+        <h2 class="type-display-lead max-w-[14ch] text-black sm:max-w-[16ch] lg:max-w-[15ch]" data-reveal>
           {{ wearhouse.hero.title }}
         </h2>
-        <div class="mt-8 space-y-6 font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[1rem] leading-[1.8] text-black/72 lg:text-[1.08rem]">
+        <div class="type-body-lg type-body-stack mt-8 text-black/72">
           <p data-reveal>{{ wearhouse.overview.intro }}</p>
           <p data-reveal>{{ wearhouse.overview.focus }}</p>
         </div>
-        <div class="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-[0.72rem] uppercase tracking-[0.24em] text-black/44" data-reveal>
+        <div class="type-meta mt-8 flex flex-wrap gap-x-6 gap-y-3 text-black/44" data-reveal>
           {% for item in wearhouse.overview.pillars %}
             <span>{{ item }}</span>
           {% endfor %}
@@ -56,23 +56,20 @@ title: Wearhouse | Bollag Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[38rem]">
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/40" data-reveal>Brand Roster</p>
-        <h2 class="max-w-[12ch] font-display text-[1.9rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.55rem] lg:text-[3.4rem]" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal>Brand Roster</p>
+        <h2 class="type-section-title max-w-[12ch] text-black" data-reveal>
           The current label portfolio represented by Wearhouse.
         </h2>
       </div>
-      <p class="max-w-[24rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm leading-relaxed text-black/58 lg:text-[0.98rem]" data-reveal>
-        A live list based on the current Wearhouse agency site, spanning womenswear, menswear, children’s lines, and accessories.
-      </p>
     </div>
 
-    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+    <div class="grid grid-cols-2 border border-black/12 bg-white/28 backdrop-blur-[2px] sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
       {% for brand in wearhouse.brands %}
-        {% if brand.href %}
-          <a href="{{ brand.href }}" target="_blank" rel="noopener" class="group relative flex min-h-[16.5rem] flex-col overflow-hidden border border-black/10 bg-white/44 p-6 transition duration-500 hover:border-black/18 hover:bg-white/58" data-reveal>
-        {% else %}
-          <div class="group relative flex min-h-[16.5rem] flex-col overflow-hidden border border-black/10 bg-white/44 p-6 transition duration-500 hover:border-black/18 hover:bg-white/58" data-reveal>
-        {% endif %}
+        <a
+          href="{{ brand.pageHref }}"
+          class="group relative flex min-h-40 flex-col justify-between overflow-hidden border-b border-r border-black/12 px-5 py-5 transition duration-500 hover:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.05)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black/30 sm:min-h-44 sm:px-6 sm:py-6 lg:min-h-48 lg:px-7 lg:py-7"
+          data-reveal
+        >
             {% if brand.hoverImage %}
               <img
                 src="{{ brand.hoverImage }}"
@@ -81,19 +78,18 @@ title: Wearhouse | Bollag Guggenheim
               >
               <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.16),rgba(0,0,0,0.48)_100%)] opacity-0 transition duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"></div>
             {% endif %}
-            <p class="relative z-10 mb-8 text-[0.68rem] uppercase tracking-[0.28em] text-black/38 transition duration-500 {% if brand.hoverImage %}group-hover:text-white/70 group-focus-visible:text-white/70{% endif %}">{{ brand.segment }}</p>
-            <h3 class="relative z-10 max-w-[13ch] font-display text-[1.7rem] leading-[0.95] tracking-[-0.04em] text-black transition duration-500 {% if brand.hoverImage %}group-hover:text-white group-focus-visible:text-white{% endif %}">{{ brand.name }}</h3>
-            <div class="relative z-10 mt-auto flex items-center justify-between border-t border-black/10 pt-4 transition duration-500 {% if brand.hoverImage %}group-hover:border-white/18 group-focus-visible:border-white/18{% endif %}">
-              <span class="text-[0.68rem] uppercase tracking-[0.24em] text-black/42 transition duration-500 {% if brand.hoverImage %}group-hover:text-white/70 group-focus-visible:text-white/70{% endif %}">Represented by Wearhouse</span>
-              {% if brand.href %}
-                <span class="text-sm text-black/58 transition duration-300 group-hover:translate-x-1 {% if brand.hoverImage %}group-hover:text-white group-focus-visible:translate-x-1 group-focus-visible:text-white{% else %}group-hover:text-black{% endif %}">→</span>
-              {% endif %}
+            <div class="relative z-10">
+              <p class="mb-8 text-[0.68rem] uppercase tracking-[0.28em] text-black/38 transition duration-500 {% if brand.hoverImage %}group-hover:text-white/70 group-focus-visible:text-white/70{% endif %}">
+                {{ brand.segment }}
+              </p>
+              <h3 class="max-w-[13ch] font-display text-[1.7rem] leading-[0.95] tracking-[-0.04em] text-black transition duration-500 {% if brand.hoverImage %}group-hover:text-white group-focus-visible:text-white{% endif %}">
+                {{ brand.name }}
+              </h3>
             </div>
-        {% if brand.href %}
-          </a>
-        {% else %}
-          </div>
-        {% endif %}
+            <div class="relative z-10 mt-8 flex items-center justify-between border-t border-black/10 pt-4 transition duration-500 {% if brand.hoverImage %}group-hover:border-white/18 group-focus-visible:border-white/18{% endif %}">
+              <span class="text-sm text-black/58 transition duration-300 group-hover:translate-x-1 {% if brand.hoverImage %}group-hover:text-white group-focus-visible:translate-x-1 group-focus-visible:text-white{% else %}group-hover:text-black{% endif %}">→</span>
+            </div>
+        </a>
       {% endfor %}
     </div>
   </div>
@@ -104,12 +100,12 @@ title: Wearhouse | Bollag Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[34rem]">
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/40" data-reveal>Showroom Journal</p>
-        <h2 class="max-w-[10ch] font-display text-[1.75rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.4rem] lg:text-[3.1rem]" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal>Showroom Journal</p>
+        <h2 class="type-section-title-md max-w-[10ch] text-black" data-reveal>
           A direct view into the Wearhouse showroom atmosphere.
         </h2>
       </div>
-      <p class="max-w-[24rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-sm leading-relaxed text-black/58 lg:text-[0.98rem]" data-reveal>
+      <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal>
         Showroom imagery sourced from the current Wearhouse showroom presentation.
       </p>
     </div>
@@ -148,8 +144,8 @@ title: Wearhouse | Bollag Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
     <div class="grid gap-8 border-t border-black/10 pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
       <div>
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/42" data-reveal>Explore More</p>
-        <h2 class="max-w-[14ch] font-display text-[1.7rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.25rem] lg:text-[2.8rem]" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal>Explore More</p>
+        <h2 class="type-section-title-sm max-w-[14ch] text-black" data-reveal>
           Continue through the Bollag Guggenheim world.
         </h2>
       </div>

@@ -1,0 +1,95 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: wearhouseBrandProfiles
+  size: 1
+  alias: brand
+permalink: "wearhouse/{{ brand.slug }}/index.html"
+eleventyComputed:
+  title: "{{ brand.name }} | The Wearhouse"
+---
+{% include "components/site-header.njk" %}
+
+<section class="relative isolate overflow-hidden bg-ink text-bone">
+  <div class="absolute inset-0">
+    {% if brand.detailHeroImage %}
+      <img src="{{ brand.detailHeroImage }}" alt="{{ brand.name }} editorial view" class="h-full w-full object-cover object-center">
+      <div class="page-hero-overlay absolute inset-0"></div>
+    {% else %}
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_28%),linear-gradient(160deg,#4a433d,#1f1a17_55%,#3d3631)]"></div>
+      <div class="page-hero-overlay absolute inset-0"></div>
+    {% endif %}
+  </div>
+  <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
+    <div class="max-w-[60rem]">
+      <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>{{ brand.eyebrow }}</p>
+      <h1 class="type-hero-title max-w-[10ch] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)]" data-reveal>
+        {{ brand.name }}
+      </h1>
+      <p class="type-body-lg mt-6 max-w-[40rem] text-bone/82 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)]" data-reveal>
+        {{ brand.summary }}
+      </p>
+      <div class="type-meta mt-8 flex flex-wrap gap-x-8 gap-y-3 text-bone/56 [text-shadow:0_5px_16px_rgba(0,0,0,0.4)]" data-reveal>
+        <span>{{ brand.segment }}</span>
+        <span>Represented by The Wearhouse</span>
+        <span>Switzerland</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-[#FAF8F6] text-ink">
+  <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,0.86fr)_minmax(24rem,34rem)] lg:items-center xl:gap-20">
+      <div class="max-w-[44rem]">
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal>Brand Overview</p>
+        <div class="type-body-lg type-body-stack text-black/72">
+          <p data-reveal>{{ brand.intro }}</p>
+          <p data-reveal>{{ brand.focus }}</p>
+        </div>
+        <div class="type-meta mt-8 flex flex-wrap gap-x-6 gap-y-3 text-black/44" data-reveal>
+          <span>{{ brand.atmosphere }}</span>
+          {% for item in brand.categories %}
+            {% if loop.index0 < 2 %}
+              <span>{{ item }}</span>
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% if brand.officialHref %}
+          <div class="mt-8" data-reveal>
+            <a href="{{ brand.officialHref }}" target="_blank" rel="noopener" class="cta-button cta-button--dark">
+              <span>Official Website</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        {% endif %}
+      </div>
+      {% if brand.detailHeroImage %}
+        <figure class="overview-image relative hidden aspect-[4/5] overflow-hidden shadow-[0_34px_90px_rgba(20,18,16,0.14)] lg:block" data-reveal data-scroll-drift>
+          <img src="{{ brand.detailHeroImage }}" alt="{{ brand.name }} editorial portrait" class="overview-image__media h-full w-full object-cover object-center">
+        </figure>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="bg-[#FAF8F6] text-ink">
+  <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
+    <div class="flex flex-col gap-8 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal>Explore More</p>
+        <h2 class="type-section-title-sm max-w-[12ch] text-black" data-reveal>
+          Continue through the Wearhouse portfolio.
+        </h2>
+      </div>
+      <div class="flex flex-wrap gap-3" data-reveal>
+        <a href="/wearhouse/" class="cta-button cta-button--dark">
+          <span>Back to Wearhouse</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "components/site-footer.njk" %}

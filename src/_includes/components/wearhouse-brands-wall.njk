@@ -6,7 +6,7 @@
           Agency Portfolio
         </p>
         <h2 class="max-w-[11ch] font-display text-[1.9rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.55rem] lg:text-[3.4rem]" data-reveal>
-          The Wearhouse roster
+          The Wearhouse portfolio
         </h2>
         <p class="mt-5 max-w-[34rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[0.98rem] leading-[1.8] text-black/64 lg:text-[1.04rem]" data-reveal>
           A parallel portfolio inside the wider group, spanning womenswear, menswear, accessories, and specialist labels represented through The Wearhouse.
@@ -17,11 +17,10 @@
     <div class="grid grid-cols-2 border border-black/12 bg-white/28 backdrop-blur-[2px] sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
       {% for brand in wearhouse.brands %}
         <a
-          href="{{ brand.href or '/wearhouse/' }}"
+          href="{{ brand.pageHref }}"
           class="group relative flex min-h-40 flex-col justify-between overflow-hidden border-b border-r border-black/12 px-5 py-5 transition duration-500 hover:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.05)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black/30 sm:min-h-44 sm:px-6 sm:py-6 lg:min-h-48 lg:px-7 lg:py-7"
           data-reveal
           aria-label="View {{ brand.name }} via The Wearhouse"
-          {% if brand.href %}target="_blank" rel="noopener"{% endif %}
         >
           {% if brand.hoverImage %}
             <img
@@ -42,9 +41,6 @@
           </div>
 
           <div class="relative z-10 mt-8 flex items-center justify-between border-t border-black/10 pt-4 transition duration-500 group-hover:border-white/18 group-focus-visible:border-white/18">
-            <span class="text-[0.66rem] uppercase tracking-[0.24em] text-black/42 transition duration-500 group-hover:text-white/70 group-focus-visible:text-white/70">
-              The Wearhouse
-            </span>
             <span class="text-sm text-black/56 transition duration-300 group-hover:translate-x-1 group-hover:text-white group-focus-visible:translate-x-1 group-focus-visible:text-white">
               →
             </span>
