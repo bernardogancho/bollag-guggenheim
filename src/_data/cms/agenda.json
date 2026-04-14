@@ -144,17 +144,6 @@
           "location": "Showroom Zurich"
         }
       ]
-    },
-    {
-      "month": "lala",
-      "events": [
-        {
-          "dateLabel": "12",
-          "brand": "12",
-          "detail": "12",
-          "location": "12"
-        }
-      ]
     }
   ]
 }
