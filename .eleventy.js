@@ -2,6 +2,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/assets/media": "assets/media" });
   eleventyConfig.addPassthroughCopy({ "src/assets/scripts": "assets/scripts" });
   eleventyConfig.addPassthroughCopy({ "src/admin": "admin" });
+  eleventyConfig.addPassthroughCopy({ "node_modules/decap-cms/dist/decap-cms.js": "admin/decap-cms.js" });
   eleventyConfig.addPassthroughCopy({ "src/_data/cms": "cms-data" });
 
   return {
