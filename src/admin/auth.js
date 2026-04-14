@@ -694,6 +694,18 @@ async function loadManifest() {
   return YAML.parse(raw);
 }
 
+async function loadAdminSettings() {
+  try {
+    const raw = await fetchJsonPath('/admin/admin-settings.json');
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch {
+    return {
+      approvedEmails: ['bernardogancho99@gmail.com'],
+    };
+  }
+}
+
 async function loadFileData(path) {
   const relativePath = normalizePath(path).replace(/^src\/_data\/cms\//, '');
   const response = await fetch(`/cms-data/${relativePath}`);
@@ -1409,6 +1421,10 @@ async function loadEditor() {
     renderToolbar();
     renderEditor();
     setStatus('Ready.', 'success');
+  } catch (error) {
+    state.loading = false;
+    state.appReady = false;
+    renderLogin(error.message, 'error');
   } finally {
     state.loadingManifest = false;
   }
@@ -1576,7 +1592,7 @@ supabase.auth.onAuthStateChange(async (_event, session) => {
   }
 
   if (!state.appReady && !state.loadingManifest) {
-    await loadEditor();
+    await loadEditor().catch(error => renderLogin(error.message, 'error'));
   }
 });
 
