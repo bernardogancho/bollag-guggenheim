@@ -1,5 +1,6 @@
 const { requireAdmin } = require('./_lib/supabase');
 const { createCommit } = require('./_lib/github');
+const VERCEL_DEPLOY_HOOK_URL = process.env.VERCEL_DEPLOY_HOOK_URL || '';
 
 function json(res, statusCode, payload) {
   res.statusCode = statusCode;
@@ -43,10 +44,26 @@ module.exports = async function handler(req, res) {
       files: sanitizedFiles,
     });
 
+    let deployTriggered = false;
+    if (VERCEL_DEPLOY_HOOK_URL) {
+      const deployResponse = await fetch(VERCEL_DEPLOY_HOOK_URL, { method: 'POST' });
+      if (!deployResponse.ok) {
+        const error = new Error(`Vercel deploy hook failed (${deployResponse.status}).`);
+        error.statusCode = 502;
+        error.details = await deployResponse.text();
+        throw error;
+      }
+      deployTriggered = true;
+    }
+
     return json(res, 200, {
       ok: true,
       commitSha: commit.sha,
       commitUrl: commit.html_url,
+      deployTriggered,
+      deployMessage: deployTriggered
+        ? 'Production deploy triggered.'
+        : 'GitHub updated. Add VERCEL_DEPLOY_HOOK_URL to trigger production automatically.',
     });
   } catch (error) {
     return json(res, error.statusCode || 500, {

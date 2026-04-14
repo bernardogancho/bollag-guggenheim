@@ -1527,7 +1527,12 @@ async function publishChanges() {
 
     renderSidebar();
     renderToolbar();
-    setStatus(`Published commit ${data.commitSha?.slice(0, 7) || ''}.`, 'success');
+    setStatus(
+      data.deployMessage
+        ? `Published commit ${data.commitSha?.slice(0, 7) || ''}. ${data.deployMessage}`
+        : `Published commit ${data.commitSha?.slice(0, 7) || ''}.`,
+      'success',
+    );
   } catch (error) {
     setStatus(error.message, 'error');
   } finally {
