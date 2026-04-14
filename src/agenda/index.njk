@@ -42,13 +42,13 @@ title: Agenda | Bollag Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[38rem]">
-        <p class="type-eyebrow mb-4 text-black/40" data-reveal>Showroom Calendar</p>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ agenda.calendarSection.eyebrow }}</p>
         <h2 class="type-section-title max-w-[11ch] text-black" data-reveal>
-          Seasonal windows across the portfolio.
+          {{ agenda.calendarSection.title }}
         </h2>
       </div>
       <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal>
-        A direct view into upcoming collection presentations, delivery periods, and showroom timing in Zurich.
+        {{ agenda.calendarSection.summary }}
       </p>
     </div>
 
@@ -83,13 +83,13 @@ title: Agenda | Bollag Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
     <div class="grid gap-8 border-t border-black/10 pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
       <div>
-        <p class="type-eyebrow mb-4 text-black/42" data-reveal>Appointments</p>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ agenda.cta.eyebrow }}</p>
         <h2 class="type-section-title-sm max-w-[14ch] text-black" data-reveal>
-          For showroom enquiries, contact our team.
+          {{ agenda.cta.title }}
         </h2>
       </div>
-      <a href="/contact/" class="cta-button cta-button--dark" data-reveal>
-        <span>Go to Contact</span>
+      <a href="{{ agenda.cta.buttonHref }}" class="cta-button cta-button--dark" data-reveal>
+        <span>{{ agenda.cta.buttonLabel }}</span>
         <span aria-hidden="true">→</span>
       </a>
     </div>

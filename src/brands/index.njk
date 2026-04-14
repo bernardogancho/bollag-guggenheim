@@ -3,10 +3,9 @@ layout: layouts/base.njk
 title: Brands | Bollag Guggenheim
 ---
 {% include "components/site-header.njk" %}
-{% set featuredBrand = brandProfiles[0] %}
 {% set heroBrand = {
-  "name": "Rich & Royal",
-  "heroImage": "/assets/media/brand-pages/rich-royal-header.jpg"
+  "name": cms.brandsPage.hero.brandName,
+  "heroImage": cms.brandsPage.hero.image
 } %}
 
 <section class="relative isolate overflow-hidden bg-ink text-bone">
@@ -19,17 +18,17 @@ title: Brands | Bollag Guggenheim
   </div>
   <div class="relative mx-auto flex min-h-[82svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[62rem]">
-      <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>Brand Portfolio</p>
+      <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>{{ cms.brandsPage.hero.eyebrow }}</p>
       <h1 class="type-hero-title max-w-[11ch] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)] sm:text-[3.5rem]" data-reveal>
-        A curated landscape of premium fashion labels.
+        {{ cms.brandsPage.hero.title }}
       </h1>
       <p class="type-body-lg mt-6 max-w-[41rem] text-bone/72 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)]" data-reveal>
-        Each brand enters the portfolio with its own visual language, commercial role, and emotional register. Explore them as individual chapters rather than a single uniform catalog.
+        {{ cms.brandsPage.hero.summary }}
       </p>
       <div class="type-meta mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-bone/42 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>
-        <span>13 labels</span>
-        <span>Wholesale and retail</span>
-        <span>Switzerland since 1947</span>
+        {% for item in cms.brandsPage.hero.stats %}
+          <span>{{ item }}</span>
+        {% endfor %}
       </div>
     </div>
   </div>
@@ -39,15 +38,15 @@ title: Brands | Bollag Guggenheim
   <div class="relative mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[38rem]">
-        <p class="type-eyebrow mb-4 text-black/40" data-reveal>Brand Portfolio</p>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ cms.brandsPage.portfolioSection.eyebrow }}</p>
         <h2 class="type-section-title max-w-[15ch] text-black" data-reveal>
-          A portfolio shaped by distinct points of view.
+          {{ cms.brandsPage.portfolioSection.title }}
         </h2>
       </div>
     </div>
 
     <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      {% for brand in brandProfiles %}
+      {% for brand in brands %}
         {% set logoClass = 'h-10 sm:h-12 lg:h-14 w-auto max-w-[12rem] object-contain object-left' %}
         {% set bodyClass = 'type-body-sm max-w-[24rem]' %}
         {% set imageClass = 'object-center' %}

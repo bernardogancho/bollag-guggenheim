@@ -1,0 +1,69 @@
+{
+  "showroomSection": {
+    "eyebrow": "Showroom Journal",
+    "title": "A direct view into the Wearhouse showroom atmosphere.",
+    "summary": "Showroom imagery sourced from the current Wearhouse showroom presentation.",
+    "items": [
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-01.jpeg",
+        "note": "Wearhouse showroom impression 1"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-02.jpeg",
+        "note": "Wearhouse showroom impression 2"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-03.jpeg",
+        "note": "Wearhouse showroom impression 3"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-04.jpeg",
+        "note": "Wearhouse showroom impression 4"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-05.jpg",
+        "note": "Wearhouse showroom impression 5"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-06.jpeg",
+        "note": "Wearhouse showroom impression 6"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-07.jpeg",
+        "note": "Wearhouse showroom impression 7"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-08.jpeg",
+        "note": "Wearhouse showroom impression 8"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-09.jpeg",
+        "note": "Wearhouse showroom impression 9"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-10.jpeg",
+        "note": "Wearhouse showroom impression 10"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-11.jpeg",
+        "note": "Wearhouse showroom impression 11"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-12.jpeg",
+        "note": "Wearhouse showroom impression 12"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-13.jpg",
+        "note": "Wearhouse showroom impression 13"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-14.jpg",
+        "note": "Wearhouse showroom impression 14"
+      },
+      {
+        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-15.jpg",
+        "note": "Wearhouse showroom impression 15"
+      }
+    ]
+  }
+}

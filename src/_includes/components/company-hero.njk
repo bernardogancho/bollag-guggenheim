@@ -6,22 +6,22 @@
       muted
       loop
       playsinline
-      poster="/assets/media/company/company-hero-poster.jpg"
+      poster="{{ cms.company.hero.poster }}"
       aria-hidden="true"
     >
-      <source src="/assets/media/company/company-hero.mp4" type="video/mp4">
-      <img src="/assets/media/company/company-hero-poster.jpg" alt="Bollag Guggenheim showroom" class="hero-image h-full w-full object-cover object-center md:object-[center_30%]">
+      <source src="{{ cms.company.hero.video }}" type="video/mp4">
+      <img src="{{ cms.company.hero.poster }}" alt="{{ cms.company.hero.videoAlt }}" class="hero-image h-full w-full object-cover object-center md:object-[center_30%]">
     </video>
     <div class="page-hero-overlay absolute inset-0"></div>
   </div>
   <div class="relative mx-auto flex min-h-[76svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-28 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[56rem]">
-      <p class="type-eyebrow-hero mb-4 text-bone/54" data-reveal>Company</p>
+      <p class="type-eyebrow-hero mb-4 text-bone/54" data-reveal>{{ cms.company.hero.eyebrow }}</p>
       <h1 class="type-hero-title max-w-[11ch]" data-reveal>
-        Success, reliability and tradition.
+        {{ cms.company.hero.title }}
       </h1>
       <p class="type-body-lg mt-6 max-w-[34rem] text-bone/72" data-reveal>
-        Bollag Guggenheim Fashion Group has shaped the Swiss premium fashion market for over seven decades.
+        {{ cms.company.hero.summary }}
       </p>
     </div>
   </div>

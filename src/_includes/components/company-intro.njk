@@ -4,25 +4,24 @@
     <div class="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start lg:gap-16">
       <div>
         <p class="type-eyebrow-hero mb-5 text-black/44" data-reveal>
-          The Company
+          {{ cms.company.intro.eyebrow }}
         </p>
         <h2 class="type-section-title-md text-black" data-reveal>
-          <span class="block">In the Swiss</span>
-          <span class="block">fashion market</span>
-          <span class="block">for over seven</span>
-          <span class="block">decades.</span>
+          {% for line in cms.company.intro.titleLines %}
+            <span class="block">{{ line }}</span>
+          {% endfor %}
         </h2>
         <div class="type-body-lg type-body-stack mt-8 max-w-[36rem] text-black/72">
-          <p data-reveal>Bollag Guggenheim Fashion Group has been present in the Swiss fashion market for over seven decades. The company’s emphasis on the premium lifestyle segment, profound knowhow and experience, as well as the synergy between wholesale and retail are key to its success.</p>
-          <p data-reveal>Bollag Guggenheim and The Wearhouse unites women’s and men's wear in the contemporary, casual-trendy and jeans fashion segment, complemented by accessories and shoes.</p>
-          <p data-reveal>Reliable and respectful partnerships create sustainable success for franchise partners, shop in shop partners and other wholesale partners. Art remains an integral part of the showrooms.</p>
+          {% for paragraph in cms.company.intro.paragraphs %}
+            <p data-reveal>{{ paragraph }}</p>
+          {% endfor %}
         </div>
       </div>
 
       <div class="relative min-h-[34rem] lg:min-h-[44rem]" data-reveal>
         <div class="absolute inset-[1.1rem_0_0_1.1rem] border border-black/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.4),rgba(244,239,232,0.72))]"></div>
         <figure class="group relative h-full overflow-hidden bg-white/30 shadow-[0_28px_80px_rgba(20,18,16,0.1)]">
-          <img src="/assets/media/company/company-portrait-2.jpg" alt="Bollag Guggenheim showroom portrait" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.035] group-hover:opacity-92">
+          <img src="{{ cms.company.intro.image }}" alt="{{ cms.company.intro.imageAlt }}" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.035] group-hover:opacity-92">
           <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.14),transparent_34%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
         </figure>
       </div>

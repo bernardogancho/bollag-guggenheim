@@ -1,0 +1,12 @@
+{
+  "hero": {
+    "title": "Since 1947",
+    "subline": "Zurich, Switzerland",
+    "poster": "/assets/media/hero-vitrine-poster.jpg",
+    "video": "/assets/media/hero-vitrine.mp4",
+    "videoAlt": "Bollag Guggenheim hero",
+    "mobileObjectPosition": "38%_center",
+    "smallObjectPosition": "18%_center",
+    "desktopObjectPosition": "center_22%"
+  }
+}

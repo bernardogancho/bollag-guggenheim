@@ -1,0 +1,86 @@
+{
+  "hero": {
+    "eyebrow": "Stores",
+    "title": "Retail presence across Switzerland.",
+    "summary": "A store network that brings Bollag Guggenheim's brand portfolio into direct contact with customers through monobrand, multibrand, and outlet formats.",
+    "image": "/assets/media/stores/stores-hero-poster.jpg"
+  },
+  "heroStats": ["2 Monobrand Stores", "2 Multibrand Stores", "1 Outlet", "1 Online Shop"],
+  "networkSection": {
+    "eyebrow": "Store Network",
+    "title": "Physical retail with a sharper point of view.",
+    "summary": "From Zurich to Spreitenbach and Schonenwerd, the network connects brand presentation, customer insight, and direct retail experience."
+  },
+  "groups": [
+    {
+      "id": "closed",
+      "label": "Monobrand Stores",
+      "title": "Closed",
+      "intro": "Dedicated retail spaces focused on the Closed world in central Zurich locations.",
+      "stores": [
+        {
+          "name": "Zurich Europaallee",
+          "image": "/assets/media/stores/closed-europaallee.jpg",
+          "address": ["Europaallee 11", "8004 Zurich"],
+          "phoneLabel": "+41 43 497 36 05",
+          "phoneHref": "tel:+41434973605",
+          "hours": ["Monday - Friday: 10.00 - 19.00", "Saturday: 10.00 - 18.00"]
+        },
+        {
+          "name": "Zurich Kuttelgasse",
+          "image": "/assets/media/stores/closed-kuttelgasse.jpg",
+          "address": ["Kuttelgasse 7", "8001 Zurich"],
+          "phoneLabel": "+41 44 212 01 02",
+          "phoneHref": "tel:+41442120102",
+          "hours": ["Monday - Friday: 10.00 - 19.00", "Saturday: 09.00 - 18.00"]
+        }
+      ]
+    },
+    {
+      "id": "gallery",
+      "label": "Multibrand Stores",
+      "title": "The Gallery",
+      "intro": "A multibrand retail concept combining contemporary fashion, accessories, and a more editorial in-store perspective.",
+      "stores": [
+        {
+          "name": "Spreitenbach, Shoppi Tivoli",
+          "image": "/assets/media/stores/gallery-spreitenbach.jpg",
+          "address": ["Shoppi Tivoli - Centermall", "8957 Spreitenbach"],
+          "phoneLabel": "+41 56 402 14 10",
+          "phoneHref": "tel:+41564021410",
+          "hours": ["Monday - Saturday: 09.00 - 20.00"]
+        },
+        {
+          "name": "Zurich",
+          "image": "/assets/media/stores/gallery-zurich.jpg",
+          "address": ["Lowenstrasse 40", "8001 Zurich"],
+          "phoneLabel": "+41 43 343 95 71",
+          "phoneHref": "tel:+41433439571",
+          "hours": ["Monday - Friday: 10.00 - 19.00", "Saturday: 10.00 - 18.00"]
+        }
+      ]
+    },
+    {
+      "id": "outlet",
+      "label": "Outlet",
+      "title": "The Gallery Outlet",
+      "intro": "An outlet format in Schonenwerd that extends the retail network with year-round access to selected assortments.",
+      "stores": [
+        {
+          "name": "Schonenwerd",
+          "image": "/assets/media/stores/outlet-fashion-fish.jpg",
+          "address": ["Fashion Fish / Bally Areal", "Parkstrasse 1", "5012 Schonenwerd"],
+          "phoneLabel": "+41 62 849 90 30",
+          "phoneHref": "tel:+41628499030",
+          "hours": ["Monday - Wednesday: 10.00 - 18.30", "Thursday: 10.00 - 20.00", "Friday: 10.00 - 18.30", "Saturday: 09.00 - 17.00"]
+        }
+      ]
+    }
+  ],
+  "online": {
+    "label": "Online Shop",
+    "title": "The Gallery Shop",
+    "summary": "The online extension of the multibrand concept, offering a direct digital storefront alongside the physical network.",
+    "href": "https://thegalleryconcept.ch"
+  }
+}

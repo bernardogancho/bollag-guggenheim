@@ -5,8 +5,10 @@
   "description": "Eleventy and Tailwind landing page scaffold for a fashion website",
   "scripts": {
     "dev": "concurrently \"npm:dev:css\" \"npm:dev:site\"",
+    "dev:cms": "concurrently \"npm:dev\" \"npm:cms:proxy\"",
     "dev:css": "tailwindcss -i ./src/assets/styles/site.css -o ./_site/assets/styles/site.css --watch",
     "dev:site": "eleventy --serve",
+    "cms:proxy": "PORT=8082 npx decap-server",
     "build": "npm run build:css && npm run build:site",
     "build:css": "tailwindcss -i ./src/assets/styles/site.css -o ./_site/assets/styles/site.css --minify",
     "build:site": "eleventy",
@@ -16,5 +18,8 @@
     "@11ty/eleventy": "^3.0.0",
     "concurrently": "^9.2.1",
     "tailwindcss": "^3.4.17"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.103.0"
   }
 }

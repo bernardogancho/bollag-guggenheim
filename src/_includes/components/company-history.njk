@@ -4,20 +4,20 @@
     <div class="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start lg:gap-16">
       <div>
         <p class="type-eyebrow-hero mb-5 text-black/44" data-reveal>
-          Our History
+          {{ cms.company.history.eyebrow }}
         </p>
         <h2 class="type-section-title-md max-w-[12ch] text-black" data-reveal>
-          We bring our partners 70 years of fashion experience.
+          {{ cms.company.history.title }}
         </h2>
         <div class="type-body-lg type-body-stack mt-8 max-w-[36rem] text-black/72">
-          <p data-reveal>Bollag Guggenheim Fashion Group is nationally and internationally regarded as a guarantor for successful fashion distribution in Switzerland and the Principality of Liechtenstein.</p>
-          <p data-reveal>Sami Bollag, who passed away in 2017, built and led the company to its success. His entrepreneurial mentality left a lasting imprint on the culture of the Bollag Guggenheim Fashion Group.</p>
-          <p data-reveal>Today the business is guided by a family board and run by a highly experienced management team with more than 120 employees.</p>
+          {% for paragraph in cms.company.history.paragraphs %}
+            <p data-reveal>{{ paragraph }}</p>
+          {% endfor %}
         </div>
       </div>
 
       <figure class="group relative min-h-[34rem] overflow-hidden bg-white/30 lg:min-h-[46rem]" data-reveal>
-        <img src="/assets/media/company/company-history.jpg" alt="Sami Bollag portrait" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.03] group-hover:opacity-92">
+        <img src="{{ cms.company.history.image }}" alt="{{ cms.company.history.imageAlt }}" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.03] group-hover:opacity-92">
         <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.14),transparent_34%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
       </figure>
     </div>

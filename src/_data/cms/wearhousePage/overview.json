@@ -1,0 +1,16 @@
+{
+  "overview": {
+    "eyebrow": "Agency Portfolio",
+    "title": "A more selective agency model inside the group.",
+    "intro": "Based in Erlenbach, The Wearhouse Fashion Trade GmbH operates as an independent fashion agency within the Bollag Guggenheim context. Its proposition is built around elevated fashion labels, close market attention, and a more selective showroom perspective aimed at the Swiss market.",
+    "focus": "The agency positions itself around established high-casual and sportswear names while continuing to search for differentiated niche products and new discoveries. Womenswear, menswear, and accessories all form part of the offer, with each season expanding the mix through new highlights and directional additions.",
+    "pillars": [
+      "Womenswear",
+      "Menswear",
+      "Accessories",
+      "Swiss showroom"
+    ],
+    "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-08.jpeg",
+    "imageAlt": "Wearhouse showroom portrait"
+  }
+}

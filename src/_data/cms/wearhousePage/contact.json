@@ -1,0 +1,16 @@
+{
+  "contact": {
+    "name": "The Wearhouse Fashion Trade GmbH",
+    "address": [
+      "Seestrasse 78",
+      "8703 Erlenbach",
+      "Schweiz"
+    ],
+    "phoneLabel": "+41 44 912 12 00",
+    "phoneHref": "tel:+41449121200",
+    "emailLabel": "wearhouse@wearhouse.ch",
+    "emailHref": "mailto:wearhouse@wearhouse.ch",
+    "mapsHref": "https://www.google.com/maps/search/?api=1&query=Seestrasse+78,+8703+Erlenbach,+Schweiz",
+    "websiteHref": "https://www.wearhouse.ch/"
+  }
+}

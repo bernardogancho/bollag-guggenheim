@@ -32,10 +32,9 @@ title: Stores | Bollag Guggenheim
         {{ stores.hero.summary }}
       </p>
       <div class="type-meta mt-8 flex flex-wrap gap-x-8 gap-y-3 text-bone/60 [text-shadow:0_5px_16px_rgba(0,0,0,0.42)]" data-reveal>
-        <span>2 Monobrand Stores</span>
-        <span>2 Multibrand Stores</span>
-        <span>1 Outlet</span>
-        <span>1 Online Shop</span>
+        {% for item in stores.heroStats %}
+          <span>{{ item }}</span>
+        {% endfor %}
       </div>
       </div>
     </div>
@@ -46,13 +45,13 @@ title: Stores | Bollag Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[38rem]">
-        <p class="type-eyebrow mb-4 text-black/40" data-reveal>Store Network</p>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ stores.networkSection.eyebrow }}</p>
         <h2 class="type-section-title max-w-[11ch] text-black" data-reveal>
-          Physical retail with a sharper point of view.
+          {{ stores.networkSection.title }}
         </h2>
       </div>
       <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal>
-        From Zurich to Spreitenbach and Schonenwerd, the network connects brand presentation, customer insight, and direct retail experience.
+        {{ stores.networkSection.summary }}
       </p>
     </div>
 

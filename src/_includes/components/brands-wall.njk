@@ -3,20 +3,20 @@
     <div class="mb-10 border-t border-black/10 pt-8 lg:mb-12">
       <div class="max-w-[42rem]">
         <p class="type-eyebrow mb-4 text-black/40" data-reveal>
-          Brand Portfolio
+          {{ cms.home.brandsWall.eyebrow }}
         </p>
         <h2 class="type-section-title max-w-[13ch] text-black" data-reveal>
-          Bollag Guggenheim portfolio
+          {{ cms.home.brandsWall.title }}
         </h2>
         <p class="type-body mt-5 max-w-[34rem] text-black/64" data-reveal>
-          Each label brings its own identity, product world, and commercial energy into the Bollag Guggenheim portfolio.
+          {{ cms.home.brandsWall.summary }}
         </p>
       </div>
     </div>
 
     <div class="grid grid-cols-2 border border-black/12 bg-white/28 backdrop-blur-[2px] sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-      {% for brand in brandProfiles %}
-        <a href="/brands/{{ brand.slug }}/" class="group relative flex min-h-40 items-center justify-center overflow-hidden border-b border-r border-black/12 px-6 py-10 transition duration-500 hover:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.05)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black/30 sm:min-h-44 lg:min-h-48" data-reveal aria-label="View {{ brand.name }} brand page">
+      {% for brand in cms.home.brandsWall.items %}
+        <a href="{{ brand.href }}" class="group relative flex min-h-40 items-center justify-center overflow-hidden border-b border-r border-black/12 px-6 py-10 transition duration-500 hover:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.05)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black/30 sm:min-h-44 lg:min-h-48" data-reveal aria-label="View {{ brand.name }} brand page">
           {% if brand.heroImage %}
             <img
               src="{{ brand.heroImage }}"
@@ -26,7 +26,7 @@
             <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.16),rgba(0,0,0,0.46)_100%)] opacity-0 transition duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"></div>
           {% endif %}
           <img
-            src="/assets/media/brands/{{ brand.slug }}.svg"
+            src="{{ brand.logoImage }}"
             alt="{{ brand.name }}"
             class="relative z-10 max-h-10 w-auto max-w-[10rem] opacity-85 grayscale transition duration-500 group-hover:-translate-y-1 group-hover:opacity-100 group-hover:grayscale-0 group-hover:brightness-0 group-hover:invert group-focus-visible:-translate-y-1 group-focus-visible:opacity-100 group-focus-visible:grayscale-0 group-focus-visible:brightness-0 group-focus-visible:invert"
           >

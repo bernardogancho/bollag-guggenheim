@@ -3,23 +3,23 @@
     <div class="mb-12 border-t border-black/10 pt-8"></div>
     <div class="max-w-[60rem]">
       <p class="type-eyebrow-hero mb-5 text-black/44" data-reveal>
-        Distribution
+        {{ cms.company.distribution.eyebrow }}
       </p>
       <h2 class="type-section-title-md text-black lg:text-[3.5rem]" data-reveal>
-        <span class="block">We create synergies</span>
-        <span class="block">between wholesale</span>
-        <span class="block">and retail.</span>
+        {% for line in cms.company.distribution.titleLines %}
+          <span class="block">{{ line }}</span>
+        {% endfor %}
       </h2>
     </div>
 
     <div class="mt-12 overflow-hidden bg-white/30 lg:mt-14" data-reveal>
       <div class="grid min-h-[24rem] gap-4 sm:grid-cols-2 lg:min-h-[30rem]">
         <figure class="group relative overflow-hidden">
-          <img src="/assets/media/company/company-distribution-1.jpg" alt="The Gallery store interior" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.03] group-hover:opacity-92">
+          <img src="{{ cms.company.distribution.images[0].src }}" alt="{{ cms.company.distribution.images[0].alt }}" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.03] group-hover:opacity-92">
           <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.14),transparent_34%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
         </figure>
         <figure class="group relative overflow-hidden">
-          <img src="/assets/media/company/company-distribution-2.jpg" alt="Retail showroom detail" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.03] group-hover:opacity-92">
+          <img src="{{ cms.company.distribution.images[1].src }}" alt="{{ cms.company.distribution.images[1].alt }}" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.03] group-hover:opacity-92">
           <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_18%,rgba(255,255,255,0.14),transparent_34%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
         </figure>
       </div>
@@ -27,18 +27,20 @@
 
     <div class="mt-12 grid gap-10 border-t border-black/10 pt-8 lg:mt-14 lg:grid-cols-2 lg:gap-16">
       <div>
-        <p class="type-eyebrow-hero mb-4 text-black/44" data-reveal>Wholesale</p>
+        <p class="type-eyebrow-hero mb-4 text-black/44" data-reveal>{{ cms.company.distribution.wholesale.eyebrow }}</p>
         <div class="type-body-lg type-body-stack-tight max-w-[34rem] text-black/72">
-          <p data-reveal>Bollag Guggenheim Fashion Group offers tailor-made services to brand partners and wholesale customers across 2,500 square meters.</p>
-          <p data-reveal>Each brand has a dedicated brand manager and customer service team, while long-term collaborations across franchising, shop in shops, department stores and boutiques remain central to the model.</p>
+          {% for paragraph in cms.company.distribution.wholesale.paragraphs %}
+            <p data-reveal>{{ paragraph }}</p>
+          {% endfor %}
         </div>
       </div>
 
       <div>
-        <p class="type-eyebrow-hero mb-4 text-black/44" data-reveal>Retail</p>
+        <p class="type-eyebrow-hero mb-4 text-black/44" data-reveal>{{ cms.company.distribution.retail.eyebrow }}</p>
         <div class="type-body-lg type-body-stack-tight max-w-[34rem] text-black/72">
-          <p data-reveal>With monobrand and multibrand stores, the group gathers direct retail experience and market information that strengthens its relationships with both wholesale customers and brand partners.</p>
-          <p data-reveal>That store-level knowledge supports stronger brand management and a more informed distribution strategy overall.</p>
+          {% for paragraph in cms.company.distribution.retail.paragraphs %}
+            <p data-reveal>{{ paragraph }}</p>
+          {% endfor %}
         </div>
       </div>
     </div>

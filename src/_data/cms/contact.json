@@ -1,0 +1,69 @@
+{
+  "hero": {
+    "eyebrow": "Contact",
+    "quote": "",
+    "title": "A direct line to Bollag Guggenheim.",
+    "summary": "For showroom visits, brand enquiries, or general contact, the team is based in Glattpark and available through the channels below.",
+    "image": "/assets/media/page-heroes/contact-hero-poster.jpg"
+  },
+  "officeSection": {
+    "eyebrow": "Office",
+    "title": "Visit, call, or write to the team.",
+    "summary": "The office and showroom base are located in Glattpark, with direct access information and contact channels below."
+  },
+  "office": {
+    "name": "Bollag-Guggenheim AG",
+    "address": ["Thurgauerstrasse 113", "CH-8152 Glattpark"],
+    "phoneLabel": "+41 43 811 00 00",
+    "phoneHref": "tel:+41438110000",
+    "fax": "+41 43 811 00 11",
+    "emailLabel": "welcome@bollag.net",
+    "emailHref": "mailto:welcome@bollag.net",
+    "routeMapHref": "https://www.bollagguggenheim.cyon.site/media/anfahrtsplantmc.pdf",
+    "parkingNote": "Please use the parking deck of TMC via Stelzenstrasse.",
+    "coords": {
+      "lat": "47.423764",
+      "lng": "8.557306"
+    },
+    "googleMapsHref": "https://www.google.com/maps?q=47.423764,8.557306"
+  },
+  "wearhousePartner": {
+    "sectionLabel": "Partner Contact",
+    "name": "The Wearhouse Fashion Trade GmbH",
+    "address": ["Seestrasse 78", "8703 Erlenbach", "Schweiz"],
+    "phoneLabel": "+41 44 912 12 00",
+    "phoneHref": "tel:+41449121200",
+    "emailLabel": "wearhouse@wearhouse.ch",
+    "emailHref": "mailto:wearhouse@wearhouse.ch",
+    "mapsHref": "https://www.google.com/maps/search/?api=1&query=Seestrasse+78,+8703+Erlenbach,+Schweiz"
+  },
+  "form": {
+    "sectionLabel": "Enquiry Form",
+    "title": "A direct enquiry, prepared for launch.",
+    "summary": "The submission flow is not connected yet, but the form structure is now in place. For immediate contact, use the phone or email details on this page.",
+    "disclaimer": "Submission is not active yet. For now, please contact the team directly by email or phone.",
+    "buttonLabel": "Send Enquiry",
+    "fields": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "company": "Company",
+      "subject": "Subject",
+      "message": "Message"
+    },
+    "placeholders": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "name@company.com",
+      "company": "Company name",
+      "subject": "What is this regarding?",
+      "message": "Tell us about your enquiry."
+    }
+  },
+  "cta": {
+    "eyebrow": "Next Step",
+    "title": "Explore the brands, stores, and showroom calendar.",
+    "buttonLabel": "Go to Brands",
+    "buttonHref": "/brands/"
+  }
+}

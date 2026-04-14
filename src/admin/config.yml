@@ -1,0 +1,735 @@
+backend:
+  name: github
+  repo: bernardogancho/bollag-guggenheim
+  branch: main
+
+local_backend:
+  url: http://localhost:8082/api/v1
+
+media_folder: src/assets/media
+public_folder: /assets/media
+
+site_url: https://bg-murex-three.vercel.app
+display_url: https://bg-murex-three.vercel.app
+
+collections:
+  - name: site_settings
+    label: Site Settings
+    delete: false
+    editor:
+      preview: false
+    files:
+      - label: Header and Footer
+        name: site
+        file: src/_data/cms/site.json
+        format: json
+        fields:
+          - label: Left Navigation
+            name: nav
+            widget: object
+            fields:
+              - label: Left Items
+                name: left
+                widget: list
+                summary: "{{fields.label}} -> {{fields.href}}"
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Link, name: href, widget: string }
+              - label: Right Items
+                name: right
+                widget: list
+                summary: "{{fields.label}} -> {{fields.href}}"
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Link, name: href, widget: string }
+          - label: Footer
+            name: footer
+            widget: object
+            fields:
+              - { label: Group Label, name: groupLabel, widget: string }
+              - label: Wearhouse Wordmark
+                name: wearhouseWordmark
+                widget: object
+                fields:
+                  - { label: Prefix, name: prefix, widget: string }
+                  - { label: Name, name: name, widget: string }
+                  - label: Suffix Lines
+                    name: suffix
+                    widget: list
+                    field: { label: Line, name: line, widget: string }
+              - label: Bollag Contact
+                name: bgContact
+                widget: object
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - { label: Name, name: name, widget: string }
+                  - label: Address
+                    name: address
+                    widget: list
+                    field: { label: Line, name: line, widget: string }
+                  - { label: Phone Label, name: phoneLabel, widget: string }
+                  - { label: Phone Link, name: phoneHref, widget: string }
+                  - { label: Email Label, name: emailLabel, widget: string }
+                  - { label: Email Link, name: emailHref, widget: string }
+                  - { label: Route Label, name: routeLabel, widget: string }
+                  - { label: Route Link, name: routeHref, widget: string }
+              - label: Wearhouse Contact
+                name: wearhouseContact
+                widget: object
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - { label: Name, name: name, widget: string }
+                  - label: Address
+                    name: address
+                    widget: list
+                    field: { label: Line, name: line, widget: string }
+                  - { label: Phone Label, name: phoneLabel, widget: string }
+                  - { label: Phone Link, name: phoneHref, widget: string }
+                  - { label: Email Label, name: emailLabel, widget: string }
+                  - { label: Email Link, name: emailHref, widget: string }
+                  - { label: Route Label, name: routeLabel, widget: string }
+                  - { label: Route Link, name: routeHref, widget: string }
+              - label: Footer Navigation
+                name: navigation
+                widget: object
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - label: Items
+                    name: items
+                    widget: list
+                    summary: "{{fields.label}} -> {{fields.href}}"
+                    fields:
+                      - { label: Label, name: label, widget: string }
+                      - { label: Link, name: href, widget: string }
+              - label: Footer Meta
+                name: meta
+                widget: object
+                fields:
+                  - { label: Since Label, name: since, widget: string }
+                  - { label: Group Name, name: groupName, widget: string }
+
+  - name: homepage
+    label: Homepage
+    delete: false
+    editor:
+      preview: false
+    files:
+      - label: Hero Div
+        name: home_hero
+        file: src/_data/cms/home/hero.json
+        format: json
+        fields:
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Subline, name: subline, widget: string }
+              - { label: Poster Image, name: poster, widget: image }
+              - { label: Video File, name: video, widget: file }
+              - { label: Video Alt Text, name: videoAlt, widget: string }
+              - { label: Mobile Object Position, name: mobileObjectPosition, widget: string }
+              - { label: Small Screen Object Position, name: smallObjectPosition, widget: string }
+              - { label: Desktop Object Position, name: desktopObjectPosition, widget: string }
+      - label: Intro Div
+        name: home_intro
+        file: src/_data/cms/home/intro.json
+        format: json
+        fields:
+          - label: Intro
+            name: intro
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: text }
+              - { label: Summary, name: summary, widget: text }
+              - { label: CTA Label, name: ctaLabel, widget: string }
+              - { label: CTA Link, name: ctaHref, widget: string }
+              - { label: Image, name: image, widget: image }
+              - { label: Image Alt Text, name: imageAlt, widget: string }
+      - label: Bollag Portfolio Div
+        name: home_brands_wall
+        file: src/_data/cms/home/brandsWall.json
+        format: json
+        fields:
+          - label: Bollag Portfolio
+            name: brandsWall
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Summary, name: summary, widget: text }
+              - label: Brand Cards
+                name: items
+                widget: list
+                summary: "{{fields.name}}"
+                fields:
+                  - { label: Name, name: name, widget: string }
+                  - { label: Link, name: href, widget: string }
+                  - { label: Logo Image, name: logoImage, widget: image }
+                  - { label: Hero Image, name: heroImage, widget: image, required: false }
+      - label: Wearhouse Portfolio Div
+        name: home_wearhouse_wall
+        file: src/_data/cms/home/wearhouseWall.json
+        format: json
+        fields:
+          - label: Wearhouse Portfolio
+            name: wearhouseWall
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Summary, name: summary, widget: text }
+              - label: Brand Cards
+                name: items
+                widget: list
+                summary: "{{fields.name}}"
+                fields:
+                  - { label: Name, name: name, widget: string }
+                  - { label: Segment, name: segment, widget: string }
+                  - { label: Page Link, name: pageHref, widget: string }
+                  - { label: Hover Image, name: hoverImage, widget: image, required: false }
+      - label: Editorial Selection Div
+        name: home_selection
+        file: src/_data/cms/home/selectionSection.json
+        format: json
+        fields:
+          - label: Editorial Selection
+            name: selection
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - label: Items
+                name: items
+                widget: list
+                summary: "{{fields.brand}}"
+                fields:
+                  - { label: Brand, name: brand, widget: string }
+                  - { label: Image, name: image, widget: image }
+                  - { label: Link, name: href, widget: string }
+                  - { label: Note, name: note, widget: string }
+                  - { label: Size, name: size, widget: select, options: ["standard", "wide", "tall", "feature"] }
+
+  - name: company
+    label: Company Page
+    delete: false
+    editor:
+      preview: false
+    files:
+      - label: Company Content
+        name: company
+        file: src/_data/cms/company.json
+        format: json
+        fields:
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Summary, name: summary, widget: text }
+              - { label: Poster Image, name: poster, widget: image }
+              - { label: Video File, name: video, widget: file }
+              - { label: Video Alt Text, name: videoAlt, widget: string }
+          - label: Intro Section
+            name: intro
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - label: Title Lines
+                name: titleLines
+                widget: list
+                field: { label: Line, name: line, widget: string }
+              - label: Paragraphs
+                name: paragraphs
+                widget: list
+                field: { label: Paragraph, name: paragraph, widget: text }
+              - { label: Image, name: image, widget: image }
+              - { label: Image Alt Text, name: imageAlt, widget: string }
+          - label: History Section
+            name: history
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - label: Paragraphs
+                name: paragraphs
+                widget: list
+                field: { label: Paragraph, name: paragraph, widget: text }
+              - { label: Image, name: image, widget: image }
+              - { label: Image Alt Text, name: imageAlt, widget: string }
+          - label: Distribution Section
+            name: distribution
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - label: Title Lines
+                name: titleLines
+                widget: list
+                field: { label: Line, name: line, widget: string }
+              - label: Images
+                name: images
+                widget: list
+                fields:
+                  - { label: Image, name: src, widget: image }
+                  - { label: Alt Text, name: alt, widget: string }
+              - label: Wholesale
+                name: wholesale
+                widget: object
+                fields:
+                  - { label: Eyebrow, name: eyebrow, widget: string }
+                  - label: Paragraphs
+                    name: paragraphs
+                    widget: list
+                    field: { label: Paragraph, name: paragraph, widget: text }
+              - label: Retail
+                name: retail
+                widget: object
+                fields:
+                  - { label: Eyebrow, name: eyebrow, widget: string }
+                  - label: Paragraphs
+                    name: paragraphs
+                    widget: list
+                    field: { label: Paragraph, name: paragraph, widget: text }
+
+  - name: contact_page
+    label: Contact Page
+    delete: false
+    editor:
+      preview: false
+    files:
+      - label: Contact Content
+        name: contact
+        file: src/_data/cms/contact.json
+        format: json
+        fields:
+          - { label: Hero, name: hero, widget: object, fields: [
+            { label: Eyebrow, name: eyebrow, widget: string },
+            { label: Quote, name: quote, widget: string, required: false },
+            { label: Title, name: title, widget: string },
+            { label: Summary, name: summary, widget: text },
+            { label: Poster Image, name: image, widget: image }
+          ] }
+          - { label: Office Section, name: officeSection, widget: object, fields: [
+            { label: Eyebrow, name: eyebrow, widget: string },
+            { label: Title, name: title, widget: string },
+            { label: Summary, name: summary, widget: text }
+          ] }
+          - { label: Bollag Office, name: office, widget: object, fields: [
+            { label: Name, name: name, widget: string },
+            { label: Address, name: address, widget: list, field: { label: Line, name: line, widget: string } },
+            { label: Phone Label, name: phoneLabel, widget: string },
+            { label: Phone Link, name: phoneHref, widget: string },
+            { label: Fax, name: fax, widget: string },
+            { label: Email Label, name: emailLabel, widget: string },
+            { label: Email Link, name: emailHref, widget: string },
+            { label: Route Map Link, name: routeMapHref, widget: string },
+            { label: Parking Note, name: parkingNote, widget: string },
+            { label: Coordinates, name: coords, widget: object, fields: [
+              { label: Latitude, name: lat, widget: string },
+              { label: Longitude, name: lng, widget: string }
+            ] },
+            { label: Google Maps Link, name: googleMapsHref, widget: string }
+          ] }
+          - { label: Wearhouse Partner, name: wearhousePartner, widget: object, fields: [
+            { label: Section Label, name: sectionLabel, widget: string },
+            { label: Name, name: name, widget: string },
+            { label: Address, name: address, widget: list, field: { label: Line, name: line, widget: string } },
+            { label: Phone Label, name: phoneLabel, widget: string },
+            { label: Phone Link, name: phoneHref, widget: string },
+            { label: Email Label, name: emailLabel, widget: string },
+            { label: Email Link, name: emailHref, widget: string },
+            { label: Maps Link, name: mapsHref, widget: string }
+          ] }
+          - { label: Form Copy, name: form, widget: object, fields: [
+            { label: Section Label, name: sectionLabel, widget: string },
+            { label: Title, name: title, widget: string },
+            { label: Summary, name: summary, widget: text },
+            { label: Disclaimer, name: disclaimer, widget: text },
+            { label: Button Label, name: buttonLabel, widget: string },
+            { label: Field Labels, name: fields, widget: object, fields: [
+              { label: First Name, name: firstName, widget: string },
+              { label: Last Name, name: lastName, widget: string },
+              { label: Email, name: email, widget: string },
+              { label: Company, name: company, widget: string },
+              { label: Subject, name: subject, widget: string },
+              { label: Message, name: message, widget: string }
+            ] },
+            { label: Placeholders, name: placeholders, widget: object, fields: [
+              { label: First Name Placeholder, name: firstName, widget: string },
+              { label: Last Name Placeholder, name: lastName, widget: string },
+              { label: Email Placeholder, name: email, widget: string },
+              { label: Company Placeholder, name: company, widget: string },
+              { label: Subject Placeholder, name: subject, widget: string },
+              { label: Message Placeholder, name: message, widget: string }
+            ] }
+          ] }
+          - { label: CTA, name: cta, widget: object, fields: [
+            { label: Eyebrow, name: eyebrow, widget: string },
+            { label: Title, name: title, widget: string },
+            { label: Button Label, name: buttonLabel, widget: string },
+            { label: Button Link, name: buttonHref, widget: string }
+          ] }
+
+  - name: stores_page
+    label: Stores Page
+    delete: false
+    editor:
+      preview: false
+    files:
+      - label: Stores Content
+        name: stores
+        file: src/_data/cms/stores.json
+        format: json
+        fields:
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Summary, name: summary, widget: text }
+              - { label: Poster Image, name: image, widget: image }
+          - label: Hero Stats
+            name: heroStats
+            widget: list
+            field: { label: Stat, name: stat, widget: string }
+          - label: Network Section
+            name: networkSection
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Summary, name: summary, widget: text }
+          - label: Store Groups
+            name: groups
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: ID, name: id, widget: string }
+              - { label: Label, name: label, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Intro, name: intro, widget: text }
+              - label: Stores
+                name: stores
+                widget: list
+                summary: "{{fields.name}}"
+                fields:
+                  - { label: Name, name: name, widget: string }
+                  - { label: Image, name: image, widget: image }
+                  - { label: Address, name: address, widget: list, field: { label: Line, name: line, widget: string } }
+                  - { label: Phone Label, name: phoneLabel, widget: string }
+                  - { label: Phone Link, name: phoneHref, widget: string }
+                  - { label: Hours, name: hours, widget: list, field: { label: Line, name: line, widget: string } }
+          - label: Online Shop
+            name: online
+            widget: object
+            fields:
+              - { label: Label, name: label, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Summary, name: summary, widget: text }
+              - { label: Link, name: href, widget: string }
+
+  - name: agenda_page
+    label: Agenda Page
+    delete: false
+    editor:
+      preview: false
+    files:
+      - label: Agenda Content
+        name: agenda
+        file: src/_data/cms/agenda.json
+        format: json
+        fields:
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Quote, name: quote, widget: string, required: false }
+              - { label: Title, name: title, widget: string }
+              - { label: Summary, name: summary, widget: text }
+              - { label: Poster Image, name: image, widget: image }
+          - label: Calendar Section
+            name: calendarSection
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Summary, name: summary, widget: text }
+          - label: CTA
+            name: cta
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Button Label, name: buttonLabel, widget: string }
+              - { label: Button Link, name: buttonHref, widget: string }
+          - label: Months
+            name: months
+            widget: list
+            summary: "{{fields.month}}"
+            fields:
+              - { label: Month, name: month, widget: string }
+              - label: Events
+                name: events
+                widget: list
+                summary: "{{fields.brand}} - {{fields.dateLabel}}"
+                fields:
+                  - { label: Date Label, name: dateLabel, widget: string }
+                  - { label: Brand, name: brand, widget: string }
+                  - { label: Detail, name: detail, widget: text }
+                  - { label: Location, name: location, widget: string }
+
+  - name: brands_page
+    label: BG Brands
+    delete: false
+    editor:
+      preview: false
+    files:
+      - label: Hero Div
+        name: brands_page_hero
+        file: src/_data/cms/brandsPage/hero.json
+        format: json
+        fields:
+          - label: Hero Div
+            name: hero
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: text }
+              - { label: Summary, name: summary, widget: text }
+              - { label: Stats, name: stats, widget: list, field: { label: Stat, name: stat, widget: string } }
+              - { label: Hero Brand Name, name: brandName, widget: string }
+              - { label: Hero Image, name: image, widget: image }
+      - label: Portfolio Grid Div
+        name: brands_page_portfolio
+        file: src/_data/cms/brandsPage/portfolio.json
+        format: json
+        fields:
+          - label: Portfolio Grid Div
+            name: portfolioSection
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+      - label: Brand Detail Page Div
+        name: brands_page_detail
+        file: src/_data/cms/brandsPage/detail.json
+        format: json
+        fields:
+          - label: Brand Detail Page Div
+            name: detailPage
+            widget: object
+            fields:
+              - { label: Overview Eyebrow, name: overviewEyebrow, widget: string }
+              - { label: Visual Journal Eyebrow, name: visualJournalEyebrow, widget: string }
+              - { label: Visual Journal Title Template, name: visualJournalTitleTemplate, widget: string }
+              - { label: CTA Eyebrow, name: ctaEyebrow, widget: string }
+              - { label: CTA Title, name: ctaTitle, widget: string }
+              - { label: CTA Button Label, name: ctaButtonLabel, widget: string }
+              - { label: CTA Button Link, name: ctaButtonHref, widget: string }
+      - label: Brand Entries Div
+        name: brands_page_brands
+        file: src/_data/cms/brandsPage/brands.json
+        format: json
+        fields:
+          - label: Brand Entries Div
+            name: brands
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Slug, name: slug, widget: string }
+              - label: Brand Card Div
+                name: card
+                widget: object
+                fields:
+                  - { label: Eyebrow, name: eyebrow, widget: string }
+                  - { label: Hero Title, name: heroTitle, widget: string }
+                  - { label: Summary, name: summary, widget: text }
+                  - { label: Hero Image, name: heroImage, widget: image, required: false }
+              - label: Brand Detail Div
+                name: detail
+                widget: object
+                fields:
+                  - { label: Intro, name: intro, widget: text }
+                  - { label: Focus, name: focus, widget: text }
+                  - { label: Atmosphere, name: atmosphere, widget: string }
+                  - { label: Categories, name: categories, widget: list, field: { label: Category, name: category, widget: string } }
+                  - { label: Tone, name: tone, widget: text }
+                  - { label: Detail Hero Image, name: detailHeroImage, widget: image, required: false }
+                  - label: Gallery
+                    name: gallery
+                    widget: list
+                    summary: "{{fields.note}}"
+                    fields:
+                      - { label: Image, name: image, widget: image }
+                      - { label: Note, name: note, widget: string }
+                      - { label: Source, name: source, widget: string, required: false }
+                  - label: Detail Gallery
+                    name: detailGallery
+                    widget: list
+                    summary: "{{fields.note}}"
+                    fields:
+                      - { label: Image, name: image, widget: image }
+                      - { label: Note, name: note, widget: string }
+                      - { label: Source, name: source, widget: string, required: false }
+
+  - name: wearhouse_page
+    label: Wearhouse
+    delete: false
+    editor:
+      preview: false
+    files:
+      - label: Hero Div
+        name: wearhouse_page_hero
+        file: src/_data/cms/wearhousePage/hero.json
+        format: json
+        fields:
+          - label: Hero Div
+            name: hero
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Summary, name: summary, widget: text }
+              - { label: Hero Image, name: image, widget: image }
+              - { label: Hero Image Alt Text, name: imageAlt, widget: string }
+              - { label: Stats, name: stats, widget: list, field: { label: Stat, name: stat, widget: string } }
+      - label: Overview Div
+        name: wearhouse_page_overview
+        file: src/_data/cms/wearhousePage/overview.json
+        format: json
+        fields:
+          - label: Overview Div
+            name: overview
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Intro, name: intro, widget: text }
+              - { label: Focus, name: focus, widget: text }
+              - { label: Pillars, name: pillars, widget: list, field: { label: Pillar, name: pillar, widget: string } }
+              - { label: Image, name: image, widget: image }
+              - { label: Image Alt Text, name: imageAlt, widget: string }
+      - label: Roster Section Div
+        name: wearhouse_page_roster
+        file: src/_data/cms/wearhousePage/roster.json
+        format: json
+        fields:
+          - label: Roster Section Div
+            name: rosterSection
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - label: Brand Cards
+                name: items
+                widget: list
+                summary: "{{fields.name}}"
+                fields:
+                  - { label: Name, name: name, widget: string }
+                  - { label: Slug, name: slug, widget: string }
+                  - { label: Segment, name: segment, widget: string }
+                  - { label: Page Link, name: pageHref, widget: string }
+                  - { label: Logo Image, name: logoSrc, widget: image, required: false }
+                  - { label: Hover Image, name: hoverImage, widget: image, required: false }
+      - label: Showroom Intro Div
+        name: wearhouse_page_showroom
+        file: src/_data/cms/wearhousePage/showroom.json
+        format: json
+        fields:
+          - label: Showroom Intro Div
+            name: showroomSection
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Summary, name: summary, widget: text }
+              - label: Gallery Items
+                name: items
+                widget: list
+                summary: "{{fields.note}}"
+                fields:
+                  - { label: Image, name: image, widget: image }
+                  - { label: Note, name: note, widget: string }
+      - label: CTA Div
+        name: wearhouse_page_cta
+        file: src/_data/cms/wearhousePage/cta.json
+        format: json
+        fields:
+          - label: CTA Div
+            name: cta
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Button Label, name: buttonLabel, widget: string }
+              - { label: Button Link, name: buttonHref, widget: string }
+      - label: Brand Detail Page Div
+        name: wearhouse_page_detail
+        file: src/_data/cms/wearhousePage/detail.json
+        format: json
+        fields:
+          - label: Brand Detail Page Div
+            name: detailPage
+            widget: object
+            fields:
+              - { label: Hero Eyebrow, name: heroEyebrow, widget: string }
+              - { label: Overview Eyebrow, name: overviewEyebrow, widget: string }
+              - { label: CTA Eyebrow, name: ctaEyebrow, widget: string }
+              - { label: CTA Title, name: ctaTitle, widget: string }
+              - { label: CTA Button Label, name: ctaButtonLabel, widget: string }
+              - { label: CTA Button Link, name: ctaButtonHref, widget: string }
+              - { label: Represented Label, name: representedLabel, widget: string }
+              - { label: Market Label, name: marketLabel, widget: string }
+      - label: Contact Block Div
+        name: wearhouse_page_contact
+        file: src/_data/cms/wearhousePage/contact.json
+        format: json
+        fields:
+          - label: Contact Block Div
+            name: contact
+            widget: object
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Address, name: address, widget: list, field: { label: Line, name: line, widget: string } }
+              - { label: Phone Label, name: phoneLabel, widget: string }
+              - { label: Phone Link, name: phoneHref, widget: string }
+              - { label: Email Label, name: emailLabel, widget: string }
+              - { label: Email Link, name: emailHref, widget: string }
+              - { label: Maps Link, name: mapsHref, widget: string }
+              - { label: Website Link, name: websiteHref, widget: string }
+      - label: Brand Entries Div
+        name: wearhouse_page_brands
+        file: src/_data/cms/wearhousePage/brands.json
+        format: json
+        fields:
+          - label: Brand Entries Div
+            name: brands
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Slug, name: slug, widget: string }
+              - label: Roster Card Div
+                name: rosterCard
+                widget: object
+                fields:
+                  - { label: Segment, name: segment, widget: string }
+                  - { label: Official Website, name: websiteHref, widget: string }
+                  - { label: Logo Asset, name: logoSrc, widget: image, required: false }
+                  - { label: Hover Image, name: hoverImage, widget: image, required: false }
+                  - { label: Detail Image, name: detailImage, widget: image, required: false }
+                  - { label: Logo Lines, name: logoLines, widget: list, required: false, field: { label: Line, name: line, widget: string } }
+              - label: Brand Detail Div
+                name: detail
+                widget: object
+                fields:
+                  - { label: Summary, name: summary, widget: text }
+                  - { label: Intro, name: intro, widget: text }
+              - { label: Focus, name: focus, widget: text }
+              - { label: Atmosphere, name: atmosphere, widget: string }
+              - { label: Categories, name: categories, widget: list, field: { label: Category, name: category, widget: string } }

@@ -2,8 +2,8 @@
   class="fixed inset-x-0 top-0 z-50 transition-all duration-500"
   data-site-header
 >
-  {% set leftNavItems = [{ label: "Company", href: "/company/" }, { label: "The WEARHOUSE", href: "/wearhouse/" }, { label: "Brands", href: "/brands/" }] %}
-  {% set rightNavItems = [{ label: "Stores", href: "/stores/" }, { label: "Agenda", href: "/agenda/" }, { label: "Contact", href: "/contact/" }] %}
+  {% set leftNavItems = cms.site.nav.left %}
+  {% set rightNavItems = cms.site.nav.right %}
   {% set mobileNavItems = leftNavItems.concat(rightNavItems) %}
   <div class="mx-auto flex w-full max-w-[1600px] items-center justify-between px-5 py-4 sm:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:px-12 lg:py-5">
     <nav aria-label="Primary navigation left" class="hidden lg:block">

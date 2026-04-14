@@ -3,17 +3,17 @@
     <div class="grid gap-10 lg:grid-cols-[minmax(0,0.98fr)_minmax(20rem,0.62fr)] lg:items-end lg:gap-16">
       <div class="max-w-[62rem]">
         <p class="type-eyebrow-hero mb-5 text-black/44" data-reveal>
-          Market Presence
+          {{ cms.home.intro.eyebrow }}
         </p>
         <h1 class="type-display-lead max-w-[20ch] text-black sm:max-w-[18ch] lg:max-w-[17ch]" data-reveal>
-          We create synergies between wholesale and retail
+          {{ cms.home.intro.title }}
         </h1>
         <p class="type-body-lg mt-7 max-w-[44rem] text-black/68" data-reveal>
-          Present in the Swiss fashion market since 1947, balancing editorial brand language with commercial clarity across wholesale and retail touchpoints.
+          {{ cms.home.intro.summary }}
         </p>
         <div class="mt-8 flex justify-start" data-reveal>
-          <a href="/company/" class="cta-button cta-button--dark">
-            <span>Discover the Company</span>
+          <a href="{{ cms.home.intro.ctaHref }}" class="cta-button cta-button--dark">
+            <span>{{ cms.home.intro.ctaLabel }}</span>
             <span aria-hidden="true">→</span>
           </a>
         </div>
@@ -21,8 +21,8 @@
 
       <figure class="relative aspect-[4/5] overflow-hidden bg-black/4 shadow-[0_24px_70px_rgba(0,0,0,0.08)] lg:justify-self-end lg:w-full lg:max-w-[28rem] lg:-translate-y-4" data-reveal>
         <img
-          src="/assets/media/company/company-market-presence.avif"
-          alt="Bollag Guggenheim showroom view"
+          src="{{ cms.home.intro.image }}"
+          alt="{{ cms.home.intro.imageAlt }}"
           class="h-full w-full object-cover object-[54%_center]"
         >
       </figure>

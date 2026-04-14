@@ -1,0 +1,69 @@
+{
+  "brandsWall": {
+    "eyebrow": "Brand Portfolio",
+    "title": "Bollag Guggenheim portfolio",
+    "summary": "Each label brings its own identity, product world, and commercial energy into the Bollag Guggenheim portfolio.",
+    "items": [
+      {
+        "name": "Closed",
+        "href": "/brands/closed/",
+        "logoImage": "/assets/media/brands/closed.svg",
+        "heroImage": "/assets/media/brand-pages/closed-page-1.jpg"
+      },
+      {
+        "name": "Codello",
+        "href": "/brands/codello/",
+        "logoImage": "/assets/media/brands/codello.svg",
+        "heroImage": "/assets/media/brand-pages/codello-page-1.jpg"
+      },
+      {
+        "name": "Drykorn",
+        "href": "/brands/drykorn/",
+        "logoImage": "/assets/media/brands/drykorn.svg",
+        "heroImage": "/assets/media/brand-pages/drykorn-page-1.jpg"
+      },
+      {
+        "name": "G-Lab",
+        "href": "/brands/g-lab/",
+        "logoImage": "/assets/media/brands/g-lab.svg",
+        "heroImage": "/assets/media/brand-pages/g-lab-page-1.jpg"
+      },
+      {
+        "name": "GUESS",
+        "href": "/brands/guess/",
+        "logoImage": "/assets/media/brands/guess.svg",
+        "heroImage": "/assets/media/brand-pages/guess-page-1.jpg"
+      },
+      {
+        "name": "iBlues",
+        "href": "/brands/iblues/",
+        "logoImage": "/assets/media/brands/iblues.svg",
+        "heroImage": "/assets/media/brand-pages/iblues-page-1.jpg"
+      },
+      {
+        "name": "More & More",
+        "href": "/brands/more-and-more/",
+        "logoImage": "/assets/media/brands/more-and-more.svg",
+        "heroImage": "/assets/media/brand-pages/more-and-more-page-1.jpg"
+      },
+      {
+        "name": "Rich & Royal",
+        "href": "/brands/rich-royal/",
+        "logoImage": "/assets/media/brands/rich-royal.svg",
+        "heroImage": "/assets/media/brand-pages/rich-royal-page-1.jpg"
+      },
+      {
+        "name": "YAYA",
+        "href": "/brands/yaya/",
+        "logoImage": "/assets/media/brands/yaya.svg",
+        "heroImage": "/assets/media/brand-pages/yaya-page-1.jpg"
+      },
+      {
+        "name": "0039 Italy",
+        "href": "/brands/0039-italy/",
+        "logoImage": "/assets/media/brands/0039-italy.svg",
+        "heroImage": "/assets/media/brand-pages/0039-italy-page-1.jpg"
+      }
+    ]
+  }
+}

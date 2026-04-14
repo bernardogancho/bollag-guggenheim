@@ -1,0 +1,148 @@
+{
+  "selection": {
+    "eyebrow": "Editorial Selection",
+    "title": "A selection from our brands.",
+    "items": [
+      {
+        "brand": "Closed",
+        "image": "/assets/media/brand-pages/closed-page-1.jpg",
+        "href": "/brands/closed/",
+        "note": "Closed editorial selection",
+        "size": "wide"
+      },
+      {
+        "brand": "Codello",
+        "image": "/assets/media/brand-pages/codello-page-1.jpg",
+        "href": "/brands/codello/",
+        "note": "Codello editorial selection",
+        "size": "standard"
+      },
+      {
+        "brand": "Drykorn",
+        "image": "/assets/media/brand-pages/drykorn-page-1.jpg",
+        "href": "/brands/drykorn/",
+        "note": "Drykorn editorial selection",
+        "size": "tall"
+      },
+      {
+        "brand": "G-Lab",
+        "image": "/assets/media/brand-pages/g-lab-page-1.jpg",
+        "href": "/brands/g-lab/",
+        "note": "G-Lab editorial selection",
+        "size": "standard"
+      },
+      {
+        "brand": "GUESS",
+        "image": "/assets/media/brand-pages/guess-page-1.jpg",
+        "href": "/brands/guess/",
+        "note": "GUESS editorial selection",
+        "size": "standard"
+      },
+      {
+        "brand": "iBlues",
+        "image": "/assets/media/brand-pages/iblues-page-1.jpg",
+        "href": "/brands/iblues/",
+        "note": "iBlues editorial selection",
+        "size": "wide"
+      },
+      {
+        "brand": "More & More",
+        "image": "/assets/media/brand-pages/more-and-more-page-1.jpg",
+        "href": "/brands/more-and-more/",
+        "note": "More & More editorial selection",
+        "size": "standard"
+      },
+      {
+        "brand": "Rich & Royal",
+        "image": "/assets/media/brand-pages/rich-royal-page-1.jpg",
+        "href": "/brands/rich-royal/",
+        "note": "Rich & Royal editorial selection",
+        "size": "tall"
+      },
+      {
+        "brand": "YAYA",
+        "image": "/assets/media/brand-pages/yaya-page-1.jpg",
+        "href": "/brands/yaya/",
+        "note": "YAYA editorial selection",
+        "size": "wide"
+      },
+      {
+        "brand": "0039 Italy",
+        "image": "/assets/media/brand-pages/0039-italy-page-1.jpg",
+        "href": "/brands/0039-italy/",
+        "note": "0039 Italy editorial selection",
+        "size": "standard"
+      },
+      {
+        "brand": "Closed",
+        "image": "/assets/media/brand-pages/closed-page-2.jpg",
+        "href": "/brands/closed/",
+        "note": "Closed editorial selection",
+        "size": "tall"
+      },
+      {
+        "brand": "Codello",
+        "image": "/assets/media/brand-pages/codello-page-2.jpg",
+        "href": "/brands/codello/",
+        "note": "Codello editorial selection",
+        "size": "standard"
+      },
+      {
+        "brand": "Drykorn",
+        "image": "/assets/media/brand-pages/drykorn-page-2.jpg",
+        "href": "/brands/drykorn/",
+        "note": "Drykorn editorial selection",
+        "size": "standard"
+      },
+      {
+        "brand": "G-Lab",
+        "image": "/assets/media/brand-pages/g-lab-page-2.jpg",
+        "href": "/brands/g-lab/",
+        "note": "G-Lab editorial selection",
+        "size": "wide"
+      },
+      {
+        "brand": "GUESS",
+        "image": "/assets/media/brand-pages/guess-page-2.jpg",
+        "href": "/brands/guess/",
+        "note": "GUESS editorial selection",
+        "size": "standard"
+      },
+      {
+        "brand": "iBlues",
+        "image": "/assets/media/brand-pages/iblues-page-2.jpg",
+        "href": "/brands/iblues/",
+        "note": "iBlues editorial selection",
+        "size": "tall"
+      },
+      {
+        "brand": "More & More",
+        "image": "/assets/media/brand-pages/more-and-more-page-2.jpg",
+        "href": "/brands/more-and-more/",
+        "note": "More & More editorial selection",
+        "size": "wide"
+      },
+      {
+        "brand": "Rich & Royal",
+        "image": "/assets/media/brand-pages/rich-royal-page-2.jpg",
+        "href": "/brands/rich-royal/",
+        "note": "Rich & Royal editorial selection",
+        "size": "standard"
+      },
+      {
+        "brand": "YAYA",
+        "image": "/assets/media/brand-pages/yaya-page-2.jpg",
+        "href": "/brands/yaya/",
+        "note": "YAYA editorial selection",
+        "size": "tall"
+      },
+      {
+        "brand": "0039 Italy",
+        "image": "/assets/media/brand-pages/0039-italy-page-2.jpg",
+        "href": "/brands/0039-italy/",
+        "note": "0039 Italy editorial selection",
+        "size": "standard"
+      }
+    ]
+  }
+}

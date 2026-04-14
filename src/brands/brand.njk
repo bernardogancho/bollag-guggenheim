@@ -1,7 +1,7 @@
 ---
 layout: layouts/base.njk
 pagination:
-  data: brandProfiles
+  data: brands
   size: 1
   alias: brand
 permalink: "brands/{{ brand.slug }}/index.html"
@@ -44,7 +44,7 @@ eleventyComputed:
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="grid gap-12 lg:grid-cols-[minmax(0,0.86fr)_minmax(24rem,34rem)] lg:items-center xl:gap-20">
       <div class="max-w-[44rem]">
-        <p class="type-eyebrow mb-4 text-black/42" data-reveal>Brand Overview</p>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ cms.brandsPage.detailPage.overviewEyebrow }}</p>
         <div class="type-body-lg type-body-stack text-black/72">
           <p data-reveal>{{ brand.intro }}</p>
           <p data-reveal>{{ brand.focus }}</p>
@@ -72,9 +72,9 @@ eleventyComputed:
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[34rem]">
-        <p class="type-eyebrow mb-4 text-black/40" data-reveal>Visual Journal</p>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ cms.brandsPage.detailPage.visualJournalEyebrow }}</p>
         <h2 class="type-section-title-md max-w-[10ch] text-black" data-reveal>
-          A broader image world for {{ brand.name }}.
+          {{ cms.brandsPage.detailPage.visualJournalTitleTemplate | replace("%BRAND%", brand.name) }}
         </h2>
       </div>
     </div>
@@ -113,13 +113,13 @@ eleventyComputed:
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
     <div class="flex flex-col gap-8 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div>
-        <p class="type-eyebrow mb-4 text-black/42" data-reveal>Explore More</p>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ cms.brandsPage.detailPage.ctaEyebrow }}</p>
         <h2 class="type-section-title-sm max-w-[12ch] text-black" data-reveal>
-          Continue through the full brand portfolio.
+          {{ cms.brandsPage.detailPage.ctaTitle }}
         </h2>
       </div>
-      <a href="/brands/" class="cta-button cta-button--dark" data-reveal>
-        <span>Back to Brands</span>
+      <a href="{{ cms.brandsPage.detailPage.ctaButtonHref }}" class="cta-button cta-button--dark" data-reveal>
+        <span>{{ cms.brandsPage.detailPage.ctaButtonLabel }}</span>
         <span aria-hidden="true">→</span>
       </a>
     </div>

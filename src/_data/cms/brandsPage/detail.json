@@ -1,0 +1,11 @@
+{
+  "detailPage": {
+    "overviewEyebrow": "Brand Overview",
+    "visualJournalEyebrow": "Visual Journal",
+    "visualJournalTitleTemplate": "A broader image world for %BRAND%.",
+    "ctaEyebrow": "Explore More",
+    "ctaTitle": "Continue through the full brand portfolio.",
+    "ctaButtonLabel": "Back to Brands",
+    "ctaButtonHref": "/brands/"
+  }
+}

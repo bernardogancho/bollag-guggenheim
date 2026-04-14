@@ -1,4 +1,5 @@
 <footer class="bg-[#FAF8F6] text-ink">
+  {% set footer = cms.site.footer %}
   <div class="mx-auto w-full max-w-[1600px] px-6 pb-10 pt-20 sm:px-10 lg:px-16 lg:pb-12 lg:pt-24">
     <div class="grid gap-14 border-t border-black/10 pt-8 lg:grid-cols-[1.15fr_0.85fr_0.85fr_0.75fr] lg:gap-12 lg:pt-10">
       <div>
@@ -7,15 +8,16 @@
         </a>
         <div class="mt-10 border-t border-black/10 pt-5">
           <p class="type-label mb-4 text-black/42">
-            Part of the group
+            {{ footer.groupLabel }}
           </p>
           <a href="/wearhouse/" class="nav-link inline-flex pb-1 text-black/90 transition duration-300 hover:text-black">
             <span class="flex flex-col leading-none font-['Helvetica_Neue',_Arial,_sans-serif] font-black uppercase">
-              <span class="ml-[4rem] text-[0.66rem] tracking-[-0.06em]">The</span>
-              <span class="text-[1.74rem] tracking-[-0.095em]">Wearhouse</span>
+              <span class="ml-[4rem] text-[0.66rem] tracking-[-0.06em]">{{ footer.wearhouseWordmark.prefix }}</span>
+              <span class="text-[1.74rem] tracking-[-0.095em]">{{ footer.wearhouseWordmark.name }}</span>
               <span class="ml-[5.2rem] -mt-0.5 flex flex-col text-[0.58rem] tracking-[-0.05em]">
-                <span>Fashion Trade</span>
-                <span>GmbH</span>
+                {% for line in footer.wearhouseWordmark.suffix %}
+                  <span>{{ line }}</span>
+                {% endfor %}
               </span>
             </span>
           </a>
@@ -24,21 +26,22 @@
 
       <div>
         <p class="type-label mb-4 text-black/42">
-          Contact
+          {{ footer.bgContact.title }}
         </p>
         <div class="type-body-sm type-body-stack-tight text-black/72">
           <p>
-            Bollag-Guggenheim AG<br>
-            Thurgauerstrasse 113<br>
-            CH-8152 Glattpark
+            {{ footer.bgContact.name }}<br>
+            {% for line in footer.bgContact.address %}
+              {{ line }}{% if not loop.last %}<br>{% endif %}
+            {% endfor %}
           </p>
           <p>
-            <a href="tel:+41438110000" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">+41 43 811 00 00</a><br>
-            <a href="mailto:welcome@bollag.net" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">welcome@bollag.net</a>
+            <a href="{{ footer.bgContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ footer.bgContact.phoneLabel }}</a><br>
+            <a href="{{ footer.bgContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ footer.bgContact.emailLabel }}</a>
           </p>
           <p>
-            <a href="https://www.bollagguggenheim.cyon.site/media/anfahrtsplantmc.pdf" class="nav-link inline-flex items-center gap-3 pb-1 transition duration-300 hover:text-black">
-              <span>Route map</span>
+            <a href="{{ footer.bgContact.routeHref }}" class="nav-link inline-flex items-center gap-3 pb-1 transition duration-300 hover:text-black">
+              <span>{{ footer.bgContact.routeLabel }}</span>
               <span aria-hidden="true">→</span>
             </a>
           </p>
@@ -47,21 +50,22 @@
 
       <div>
         <p class="type-label mb-4 text-black/42">
-          Contact
+          {{ footer.wearhouseContact.title }}
         </p>
         <div class="type-body-sm type-body-stack-tight text-black/72">
           <p>
-            The Wearhouse Fashion Trade GmbH<br>
-            Seestrasse 78<br>
-            8703 Erlenbach
+            {{ footer.wearhouseContact.name }}<br>
+            {% for line in footer.wearhouseContact.address %}
+              {{ line }}{% if not loop.last %}<br>{% endif %}
+            {% endfor %}
           </p>
           <p>
-            <a href="tel:+41449121200" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">+41 44 912 12 00</a><br>
-            <a href="mailto:wearhouse@wearhouse.ch" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">wearhouse@wearhouse.ch</a>
+            <a href="{{ footer.wearhouseContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ footer.wearhouseContact.phoneLabel }}</a><br>
+            <a href="{{ footer.wearhouseContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ footer.wearhouseContact.emailLabel }}</a>
           </p>
           <p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Seestrasse+78,+8703+Erlenbach,+Schweiz" target="_blank" rel="noopener" class="nav-link inline-flex items-center gap-3 pb-1 transition duration-300 hover:text-black">
-              <span>Open in Maps</span>
+            <a href="{{ footer.wearhouseContact.routeHref }}" target="_blank" rel="noopener" class="nav-link inline-flex items-center gap-3 pb-1 transition duration-300 hover:text-black">
+              <span>{{ footer.wearhouseContact.routeLabel }}</span>
               <span aria-hidden="true">→</span>
             </a>
           </p>
@@ -70,23 +74,21 @@
 
       <div>
         <p class="type-label mb-4 text-black/42">
-          Navigation
+          {{ footer.navigation.title }}
         </p>
         <nav>
           <ul class="space-y-3 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm font-medium uppercase tracking-[0.18em] text-black/72 lg:text-[0.82rem]">
-            <li><a href="/company/" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">Company</a></li>
-            <li><a href="/brands/" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">Brands</a></li>
-            <li><a href="/stores/" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">Stores</a></li>
-            <li><a href="/agenda/" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">Agenda</a></li>
-            <li><a href="/contact/" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">Contact</a></li>
+            {% for item in footer.navigation.items %}
+              <li><a href="{{ item.href }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ item.label }}</a></li>
+            {% endfor %}
           </ul>
         </nav>
       </div>
     </div>
 
     <div class="type-meta mt-14 flex flex-col gap-3 border-t border-black/10 pt-5 text-black/34 sm:flex-row sm:items-center sm:justify-between">
-      <p>Since 1947</p>
-      <p>Bollag Guggenheim Fashion Group Switzerland</p>
+      <p>{{ footer.meta.since }}</p>
+      <p>{{ footer.meta.groupName }}</p>
     </div>
   </div>
 </footer>

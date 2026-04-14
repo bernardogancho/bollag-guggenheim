@@ -1,0 +1,14 @@
+{
+  "hero": {
+    "eyebrow": "Brand Portfolio",
+    "title": "A curated landscape of premium fashion labels.",
+    "summary": "Each brand enters the portfolio with its own visual language, commercial role, and emotional register. Explore them as individual chapters rather than a single uniform catalog.",
+    "stats": [
+      "13 labels",
+      "Wholesale and retail",
+      "Switzerland since 1947"
+    ],
+    "brandName": "Rich & Royal",
+    "image": "/assets/media/brand-pages/rich-royal-header.jpg"
+  }
+}

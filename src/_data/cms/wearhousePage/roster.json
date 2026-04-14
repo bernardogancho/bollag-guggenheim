@@ -1,0 +1,136 @@
+{
+  "rosterSection": {
+    "eyebrow": "Brand Roster",
+    "title": "The current label portfolio represented by Wearhouse.",
+    "items": [
+      {
+        "name": "MASON`S",
+        "slug": "masons",
+        "segment": "donna & uomo",
+        "pageHref": "/wearhouse/masons/",
+        "logoSrc": "/assets/media/wearhouse/logos/masons.clean.png",
+        "hoverImage": "/assets/media/wearhouse/brands/masons-matrix.jpg"
+      },
+      {
+        "name": "CIRCOLO 1901",
+        "slug": "circolo-1901",
+        "segment": "donna & uomo",
+        "pageHref": "/wearhouse/circolo-1901/",
+        "logoSrc": "/assets/media/wearhouse/logos/circolo-1901.clean.png",
+        "hoverImage": "/assets/media/wearhouse/brands/circolo1901-matrix.jpg"
+      },
+      {
+        "name": "SAVE THE DUCK",
+        "slug": "save-the-duck",
+        "segment": "donna, uomo & bambini",
+        "pageHref": "/wearhouse/save-the-duck/",
+        "logoSrc": "/assets/media/wearhouse/logos/save-the-duck.clean.png",
+        "hoverImage": "/assets/media/wearhouse/brands/savetheduck-matrix.jpg"
+      },
+      {
+        "name": "DANIELE FIESOLI",
+        "slug": "daniele-fiesoli",
+        "segment": "uomo",
+        "pageHref": "/wearhouse/daniele-fiesoli/",
+        "logoSrc": "/assets/media/wearhouse/logos/daniele-fiesoli.clean.png",
+        "hoverImage": "/assets/media/wearhouse/brands/danielefiesoli-matrix.jpg"
+      },
+      {
+        "name": "TINTORIA MATTEI",
+        "slug": "tintoria-mattei",
+        "segment": "uomo & donna",
+        "pageHref": "/wearhouse/tintoria-mattei/",
+        "logoSrc": "/assets/media/wearhouse/logos/tintoria-mattei.clean.png",
+        "hoverImage": "/assets/media/wearhouse/brands/tintoriamattei-matrix.jpg"
+      },
+      {
+        "name": "CALIBAN",
+        "slug": "caliban",
+        "segment": "donna",
+        "pageHref": "/wearhouse/caliban/",
+        "logoSrc": "/assets/media/wearhouse/logos/caliban.clean.png",
+        "hoverImage": "/assets/media/wearhouse/brands/caliban-matrix.jpg"
+      },
+      {
+        "name": "DUNO",
+        "slug": "duno",
+        "segment": "donna & uomo",
+        "pageHref": "/wearhouse/duno/",
+        "logoSrc": "/assets/media/wearhouse/logos/duno.clean.png",
+        "hoverImage": "/assets/media/wearhouse/brands/duno-matrix.jpg"
+      },
+      {
+        "name": "IBELIV",
+        "slug": "ibeliv",
+        "segment": "donna & uomo",
+        "pageHref": "/wearhouse/ibeliv/",
+        "logoSrc": "/assets/media/wearhouse/logos/ibeliv.clean.png",
+        "hoverImage": "/assets/media/wearhouse/brands/ibeliv-matrix.jpg"
+      },
+      {
+        "name": "LE BONNET",
+        "slug": "le-bonnet",
+        "segment": "donna, uomo & kids",
+        "pageHref": "/wearhouse/le-bonnet/",
+        "logoSrc": "/assets/media/wearhouse/logos/le-bonnet.clean.png",
+        "hoverImage": "/assets/media/wearhouse/brands/lebonnet-matrix.jpg"
+      },
+      {
+        "name": "edelle",
+        "slug": "edelle",
+        "segment": "donna",
+        "pageHref": "/wearhouse/edelle/",
+        "logoSrc": "/assets/media/wearhouse/logos/edelle.svg",
+        "hoverImage": "/assets/media/wearhouse/brands/edelle-matrix.jpg"
+      },
+      {
+        "name": "VIA MASINI",
+        "slug": "via-masini",
+        "segment": "donna",
+        "pageHref": "/wearhouse/via-masini/",
+        "logoSrc": null,
+        "hoverImage": "/assets/media/wearhouse/brands/viamasini-matrix.jpg"
+      },
+      {
+        "name": "VELVET",
+        "slug": "velvet",
+        "segment": "women men",
+        "pageHref": "/wearhouse/velvet/",
+        "logoSrc": "/assets/media/wearhouse/logos/velvet.svg",
+        "hoverImage": "/assets/media/wearhouse/brands/velvet-matrix.jpg"
+      },
+      {
+        "name": "TANTÄ",
+        "slug": "tanta",
+        "segment": "mujer hombre",
+        "pageHref": "/wearhouse/tanta/",
+        "logoSrc": "/assets/media/wearhouse/logos/tanta.png",
+        "hoverImage": "/assets/media/wearhouse/brands/tanta-matrix.webp"
+      },
+      {
+        "name": "SASSENBACH",
+        "slug": "sassenbach",
+        "segment": "donna",
+        "pageHref": "/wearhouse/sassenbach/",
+        "logoSrc": "/assets/media/wearhouse/logos/sassenbach.svg",
+        "hoverImage": "/assets/media/wearhouse/brands/sassenbach-matrix.jpg"
+      },
+      {
+        "name": "DEA KUDIBAL",
+        "slug": "dea-kudibal",
+        "segment": "donna",
+        "pageHref": "/wearhouse/dea-kudibal/",
+        "logoSrc": "/assets/media/wearhouse/logos/dea-kudibal.svg",
+        "hoverImage": "/assets/media/wearhouse/brands/deakudibal-matrix.webp"
+      },
+      {
+        "name": "FFC",
+        "slug": "ffc",
+        "segment": "donna",
+        "pageHref": "/wearhouse/ffc/",
+        "logoSrc": "/assets/media/wearhouse/logos/ffc.clean.png",
+        "hoverImage": "/assets/media/wearhouse/brands/ffc-matrix.jpg"
+      }
+    ]
+  }
+}

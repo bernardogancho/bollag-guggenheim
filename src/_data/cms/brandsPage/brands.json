@@ -1,0 +1,1329 @@
+{
+  "brands": [
+    {
+      "name": "Closed",
+      "slug": "closed",
+      "card": {
+        "eyebrow": "Modern Essentials",
+        "heroTitle": "Made with Love",
+        "summary": "European denim and wardrobe foundations shaped through French vision, Italian making, and German precision.",
+        "heroImage": "/assets/media/brand-pages/closed-page-1.jpg"
+      },
+      "detail": {
+        "intro": "Closed began as one of the first Italian denim labels before evolving into a wider premium wardrobe brand headquartered in Hamburg. Its identity still turns on denim, but the proposition is broader: precise essentials, measured luxury, and clothing that avoids excess.",
+        "focus": "The brand's strength comes from long-standing Italian production partnerships, deep material knowledge, and a confidence that does not need theatrical branding to register. It reads as premium through cut, fabric, and restraint.",
+        "atmosphere": "Restrained, tactile, exacting.",
+        "categories": [
+          "Denim",
+          "Tailoring",
+          "Wardrobe Foundations"
+        ],
+        "tone": "A quiet luxury language built around material confidence and enduring fit.",
+        "detailHeroImage": "/assets/media/brand-pages/closed-header.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/brand-pages/closed-page-1.jpg",
+            "note": "Closed editorial selection"
+          },
+          {
+            "image": "/assets/media/brand-pages/closed-page-2.jpg",
+            "note": "Closed editorial selection"
+          }
+        ],
+        "detailGallery": [
+          {
+            "image": "/assets/media/brand-pages/closed-page-1.jpg",
+            "note": "Closed editorial image 1"
+          },
+          {
+            "image": "/assets/media/brand-pages/closed-page-2.jpg",
+            "note": "Closed editorial image 2"
+          },
+          {
+            "image": "/assets/media/brand-pages/closed-page-3.jpg",
+            "note": "Closed editorial image 3"
+          },
+          {
+            "image": "/assets/media/brand-pages/closed-page-4.jpg",
+            "note": "Closed editorial image 4"
+          },
+          {
+            "image": "/assets/media/brand-pages/closed-page-5.jpg",
+            "note": "Closed editorial image 5"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18125867929561796.jpg",
+            "note": "Tori-X. Brand new. Already a favourite.",
+            "source": "https://www.instagram.com/p/DVajAMEFVQj/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18113678707711819.jpg",
+            "note": "Fresh produce.",
+            "source": "https://www.instagram.com/p/DVGe_b6mWI8/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18175121785375817.jpg",
+            "note": "The Leather Bomber. Closed Menswear Spring Summer 2026.",
+            "source": "https://www.instagram.com/p/DVBHGCtD4eP/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18038862425733881.jpg",
+            "note": "The Patches Story - now live.",
+            "source": "https://www.instagram.com/p/DU-24fdgvvh/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-17867159649568261.jpg",
+            "note": "Closed - produttore di jeans dal 1978. The Patches Story available across denim, jersey and caps.",
+            "source": "https://www.instagram.com/p/DU-Hb17Etc5/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-17910468864336115.jpg",
+            "note": "Denim. White tee. Black leather bag. A classic for a reason.",
+            "source": "https://www.instagram.com/p/DU8LOM_El-J/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18091245926472073.jpg",
+            "note": "Absolutely obsessed with seeing all these amazing women in Closed x Love Stories.",
+            "source": "https://www.instagram.com/p/DUx_ijQEmgn/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-17913152220313209.jpg",
+            "note": "Experience our GILLAN crafted from impeccable raw rigid denim. Simply add a coordinating blazer to achieve an effortlessly chic appearance. #closedofficial",
+            "source": "https://www.instagram.com/p/DUtfJ4xGU20/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-17876698578475001.jpg",
+            "note": "Wear it your way, style it your way",
+            "source": "https://www.instagram.com/p/DUfN2mqkspa/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18120307102579526.jpg",
+            "note": "Tiny underwear. Oversized denim. Big attitude.",
+            "source": "https://www.instagram.com/p/DUbdjY8kgsR/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18115292641717152.jpg",
+            "note": "Details all the way",
+            "source": "https://www.instagram.com/p/DUY5316jK_W/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18096138073939884.jpg",
+            "note": "Wear it your way. Style it your way",
+            "source": "https://www.instagram.com/p/DUVsp0gArQ5/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18093171035006100.jpg",
+            "note": "Wear it your way, style it your way",
+            "source": "https://www.instagram.com/p/DUVb27jEoAY/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-17985785870941608.jpg",
+            "note": "Cold-season knitwear. #closedofficial",
+            "source": "https://www.instagram.com/p/DUAeEHYkjQt/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18311058838249870.jpg",
+            "note": "Denims to enjoy with your closest friends. #closedofficial",
+            "source": "https://www.instagram.com/p/DT45YuGkhbl/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-17907579372166415.jpg",
+            "note": "Denim steals the spotlight everywhere. #closedofficial",
+            "source": "https://www.instagram.com/p/DT0S6dVAg9x/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18115855120606615.jpg",
+            "note": "Brilliant mid blue. #closedofficial",
+            "source": "https://www.instagram.com/p/DTsfL4hkrdY/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-17881000131353522.jpg",
+            "note": "New denim added to the collection.⁠ With new details in tow.⁠ #closedofficial",
+            "source": "https://www.instagram.com/p/DTlY5Alk7F0/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-17976952544967982.jpg",
+            "note": "Soft tailoring, but make it denim.⁠ #closedofficial",
+            "source": "https://www.instagram.com/p/DTha1rjki6j/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18078997523349780.jpg",
+            "note": "The barrel shape that everyone continues to require. Our Jazzie. #closedofficial",
+            "source": "https://www.instagram.com/p/DTXKdKUkm3D/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18077835998242140.jpg",
+            "note": "Introducing fresh arrivals, yet denim continues to take center stage in 2026 #closedofficial",
+            "source": "https://www.instagram.com/p/DTPZOueAN2s/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18064908410541211.jpg",
+            "note": "What fashion goals have you established for this new year?⁠ ⁠ ⁠ ⁠ We aim to incorporate beautiful colours and stunning designs paired with denim. #closedofficia",
+            "source": "https://www.instagram.com/p/DTNmN1ekg82/"
+          },
+          {
+            "image": "/assets/media/feed/closed-wall-18090303290473596.jpg",
+            "note": "Stunning fresh color options. #closedofficial",
+            "source": "https://www.instagram.com/p/DTIUBWDkocp/"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Codello",
+      "slug": "codello",
+      "card": {
+        "eyebrow": "Accessory Color",
+        "heroTitle": "Accessories that makes people happy.",
+        "summary": "Scarves and accessories driven by print, color, craft, and a long-standing signature in silk.",
+        "heroImage": "/assets/media/brand-pages/codello-page-1.jpg"
+      },
+      "detail": {
+        "intro": "Codello grew from a single silk scarf idea into a broad accessories brand with a recognisable visual signature. Material, color, and pattern remain central to the label's identity, as does a persistent attention to craft and detail.",
+        "focus": "What distinguishes Codello is not minimalism but expression: scarves and accessories designed to add personality, movement, and graphic energy while maintaining quality and brand recognisability.",
+        "atmosphere": "Expressive, graphic, uplifting.",
+        "categories": [
+          "Scarves",
+          "Accessories",
+          "Print-led Capsules"
+        ],
+        "tone": "An accessory system built to inject character rather than simply complete a look.",
+        "detailHeroImage": "/assets/media/brand-pages/codello-header.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/brand-pages/codello-page-1.jpg",
+            "note": "Codello editorial selection"
+          },
+          {
+            "image": "/assets/media/brand-pages/codello-page-2.jpg",
+            "note": "Codello editorial selection"
+          }
+        ],
+        "detailGallery": [
+          {
+            "image": "/assets/media/brand-pages/codello-page-1.jpg",
+            "note": "Codello editorial image 1"
+          },
+          {
+            "image": "/assets/media/brand-pages/codello-page-2.jpg",
+            "note": "Codello editorial image 2"
+          },
+          {
+            "image": "/assets/media/brand-pages/codello-page-3.jpg",
+            "note": "Codello editorial image 3"
+          },
+          {
+            "image": "/assets/media/brand-pages/codello-page-4.jpg",
+            "note": "Codello editorial image 4"
+          },
+          {
+            "image": "/assets/media/brand-pages/codello-page-5.jpg",
+            "note": "Codello editorial image 5"
+          },
+          {
+            "image": "/assets/media/feed/codello-wall-18076293125104322.jpg",
+            "note": "Wear the smile. 😄 Wear Snoopy. 💙🐶 Snoopy bringt gute Laune, du bringst den Look. #mycodello #sharehappiness #codelloxpeanuts #peanutsxcodello",
+            "source": "https://www.instagram.com/p/DVdtWi9AqqH/"
+          },
+          {
+            "image": "/assets/media/feed/codello-wall-18117138028615976.jpg",
+            "note": "Pink Mood on 🩷🌷 Good News: mit WOMAN20 bekommst du 20% Rabatt auf alle Styles aus der neuen Women’s Day Collection. ✨ #mycodello #pinkmood",
+            "source": "https://www.instagram.com/p/DVWPCuMAqD2/"
+          },
+          {
+            "image": "/assets/media/feed/codello-wall-17956996650062331.jpg",
+            "note": "Heute als leichter Schal im Büro, später locker über die Schultern und im Urlaub wird daraus ein Pareo am Strand…Baumwollschals sind echte Allrounder! 🧡🌴 #mycod",
+            "source": "https://www.instagram.com/p/DVQn1GJjSdE/"
+          },
+          {
+            "image": "/assets/media/feed/codello-wall-17954054219942728.jpg",
+            "note": "SUPER WOMAN 🩷 Zeit für ein Statement? Sag‘s mit einem Accessoire! Hol dir deinen Power Look und spare 20% auf die Women’s Day Collection, noch bis einschließlic",
+            "source": "https://www.instagram.com/p/DVJevb2gjiB/"
+          },
+          {
+            "image": "/assets/media/feed/codello-wall-18087023527937890.jpg",
+            "note": "Hey, Super Woman! Unsere neue Women’s Day Collection ist sanft und kräftig zugleich. Rosa, Pink, Akzente in Orange und Statements, die sitzen. 💕 #womensdaycolle",
+            "source": "https://www.instagram.com/p/DVDX3QNAp1L/"
+          },
+          {
+            "image": "/assets/media/feed/codello-wall-17960292405046433.jpg",
+            "note": "Heute darf’s ein Statement sein. BISOU Paris oder Stay Wild? Schreib uns dein Emoji: 💋 oder 🐆 #mycodello #nickituch #scarfstyle",
+            "source": "https://www.instagram.com/p/DU_LkLRjfyu/"
+          },
+          {
+            "image": "/assets/media/feed/codello-wall-18008877551835333.jpg",
+            "note": "Auch wenn draußen noch Winter ist: dein Look darf schon auf Frühling schalten. 💙🌿 Softes Blau, ein Hauch Grün, Paisley-Vibes. Kleine Frühlingsbrise zum Umlegen,",
+            "source": "https://www.instagram.com/p/DU8mt3bglmm/"
+          },
+          {
+            "image": "/assets/media/feed/codello-wall-18093969220812132.jpg",
+            "note": "Mehr AMOUR, weniger graue Tage. 💙💋 #mycodello #bonjourparis #newin #newcollection",
+            "source": "https://www.instagram.com/p/DU6B8ZZgqF3/"
+          },
+          {
+            "image": "/assets/media/feed/codello-wall-18070855595164318.jpg",
+            "note": "BISOU BISOU 💋 Ein Kuss aus Farben: Sonnen, Blumen, Herzen, Wolken und ein Hauch 70s-Feeling. Dieses Tuch erzählt kleine Geschichten vom Frühling, von Liebe und ",
+            "source": "https://www.instagram.com/p/DUX7Akugin6/"
+          },
+          {
+            "image": "/assets/media/feed/codello-wall-18007777757836162.jpg",
+            "note": "BISOU für dich, BISOU für mich💋 Unser neues Valentinstags-Tuch sagt, was wir manchmal vergessen: Liebe darf laut, bunt und sichtbar sein. 💌 Wer kriegt deinen er",
+            "source": "https://www.instagram.com/p/DUTZ9imDcLw/"
+          },
+          {
+            "image": "/assets/media/feed/codello-wall-18091906901064860.jpg",
+            "note": "Winterblues? Nicht mit uns! ❄️ Wir setzen auf cozy Stoffe, bold Prints und ganz viel Herz.💕Welchen Look würdest du tragen? #mycodello",
+            "source": "https://www.instagram.com/p/DUBYgb3guE2/"
+          },
+          {
+            "image": "/assets/media/feed/codello-wall-17966707247859287.jpg",
+            "note": "Color Crush! 💜 Unser Statement-Schal ist cozy, oversized und einfach ein Wow-Piece für deinen Look. #mycodello #oversizedscarf",
+            "source": "https://www.instagram.com/p/DTsyITbjbJ-/"
+          },
+          {
+            "image": "/assets/media/feed/codello-wall-17860732791570499.jpg",
+            "note": "Lieblings-Kombi: Rot & Rosa.❤️💗 Mix & Match für coole Winter Looks! #mycodello #winteraccessories",
+            "source": "https://www.instagram.com/p/DTawlX9DdTQ/"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Drykorn",
+      "slug": "drykorn",
+      "card": {
+        "eyebrow": "Contemporary Tailoring",
+        "heroTitle": "For Beautiful People",
+        "summary": "Sharper silhouettes and modern tailoring for independent dressers with a metropolitan point of view.",
+        "heroImage": "/assets/media/brand-pages/drykorn-page-1.jpg"
+      },
+      "detail": {
+        "intro": "Drykorn began with a simple proposition: fashionable trousers at accessible prices. From that focused start, it expanded into an international label defined by contemporary tailoring, urban clarity, and a more self-possessed kind of dressing.",
+        "focus": "The brand speaks to confident individualists. Its campaigns, cuts, and proportions all work in the same direction: recognisable shape, strong styling, and fashion that feels progressive while remaining wearable.",
+        "atmosphere": "Urban, assertive, directional.",
+        "categories": [
+          "Tailoring",
+          "Trousers",
+          "Modern Separates"
+        ],
+        "tone": "A sharper editorial voice carried through fit, attitude, and metropolitan precision.",
+        "detailHeroImage": "/assets/media/brand-pages/drykorn-header.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/brand-pages/drykorn-page-1.jpg",
+            "note": "Drykorn editorial selection"
+          },
+          {
+            "image": "/assets/media/brand-pages/drykorn-page-2.jpg",
+            "note": "Drykorn editorial selection"
+          }
+        ],
+        "detailGallery": [
+          {
+            "image": "/assets/media/brand-pages/drykorn-page-1.jpg",
+            "note": "Drykorn editorial image 1"
+          },
+          {
+            "image": "/assets/media/brand-pages/drykorn-page-2.jpg",
+            "note": "Drykorn editorial image 2"
+          },
+          {
+            "image": "/assets/media/brand-pages/drykorn-page-3.jpg",
+            "note": "Drykorn editorial image 3"
+          },
+          {
+            "image": "/assets/media/brand-pages/drykorn-page-4.jpg",
+            "note": "Drykorn editorial image 4"
+          },
+          {
+            "image": "/assets/media/brand-pages/drykorn-page-5.jpg",
+            "note": "Drykorn editorial image 5"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18129406192470283.jpg",
+            "note": "Getting ready for spring, with an eye on summer.⁠ ⁠ An oversized blazer paired with wide trousers, crafted from pure linen, creates a breathable, relaxed silhou",
+            "source": "https://www.instagram.com/p/DVJZN6uDCUl/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-17905983087359938.jpg",
+            "note": "Serenity meets contrast in a minimal white look. ⁠ ⁠ #drykorn #drykornforbeautifulpeople⁠",
+            "source": "https://www.instagram.com/p/DVA6cF6DKxS/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18095187505953766.jpg",
+            "note": "Spring trench, in white.⁠ ⁠ A long, belted silhouette that feels soft, controlled, and quietly confident.⁠ The kind of piece that moves with you - light in atti",
+            "source": "https://www.instagram.com/p/DU572sZjLPQ/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18167136706399006.jpg",
+            "note": "Relaxed by nature. Easy pieces in warm shades — made for spring and perfect for transitional layering.⁠ ⁠ KALENO, our workwear-inspired jacket with a genuine le",
+            "source": "https://www.instagram.com/p/DU3aKVzjHaR/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-17922159966249328.jpg",
+            "note": "⁠Longing for spring and the sun of Italy?⁠ ⁠ JOTTAR is our regular-fit zip jacket, featuring a coastal-inspired pattern. ⁠ ⁠ Crafted in Italy from textured jacq",
+            "source": "https://www.instagram.com/p/DUxaktODBN0/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-17857134333611363.jpg",
+            "note": "Soft power, in full colour.⁠ ⁠ #drykorn #drykornforbeautifulpeople⁠",
+            "source": "https://www.instagram.com/p/DUu2j5UDPgX/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18065992730248820.jpg",
+            "note": "Light grey tones, soft light, and the timeless appeal of denim on denim — inspired by modern workwear, bringing clarity, ease, and flow.⁠ ⁠ #drykorn #drykornfor",
+            "source": "https://www.instagram.com/p/DUqfNO-jOcP/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-17863065498581165.jpg",
+            "note": "⁠Inspired by the blue of the sea - RIKKA_2 combines texture, comfort, and style. ⁠ ⁠ The cloqué finish creates a relief-like pattern, while the viscose-blend fa",
+            "source": "https://www.instagram.com/p/DUbCMtDjOF3/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18085512038331823.jpg",
+            "note": "Power dressing, reimagined: a trench coat that flows with your day, balancing structure and ease.   A look that seamlessly mixes business precision with casual ",
+            "source": "https://www.instagram.com/p/DUYcplijF_s/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18074021603112583.jpg",
+            "note": "Easy silhouettes for everyday movement: relaxed, elevated, made for the city’s pace.⁠ ⁠ LEEK_WIDE is the statement piece no modern menswear wardrobe should be w",
+            "source": "https://www.instagram.com/p/DUV_xEuDH2f/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-17931664269183775.jpg",
+            "note": "Styled with intention: ​Wide denim, doubled-down and refined through tonal layering that brings clarity and flow. ⁠ ⁠ ⁠ Soft structure and pure denim resulting ",
+            "source": "https://www.instagram.com/p/DUQuVn6jEjd/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18152474455377236.jpg",
+            "note": "⁠Simple layers and comfortable silhouettes that work for winter without feeling heavy.⁠ ⁠ FLANNA and CEILING are designed for effortless winter layering — an ov",
+            "source": "https://www.instagram.com/p/DT4t9rsDPRd/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18357182746164241.jpg",
+            "note": "⁠Designed for winter routines. AISBY combines a clean silhouette with fine wool and cashmere — soft, warm, and made for everyday layering.⁠ ⁠ #drykorn #drykornf",
+            "source": "https://www.instagram.com/p/DTvdOoJDB6V/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-17872669344480365.jpg",
+            "note": "A timeless classic, made with edge.⁠ ⁠ MIK refines rebellion with sharp lines and smooth leather — confident on its own, effortless in motion.⁠ ⁠ Balanced with ",
+            "source": "https://www.instagram.com/p/DTNys3sjOkp/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18186650041344768.jpg",
+            "note": "New take on Modern Workwear.⁠ ⁠ DIEGGO and GONAGO redefine the essence of workwear — clean lines, tactile fabrics, and subtle functionality. A shirt jacket in r",
+            "source": "https://www.instagram.com/p/DTI0IzSjLIb/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18250548865291316.jpg",
+            "note": "A dialogue in grey.⁠ ⁠ GERLINA, cropped and fluid, meets TENSYA, tailored and free.⁠ Together they embody the quiet strength of winter neutrals.⁠ ⁠ #drykorn #dr",
+            "source": "https://www.instagram.com/p/DTFce0TjJ4o/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18108466594634774.jpg",
+            "note": "A quiet warmth. A slower pace. Comfort in simplicity.⁠ ⁠ A soft start into the new year — warm shades and gentle layers that feel instantly right.⁠ ⁠ DUNSTONE. ",
+            "source": "https://www.instagram.com/p/DTAmD3njD-S/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-17937804255106567.jpg",
+            "note": "⁠In the mood to shine⁠ on the last day of '25.⁠ ⁠ Retro-inspired yet effortlessly modern — JACATO reimagines the 70s dinner jacket with sharp lines.⁠ ⁠ Paired w",
+            "source": "https://www.instagram.com/p/DS7Q4JJDSbj/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18077590820247679.jpg",
+            "note": "⁠ Statement pieces. Understated attitude.  #drykorn #drykornforbeautifulpeople",
+            "source": "https://www.instagram.com/p/DSxEGgbDF9R/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18549834967044415.jpg",
+            "note": "Designed to reflect the season’s brilliance✨⁠ ⁠ MARHAM_1 and ASTARIA_P2, brought to life with Swarovski® crystals — each stone capturing the energy of celebrati",
+            "source": "https://www.instagram.com/p/DSuKjLujCRl/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-17943027815961333.jpg",
+            "note": "Flowing shapes. Festive palette. ⁠ MOWTIE’s fluid lines and UNPACK’s refined weight capture the poise of festive.⁠ ⁠ #drykorn #drykornforbeautifulpeople⁠",
+            "source": "https://www.instagram.com/p/DSc2FM5DJ2x/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18090361217312016.jpg",
+            "note": "Where timeless elegance meets the spirit of the season.⁠ ⁠ From dinner to celebration — JACATO channels ‘70s sophistication through clean structure and deep clo",
+            "source": "https://www.instagram.com/p/DSXv1rKjGAs/"
+          },
+          {
+            "image": "/assets/media/feed/drykorn-wall-18089509420788142.jpg",
+            "note": "Festive days call for confidence, light, and presence.⁠ ⁠ WESTOW — structured and sharp.⁠ CLOELIA — fluid, luminous, and full of life.⁠ UNPACK — refined ease, g",
+            "source": "https://www.instagram.com/p/DSSj6KHDL7O/"
+          }
+        ]
+      }
+    },
+    {
+      "name": "G-Lab",
+      "slug": "g-lab",
+      "card": {
+        "eyebrow": "Performance Outerwear",
+        "heroTitle": "Always in Your Element",
+        "summary": "Technical outerwear that bridges functional protection with a cleaner contemporary fashion sensibility.",
+        "heroImage": "/assets/media/brand-pages/g-lab-page-1.jpg"
+      },
+      "detail": {
+        "intro": "Founded in Dusseldorf in 2009 by Bjorn Gericke, g-lab was built around one premise: outerwear should perform at a high level without sacrificing design. The result is a brand that moves between weather protection and fashion clarity with unusual ease.",
+        "focus": "Its value inside the portfolio is distinct. G-lab occupies the space where technical knowledge, modern silhouette, and day-to-day wearability meet, making it relevant to customers who expect performance without visual compromise.",
+        "atmosphere": "Functional, contemporary, precise.",
+        "categories": [
+          "Outerwear",
+          "Technical Jackets",
+          "Performance Lifestyle"
+        ],
+        "tone": "A performance-led brand made credible through understatement rather than noise.",
+        "detailHeroImage": "/assets/media/brand-pages/g-lab-header.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/brand-pages/g-lab-page-1.jpg",
+            "note": "G-Lab editorial selection"
+          },
+          {
+            "image": "/assets/media/brand-pages/g-lab-page-2.jpg",
+            "note": "G-Lab editorial selection"
+          }
+        ],
+        "detailGallery": [
+          {
+            "image": "/assets/media/brand-pages/g-lab-page-1.jpg",
+            "note": "G-Lab editorial image 1"
+          },
+          {
+            "image": "/assets/media/brand-pages/g-lab-page-2.jpg",
+            "note": "G-Lab editorial image 2"
+          },
+          {
+            "image": "/assets/media/brand-pages/g-lab-page-3.jpg",
+            "note": "G-Lab editorial image 3"
+          },
+          {
+            "image": "/assets/media/brand-pages/g-lab-page-4.jpg",
+            "note": "G-Lab editorial image 4"
+          },
+          {
+            "image": "/assets/media/brand-pages/g-lab-page-5.jpg",
+            "note": "G-Lab editorial image 5"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GUESS",
+      "slug": "guess",
+      "card": {
+        "eyebrow": "Global Lifestyle",
+        "heroTitle": "The Essence of Sexyness",
+        "summary": "A globally recognised lifestyle label combining denim heritage, accessories, and a more overt sense of fashion image-making.",
+        "heroImage": "/assets/media/brand-pages/guess-page-1.jpg"
+      },
+      "detail": {
+        "intro": "Founded in California in 1981 by the Marciano brothers, GUESS quickly established itself as a defining fashion name, driven by denim, accessories, and an unmistakable image culture.",
+        "focus": "The brand carries strong symbolic value: iconic campaigns, recognisable glamour, and a lifestyle positioning that merges American confidence with European style references across apparel and accessories.",
+        "atmosphere": "Confident, glamorous, high-recognition.",
+        "categories": [
+          "Denim",
+          "Accessories",
+          "Lifestyle Fashion"
+        ],
+        "tone": "A statement brand whose commercial strength is reinforced by visual memory and image power.",
+        "detailHeroImage": "/assets/media/brand-pages/guess-header.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/brand-pages/guess-page-1.jpg",
+            "note": "GUESS editorial selection"
+          },
+          {
+            "image": "/assets/media/brand-pages/guess-page-2.jpg",
+            "note": "GUESS editorial selection"
+          }
+        ],
+        "detailGallery": [
+          {
+            "image": "/assets/media/brand-pages/guess-page-1.jpg",
+            "note": "GUESS editorial image 1"
+          },
+          {
+            "image": "/assets/media/brand-pages/guess-page-2.jpg",
+            "note": "GUESS editorial image 2"
+          },
+          {
+            "image": "/assets/media/brand-pages/guess-page-3.jpg",
+            "note": "GUESS editorial image 3"
+          },
+          {
+            "image": "/assets/media/brand-pages/guess-page-4.jpg",
+            "note": "GUESS editorial image 4"
+          },
+          {
+            "image": "/assets/media/brand-pages/guess-page-5.jpg",
+            "note": "GUESS editorial image 5"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-17919593598256347.jpg",
+            "note": "All eyes on #TheCamdenBag. Your new everyday statement.",
+            "source": "https://www.instagram.com/p/DVGzeHYjP4-/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18078784958627361.jpg",
+            "note": "Denim on denim. Bag of the moment. #TheCamdenBag",
+            "source": "https://www.instagram.com/p/DVBp7PXjEWr/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18011741852827927.jpg",
+            "note": "Comfort is the new power move. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DU8h0RmDJRG/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18127772125532870.jpg",
+            "note": "Cold-proof style. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DUdmoe_DM_h/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18081718951996649.jpg",
+            "note": "On top of the world. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DUaS2RdjRmD/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18022582247623129.jpg",
+            "note": "Picked fresh from the style aisle. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DULlZ75jBIO/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-17864900547563121.jpg",
+            "note": "Soft statement. Lasting impression. #GUESSJewellery",
+            "source": "https://www.instagram.com/p/DT-tKyFjOmz/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18142731115415349.jpg",
+            "note": "Lounging like it’s an art form. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DT2-0aUDLOJ/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18066641468445049.jpg",
+            "note": "Shades of silver, tones of style. #GUESSDenim",
+            "source": "https://www.instagram.com/p/DTiYxEcCcJ-/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18373428658095594.jpg",
+            "note": "Where iconic style meets everyday edge. #GUESSDenim",
+            "source": "https://www.instagram.com/p/DTatyaqDEHS/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18311664796301924.jpg",
+            "note": "Denim that defines the moment. #GUESSDenim",
+            "source": "https://www.instagram.com/p/DTVhKX4jCnS/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18089430664989688.jpg",
+            "note": "Statement accessories and soft knits. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DTQXOwVDr5q/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18064159022535793.jpg",
+            "note": "Elevated essentials only. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DTIojBoDOG6/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18085381091036894.jpg",
+            "note": "Effortless layers for everyday winter. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DTA6MtpjG4E/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-17997472598714745.jpg",
+            "note": "Timeless with an edge. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DS-VO6pDIw8/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18053926622682491.jpg",
+            "note": "Serving seasonal sparkle. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DSu4pH6DIfs/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18093958813915463.jpg",
+            "note": "Paws, sparkle, and style. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DSpu-c_DPEt/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-17907207774291621.jpg",
+            "note": "Cozy, cute, and full of charm. Warning: last photo may cause excessive smiling and double-taps.  #LoveGUESS",
+            "source": "https://www.instagram.com/p/DSnKQH0jEWf/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-17907680784146027.jpg",
+            "note": "Make the holidays stylishly yours. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DSiAm3vDGPA/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18065380808632689.jpg",
+            "note": "Shine bright this season. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DSfbt7NDCVV/"
+          },
+          {
+            "image": "/assets/media/feed/guess-wall-18095970910850213.jpg",
+            "note": "Modern silhouettes for the city. #LoveGUESS",
+            "source": "https://www.instagram.com/p/DSXtwRuDDrZ/"
+          }
+        ]
+      }
+    },
+    {
+      "name": "iBlues",
+      "slug": "iblues",
+      "card": {
+        "eyebrow": "Modern Femininity",
+        "heroTitle": "Glamour for Fashionable Women",
+        "summary": "Italian womenswear with bold shapes, expressive color, and an effortless version of glamour.",
+        "heroImage": "/assets/media/brand-pages/iblues-page-1.jpg"
+      },
+      "detail": {
+        "intro": "Founded in 1975 within the Max Mara Fashion Group, iBlues developed into a total-look collection spanning ready-to-wear, shoes, bags, and accessories.",
+        "focus": "Its customer is curious, fashion-aware, and willing to take stylistic risks. The brand responds with feminine silhouettes, clean detailing, and fabrics that support a polished but easy kind of glamour.",
+        "atmosphere": "Feminine, current, self-assured.",
+        "categories": [
+          "Womenswear",
+          "Accessories",
+          "Effortless Glamour"
+        ],
+        "tone": "A more fashion-forward feminine voice that remains wearable and composed.",
+        "detailHeroImage": "/assets/media/brand-pages/iblues-header.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/brand-pages/iblues-page-1.jpg",
+            "note": "iBlues editorial selection"
+          },
+          {
+            "image": "/assets/media/brand-pages/iblues-page-2.jpg",
+            "note": "iBlues editorial selection"
+          }
+        ],
+        "detailGallery": [
+          {
+            "image": "/assets/media/brand-pages/iblues-page-1.jpg",
+            "note": "iBlues editorial image 1"
+          },
+          {
+            "image": "/assets/media/brand-pages/iblues-page-2.jpg",
+            "note": "iBlues editorial image 2"
+          },
+          {
+            "image": "/assets/media/brand-pages/iblues-page-3.jpg",
+            "note": "iBlues editorial image 3"
+          },
+          {
+            "image": "/assets/media/brand-pages/iblues-page-4.jpg",
+            "note": "iBlues editorial image 4"
+          },
+          {
+            "image": "/assets/media/brand-pages/iblues-page-5.jpg",
+            "note": "iBlues editorial image 5"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18088471763124366.jpg",
+            "note": "Stressed, but still well dressed 💅🏻✨  #iBlues",
+            "source": "https://www.instagram.com/p/DVZAbvQiMDo/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18104663938847755.jpg",
+            "note": "Denim on repeat 🫶🏻  #iBlues",
+            "source": "https://www.instagram.com/p/DVG8ntLiNac/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18072678284454926.jpg",
+            "note": "Just casually slaying in the queue 💖  #iBlues",
+            "source": "https://www.instagram.com/p/DUtOUi-iDvF/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-17910918093335383.jpg",
+            "note": "Mix it. Match it. Make it yours.  #iBlues",
+            "source": "https://www.instagram.com/p/DUqqRtgAHJs/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18195950152339934.jpg",
+            "note": "Details make the look ✨  #iBlues",
+            "source": "https://www.instagram.com/p/DUlene9CGdI/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18131242039458941.jpg",
+            "note": "Suede doing the most without trying 💥  #iBlues",
+            "source": "https://www.instagram.com/p/DUbIfewCJ0p/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18101938861848626.jpg",
+            "note": "Matching, as usual 🫶🏻  #iBlues",
+            "source": "https://www.instagram.com/p/DUJDvBhiMTH/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18113150614633526.jpg",
+            "note": "Say cheese 📸  #iBlues",
+            "source": "https://www.instagram.com/p/DUD-3Q2CL_3/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-17870083308538308.jpg",
+            "note": "Double trouble in matching outfits 💥  #iBlues",
+            "source": "https://www.instagram.com/p/DT0gkmvCFYO/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18124575646545796.jpg",
+            "note": "Effortless chic 🫶🏻  #iBlues",
+            "source": "https://www.instagram.com/p/DTihTA6iI72/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-17873497215395667.jpg",
+            "note": "Ready to jump into the new year ✨  #iBlues",
+            "source": "https://www.instagram.com/p/DTIcgqUiDSR/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18091612600981992.jpg",
+            "note": "giulia_scotti in total look iBlues 💗  #iBlues",
+            "source": "https://www.instagram.com/p/DTA7pQGiJBi/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18056821640655457.jpg",
+            "note": "A touch of red ❤️  #iBlues",
+            "source": "https://www.instagram.com/p/DS4tPurCP7v/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18198885511328212.jpg",
+            "note": "Perfect look unlocked 💫  #iBlues",
+            "source": "https://www.instagram.com/p/DSp90SqgB0G/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18075103007338888.jpg",
+            "note": "Holiday mood: ACTIVATED. With cristinachenii ✨  #iBlues",
+            "source": "https://www.instagram.com/p/DSeys5FiOBx/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18066607886428050.jpg",
+            "note": "Christmas lunch, but make it cool 🧚🏻 with lanawilman   #iBlues",
+            "source": "https://www.instagram.com/p/DSSsqL0CPXA/"
+          },
+          {
+            "image": "/assets/media/feed/iblues-wall-18046866287480750.jpg",
+            "note": "iBlues fit check 🫶🏻  #iBlues",
+            "source": "https://www.instagram.com/p/DSK_q18iPCn/"
+          }
+        ]
+      }
+    },
+    {
+      "name": "More & More",
+      "slug": "more-and-more",
+      "card": {
+        "eyebrow": "Everyday Elegance",
+        "heroTitle": "More Inspiration",
+        "summary": "German womenswear built around feminine dressing, practical coordination, and strong day-to-day value.",
+        "heroImage": "/assets/media/brand-pages/more-and-more-page-1.jpg"
+      },
+      "detail": {
+        "intro": "Founded in 1982 in Starnberg, More & More has developed a consistent proposition across feminine businesswear, polished everyday dressing, and casual pieces with easy coordination.",
+        "focus": "Its strength lies in usability. Collections are designed to combine across seasons, maintain value, and support a customer defined less by age than by attitude and lifestyle.",
+        "atmosphere": "Approachable, polished, dependable.",
+        "categories": [
+          "Daywear",
+          "Business Dressing",
+          "Casual Coordinates"
+        ],
+        "tone": "Commercially clear fashion with a softer, feminine practicality.",
+        "detailHeroImage": "/assets/media/feed/more-and-more-social-5.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/brand-pages/more-and-more-page-1.jpg",
+            "note": "More & More editorial selection"
+          },
+          {
+            "image": "/assets/media/brand-pages/more-and-more-page-2.jpg",
+            "note": "More & More editorial selection"
+          }
+        ],
+        "detailGallery": [
+          {
+            "image": "/assets/media/brand-pages/more-and-more-page-1.jpg",
+            "note": "More & More editorial image 1"
+          },
+          {
+            "image": "/assets/media/brand-pages/more-and-more-page-2.jpg",
+            "note": "More & More editorial image 2"
+          },
+          {
+            "image": "/assets/media/brand-pages/more-and-more-page-3.jpg",
+            "note": "More & More editorial image 3"
+          },
+          {
+            "image": "/assets/media/brand-pages/more-and-more-page-4.jpg",
+            "note": "More & More editorial image 4"
+          },
+          {
+            "image": "/assets/media/brand-pages/more-and-more-page-5.jpg",
+            "note": "More & More editorial image 5"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-18152719528433557.jpg",
+            "note": "🩷 To Paris with Love  #youarebeautiful #valentinstag #moreandmore_official #AI",
+            "source": "https://www.instagram.com/p/DUThaavgdGD/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-18070018139533844.jpg",
+            "note": "🩷 Lovely Day in Paris  #youarebeautiful #valentinstag #moreandmore_official #AI",
+            "source": "https://www.instagram.com/p/DUOX5WLgaRH/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-18105017005814496.jpg",
+            "note": "Trend für Mode-Profis: Wildleder-Optik mit Denim  #velours #denim #moreandmore_official",
+            "source": "https://www.instagram.com/p/DT3TjumgUGE/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-17869948200535844.jpg",
+            "note": "Blusen mit Stickerei sind der schönste Partner zu Denim  #youarebeautiful #denim #boho #moreandmore_official",
+            "source": "https://www.instagram.com/p/DT0aKqPgYoU/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-18092188948804390.jpg",
+            "note": "More & More wall image",
+            "source": "https://www.instagram.com/p/DTr8NXfiPEd/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-18414892876142869.jpg",
+            "note": "More & More wall image",
+            "source": "https://www.instagram.com/p/DTktNWICG6R/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-18373857466081176.jpg",
+            "note": "Süßer Trend: Schleifen in 3D 💚  #youarebeautiful #schleife #pistazie #moreandmore_official",
+            "source": "https://www.instagram.com/p/DTitLtKjRTs/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-18546160117008835.jpg",
+            "note": "Diese lässige Hose lieben wir alle zu kuschligem Strick 🩷🤍💚  #youarebeautiful #barrel #streifen #moreandmore_official",
+            "source": "https://www.instagram.com/p/DTdjmo7iaop/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-18083880392179381.jpg",
+            "note": "Die trendigste Jackenform jetzt 🤍💚  #youarebeautiful #blouson #pistazie #moreandmore_official",
+            "source": "https://www.instagram.com/p/DTaAbpbiNHd/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-18112239214717984.jpg",
+            "note": "Verspielter French-Chic in Schwarz-Weiß 🤍🤍🖤 #schleifen #wickelrock #moreandmore_official",
+            "source": "https://www.instagram.com/p/DTBIB1ID0C1/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-17958763893038790.jpg",
+            "note": "More & More wall image",
+            "source": "https://www.instagram.com/p/DSkK4PCiFXF/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-18433541221108881.jpg",
+            "note": "Black & White ist der entspannteste Look für jede Feier  #grafik #moreandmore_official #Fest #Business",
+            "source": "https://www.instagram.com/p/DSfpqA-DrP9/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-18250569130289634.jpg",
+            "note": "More & More wall image",
+            "source": "https://www.instagram.com/p/DSMmWUcCJp9/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-17900835867338348.jpg",
+            "note": "More & More wall image",
+            "source": "https://www.instagram.com/p/DSE-tMUiJzo/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-17904964986294863.jpg",
+            "note": "Kleider-Styling für die kälteren Tage   #jeans #darkdenim  #officelook #moreandmore_official",
+            "source": "https://www.instagram.com/p/DRxJCjljay8/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-18320877868171830.jpg",
+            "note": "Nadelstreifen für alle Anlässe: Ob Business oder festlich – je nach Styling ist dieser Anzug ein Chamäleon #grey #business #moreandmore_official",
+            "source": "https://www.instagram.com/p/DRcz9DgDTFg/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-18068683043602836.jpg",
+            "note": "Girls  night out: Stylish, strahlend, glamourös im Fake Fur Jäckchen und Strassdekor  #glam #paillette  #moreandmore_official",
+            "source": "https://www.instagram.com/p/DQ413p6lD1V/"
+          },
+          {
+            "image": "/assets/media/feed/more-and-more-wall-17949287292025173.jpg",
+            "note": "Shine like a Diamond: Eine kleine Fake-Fur-Weste neu gestylt verleiht  sofort den Glam-Faktor! #glam #fakefur  #moreandmore_official",
+            "source": "https://www.instagram.com/p/DQ4wx8LCLaY/"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Rich & Royal",
+      "slug": "rich-royal",
+      "card": {
+        "eyebrow": "Premium Lifestyle",
+        "heroTitle": "Live rich - act royal",
+        "summary": "Contemporary premium fashion with expressive color, tactile fabrics, and a strong feminine self-image.",
+        "heroImage": "/assets/media/brand-pages/rich-royal-page-1.jpg"
+      },
+      "detail": {
+        "intro": "Rich & Royal positions itself as a modern German lifestyle brand, built around premium dressing that feels current, feminine, and responsive to trend without becoming disposable.",
+        "focus": "The brand's language is carried by fabric feel, color, and considered detailing. It also places visible importance on sustainability through materials, packaging, supplier selection, and production standards.",
+        "atmosphere": "Confident, premium, trend-aware.",
+        "categories": [
+          "Premium Womenswear",
+          "Lifestyle Fashion",
+          "Responsible Production"
+        ],
+        "tone": "A premium fashion voice that combines femininity, confidence, and material attention.",
+        "detailHeroImage": "/assets/media/brand-pages/rich-royal-header.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/brand-pages/rich-royal-page-1.jpg",
+            "note": "Rich & Royal editorial selection"
+          },
+          {
+            "image": "/assets/media/brand-pages/rich-royal-page-2.jpg",
+            "note": "Rich & Royal editorial selection"
+          }
+        ],
+        "detailGallery": [
+          {
+            "image": "/assets/media/brand-pages/rich-royal-page-1.jpg",
+            "note": "Rich & Royal editorial image 1"
+          },
+          {
+            "image": "/assets/media/brand-pages/rich-royal-page-2.jpg",
+            "note": "Rich & Royal editorial image 2"
+          },
+          {
+            "image": "/assets/media/brand-pages/rich-royal-page-3.jpg",
+            "note": "Rich & Royal editorial image 3"
+          },
+          {
+            "image": "/assets/media/brand-pages/rich-royal-page-4.jpg",
+            "note": "Rich & Royal editorial image 4"
+          },
+          {
+            "image": "/assets/media/brand-pages/rich-royal-page-5.jpg",
+            "note": "Rich & Royal editorial image 5"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-17850270870641162.jpg",
+            "note": "Sailor stripes, gold buttons, and classic collars bring the sea to your summer wardrobe.",
+            "source": "https://www.instagram.com/p/DVeTYZBDQ_C/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-18338193397214619.jpg",
+            "note": "Preppy, playful, and powerful – our Pre-Summer collection captures the elegance of the sea and the spirit of the city.",
+            "source": "https://www.instagram.com/p/DVZC5r4CXcm/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-18047962397498414.jpg",
+            "note": "Feminine silhouettes meet bold energy.  #RichAndRoyal #DressingSuperwomen #NewIn #SpringCollection #RetroRomance",
+            "source": "https://www.instagram.com/p/DVG6eIIDH2V/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-18105725857748679.jpg",
+            "note": "Spring has arrived — are you dressed for it?  #RichAndRoyal #DressingSuperwomen #NewIn #SpringCollection #RetroRomance",
+            "source": "https://www.instagram.com/p/DVEjcBGDIrd/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-18142585897473140.jpg",
+            "note": "Bouclé jackets, floral prints, and playful silhouettes – because every woman deserves a little drama.  #RichAndRoyal #DressingSuperwomen #NewIn #SpringCollectio",
+            "source": "https://www.instagram.com/p/DVBw8nuDLZ4/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-18053381873461789.jpg",
+            "note": "This season, fashion is fearless, feminine, and full of life – just like you.  #RichAndRoyal #DressingSuperwomen #NewIn #SpringCollection #RetroRomance",
+            "source": "https://www.instagram.com/p/DUlcHKvDCGR/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-17936482575153800.jpg",
+            "note": "A season painted in rosé and confidence.💗  #RichAndRoyal #DressingSuperwomen #NewIn #SpringCollection #RetroRomance",
+            "source": "https://www.instagram.com/p/DUV_ax_jOGc/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-17889271905286949.jpg",
+            "note": "January is officially over! So, is it too early to start dressing for spring? How do you rate our outfit choice?   #RichAndRoyal #DressingSuperwomen #PreSpringC",
+            "source": "https://www.instagram.com/p/DULDCz-jHhS/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-18037503461529735.jpg",
+            "note": "In our feminine era - with this A-shape dress in rich plum shade Luxe Grape.  #RichAndRoyal #DressingSuperwomen #UrbanBloom #PreSpringCollection #SS26",
+            "source": "https://www.instagram.com/p/DTx8OoaDAt6/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-18144302602457832.jpg",
+            "note": "We’re still falling for suede - but this colourful printed dress deserves its moment, too! What’s your favourite?  #RichAndRoyal #DressingSuperwomen #PreSpringC",
+            "source": "https://www.instagram.com/p/DTqN4lxDCxp/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-18068851274392860.jpg",
+            "note": "We love suede - so we made it a matching set! Discover our pre-spring collection Urban Bloom via richandroyal.com  #RichAndRoyal #DressingSuperwomen #PreSpringC",
+            "source": "https://www.instagram.com/p/DTnpGlVjEAt/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-18124808671536690.jpg",
+            "note": "Dress or full look with denims, shirt & jacket? All items from our collection Urban Bloom now available via richandroyal.com.   #RichAndRoyal #DressingSuperwome",
+            "source": "https://www.instagram.com/p/DTaxH3kjH3F/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-18052679309693923.jpg",
+            "note": "When you have a meeting at four and drinks by the sea at five: this power suit can do both!   #RichAndRoyal #DressingSuperwomen #NewIn #PreSpring #UrbanBloom",
+            "source": "https://www.instagram.com/p/DTIvfmRjENQ/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-17869115169526156.jpg",
+            "note": "Pretty in print: We love a good snake allover to boost our January mood! Don’t you?  #RichAndRoyal #DressingSuperwomen #NewIn #PreSpring #UrbanBloom",
+            "source": "https://www.instagram.com/p/DTGJvTQDGKn/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-17986229792768515.jpg",
+            "note": "What better way to welcome the new year than with a look that makes you feel good?   #RichAndRoyal #DressingSuperwomen #NewIn #UrbanBloom #PreSpring",
+            "source": "https://www.instagram.com/p/DTBAzRWjLt8/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-17928851583034823.jpg",
+            "note": "Running errands between the years? This look is perfect for just that: comfortable, effortless, and easy to layer. Ne need to keep the receipts!   #RichAndRoyal",
+            "source": "https://www.instagram.com/p/DS0KM2hjCYA/"
+          },
+          {
+            "image": "/assets/media/feed/rich-royal-wall-17956000023020583.jpg",
+            "note": "Flattering through and through: in shade Luxe Grape, this kimono-sleeved dress will be your new staple. 👘   #RichAndRoyal #DressingSuperwomen #NewIn #PreSpring ",
+            "source": "https://www.instagram.com/p/DSiHWckDPr-/"
+          }
+        ]
+      }
+    },
+    {
+      "name": "YAYA",
+      "slug": "yaya",
+      "card": {
+        "eyebrow": "Soft Modernity",
+        "heroTitle": "It's A State of Mind",
+        "summary": "A lifestyle brand built around soft fabrics, toned-down color, and accessible design with long-term wearability.",
+        "heroImage": "/assets/media/brand-pages/yaya-page-1.jpg"
+      },
+      "detail": {
+        "intro": "Founded in 1992 near Amsterdam, YAYA extends beyond womenswear into home accessories, but keeps the same values across both worlds: comfort, femininity, and a calm, desirable design language.",
+        "focus": "The collections are known for softness, ease of styling, and a lowered visual volume that still retains charm. YAYA presents itself less as a demographic label and more as an attitude toward everyday living.",
+        "atmosphere": "Soft, calm, lifestyle-led.",
+        "categories": [
+          "Womenswear",
+          "Home Accessories",
+          "Soft Essentials"
+        ],
+        "tone": "A quieter lifestyle proposition defined by warmth, accessibility, and understated charm.",
+        "detailHeroImage": "/assets/media/brand-pages/yaya-header.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/brand-pages/yaya-page-1.jpg",
+            "note": "YAYA editorial selection"
+          },
+          {
+            "image": "/assets/media/brand-pages/yaya-page-2.jpg",
+            "note": "YAYA editorial selection"
+          }
+        ],
+        "detailGallery": [
+          {
+            "image": "/assets/media/brand-pages/yaya-page-1.jpg",
+            "note": "YAYA editorial image 1"
+          },
+          {
+            "image": "/assets/media/brand-pages/yaya-page-2.jpg",
+            "note": "YAYA editorial image 2"
+          },
+          {
+            "image": "/assets/media/brand-pages/yaya-page-3.jpg",
+            "note": "YAYA editorial image 3"
+          },
+          {
+            "image": "/assets/media/brand-pages/yaya-page-4.jpg",
+            "note": "YAYA editorial image 4"
+          },
+          {
+            "image": "/assets/media/brand-pages/yaya-page-5.jpg",
+            "note": "YAYA editorial image 5"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18341409493210383.jpg",
+            "note": "Explore a collection inspired by the calm of the sea 💙",
+            "source": "https://www.instagram.com/p/DVeVQYWkx6p/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18081175760595562.jpg",
+            "note": "Designed with playful stripes and a drawstring at the hem 🤍",
+            "source": "https://www.instagram.com/p/DVZKlDYEpIR/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18111872929678582.jpg",
+            "note": "Comfortable and confident in cargo 🤍",
+            "source": "https://www.instagram.com/p/DVS8QsnEsZe/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-17899664307394093.jpg",
+            "note": "Timeless silhouettes in soft tones that are made to combine endlessly 💫",
+            "source": "https://www.instagram.com/p/DVRdSuiEsHu/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18075193217122168.jpg",
+            "note": "Utility balanced with the softness of feminine details 🤍",
+            "source": "https://www.instagram.com/p/DVJu-UaEr0J/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18090366176470498.jpg",
+            "note": "A silhouette of sophistication 🩶",
+            "source": "https://www.instagram.com/p/DU_fmh5EuhA/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18381959575082807.jpg",
+            "note": "Lift your look with a touch of yellow that brings color to even the chilliest days 💛",
+            "source": "https://www.instagram.com/p/DU816EqEqU0/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18071865713612602.jpg",
+            "note": "Completely in khaki 🤎",
+            "source": "https://www.instagram.com/p/DU3thHAEkSS/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18112713046726786.jpg",
+            "note": "Relaxed and refined 🩶",
+            "source": "https://www.instagram.com/p/DUtY_jxkuxv/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18073667414614837.jpg",
+            "note": "Meet our timeless trenchcoat, worn over a jeans with utility details to complete the look👖",
+            "source": "https://www.instagram.com/p/DUjF8Txkv_7/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18064522856290015.jpg",
+            "note": "Designed in a gentle touch of yellow 🌼",
+            "source": "https://www.instagram.com/p/DUdQmjzk2Gf/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18563126386030673.jpg",
+            "note": "Head-to-toe in soft grey denim 🩶",
+            "source": "https://www.instagram.com/p/DUY0AUjkpqv/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18561320014051798.jpg",
+            "note": "A layered look that can take you through many seasons to come 🤍",
+            "source": "https://www.instagram.com/p/DUENci1EgTY/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18089352044283559.jpg",
+            "note": "Add a surprising sense of energy to your look with this fresh hint of yellow-green 💛",
+            "source": "https://www.instagram.com/p/DUBni_kEmdC/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-17975811854981894.jpg",
+            "note": "Our soft silhouettes with feminine details lend your look a subtle, unique touch 🤍",
+            "source": "https://www.instagram.com/p/DT40fhCkpUe/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18555140407007238.jpg",
+            "note": "Freshen up your look with a bright hint of yellow-green 🍋",
+            "source": "https://www.instagram.com/p/DT3V7IbEpP8/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18106977745674474.jpg",
+            "note": "Slow down in softness 🤍",
+            "source": "https://www.instagram.com/p/DTlSxBuEpsG/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18091159234987209.jpg",
+            "note": "From head to toe in soft beige 🤍",
+            "source": "https://www.instagram.com/p/DTivLuxkoeO/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-17862222936566325.jpg",
+            "note": "Find a collection full of fresh tones and soft styles in our concept stores 💛",
+            "source": "https://www.instagram.com/p/DTdkT5Cku-e/"
+          },
+          {
+            "image": "/assets/media/feed/yaya-wall-18105082885690557.jpg",
+            "note": "Designed from a rich jacquard knit, our poncho cardigan wraps you in a gently rounded silhouette 🤎",
+            "source": "https://www.instagram.com/p/DTcjeOQjOJe/"
+          }
+        ]
+      }
+    },
+    {
+      "name": "0039 Italy",
+      "slug": "0039-italy",
+      "card": {
+        "eyebrow": "Blouse Expertise",
+        "heroTitle": "True to itself and to its Roots",
+        "summary": "A German label with an Italian sensibility, built around blouses as the enduring center of its identity.",
+        "heroImage": "/assets/media/brand-pages/0039-italy-page-1.jpg"
+      },
+      "detail": {
+        "intro": "0039 Italy began in 2000 and built its reputation by rethinking the blouse beyond its conservative stereotype, turning it into a contemporary fashion proposition with longevity.",
+        "focus": "Its distinctiveness comes from discipline. Rather than chasing breadth, the brand remains committed to its roots, allowing the blouse to stay central while collections evolve around that core with consistency and clarity.",
+        "atmosphere": "Focused, refined, enduring.",
+        "categories": [
+          "Blouses",
+          "Womenswear",
+          "Italian-Informed Essentials"
+        ],
+        "tone": "A tightly defined brand built on consistency, signature product focus, and quiet evolution.",
+        "detailHeroImage": "/assets/media/brand-pages/0039-italy-header.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/brand-pages/0039-italy-page-1.jpg",
+            "note": "0039 Italy editorial selection"
+          },
+          {
+            "image": "/assets/media/brand-pages/0039-italy-page-2.jpg",
+            "note": "0039 Italy editorial selection"
+          }
+        ],
+        "detailGallery": [
+          {
+            "image": "/assets/media/brand-pages/0039-italy-page-1.jpg",
+            "note": "0039 Italy editorial image 1"
+          },
+          {
+            "image": "/assets/media/brand-pages/0039-italy-page-2.jpg",
+            "note": "0039 Italy editorial image 2"
+          },
+          {
+            "image": "/assets/media/brand-pages/0039-italy-page-3.jpg",
+            "note": "0039 Italy editorial image 3"
+          },
+          {
+            "image": "/assets/media/brand-pages/0039-italy-page-4.jpg",
+            "note": "0039 Italy editorial image 4"
+          },
+          {
+            "image": "/assets/media/brand-pages/0039-italy-page-5.jpg",
+            "note": "0039 Italy editorial image 5"
+          },
+          {
+            "image": "/assets/media/feed/0039-italy-wall-18126522736495249.jpg",
+            "note": "SPRING/ SUMMER Collection 2026  The first pieces of our new collection have just been released! Discover the new pieces on our website.  #0039italy",
+            "source": "https://www.instagram.com/p/DVOo2ujjQtW/"
+          },
+          {
+            "image": "/assets/media/feed/0039-italy-wall-18058147763386945.jpg",
+            "note": "SPRING/ SUMMER Collection 2026  The first pieces of our new collection have just been released! Discover the new pieces on our website.  #0039italy",
+            "source": "https://www.instagram.com/p/DVDeugtAOUq/"
+          },
+          {
+            "image": "/assets/media/feed/0039-italy-wall-18557594617011744.jpg",
+            "note": "SPRING/ SUMMER Collection 2026  The first pieces of our new collection have just been released! Discover the new pieces on our website.  #0039italy",
+            "source": "https://www.instagram.com/p/DUqk5mtDY1H/"
+          },
+          {
+            "image": "/assets/media/feed/0039-italy-wall-17916773715272088.jpg",
+            "note": "SPRING/ SUMMER Collection 2026  The first pieces of our new collection have just been released! Discover the new pieces on our website.  #0039italy",
+            "source": "https://www.instagram.com/p/DUfbpYtja3R/"
+          },
+          {
+            "image": "/assets/media/feed/0039-italy-wall-17908695666323832.jpg",
+            "note": "SPRING/ SUMMER Collection 2026  The first pieces of our new collection have just been released! Discover the new pieces on our website.  #0039italy",
+            "source": "https://www.instagram.com/p/DUJDIVij-4A/"
+          }
+        ]
+      }
+    }
+  ]
+}

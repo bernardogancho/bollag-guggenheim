@@ -1,7 +1,7 @@
 ---
 layout: layouts/base.njk
 pagination:
-  data: wearhouseBrandProfiles
+  data: wearhouse.brands
   size: 1
   alias: brand
 permalink: "wearhouse/{{ brand.slug }}/index.html"
@@ -31,8 +31,8 @@ eleventyComputed:
       </p>
       <div class="type-meta mt-8 flex flex-wrap gap-x-8 gap-y-3 text-bone/56 [text-shadow:0_5px_16px_rgba(0,0,0,0.4)]" data-reveal>
         <span>{{ brand.segment }}</span>
-        <span>Represented by The Wearhouse</span>
-        <span>Switzerland</span>
+        <span>{{ wearhouse.detailPage.representedLabel }}</span>
+        <span>{{ wearhouse.detailPage.marketLabel }}</span>
       </div>
     </div>
   </div>
@@ -42,7 +42,7 @@ eleventyComputed:
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="grid gap-12 lg:grid-cols-[minmax(0,0.86fr)_minmax(24rem,34rem)] lg:items-center xl:gap-20">
       <div class="max-w-[44rem]">
-        <p class="type-eyebrow mb-4 text-black/42" data-reveal>Brand Overview</p>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ wearhouse.detailPage.overviewEyebrow }}</p>
         <div class="type-body-lg type-body-stack text-black/72">
           <p data-reveal>{{ brand.intro }}</p>
           <p data-reveal>{{ brand.focus }}</p>
@@ -77,14 +77,14 @@ eleventyComputed:
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
     <div class="flex flex-col gap-8 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div>
-        <p class="type-eyebrow mb-4 text-black/42" data-reveal>Explore More</p>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ wearhouse.detailPage.ctaEyebrow }}</p>
         <h2 class="type-section-title-sm max-w-[12ch] text-black" data-reveal>
-          Continue through the Wearhouse portfolio.
+          {{ wearhouse.detailPage.ctaTitle }}
         </h2>
       </div>
       <div class="flex flex-wrap gap-3" data-reveal>
-        <a href="/wearhouse/" class="cta-button cta-button--dark">
-          <span>Back to Wearhouse</span>
+        <a href="{{ wearhouse.detailPage.ctaButtonHref }}" class="cta-button cta-button--dark">
+          <span>{{ wearhouse.detailPage.ctaButtonLabel }}</span>
           <span aria-hidden="true">→</span>
         </a>
       </div>

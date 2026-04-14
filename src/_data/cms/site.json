@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "left": [
+      { "label": "Company", "href": "/company/" },
+      { "label": "The WEARHOUSE", "href": "/wearhouse/" },
+      { "label": "Brands", "href": "/brands/" }
+    ],
+    "right": [
+      { "label": "Stores", "href": "/stores/" },
+      { "label": "Agenda", "href": "/agenda/" },
+      { "label": "Contact", "href": "/contact/" }
+    ]
+  },
+  "footer": {
+    "groupLabel": "Part of the group",
+    "wearhouseWordmark": {
+      "prefix": "The",
+      "name": "Wearhouse",
+      "suffix": ["Fashion Trade", "GmbH"]
+    },
+    "bgContact": {
+      "title": "Contact",
+      "name": "Bollag-Guggenheim AG",
+      "address": ["Thurgauerstrasse 113", "CH-8152 Glattpark"],
+      "phoneLabel": "+41 43 811 00 00",
+      "phoneHref": "tel:+41438110000",
+      "emailLabel": "welcome@bollag.net",
+      "emailHref": "mailto:welcome@bollag.net",
+      "routeLabel": "Route map",
+      "routeHref": "https://www.bollagguggenheim.cyon.site/media/anfahrtsplantmc.pdf"
+    },
+    "wearhouseContact": {
+      "title": "Contact",
+      "name": "The Wearhouse Fashion Trade GmbH",
+      "address": ["Seestrasse 78", "8703 Erlenbach"],
+      "phoneLabel": "+41 44 912 12 00",
+      "phoneHref": "tel:+41449121200",
+      "emailLabel": "wearhouse@wearhouse.ch",
+      "emailHref": "mailto:wearhouse@wearhouse.ch",
+      "routeLabel": "Open in Maps",
+      "routeHref": "https://www.google.com/maps/search/?api=1&query=Seestrasse+78,+8703+Erlenbach,+Schweiz"
+    },
+    "navigation": {
+      "title": "Navigation",
+      "items": [
+        { "label": "Company", "href": "/company/" },
+        { "label": "Brands", "href": "/brands/" },
+        { "label": "Stores", "href": "/stores/" },
+        { "label": "Agenda", "href": "/agenda/" },
+        { "label": "Contact", "href": "/contact/" }
+      ]
+    },
+    "meta": {
+      "since": "Since 1947",
+      "groupName": "Bollag Guggenheim Fashion Group Switzerland"
+    }
+  }
+}

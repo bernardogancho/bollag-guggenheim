@@ -1,0 +1,60 @@
+{
+  "hero": {
+    "eyebrow": "Company",
+    "title": "Success, reliability and tradition.",
+    "summary": "Bollag Guggenheim Fashion Group has shaped the Swiss premium fashion market for over seven decades.",
+    "poster": "/assets/media/company/company-hero-poster.jpg",
+    "video": "/assets/media/company/company-hero.mp4",
+    "videoAlt": "Bollag Guggenheim showroom"
+  },
+  "intro": {
+    "eyebrow": "The Company",
+    "titleLines": ["In the Swiss", "fashion market", "for over seven", "decades."],
+    "paragraphs": [
+      "Bollag Guggenheim Fashion Group has been present in the Swiss fashion market for over seven decades. The company's emphasis on the premium lifestyle segment, profound knowhow and experience, as well as the synergy between wholesale and retail are key to its success.",
+      "Bollag Guggenheim and The Wearhouse unites women's and men's wear in the contemporary, casual-trendy and jeans fashion segment, complemented by accessories and shoes.",
+      "Reliable and respectful partnerships create sustainable success for franchise partners, shop in shop partners and other wholesale partners. Art remains an integral part of the showrooms."
+    ],
+    "image": "/assets/media/company/company-portrait-2.jpg",
+    "imageAlt": "Bollag Guggenheim showroom portrait"
+  },
+  "history": {
+    "eyebrow": "Our History",
+    "title": "We bring our partners 70 years of fashion experience.",
+    "paragraphs": [
+      "Bollag Guggenheim Fashion Group is nationally and internationally regarded as a guarantor for successful fashion distribution in Switzerland and the Principality of Liechtenstein.",
+      "Sami Bollag, who passed away in 2017, built and led the company to its success. His entrepreneurial mentality left a lasting imprint on the culture of the Bollag Guggenheim Fashion Group.",
+      "Today the business is guided by a family board and run by a highly experienced management team with more than 120 employees."
+    ],
+    "image": "/assets/media/company/company-history.jpg",
+    "imageAlt": "Sami Bollag portrait"
+  },
+  "distribution": {
+    "eyebrow": "Distribution",
+    "titleLines": ["We create synergies", "between wholesale", "and retail."],
+    "images": [
+      {
+        "src": "/assets/media/company/company-distribution-1.jpg",
+        "alt": "The Gallery store interior"
+      },
+      {
+        "src": "/assets/media/company/company-distribution-2.jpg",
+        "alt": "Retail showroom detail"
+      }
+    ],
+    "wholesale": {
+      "eyebrow": "Wholesale",
+      "paragraphs": [
+        "Bollag Guggenheim Fashion Group offers tailor-made services to brand partners and wholesale customers across 2,500 square meters.",
+        "Each brand has a dedicated brand manager and customer service team, while long-term collaborations across franchising, shop in shops, department stores and boutiques remain central to the model."
+      ]
+    },
+    "retail": {
+      "eyebrow": "Retail",
+      "paragraphs": [
+        "With monobrand and multibrand stores, the group gathers direct retail experience and market information that strengthens its relationships with both wholesale customers and brand partners.",
+        "That store-level knowledge supports stronger brand management and a more informed distribution strategy overall."
+      ]
+    }
+  }
+}

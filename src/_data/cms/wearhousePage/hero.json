@@ -1,0 +1,14 @@
+{
+  "hero": {
+    "eyebrow": "Subsidiary",
+    "title": "An integrated agency world inside the group.",
+    "summary": "The Wearhouse Fashion Trade GmbH extends the group through a distinct agency model, a sharper showroom identity, and a portfolio spanning womenswear, menswear, accessories, and selected niche discoveries.",
+    "image": "/assets/media/wearhouse/wearhouse-hero.avif",
+    "imageAlt": "Wearhouse showroom hero",
+    "stats": [
+      "16 labels",
+      "Erlenbach",
+      "Women, men and accessories"
+    ]
+  }
+}

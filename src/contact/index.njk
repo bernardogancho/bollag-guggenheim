@@ -42,13 +42,13 @@ title: Contact | Bollag Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[38rem]">
-        <p class="type-eyebrow mb-4 text-black/40" data-reveal>Office</p>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ contact.officeSection.eyebrow }}</p>
         <h2 class="type-section-title max-w-[11ch] text-black" data-reveal>
-          Visit, call, or write to the team.
+          {{ contact.officeSection.title }}
         </h2>
       </div>
       <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal>
-        The office and showroom base are located in Glattpark, with direct access information and contact channels below.
+        {{ contact.officeSection.summary }}
       </p>
     </div>
 
@@ -88,27 +88,27 @@ title: Contact | Bollag Guggenheim
         </section>
 
         <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
-          <p class="type-label mb-4 text-black/38">Partner Contact</p>
-          <h3 class="type-section-title-block text-black">The Wearhouse Fashion Trade GmbH</h3>
+          <p class="type-label mb-4 text-black/38">{{ contact.wearhousePartner.sectionLabel }}</p>
+          <h3 class="type-section-title-block text-black">{{ contact.wearhousePartner.name }}</h3>
           <div class="mt-8 grid gap-8 lg:grid-cols-2">
             <div>
               <p class="type-label mb-3 text-black/38">Address</p>
               <div class="type-body-lg text-black/72">
-                <p>Seestrasse 78</p>
-                <p>8703 Erlenbach</p>
-                <p>Schweiz</p>
+                {% for line in contact.wearhousePartner.address %}
+                  <p>{{ line }}</p>
+                {% endfor %}
               </div>
             </div>
             <div>
               <p class="type-label mb-3 text-black/38">Contact</p>
               <div class="type-body-lg type-body-stack-tight text-black/72">
-                <p><a href="tel:+41449121200" class="transition hover:text-black">+41 44 912 12 00</a></p>
-                <p><a href="mailto:wearhouse@wearhouse.ch" class="transition hover:text-black">wearhouse@wearhouse.ch</a></p>
+                <p><a href="{{ contact.wearhousePartner.phoneHref }}" class="transition hover:text-black">{{ contact.wearhousePartner.phoneLabel }}</a></p>
+                <p><a href="{{ contact.wearhousePartner.emailHref }}" class="transition hover:text-black">{{ contact.wearhousePartner.emailLabel }}</a></p>
               </div>
             </div>
           </div>
           <div class="mt-8 flex flex-wrap gap-3">
-            <a href="https://www.google.com/maps/search/?api=1&query=Seestrasse+78,+8703+Erlenbach,+Schweiz" target="_blank" rel="noopener" class="cta-button cta-button--dark">
+            <a href="{{ contact.wearhousePartner.mapsHref }}" target="_blank" rel="noopener" class="cta-button cta-button--dark">
               <span>Open in Maps</span>
               <span aria-hidden="true">→</span>
             </a>
@@ -117,44 +117,44 @@ title: Contact | Bollag Guggenheim
       </div>
 
       <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
-        <p class="type-label mb-4 text-black/38">Enquiry Form</p>
+        <p class="type-label mb-4 text-black/38">{{ contact.form.sectionLabel }}</p>
         <div class="mb-8 max-w-[28rem]">
-          <h3 class="type-section-title-block text-black">A direct enquiry, prepared for launch.</h3>
-          <p class="type-body mt-4 text-black/68">The submission flow is not connected yet, but the form structure is now in place. For immediate contact, use the phone or email details on this page.</p>
+          <h3 class="type-section-title-block text-black">{{ contact.form.title }}</h3>
+          <p class="type-body mt-4 text-black/68">{{ contact.form.summary }}</p>
         </div>
         <form class="space-y-5" onsubmit="return false;" aria-label="Contact enquiry form">
           <div class="grid gap-5 sm:grid-cols-2">
             <label class="block">
-              <span class="type-label mb-3 block text-black/38">First Name</span>
-              <input type="text" name="first_name" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="First name">
+              <span class="type-label mb-3 block text-black/38">{{ contact.form.fields.firstName }}</span>
+              <input type="text" name="first_name" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.firstName }}">
             </label>
             <label class="block">
-              <span class="type-label mb-3 block text-black/38">Last Name</span>
-              <input type="text" name="last_name" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="Last name">
+              <span class="type-label mb-3 block text-black/38">{{ contact.form.fields.lastName }}</span>
+              <input type="text" name="last_name" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.lastName }}">
             </label>
           </div>
           <div class="grid gap-5 sm:grid-cols-2">
             <label class="block">
-              <span class="type-label mb-3 block text-black/38">Email</span>
-              <input type="email" name="email" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="name@company.com">
+              <span class="type-label mb-3 block text-black/38">{{ contact.form.fields.email }}</span>
+              <input type="email" name="email" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.email }}">
             </label>
             <label class="block">
-              <span class="type-label mb-3 block text-black/38">Company</span>
-              <input type="text" name="company" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="Company name">
+              <span class="type-label mb-3 block text-black/38">{{ contact.form.fields.company }}</span>
+              <input type="text" name="company" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.company }}">
             </label>
           </div>
           <label class="block">
-            <span class="type-label mb-3 block text-black/38">Subject</span>
-            <input type="text" name="subject" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="What is this regarding?">
+            <span class="type-label mb-3 block text-black/38">{{ contact.form.fields.subject }}</span>
+            <input type="text" name="subject" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.subject }}">
           </label>
           <label class="block">
-            <span class="type-label mb-3 block text-black/38">Message</span>
-            <textarea name="message" rows="7" class="w-full resize-none border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm leading-[1.8] text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="Tell us about your enquiry."></textarea>
+            <span class="type-label mb-3 block text-black/38">{{ contact.form.fields.message }}</span>
+            <textarea name="message" rows="7" class="w-full resize-none border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm leading-[1.8] text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.message }}"></textarea>
           </label>
           <div class="flex flex-col gap-4 border-t border-black/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
-            <p class="type-body-sm max-w-[24rem] text-black/56">Submission is not active yet. For now, please contact the team directly by email or phone.</p>
+            <p class="type-body-sm max-w-[24rem] text-black/56">{{ contact.form.disclaimer }}</p>
             <button type="button" class="cta-button cta-button--dark">
-              <span>Send Enquiry</span>
+              <span>{{ contact.form.buttonLabel }}</span>
               <span aria-hidden="true">→</span>
             </button>
           </div>
@@ -168,13 +168,13 @@ title: Contact | Bollag Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
     <div class="grid gap-8 border-t border-black/10 pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
       <div>
-        <p class="type-eyebrow mb-4 text-black/42" data-reveal>Next Step</p>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ contact.cta.eyebrow }}</p>
         <h2 class="type-section-title-sm max-w-[14ch] text-black" data-reveal>
-          Explore the brands, stores, and showroom calendar.
+          {{ contact.cta.title }}
         </h2>
       </div>
-      <a href="/brands/" class="cta-button cta-button--dark" data-reveal>
-        <span>Go to Brands</span>
+      <a href="{{ contact.cta.buttonHref }}" class="cta-button cta-button--dark" data-reveal>
+        <span>{{ contact.cta.buttonLabel }}</span>
         <span aria-hidden="true">→</span>
       </a>
     </div>
