@@ -13,6 +13,8 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   },
 });
 
+let APPROVED_EMAILS = new Set();
+
 const state = {
   session: null,
   user: null,
@@ -692,6 +694,15 @@ async function fetchJsonPath(path) {
 async function loadManifest() {
   const raw = await fetchJsonPath('/admin/config.yml');
   return YAML.parse(raw);
+}
+
+async function loadAdminSettings() {
+  const raw = await fetchJsonPath('/admin/admin-settings.json');
+  try {
+    return JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON in /admin/admin-settings.json: ${error.message}`);
+  }
 }
 
 async function loadFileData(path) {
