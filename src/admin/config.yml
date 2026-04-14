@@ -304,97 +304,73 @@ collections:
         file: src/_data/cms/contact.json
         format: json
         fields:
-          - label: Hero
-            name: hero
-            widget: object
-            fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Quote, name: quote, widget: string, required: false }
-              - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
-              - { label: Poster Image, name: image, widget: image }
-          - label: Office Section
-            name: officeSection
-            widget: object
-            fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
-          - label: Bollag Office
-            name: office
-            widget: object
-            fields:
-              - { label: Name, name: name, widget: string }
-              - label: Address
-                name: address
-                widget: list
-                field: { label: Line, name: line, widget: string }
-              - { label: Phone Label, name: phoneLabel, widget: string }
-              - { label: Phone Link, name: phoneHref, widget: string }
-              - { label: Fax, name: fax, widget: string }
-              - { label: Email Label, name: emailLabel, widget: string }
-              - { label: Email Link, name: emailHref, widget: string }
-              - { label: Route Map Link, name: routeMapHref, widget: string }
-              - { label: Parking Note, name: parkingNote, widget: string }
-              - label: Coordinates
-                name: coords
-                widget: object
-                fields:
-                  - { label: Latitude, name: lat, widget: string }
-                  - { label: Longitude, name: lng, widget: string }
-              - { label: Google Maps Link, name: googleMapsHref, widget: string }
-          - label: Wearhouse Partner
-            name: wearhousePartner
-            widget: object
-            fields:
-              - { label: Section Label, name: sectionLabel, widget: string }
-              - { label: Name, name: name, widget: string }
-              - label: Address
-                name: address
-                widget: list
-                field: { label: Line, name: line, widget: string }
-              - { label: Phone Label, name: phoneLabel, widget: string }
-              - { label: Phone Link, name: phoneHref, widget: string }
-              - { label: Email Label, name: emailLabel, widget: string }
-              - { label: Email Link, name: emailHref, widget: string }
-              - { label: Maps Link, name: mapsHref, widget: string }
-          - label: Form Copy
-            name: form
-            widget: object
-            fields:
-              - { label: Section Label, name: sectionLabel, widget: string }
-              - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
-              - { label: Disclaimer, name: disclaimer, widget: text }
-              - { label: Button Label, name: buttonLabel, widget: string }
-              - label: Field Labels
-                name: fields
-                widget: object
-                fields:
-                  - { label: First Name, name: firstName, widget: string }
-                  - { label: Last Name, name: lastName, widget: string }
-                  - { label: Email, name: email, widget: string }
-                  - { label: Company, name: company, widget: string }
-                  - { label: Subject, name: subject, widget: string }
-                  - { label: Message, name: message, widget: string }
-              - label: Placeholders
-                name: placeholders
-                widget: object
-                fields:
-                  - { label: First Name Placeholder, name: firstName, widget: string }
-                  - { label: Last Name Placeholder, name: lastName, widget: string }
-                  - { label: Email Placeholder, name: email, widget: string }
-                  - { label: Company Placeholder, name: company, widget: string }
-                  - { label: Subject Placeholder, name: subject, widget: string }
-                  - { label: Message Placeholder, name: message, widget: string }
-          - label: CTA
-            name: cta
-            widget: object
-            fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Title, name: title, widget: string }
-              - { label: Button Label, name: buttonLabel, widget: string }
-              - { label: Button Link, name: buttonHref, widget: string }
+          - { label: Hero, name: hero, widget: object, fields: [
+            { label: Eyebrow, name: eyebrow, widget: string },
+            { label: Quote, name: quote, widget: string, required: false },
+            { label: Title, name: title, widget: string },
+            { label: Summary, name: summary, widget: text },
+            { label: Poster Image, name: image, widget: image }
+          ] }
+          - { label: Office Section, name: officeSection, widget: object, fields: [
+            { label: Eyebrow, name: eyebrow, widget: string },
+            { label: Title, name: title, widget: string },
+            { label: Summary, name: summary, widget: text }
+          ] }
+          - { label: Bollag Office, name: office, widget: object, fields: [
+            { label: Name, name: name, widget: string },
+            { label: Address, name: address, widget: list, field: { label: Line, name: line, widget: string } },
+            { label: Phone Label, name: phoneLabel, widget: string },
+            { label: Phone Link, name: phoneHref, widget: string },
+            { label: Fax, name: fax, widget: string },
+            { label: Email Label, name: emailLabel, widget: string },
+            { label: Email Link, name: emailHref, widget: string },
+            { label: Route Map Link, name: routeMapHref, widget: string },
+            { label: Parking Note, name: parkingNote, widget: string },
+            { label: Coordinates, name: coords, widget: object, fields: [
+              { label: Latitude, name: lat, widget: string },
+              { label: Longitude, name: lng, widget: string }
+            ] },
+            { label: Google Maps Link, name: googleMapsHref, widget: string }
+          ] }
+          - { label: Wearhouse Partner, name: wearhousePartner, widget: object, fields: [
+            { label: Section Label, name: sectionLabel, widget: string },
+            { label: Name, name: name, widget: string },
+            { label: Address, name: address, widget: list, field: { label: Line, name: line, widget: string } },
+            { label: Phone Label, name: phoneLabel, widget: string },
+            { label: Phone Link, name: phoneHref, widget: string },
+            { label: Email Label, name: emailLabel, widget: string },
+            { label: Email Link, name: emailHref, widget: string },
+            { label: Maps Link, name: mapsHref, widget: string }
+          ] }
+          - { label: Form Copy, name: form, widget: object, fields: [
+            { label: Section Label, name: sectionLabel, widget: string },
+            { label: Title, name: title, widget: string },
+            { label: Summary, name: summary, widget: text },
+            { label: Disclaimer, name: disclaimer, widget: text },
+            { label: Button Label, name: buttonLabel, widget: string },
+            { label: Field Labels, name: fields, widget: object, fields: [
+              { label: First Name, name: firstName, widget: string },
+              { label: Last Name, name: lastName, widget: string },
+              { label: Email, name: email, widget: string },
+              { label: Company, name: company, widget: string },
+              { label: Subject, name: subject, widget: string },
+              { label: Message, name: message, widget: string }
+            ] },
+            { label: Placeholders, name: placeholders, widget: object, fields: [
+              { label: First Name Placeholder, name: firstName, widget: string },
+              { label: Last Name Placeholder, name: lastName, widget: string },
+              { label: Email Placeholder, name: email, widget: string },
+              { label: Company Placeholder, name: company, widget: string },
+              { label: Subject Placeholder, name: subject, widget: string },
+              { label: Message Placeholder, name: message, widget: string }
+            ] }
+          ] }
+          - { label: CTA, name: cta, widget: object, fields: [
+            { label: Eyebrow, name: eyebrow, widget: string },
+            { label: Title, name: title, widget: string },
+            { label: Button Label, name: buttonLabel, widget: string },
+            { label: Button Link, name: buttonHref, widget: string }
+          ] }
 
   - name: stores_page
     label: Stores Page

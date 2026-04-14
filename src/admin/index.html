@@ -4,92 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bollag Guggenheim CMS</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-        background: #f5f1e8;
-        color: #111827;
-      }
-
-      #cms-status {
-        max-width: 720px;
-        padding: 24px 28px;
-        border-radius: 18px;
-        background: #ffffff;
-        box-shadow: 0 18px 50px rgba(15, 23, 42, 0.12);
-        border: 1px solid rgba(15, 23, 42, 0.08);
-        line-height: 1.5;
-      }
-
-      #cms-status strong {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 18px;
-      }
-
-      #cms-status code {
-        display: block;
-        margin-top: 12px;
-        white-space: pre-wrap;
-        color: #7c2d12;
-      }
-    </style>
-    <script>
-      window.addEventListener("error", function (event) {
-        var el = document.getElementById("cms-status");
-        if (el) {
-          el.innerHTML =
-            "<strong>CMS failed to load</strong>" +
-            "<div>Decap threw an error before rendering the editor.</div>" +
-            "<code>" + event.message + "</code>";
-        }
-      });
-
-      window.addEventListener("unhandledrejection", function (event) {
-        var el = document.getElementById("cms-status");
-        if (el) {
-          var reason = event.reason && event.reason.message ? event.reason.message : String(event.reason);
-          el.innerHTML =
-            "<strong>CMS failed to load</strong>" +
-            "<div>Decap hit an unhandled promise rejection before rendering the editor.</div>" +
-            "<code>" + reason + "</code>";
-        }
-      });
-
-      window.addEventListener("load", function () {
-        var started = Date.now();
-        var timer = setInterval(function () {
-          var el = document.getElementById("cms-status");
-          if (!el) {
-            clearInterval(timer);
-            return;
-          }
-
-          if (document.getElementById("nc-root")) {
-            el.style.display = "none";
-            clearInterval(timer);
-            return;
-          }
-
-          if (Date.now() - started > 6000) {
-            el.innerHTML =
-              "<strong>CMS is still loading</strong>" +
-              "<div>If this message stays visible, Decap is not mounting correctly.</div>";
-            clearInterval(timer);
-          }
-        }, 250);
-      });
-    </script>
-    <script defer src="/admin/decap-cms.js"></script>
   </head>
   <body>
-    <div id="cms-status">
-      <strong>Loading CMS</strong>
-      <div>Waiting for Decap to mount the editor.</div>
-    </div>
+    <div id="admin-root"></div>
+    <script type="module" src="/admin/auth.js"></script>
   </body>
 </html>
