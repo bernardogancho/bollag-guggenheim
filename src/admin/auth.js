@@ -40,17 +40,17 @@ function injectStyles() {
   style.textContent = `
     :root {
       color-scheme: light;
-      --bg: #f4f1ea;
-      --panel: rgba(255, 255, 255, 0.84);
-      --panel-strong: #ffffff;
-      --panel-border: rgba(27, 34, 38, 0.09);
-      --text: #1e2428;
-      --muted: #66707a;
+      --bg: #f5f1ea;
+      --panel: rgba(255, 252, 247, 0.92);
+      --panel-strong: #fffdf9;
+      --panel-border: rgba(37, 31, 27, 0.09);
+      --text: #192026;
+      --muted: #65707a;
       --accent: #0d5b53;
       --accent-strong: #0a4943;
       --danger: #9a3636;
       --warning: #9b6b1b;
-      --shadow: 0 28px 72px rgba(31, 38, 43, 0.12);
+      --shadow: 0 18px 52px rgba(32, 30, 26, 0.08);
     }
 
     html, body {
@@ -59,12 +59,12 @@ function injectStyles() {
 
     body {
       margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(13, 91, 83, 0.16), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(112, 86, 51, 0.14), transparent 30%),
-        linear-gradient(180deg, #faf8f4 0%, var(--bg) 100%);
+        radial-gradient(circle at top left, rgba(13, 91, 83, 0.10), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(112, 86, 51, 0.10), transparent 28%),
+        linear-gradient(180deg, #fbf8f3 0%, var(--bg) 100%);
     }
 
     #admin-root {
@@ -83,10 +83,10 @@ function injectStyles() {
       width: min(100%, 480px);
       background: var(--panel);
       border: 1px solid var(--panel-border);
-      border-radius: 24px;
+      border-radius: 22px;
       box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-      padding: 28px;
+      backdrop-filter: blur(12px);
+      padding: 30px;
       box-sizing: border-box;
     }
 
@@ -105,6 +105,9 @@ function injectStyles() {
       margin: 0;
       font-size: clamp(2rem, 4.5vw, 2.8rem);
       line-height: 0.98;
+      font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+      letter-spacing: -0.04em;
+      font-weight: 600;
     }
 
     .auth-copy,
@@ -265,9 +268,9 @@ function injectStyles() {
     .toolbar-card {
       background: var(--panel);
       border: 1px solid var(--panel-border);
-      border-radius: 24px;
+      border-radius: 22px;
       box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
+      backdrop-filter: blur(12px);
     }
 
     .sidebar-card {
@@ -279,6 +282,8 @@ function injectStyles() {
       font-size: 2rem;
       line-height: 1;
       letter-spacing: -0.03em;
+      font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+      font-weight: 600;
     }
 
     .sidebar-email {
@@ -303,14 +308,15 @@ function injectStyles() {
     }
 
     .collection-list {
-      margin-top: 18px;
+      margin-top: 16px;
       display: grid;
-      gap: 16px;
+      gap: 14px;
     }
 
     .collection-group {
       display: grid;
-      gap: 8px;
+      gap: 10px;
+      padding-top: 2px;
     }
 
     .collection-label {
@@ -324,16 +330,17 @@ function injectStyles() {
 
     .file-list {
       display: grid;
-      gap: 8px;
+      gap: 6px;
     }
 
     .file-button {
       width: 100%;
       border: 1px solid transparent;
-      border-radius: 16px;
-      background: transparent;
+      border-left-width: 3px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.55);
       text-align: left;
-      padding: 12px 14px;
+      padding: 12px 13px;
       cursor: pointer;
       color: var(--text);
       transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
@@ -341,12 +348,13 @@ function injectStyles() {
 
     .file-button:hover {
       background: rgba(13, 91, 83, 0.06);
-      transform: translateX(2px);
+      transform: translateX(1px);
     }
 
     .file-button[data-active="true"] {
-      background: rgba(13, 91, 83, 0.12);
-      border-color: rgba(13, 91, 83, 0.18);
+      background: rgba(13, 91, 83, 0.10);
+      border-color: rgba(13, 91, 83, 0.22);
+      border-left-color: var(--accent);
     }
 
     .file-button-row {
@@ -364,7 +372,7 @@ function injectStyles() {
 
     .file-button-subtitle {
       display: block;
-      margin-top: 3px;
+      margin-top: 4px;
       color: var(--muted);
       font-size: 0.84rem;
     }
@@ -388,8 +396,11 @@ function injectStyles() {
     }
 
     .toolbar-card {
-      margin: 0 24px 18px 0;
-      padding: 24px;
+      margin: 0 24px 16px 0;
+      padding: 22px 24px;
+      position: sticky;
+      top: 18px;
+      z-index: 2;
     }
 
     .toolbar-title {
@@ -397,6 +408,8 @@ function injectStyles() {
       font-size: clamp(2rem, 4vw, 3rem);
       line-height: 0.96;
       letter-spacing: -0.04em;
+      font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+      font-weight: 600;
     }
 
     .toolbar-status {
@@ -413,32 +426,33 @@ function injectStyles() {
       align-items: center;
       gap: 8px;
       border-radius: 999px;
-      padding: 10px 14px;
+      padding: 9px 13px;
       background: rgba(13, 91, 83, 0.08);
       color: var(--accent);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 700;
     }
 
     .editor-card {
       margin-right: 24px;
-      padding: 22px;
+      padding: 22px 24px 24px;
+      max-width: 980px;
     }
 
     .editor-empty {
-      padding: 18px 4px 4px;
+      padding: 14px 4px 4px;
       color: var(--muted);
     }
 
     .editor-section {
       display: grid;
-      gap: 18px;
+      gap: 16px;
     }
 
     .section-panel {
-      border: 1px solid rgba(31, 36, 40, 0.09);
+      border: 1px solid rgba(37, 31, 27, 0.09);
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.82);
+      background: rgba(255, 255, 255, 0.84);
       padding: 18px;
     }
 
@@ -448,14 +462,16 @@ function injectStyles() {
 
     .section-title {
       margin: 0 0 12px;
-      font-size: 1.2rem;
+      font-size: 1.35rem;
       line-height: 1.2;
       letter-spacing: -0.02em;
+      font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+      font-weight: 600;
     }
 
     .field-list {
       display: grid;
-      gap: 16px;
+      gap: 14px;
     }
 
     .field {
@@ -470,9 +486,9 @@ function injectStyles() {
     }
 
     .object-panel {
-      border: 1px solid rgba(31, 36, 40, 0.09);
+      border: 1px solid rgba(37, 31, 27, 0.09);
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.78);
       padding: 16px;
     }
 
@@ -480,37 +496,48 @@ function injectStyles() {
       margin: 0 0 12px;
       font-size: 1rem;
       line-height: 1.3;
+      font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+      font-weight: 600;
     }
 
     .list-panel {
-      border: 1px solid rgba(31, 36, 40, 0.09);
+      border: 1px solid rgba(37, 31, 27, 0.09);
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.72);
+      background: rgba(255, 255, 255, 0.78);
       padding: 16px;
     }
 
     .list-item {
-      border: 1px solid rgba(31, 36, 40, 0.09);
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.88);
-      padding: 14px;
+      border: 1px solid rgba(37, 31, 27, 0.08);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.90);
+      padding: 0;
+      overflow: hidden;
     }
 
     .list-item + .list-item {
       margin-top: 12px;
     }
 
-    .list-item-head {
-      justify-content: space-between;
+    .list-item summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
       align-items: flex-start;
-      margin-bottom: 12px;
+      justify-content: space-between;
       gap: 12px;
+      padding: 14px 14px 12px;
+    }
+
+    .list-item summary::-webkit-details-marker {
+      display: none;
     }
 
     .list-item-title {
       margin: 0;
       font-weight: 700;
       line-height: 1.3;
+      font-size: 1rem;
     }
 
     .list-item-subtitle {
@@ -525,9 +552,27 @@ function injectStyles() {
       justify-content: flex-end;
     }
 
+    .list-item-body {
+      border-top: 1px solid rgba(37, 31, 27, 0.08);
+      padding: 14px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .list-item-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .list-item:not([open]) .list-item-body {
+      display: none;
+    }
+
     .asset-row {
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
 
     .asset-preview {
@@ -537,11 +582,11 @@ function injectStyles() {
 
     .asset-preview img {
       display: block;
-      width: min(220px, 100%);
+      width: min(240px, 100%);
       max-height: 180px;
       object-fit: cover;
       border-radius: 14px;
-      border: 1px solid rgba(31, 36, 40, 0.12);
+      border: 1px solid rgba(37, 31, 27, 0.12);
       background: rgba(255, 255, 255, 0.85);
     }
 
@@ -581,6 +626,8 @@ function injectStyles() {
       .sidebar {
         border-right: 0;
         border-bottom: 1px solid var(--panel-border);
+        position: static;
+        height: auto;
       }
 
       .workspace {
@@ -590,6 +637,7 @@ function injectStyles() {
       .toolbar-card,
       .editor-card {
         margin-right: 0;
+        max-width: none;
       }
     }
   `;
@@ -873,12 +921,12 @@ function createAppShell() {
       <aside class="sidebar">
         <div class="sidebar-card">
           <p class="sidebar-kicker">Bollag CMS</p>
-          <h1 class="sidebar-title">Pages and sections</h1>
+          <h1 class="sidebar-title">Sections</h1>
           <p class="sidebar-email" id="sidebar-email"></p>
           <div class="sidebar-search">
-            <input class="file-search" id="file-search" type="search" placeholder="Search collections or sections">
+            <input class="file-search" id="file-search" type="search" placeholder="Search sections">
           </div>
-          <p class="sidebar-note">Each card is a page section. Publish changes after editing.</p>
+          <p class="sidebar-note">One file equals one section. Edit the section, then publish.</p>
           <div class="collection-list" id="collection-list"></div>
         </div>
       </aside>
@@ -887,8 +935,8 @@ function createAppShell() {
         <div class="toolbar-card">
           <div class="editor-toolbar">
             <div>
-              <p class="toolbar-kicker">Editing</p>
-              <h2 class="toolbar-title" id="current-file-title">Loading</h2>
+              <p class="toolbar-kicker">Now editing</p>
+              <h2 class="toolbar-title" id="current-file-title">Choose a section</h2>
               <p class="toolbar-subtitle" id="current-file-subtitle"></p>
             </div>
             <div class="toolbar-status">
@@ -901,7 +949,7 @@ function createAppShell() {
         </div>
 
         <div class="editor-card">
-          <div id="editor-loading" class="editor-loading">Loading editor...</div>
+          <div id="editor-loading" class="editor-loading">Pick a section from the left.</div>
           <div id="editor-panel" class="editor-section" hidden></div>
         </div>
       </main>
@@ -943,7 +991,7 @@ function renderToolbar() {
   if (title && state.currentPath) {
     const current = state.files.find(file => file.path === state.currentPath);
     title.textContent = current?.fileLabel || 'Untitled section';
-    subtitle.textContent = current ? `${current.collectionLabel} -> ${current.fileLabel}` : '';
+    subtitle.textContent = current ? `${current.collectionLabel} • ${current.fileLabel}` : '';
   }
 
   if (loading && panel) {
@@ -987,7 +1035,7 @@ function renderSidebar() {
 
     const label = document.createElement('p');
     label.className = 'collection-label';
-    label.textContent = collection.label;
+    label.textContent = `${collection.label} (${matchingFiles.length})`;
     group.appendChild(label);
 
     const fileList = document.createElement('div');
@@ -1009,7 +1057,7 @@ function renderSidebar() {
 
       const subtitle = document.createElement('span');
       subtitle.className = 'file-button-subtitle';
-      subtitle.textContent = file.path.replace(/^src\//, '');
+      subtitle.textContent = `${file.collectionLabel} section`;
 
       const dot = document.createElement('span');
       dot.className = 'dirty-dot';
@@ -1083,11 +1131,11 @@ function buildField(field, value, onChange) {
     const itemField = field.fields ? null : field.field;
 
     current.forEach((item, index) => {
-      const itemWrap = document.createElement('div');
+      const itemWrap = document.createElement('details');
       itemWrap.className = 'list-item';
+      itemWrap.open = index === 0;
 
-      const head = document.createElement('div');
-      head.className = 'list-item-head';
+      const head = document.createElement('summary');
 
       const textWrap = document.createElement('div');
       const title = document.createElement('p');
@@ -1104,9 +1152,6 @@ function buildField(field, value, onChange) {
             .join(' | ')
         : String(item ?? '');
       textWrap.appendChild(subtitle);
-
-      const actions = document.createElement('div');
-      actions.className = 'list-actions';
 
       const upButton = document.createElement('button');
       upButton.type = 'button';
@@ -1145,15 +1190,19 @@ function buildField(field, value, onChange) {
         renderEditor();
       });
 
-      actions.append(upButton, downButton, removeButton);
-      head.append(textWrap, actions);
+      head.append(textWrap);
       itemWrap.appendChild(head);
+
+      const itemFields = document.createElement('div');
+      itemFields.className = 'list-item-body';
+
+      const actions = document.createElement('div');
+      actions.className = 'list-item-actions';
+      actions.append(upButton, downButton, removeButton);
+      itemFields.appendChild(actions);
 
       if (field.fields) {
         const itemValue = item && typeof item === 'object' ? item : {};
-        const itemFields = document.createElement('div');
-        itemFields.className = 'field-list';
-
         for (const child of field.fields) {
           const childValue = itemValue[child.name];
           const childField = buildField(child, childValue, nextValue => {
@@ -1162,16 +1211,15 @@ function buildField(field, value, onChange) {
           });
           itemFields.appendChild(childField);
         }
-
-        itemWrap.appendChild(itemFields);
       } else if (itemField) {
         const childField = buildField(itemField, item, nextValue => {
           current[index] = nextValue;
           onChange(current);
         });
-        itemWrap.appendChild(childField);
+        itemFields.appendChild(childField);
       }
 
+      itemWrap.appendChild(itemFields);
       list.appendChild(itemWrap);
     });
 
@@ -1344,7 +1392,7 @@ function renderEditor() {
   if (!file || !current) {
     const empty = document.createElement('div');
     empty.className = 'editor-empty';
-    empty.textContent = 'Choose a file from the sidebar.';
+    empty.textContent = 'Choose a section from the sidebar.';
     panel.appendChild(empty);
     return;
   }
@@ -1358,7 +1406,7 @@ function renderEditor() {
 
   const subtitle = document.createElement('p');
   subtitle.className = 'status-note';
-  subtitle.textContent = `${file.collectionLabel} -> ${file.path.replace(/^src\//, '')}`;
+  subtitle.textContent = `${file.collectionLabel} • ${file.fileLabel}`;
 
   const fieldList = document.createElement('div');
   fieldList.className = 'field-list';
