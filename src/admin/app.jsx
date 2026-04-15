@@ -1814,11 +1814,7 @@ function useCmsBootstrap() {
 
       setDirtyPaths(new Set());
       setWorkspaceTone('success');
-      setWorkspaceNote(
-        payload.deployMessage
-          ? `Published commit ${payload.commitSha?.slice(0, 7) || ''}. ${payload.deployMessage}`
-          : `Published commit ${payload.commitSha?.slice(0, 7) || ''}.`,
-      );
+      setWorkspaceNote('Published. This may take a few minutes to be live on the website.');
       await loadDeploys(session);
     } catch (error) {
       setWorkspaceTone('error');
@@ -2054,11 +2050,7 @@ function useCmsBootstrap() {
       }
 
       setWorkspaceTone('success');
-      setWorkspaceNote(
-        payload.deployMessage
-          ? `Published rollback commit ${payload.commitSha?.slice(0, 7) || ''}. ${payload.deployMessage}`
-          : `Published rollback commit ${payload.commitSha?.slice(0, 7) || ''}.`,
-      );
+      setWorkspaceNote('Published. This may take a few minutes to be live on the website.');
 
       await loadWorkspace(session, { preferredPath: currentPath });
     } catch (error) {
