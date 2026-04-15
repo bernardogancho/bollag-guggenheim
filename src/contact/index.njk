@@ -12,11 +12,11 @@ title: Contact | Bollag Guggenheim
       muted
       loop
       playsinline
-      poster="{{ contact.hero.image }}"
+      poster="{{ contact.hero.poster }}"
       aria-hidden="true"
     >
-      <source src="/assets/media/page-heroes/contact-hero.mp4" type="video/mp4">
-      <img src="{{ contact.hero.image }}" alt="Bollag Guggenheim building approach" class="hero-image h-full w-full object-cover object-center">
+      <source src="{{ contact.hero.video }}" type="video/mp4">
+      <img src="{{ contact.hero.poster }}" alt="{{ contact.hero.videoAlt }}" class="hero-image h-full w-full object-cover object-center">
     </video>
     <div class="page-hero-overlay absolute inset-0"></div>
   </div>

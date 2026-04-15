@@ -12,11 +12,11 @@ title: Stores | Bollag Guggenheim
       muted
       loop
       playsinline
-      poster="{{ stores.hero.image }}"
+      poster="{{ stores.hero.poster }}"
       aria-hidden="true"
     >
-      <source src="/assets/media/stores/stores-hero.mp4" type="video/mp4">
-      <img src="{{ stores.hero.image }}" alt="Bollag Guggenheim retail environment" class="hero-image h-full w-full object-cover object-center">
+      <source src="{{ stores.hero.video }}" type="video/mp4">
+      <img src="{{ stores.hero.poster }}" alt="{{ stores.hero.videoAlt }}" class="hero-image h-full w-full object-cover object-center">
     </video>
     <div class="page-hero-overlay absolute inset-0"></div>
   </div>

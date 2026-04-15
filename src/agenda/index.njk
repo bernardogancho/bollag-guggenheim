@@ -12,11 +12,11 @@ title: Agenda | Bollag Guggenheim
       muted
       loop
       playsinline
-      poster="{{ agenda.hero.image }}"
+      poster="{{ agenda.hero.poster }}"
       aria-hidden="true"
     >
-      <source src="/assets/media/page-heroes/agenda-hero.mp4" type="video/mp4">
-      <img src="{{ agenda.hero.image }}" alt="Bollag Guggenheim agenda view" class="hero-image h-full w-full object-cover object-center">
+      <source src="{{ agenda.hero.video }}" type="video/mp4">
+      <img src="{{ agenda.hero.poster }}" alt="{{ agenda.hero.videoAlt }}" class="hero-image h-full w-full object-cover object-center">
     </video>
     <div class="page-hero-overlay absolute inset-0"></div>
   </div>

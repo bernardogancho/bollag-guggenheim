@@ -4,7 +4,9 @@
     "title": "What is next across the brand calendar.",
     "summary": "Upcoming showroom appointments and collection windows across the Bollag Guggenheim portfolio, presented as one continuous seasonal schedule.",
     "quote": "",
-    "image": "/assets/media/page-heroes/agenda-hero-poster.jpg"
+    "poster": "/assets/media/page-heroes/agenda-hero-poster.jpg",
+    "video": "/assets/media/page-heroes/agenda-hero.mp4",
+    "videoAlt": "Bollag Guggenheim agenda view"
   },
   "calendarSection": {
     "eyebrow": "Showroom Calendar",

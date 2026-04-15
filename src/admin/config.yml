@@ -312,7 +312,9 @@ collections:
               - { label: Quote, name: quote, widget: string, required: false }
               - { label: Title, name: title, widget: string }
               - { label: Summary, name: summary, widget: text }
-              - { label: Poster Image, name: image, widget: image }
+              - { label: Poster Image, name: poster, widget: image }
+              - { label: Video File, name: video, widget: file }
+              - { label: Video Alt Text, name: videoAlt, widget: string }
           - label: Office Section
             name: officeSection
             widget: object
@@ -408,7 +410,9 @@ collections:
               - { label: Eyebrow, name: eyebrow, widget: string }
               - { label: Title, name: title, widget: string }
               - { label: Summary, name: summary, widget: text }
-              - { label: Poster Image, name: image, widget: image }
+              - { label: Poster Image, name: poster, widget: image }
+              - { label: Video File, name: video, widget: file }
+              - { label: Video Alt Text, name: videoAlt, widget: string }
           - label: Hero Stats
             name: heroStats
             widget: list
@@ -468,7 +472,9 @@ collections:
               - { label: Quote, name: quote, widget: string, required: false }
               - { label: Title, name: title, widget: string }
               - { label: Summary, name: summary, widget: text }
-              - { label: Poster Image, name: image, widget: image }
+              - { label: Poster Image, name: poster, widget: image }
+              - { label: Video File, name: video, widget: file }
+              - { label: Video Alt Text, name: videoAlt, widget: string }
           - label: Calendar Section
             name: calendarSection
             widget: object

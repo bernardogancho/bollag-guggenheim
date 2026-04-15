@@ -3,7 +3,9 @@
     "eyebrow": "Stores",
     "title": "Retail presence across Switzerland.",
     "summary": "A store network that brings Bollag Guggenheim's brand portfolio into direct contact with customers through monobrand, multibrand, and outlet formats.",
-    "image": "/assets/media/stores/stores-hero-poster.jpg"
+    "poster": "/assets/media/stores/stores-hero-poster.jpg",
+    "video": "/assets/media/stores/stores-hero.mp4",
+    "videoAlt": "Bollag Guggenheim retail environment"
   },
   "heroStats": ["2 Monobrand Stores", "2 Multibrand Stores", "1 Outlet", "1 Online Shop"],
   "networkSection": {
