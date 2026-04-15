@@ -21,7 +21,6 @@ import {
   Upload,
   UserPlus,
   UserX,
-  Users,
 } from 'lucide-react';
 import './admin.css';
 
@@ -457,23 +456,52 @@ function AppShell({
           </label>
         </div>
 
-        <div className="sidebar-note">Each file is one section. Expand only what you need, then publish.</div>
-
-        <div className="collection-list">
-          {visibleCollections.length ? (
-            visibleCollections.map(collection => (
-            <CollectionGroup
-              key={collection.name}
-              collection={collection}
-              currentPath={currentPath}
-              dirtyPaths={dirtyPaths}
-              onSelectFile={onSelectFile}
-            />
-          ))
-          ) : (
-            <EmptyState title="No matching sections" description="Try a different search term or clear the filter." />
-          )}
+        <div className="sidebar-nav">
+          <button
+            type="button"
+            className={cn('sidebar-nav-item', activeView === 'sections' && 'is-active')}
+            onClick={() => setActiveView('sections')}
+          >
+            <span className="sidebar-nav-label">Sections</span>
+            <span className="sidebar-nav-count">{collections.length}</span>
+          </button>
+          <button
+            type="button"
+            className={cn('sidebar-nav-item', 'sidebar-nav-admin', activeView === 'access' && 'is-active')}
+            onClick={() => setActiveView('access')}
+          >
+            <span className="sidebar-nav-label">Admin</span>
+            <span className="sidebar-nav-count">{admins.length}</span>
+          </button>
         </div>
+
+        {activeView === 'sections' ? (
+          <>
+            <div className="sidebar-note">Each file is one section. Expand only what you need, then publish.</div>
+
+            <div className="collection-list">
+              {visibleCollections.length ? (
+                visibleCollections.map(collection => (
+                  <CollectionGroup
+                    key={collection.name}
+                    collection={collection}
+                    currentPath={currentPath}
+                    dirtyPaths={dirtyPaths}
+                    onSelectFile={onSelectFile}
+                  />
+                ))
+              ) : (
+                <EmptyState title="No matching sections" description="Try a different search term or clear the filter." />
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="sidebar-note sidebar-note-compact">
+            <div className="sidebar-note-label">Admin</div>
+            <div className="sidebar-note-value">Manage editor access from the left menu.</div>
+            <div className="sidebar-note-detail">Use this when you need to invite, revoke, or review CMS access.</div>
+          </div>
+        )}
 
         <div className="sidebar-note sidebar-note-compact">
           <div className="sidebar-note-label">Change log</div>
@@ -551,32 +579,6 @@ function AppShell({
             </Button>
           </div>
         </header>
-
-        <div className="workspace-tabs" role="tablist" aria-label="Admin workspace">
-          <button
-            type="button"
-            className={cn('workspace-tab', activeView === 'sections' && 'is-active')}
-            onClick={() => setActiveView('sections')}
-            role="tab"
-            aria-selected={activeView === 'sections'}
-          >
-            <span>Sections</span>
-            <span className="workspace-tab-count">{collections.length}</span>
-          </button>
-          <button
-            type="button"
-            className={cn('workspace-tab', activeView === 'access' && 'is-active')}
-            onClick={() => setActiveView('access')}
-            role="tab"
-            aria-selected={activeView === 'access'}
-          >
-            <span className="workspace-tab-label">
-              <Users size={14} />
-              <span>Access</span>
-            </span>
-            <span className="workspace-tab-count">{admins.length}</span>
-          </button>
-        </div>
 
         <div className={cn('workspace-note', `status-${workspaceTone || 'neutral'}`)}>{workspaceStatusText}</div>
 

@@ -489,6 +489,52 @@ button:disabled {
   box-shadow: none;
 }
 
+.sidebar-nav {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--text);
+  padding: 9px 10px;
+  text-align: left;
+  font-weight: 700;
+}
+
+.sidebar-nav-item.is-active {
+  border-color: var(--accent);
+  background: var(--panel-soft);
+}
+
+.sidebar-nav-admin {
+  color: #000;
+}
+
+.sidebar-nav-label {
+  min-width: 0;
+}
+
+.sidebar-nav-count {
+  min-width: 24px;
+  padding: 3px 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel-soft);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+}
+
 .sidebar-note {
   margin: 12px 0 12px;
   padding: 8px 10px;
