@@ -503,6 +503,11 @@ button:disabled {
   gap: 4px;
 }
 
+.sidebar-note-danger {
+  border-color: rgba(157, 60, 52, 0.32);
+  background: linear-gradient(180deg, rgba(157, 60, 52, 0.06) 0%, var(--panel-soft) 100%);
+}
+
 .sidebar-note-label {
   font-size: 11px;
   font-weight: 700;
@@ -523,6 +528,13 @@ button:disabled {
   line-height: 1.4;
 }
 
+.sidebar-note-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
 .collection-list {
   display: grid;
   gap: 8px;
@@ -532,6 +544,11 @@ button:disabled {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: #fff;
+}
+
+.collection-card.is-updated {
+  border-color: rgba(157, 60, 52, 0.38);
+  box-shadow: inset 3px 0 0 var(--danger);
 }
 
 .collection-trigger {
@@ -545,6 +562,10 @@ button:disabled {
   padding: 9px 10px;
   background: transparent;
   text-align: left;
+}
+
+.collection-trigger.is-updated {
+  background: rgba(157, 60, 52, 0.05);
 }
 
 .collection-trigger-left {
@@ -574,6 +595,29 @@ button:disabled {
   font-weight: 700;
   color: var(--muted);
   text-align: center;
+}
+
+.collection-trigger-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.collection-updated {
+  padding: 2px 6px;
+  border: 1px solid rgba(157, 60, 52, 0.32);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--danger);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.collection-label.is-updated,
+.collection-count.is-updated {
+  color: var(--danger);
 }
 
 .collection-content {
@@ -608,8 +652,8 @@ button:disabled {
 }
 
 .file-row.is-updated {
-  border-color: var(--line-strong);
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.045) 0%, var(--panel-soft) 100%);
+  border-color: rgba(157, 60, 52, 0.35);
+  background: linear-gradient(90deg, rgba(157, 60, 52, 0.10) 0%, var(--panel-soft) 100%);
 }
 
 .file-row-main {
@@ -636,10 +680,10 @@ button:disabled {
 .file-row-tag {
   min-width: 54px;
   padding: 2px 6px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(157, 60, 52, 0.32);
   border-radius: var(--radius);
   background: #fff;
-  color: var(--text);
+  color: var(--danger);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;

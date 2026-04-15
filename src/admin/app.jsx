@@ -8,7 +8,6 @@ import {
   ChevronDown,
   ChevronRight,
   Copy,
-  History,
   GripVertical,
   LoaderCircle,
   LogOut,
@@ -375,8 +374,6 @@ function AppShell({
   publishPending,
   workspaceNote,
   workspaceTone,
-  activeTab,
-  onTabChange,
   deploys,
   deploysLoading,
   deploysError,
@@ -394,18 +391,22 @@ function AppShell({
   const latestDeploy = deploys[0] || null;
   const latestDeployPaths = useMemo(() => new Set((latestDeploy?.files || []).map(file => file.path)), [latestDeploy]);
   const filesByPath = useMemo(() => new Map(files.map(file => [file.path, file])), [files]);
-  const latestDeployLabels = useMemo(
-    () =>
-      (latestDeploy?.files || []).map(file => {
-        const currentFileMeta = filesByPath.get(file.path);
-        if (!currentFileMeta) {
-          return file.path.replace(/^src\/_data\/cms\//, '');
-        }
+  const latestDeployCollectionLabels = useMemo(() => {
+    const labels = [];
+    const seen = new Set();
 
-        return `${currentFileMeta.collectionLabel} · ${currentFileMeta.fileLabel}`;
-      }),
-    [latestDeploy, filesByPath],
-  );
+    for (const file of latestDeploy?.files || []) {
+      const currentFileMeta = filesByPath.get(file.path);
+      const label = currentFileMeta?.collectionLabel || file.path.replace(/^src\/_data\/cms\//, '').split('/')[0] || 'Unknown';
+      if (seen.has(label)) {
+        continue;
+      }
+      seen.add(label);
+      labels.push(label);
+    }
+
+    return labels;
+  }, [latestDeploy, filesByPath]);
 
   const visibleCollections = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -463,15 +464,42 @@ function AppShell({
           )}
         </div>
 
-        {latestDeploy ? (
-          <div className="sidebar-note sidebar-note-compact">
+        {deploysLoading ? (
+          <div className="sidebar-note sidebar-note-compact sidebar-note-danger">
+            <div className="sidebar-note-label">Last publish</div>
+            <div className="sidebar-note-value">Loading publish history...</div>
+          </div>
+        ) : deploysError ? (
+          <div className="sidebar-note sidebar-note-compact sidebar-note-danger">
+            <div className="sidebar-note-label">Last publish</div>
+            <div className="sidebar-note-value">Publish history unavailable</div>
+            <div className="sidebar-note-detail">{deploysError}</div>
+          </div>
+        ) : latestDeploy ? (
+          <div className="sidebar-note sidebar-note-compact sidebar-note-danger">
             <div className="sidebar-note-label">Last publish</div>
             <div className="sidebar-note-value">
-              {latestDeployLabels.length
-                ? `Changed ${latestDeployLabels.length} section${latestDeployLabels.length === 1 ? '' : 's'}`
+              {latestDeployCollectionLabels.length
+                ? `Changed ${latestDeployCollectionLabels.length} collection${latestDeployCollectionLabels.length === 1 ? '' : 's'}`
                 : 'No section details available'}
             </div>
-            {latestDeployLabels.length ? <div className="sidebar-note-detail">{latestDeployLabels.slice(0, 3).join(' · ')}</div> : null}
+            {latestDeployCollectionLabels.length ? (
+              <div className="sidebar-note-detail">{latestDeployCollectionLabels.slice(0, 3).join(' · ')}</div>
+            ) : null}
+            <div className="sidebar-note-actions">
+              <Button
+                type="button"
+                variant="secondary"
+                iconLeft={revertPendingSha === latestDeploy?.sha ? <LoaderCircle className="spinner" size={14} /> : <RotateCcw size={14} />}
+                onClick={() => latestDeploy && onRevertDeploy(latestDeploy.sha)}
+                disabled={!latestDeploy || Boolean(revertPendingSha) || deploysLoading}
+              >
+                {revertPendingSha === latestDeploy?.sha ? 'Reverting latest' : 'Revert latest'}
+              </Button>
+              <Button type="button" variant="ghost" iconLeft={<RefreshCw size={14} />} onClick={onRefreshDeploys} disabled={deploysLoading}>
+                Refresh history
+              </Button>
+            </div>
           </div>
         ) : null}
       </aside>
@@ -494,188 +522,50 @@ function AppShell({
           </div>
         </header>
 
-        <div className="workspace-tabs" role="tablist" aria-label="Admin workspace tabs">
-          <button
-            type="button"
-            className={cn('workspace-tab', activeTab === 'sections' && 'is-active')}
-            onClick={() => onTabChange('sections')}
-            aria-pressed={activeTab === 'sections'}
-          >
-            <span>Sections</span>
-            <span className="workspace-tab-count">{files.length}</span>
-          </button>
-          <button
-            type="button"
-            className={cn('workspace-tab', activeTab === 'deploys' && 'is-active')}
-            onClick={() => onTabChange('deploys')}
-            aria-pressed={activeTab === 'deploys'}
-          >
-            <span>Deploys</span>
-            <span className="workspace-tab-count">{deploys.length}</span>
-          </button>
-        </div>
-
         <div
           className={cn('workspace-note', `status-${workspaceTone || 'neutral'}`)}
         >
-          {workspaceNote || (activeTab === 'deploys' ? 'Recent publishes and rollback actions live here.' : 'Drafts autosave locally until you publish.')}
+          {workspaceNote || 'Drafts autosave locally until you publish.'}
         </div>
 
-        {activeTab === 'deploys' ? (
-          <DeploysPanel
-            deploys={deploys}
-            loading={deploysLoading}
-            error={deploysError}
-            latestDeployLabels={latestDeployLabels}
-            onRefresh={onRefreshDeploys}
-            onRevert={onRevertDeploy}
-            revertPendingSha={revertPendingSha}
-          />
-        ) : (
-          <div className="editor-canvas">
-            {!currentFile || !currentDraft ? (
-              <EmptyState title="Pick a section" description="The current section will appear here once you select one from the sidebar." />
-            ) : (
-              <div className="editor-stack">
-                <div className="editor-toolbar">
-                  <Button
-                    type="button"
-                    variant="primary"
-                    onClick={onPublish}
-                    disabled={publishPending || dirtyCount === 0}
-                    iconLeft={publishPending ? <LoaderCircle className="spinner" size={16} /> : <Upload size={16} />}
-                  >
-                    {publishPending ? 'Publishing' : 'Publish changes'}
-                  </Button>
-                </div>
-
-                {currentFile.fields.map(field => (
-                  <FieldRenderer
-                    key={field.name}
-                    field={field}
-                    value={currentDraft[field.name]}
-                    onChange={nextValue => onDraftChange(currentPath, field.name, nextValue)}
-                    uploadAsset={onUploadAsset}
-                    depth={0}
-                  />
-                ))}
+        <div className="editor-canvas">
+          {!currentFile || !currentDraft ? (
+            <EmptyState title="Pick a section" description="The current section will appear here once you select one from the sidebar." />
+          ) : (
+            <div className="editor-stack">
+              <div className="editor-toolbar">
+                <Button
+                  type="button"
+                  variant="primary"
+                  onClick={onPublish}
+                  disabled={publishPending || dirtyCount === 0}
+                  iconLeft={publishPending ? <LoaderCircle className="spinner" size={16} /> : <Upload size={16} />}
+                >
+                  {publishPending ? 'Publishing' : 'Publish changes'}
+                </Button>
               </div>
-            )}
-          </div>
-        )}
+
+              {currentFile.fields.map(field => (
+                <FieldRenderer
+                  key={field.name}
+                  field={field}
+                  value={currentDraft[field.name]}
+                  onChange={nextValue => onDraftChange(currentPath, field.name, nextValue)}
+                  uploadAsset={onUploadAsset}
+                  depth={0}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );
 }
 
-function DeploysPanel({ deploys, loading, error, latestDeployLabels, onRefresh, onRevert, revertPendingSha }) {
-  const latestDeploy = deploys[0] || null;
-
-  return (
-    <Card className="deploys-card">
-      <div className="deploys-head">
-        <div>
-          <div className="panel-label deploys-label">
-            <History size={14} />
-            <span>Deploys</span>
-          </div>
-          <div className="panel-meta">Recent publishes. Reverting creates a new rollback publish.</div>
-        </div>
-
-        <div className="deploys-actions">
-          <Button type="button" variant="ghost" iconLeft={<RefreshCw size={14} />} onClick={onRefresh} disabled={loading}>
-            Refresh
-          </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            iconLeft={revertPendingSha === latestDeploy?.sha ? <LoaderCircle className="spinner" size={14} /> : <RotateCcw size={14} />}
-            onClick={() => latestDeploy && onRevert(latestDeploy.sha)}
-            disabled={!latestDeploy || Boolean(revertPendingSha) || loading}
-          >
-            {revertPendingSha === latestDeploy?.sha ? 'Reverting latest' : 'Revert latest'}
-          </Button>
-        </div>
-      </div>
-
-      {loading ? (
-        <div className="deploys-loading">
-          <LoaderCircle className="spinner" size={16} />
-          Loading deploy history...
-        </div>
-      ) : error ? (
-        <div className="deploys-error">{error}</div>
-      ) : deploys.length ? (
-        <div className="deploy-stack">
-          {latestDeploy ? (
-            <div className="deploy-summary">
-              <div className="deploy-summary-head">
-                <div className="panel-label">What changed in the last publish</div>
-                <div className="deploy-summary-count">
-                  {latestDeployLabels.length} section{latestDeployLabels.length === 1 ? '' : 's'}
-                </div>
-              </div>
-              <div className="deploy-summary-list">
-                {latestDeployLabels.length ? (
-                  latestDeployLabels.slice(0, 6).map(label => (
-                    <span key={label} className="deploy-summary-chip">
-                      {label}
-                    </span>
-                  ))
-                ) : (
-                  <span className="deploy-summary-empty">No section details available.</span>
-                )}
-                {latestDeployLabels.length > 6 ? (
-                  <span className="deploy-summary-chip">+{latestDeployLabels.length - 6} more</span>
-                ) : null}
-              </div>
-            </div>
-          ) : null}
-
-          <div className="deploy-list">
-            {deploys.map((deploy, index) => {
-              const pending = revertPendingSha === deploy.sha;
-              return (
-                <div key={deploy.sha} className="deploy-row">
-                  <div className="deploy-row-main">
-                    <div className="deploy-row-top">
-                      {index === 0 ? <Badge tone="neutral">Latest</Badge> : null}
-                      {deploy.isRevert ? <Badge tone="neutral">Rollback</Badge> : null}
-                      <span className="deploy-row-date">{formatTimestamp(deploy.date)}</span>
-                    </div>
-                    <div className="deploy-row-message">{deploy.message}</div>
-                    <div className="deploy-row-meta">
-                      {deploy.author}
-                      {deploy.pathsPreview ? ` · ${deploy.pathsPreview}` : ''}
-                      {deploy.fileCount ? ` · ${deploy.fileCount} file${deploy.fileCount === 1 ? '' : 's'}` : ''}
-                    </div>
-                  </div>
-
-                  <div className="deploy-row-actions">
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      iconLeft={pending ? <LoaderCircle className="spinner" size={14} /> : <RotateCcw size={14} />}
-                      onClick={() => onRevert(deploy.sha)}
-                      disabled={pending || Boolean(revertPendingSha)}
-                    >
-                      {pending ? 'Reverting' : 'Revert'}
-                    </Button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      ) : (
-        <EmptyState title="No deploys yet" description="Publish once and the history will appear here." />
-      )}
-    </Card>
-  );
-}
-
 function CollectionGroup({ collection, currentPath, dirtyPaths, updatedPaths, onSelectFile }) {
   const active = collection.files.some(file => file.path === currentPath);
+  const hasUpdates = collection.files.some(file => updatedPaths?.has(file.path));
   const [open, setOpen] = useState(active);
 
   useEffect(() => {
@@ -686,14 +576,17 @@ function CollectionGroup({ collection, currentPath, dirtyPaths, updatedPaths, on
 
   return (
     <Collapsible.Root open={open} onOpenChange={setOpen}>
-      <div className="collection-card">
+      <div className={cn('collection-card', hasUpdates && 'is-updated')}>
         <Collapsible.Trigger asChild>
-          <button className="collection-trigger" type="button">
+          <button className={cn('collection-trigger', hasUpdates && 'is-updated')} type="button">
             <span className="collection-trigger-left">
               <span className="collection-chevron">{open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}</span>
-              <span className="collection-label">{collection.label}</span>
+              <span className={cn('collection-label', hasUpdates && 'is-updated')}>{collection.label}</span>
             </span>
-            <span className="collection-count">{collection.files.length}</span>
+            <span className="collection-trigger-right">
+              {hasUpdates ? <span className="collection-updated">Updated</span> : null}
+              <span className={cn('collection-count', hasUpdates && 'is-updated')}>{collection.files.length}</span>
+            </span>
           </button>
         </Collapsible.Trigger>
 
@@ -714,7 +607,7 @@ function CollectionGroup({ collection, currentPath, dirtyPaths, updatedPaths, on
                   </span>
                 </span>
                 <span className="file-row-meta">
-                  {updatedPaths?.has(file.path) ? <span className="file-row-tag">Updated</span> : null}
+                  {updatedPaths?.has(file.path) ? <span className="file-row-tag">Danger</span> : null}
                   <span className={cn('dirty-dot', dirtyPaths.has(file.path) && 'is-dirty')} />
                 </span>
               </button>
@@ -1179,7 +1072,6 @@ function useCmsBootstrap() {
   const [dirtyPaths, setDirtyPaths] = useState(() => new Set());
   const [currentPath, setCurrentPath] = useState(null);
   const [search, setSearch] = useState('');
-  const [activeTab, setActiveTab] = useState('sections');
   const [publishPending, setPublishPending] = useState(false);
   const [loginPending, setLoginPending] = useState(false);
   const [loadingContent, setLoadingContent] = useState(false);
@@ -1195,7 +1087,6 @@ function useCmsBootstrap() {
     setDirtyPaths(new Set());
     setCurrentPath(null);
     setSearch('');
-    setActiveTab('sections');
     setPublishPending(false);
     setLoadingContent(false);
     setDeploys([]);
@@ -1642,8 +1533,6 @@ function useCmsBootstrap() {
     authNote,
     workspaceNote,
     workspaceTone,
-    activeTab,
-    setActiveTab,
     deploys,
     deploysLoading,
     deploysError,
@@ -1715,8 +1604,6 @@ function AdminApp() {
       publishPending={cms.publishPending}
       workspaceNote={cms.workspaceNote}
       workspaceTone={cms.workspaceTone}
-      activeTab={cms.activeTab}
-      onTabChange={cms.setActiveTab}
       deploys={cms.deploys}
       deploysLoading={cms.deploysLoading}
       deploysError={cms.deploysError}
