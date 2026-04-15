@@ -218,6 +218,341 @@ function formatTimestamp(value) {
   });
 }
 
+function isEmptyValue(value) {
+  return value === undefined || value === null || value === '';
+}
+
+function valuesEqual(before, after) {
+  if (before === after) {
+    return true;
+  }
+
+  if (typeof before !== typeof after) {
+    return false;
+  }
+
+  if (Array.isArray(before) && Array.isArray(after)) {
+    return before.length === after.length && before.every((item, index) => valuesEqual(item, after[index]));
+  }
+
+  if (before && after && typeof before === 'object' && typeof after === 'object') {
+    const beforeKeys = Object.keys(before);
+    const afterKeys = Object.keys(after);
+    if (beforeKeys.length !== afterKeys.length) {
+      return false;
+    }
+
+    return beforeKeys.every(key => valuesEqual(before[key], after[key]));
+  }
+
+  return false;
+}
+
+function assetLabel(value) {
+  const text = String(value || '').trim();
+  if (!text) {
+    return 'Empty';
+  }
+
+  const parts = text.split('/');
+  return parts[parts.length - 1] || text;
+}
+
+function renderValueLabel(field, value) {
+  if (isEmptyValue(value)) {
+    return 'Empty';
+  }
+
+  if (field?.widget === 'image' || field?.widget === 'file') {
+    return assetLabel(value);
+  }
+
+  if (Array.isArray(value)) {
+    return `${value.length} item${value.length === 1 ? '' : 's'}`;
+  }
+
+  if (value && typeof value === 'object') {
+    return previewValue(value);
+  }
+
+  return String(value);
+}
+
+function splitCollectionPath(path) {
+  return normalizePath(path).replace(/^src\/_data\/cms\//, '').split('/');
+}
+
+function buildFieldTrail(trail, field) {
+  return [...trail, field.label || field.name];
+}
+
+function summarizeItemIdentity(field, item, index) {
+  const summary = summarizeListItem(field, item, index);
+  return summary || `${field.label || field.name} ${index + 1}`;
+}
+
+function diffLeafField(field, before, after, trail) {
+  if (valuesEqual(before, after)) {
+    return [];
+  }
+
+  if (isEmptyValue(before) && !isEmptyValue(after)) {
+    return [{
+      type: 'added',
+      label: buildFieldTrail(trail, field).join(' · '),
+      field,
+      before: null,
+      after,
+    }];
+  }
+
+  if (!isEmptyValue(before) && isEmptyValue(after)) {
+    return [{
+      type: 'removed',
+      label: buildFieldTrail(trail, field).join(' · '),
+      field,
+      before,
+      after: null,
+    }];
+  }
+
+  return [{
+    type: 'edited',
+    label: buildFieldTrail(trail, field).join(' · '),
+    field,
+    before,
+    after,
+  }];
+}
+
+function diffListField(field, before, after, trail) {
+  const beforeList = Array.isArray(before) ? before : [];
+  const afterList = Array.isArray(after) ? after : [];
+
+  if (!beforeList.length && !afterList.length) {
+    return [];
+  }
+
+  if (field.fields) {
+    const beforeBuckets = new Map();
+    const afterBuckets = new Map();
+
+    beforeList.forEach((item, index) => {
+      const key = summarizeItemIdentity(field, item, index);
+      const bucket = beforeBuckets.get(key) || [];
+      bucket.push({ item, index });
+      beforeBuckets.set(key, bucket);
+    });
+
+    afterList.forEach((item, index) => {
+      const key = summarizeItemIdentity(field, item, index);
+      const bucket = afterBuckets.get(key) || [];
+      bucket.push({ item, index });
+      afterBuckets.set(key, bucket);
+    });
+
+    const keys = Array.from(new Set([...beforeBuckets.keys(), ...afterBuckets.keys()]));
+    const changes = [];
+
+    for (const key of keys) {
+      const beforeItems = beforeBuckets.get(key) || [];
+      const afterItems = afterBuckets.get(key) || [];
+      const pairCount = Math.min(beforeItems.length, afterItems.length);
+      const itemField = {
+        widget: 'object',
+        label: key,
+        name: field.name,
+        fields: field.fields,
+      };
+
+      for (let index = 0; index < pairCount; index += 1) {
+        const beforeItem = beforeItems[index].item;
+        const afterItem = afterItems[index].item;
+        changes.push(...diffField(itemField, beforeItem, afterItem, [...trail, field.label || field.name]));
+      }
+
+      for (let index = pairCount; index < beforeItems.length; index += 1) {
+        changes.push(...diffField(itemField, beforeItems[index].item, {}, [...trail, field.label || field.name]));
+      }
+
+      for (let index = pairCount; index < afterItems.length; index += 1) {
+        changes.push(...diffField(itemField, {}, afterItems[index].item, [...trail, field.label || field.name]));
+      }
+    }
+
+    return changes;
+  }
+
+  const beforeCounts = new Map();
+  const afterCounts = new Map();
+  const orderedValues = [];
+
+  for (const value of beforeList) {
+    const key = JSON.stringify(value);
+    beforeCounts.set(key, (beforeCounts.get(key) || 0) + 1);
+    if (!orderedValues.some(entry => entry.key === key)) {
+      orderedValues.push({ key, value });
+    }
+  }
+
+  for (const value of afterList) {
+    const key = JSON.stringify(value);
+    afterCounts.set(key, (afterCounts.get(key) || 0) + 1);
+    if (!orderedValues.some(entry => entry.key === key)) {
+      orderedValues.push({ key, value });
+    }
+  }
+
+  const changes = [];
+  for (const { key, value } of orderedValues) {
+    const beforeCount = beforeCounts.get(key) || 0;
+    const afterCount = afterCounts.get(key) || 0;
+    const label = [...trail, field.label || field.name].join(' · ');
+
+    if (beforeCount > afterCount) {
+      for (let index = 0; index < beforeCount - afterCount; index += 1) {
+        changes.push({
+          type: 'removed',
+          label,
+          field,
+          before: value,
+          after: null,
+        });
+      }
+    }
+
+    if (afterCount > beforeCount) {
+      for (let index = 0; index < afterCount - beforeCount; index += 1) {
+        changes.push({
+          type: 'added',
+          label,
+          field,
+          before: null,
+          after: value,
+        });
+      }
+    }
+  }
+
+  return changes;
+}
+
+function diffField(field, before, after, trail = []) {
+  const widget = field.widget || 'string';
+
+  if (widget === 'object') {
+    const beforeObject = before && typeof before === 'object' && !Array.isArray(before) ? before : {};
+    const afterObject = after && typeof after === 'object' && !Array.isArray(after) ? after : {};
+    let changes = [];
+
+    for (const child of field.fields || []) {
+      changes = changes.concat(diffField(child, beforeObject[child.name], afterObject[child.name], buildFieldTrail(trail, field)));
+    }
+
+    return changes;
+  }
+
+  if (widget === 'list') {
+    return diffListField(field, before, after, trail);
+  }
+
+  return diffLeafField(field, before, after, trail);
+}
+
+function diffFile(file, before, after) {
+  const fileFields = Array.isArray(file.fields) ? file.fields : [];
+  const changes = [];
+
+  for (const field of fileFields) {
+    changes.push(...diffField(field, before?.[field.name], after?.[field.name], [file.collectionLabel, file.fileLabel]));
+  }
+
+  return changes;
+}
+
+function ChangeValue({ field, value, tone = 'neutral' }) {
+  if (isEmptyValue(value)) {
+    return <span className={cn('change-value', `change-value-${tone}`)}>Empty</span>;
+  }
+
+  if (field?.widget === 'image' && typeof value === 'string' && isImagePath(value)) {
+    return (
+      <span className={cn('change-value', `change-value-${tone}`, 'change-value-asset')}>
+        <img src={value} alt="" />
+        <span>{assetLabel(value)}</span>
+      </span>
+    );
+  }
+
+  if (field?.widget === 'image' || field?.widget === 'file') {
+    return <span className={cn('change-value', `change-value-${tone}`, 'change-value-asset')}>{assetLabel(value)}</span>;
+  }
+
+  if (Array.isArray(value)) {
+    return <span className={cn('change-value', `change-value-${tone}`)}>{`${value.length} item${value.length === 1 ? '' : 's'}`}</span>;
+  }
+
+  if (value && typeof value === 'object') {
+    return <span className={cn('change-value', `change-value-${tone}`)}>{previewValue(value)}</span>;
+  }
+
+  return <span className={cn('change-value', `change-value-${tone}`)}>{String(value)}</span>;
+}
+
+function PublishChangeRow({ change }) {
+  const label = change.label || 'Changed field';
+
+  return (
+    <div className={cn('publish-change', `publish-change-${change.type}`)}>
+      <div className="publish-change-head">
+        <div className="publish-change-label">{label}</div>
+        <div className="publish-change-type">{change.type === 'added' ? 'Added' : change.type === 'removed' ? 'Removed' : 'Edited'}</div>
+      </div>
+
+      {change.type === 'removed' ? (
+        <div className="publish-change-values">
+          <ChangeValue field={change.field} value={change.before} tone="danger" />
+        </div>
+      ) : change.type === 'added' ? (
+        <div className="publish-change-values">
+          <ChangeValue field={change.field} value={change.after} tone="success" />
+        </div>
+      ) : (
+        <div className="publish-change-values publish-change-values-pair">
+          <ChangeValue field={change.field} value={change.before} tone="muted" />
+          <span className="publish-change-arrow">→</span>
+          <ChangeValue field={change.field} value={change.after} tone="success" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PublishFileCard({ file, changes }) {
+  const visibleChanges = changes.slice(0, 6);
+  const remaining = Math.max(0, changes.length - visibleChanges.length);
+
+  return (
+    <div className="publish-file-card">
+      <div className="publish-file-head">
+        <div>
+          <div className="publish-file-label">{file.collectionLabel}</div>
+          <div className="publish-file-title">{file.fileLabel}</div>
+        </div>
+        <div className="publish-file-count">{changes.length} change{changes.length === 1 ? '' : 's'}</div>
+      </div>
+
+      <div className="publish-file-list">
+        {visibleChanges.map((change, index) => (
+          <PublishChangeRow key={`${file.path}-${index}-${change.label}-${change.type}`} change={change} />
+        ))}
+      </div>
+
+      {remaining > 0 ? <div className="publish-file-more">+{remaining} more changes</div> : null}
+    </div>
+  );
+}
+
 async function fetchText(path) {
   const response = await fetch(path);
   if (!response.ok) {
@@ -372,18 +707,16 @@ function PublishConfirmationDialog({ open, onClose, onConfirm, publishPending, d
           {dirtyCollections.map(group => (
             <div key={group.label} className="publish-modal-group">
               <div className="publish-modal-group-label">{group.label}</div>
-              <div className="publish-modal-group-items">
-                {group.files.map(file => (
-                  <span key={file.path} className="publish-modal-chip">
-                    {file.fileLabel}
-                  </span>
+              <div className="publish-modal-group-files">
+                {group.items.map(entry => (
+                  <PublishFileCard key={entry.file.path} file={entry.file} changes={entry.changes} />
                 ))}
               </div>
             </div>
           ))}
         </div>
 
-        <div className="publish-modal-note">You can still discard individual edits after this, but publishing will update the live site.</div>
+        <div className="publish-modal-note">Deleted calendar rows are shown here with their text values so editors can confirm exactly what disappears before publishing.</div>
 
         <div className="publish-modal-actions">
           <Button type="button" variant="ghost" onClick={onClose}>
@@ -490,40 +823,55 @@ function AppShell({
   const currentFile = files.find(file => file.path === currentPath) || null;
   const currentDraft = currentPath ? drafts.get(currentPath) : null;
   const dirtyCount = dirtyPaths.size;
-  const latestDeploy = deploys[0] || null;
   const isOwner = isOwnerEmail(user?.email);
   const filesByPath = useMemo(() => new Map(files.map(file => [file.path, file])), [files]);
+  const deploySummaries = useMemo(
+    () =>
+      deploys.map(deploy => {
+        const labels = [];
+        const seen = new Set();
+
+        for (const file of deploy.files || []) {
+          const currentFileMeta = filesByPath.get(file.path);
+          const label = currentFileMeta?.collectionLabel || splitCollectionPath(file.path)[0] || 'Unknown';
+          if (seen.has(label)) {
+            continue;
+          }
+          seen.add(label);
+          labels.push(label);
+        }
+
+        return {
+          ...deploy,
+          collectionLabels: labels,
+        };
+      }),
+    [deploys, filesByPath],
+  );
+  const latestDeploy = deploySummaries[0] || null;
   const dirtyFiles = useMemo(() => files.filter(file => dirtyPaths.has(file.path)), [files, dirtyPaths]);
+  const dirtyFileChanges = useMemo(
+    () =>
+      dirtyFiles.map(file => ({
+        file,
+        changes: diffFile(file, remoteDrafts.get(file.path), drafts.get(file.path)),
+      })),
+    [dirtyFiles, drafts, remoteDrafts],
+  );
   const dirtyCollections = useMemo(() => {
     const groups = new Map();
 
-    for (const file of dirtyFiles) {
-      const group = groups.get(file.collectionLabel) || [];
-      group.push(file);
-      groups.set(file.collectionLabel, group);
+    for (const entry of dirtyFileChanges) {
+      const group = groups.get(entry.file.collectionLabel) || [];
+      group.push(entry);
+      groups.set(entry.file.collectionLabel, group);
     }
 
-    return Array.from(groups.entries()).map(([label, groupFiles]) => ({
+    return Array.from(groups.entries()).map(([label, items]) => ({
       label,
-      files: groupFiles,
+      items,
     }));
-  }, [dirtyFiles]);
-  const latestDeployCollectionLabels = useMemo(() => {
-    const labels = [];
-    const seen = new Set();
-
-    for (const file of latestDeploy?.files || []) {
-      const currentFileMeta = filesByPath.get(file.path);
-      const label = currentFileMeta?.collectionLabel || file.path.replace(/^src\/_data\/cms\//, '').split('/')[0] || 'Unknown';
-      if (seen.has(label)) {
-        continue;
-      }
-      seen.add(label);
-      labels.push(label);
-    }
-
-    return labels;
-  }, [latestDeploy, filesByPath]);
+  }, [dirtyFileChanges]);
 
   const visibleCollections = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -598,19 +946,18 @@ function AppShell({
           ) : latestDeploy ? (
             <>
               <div className="sidebar-note-value">
-                {latestDeployCollectionLabels.length
-                  ? `Last publish changed ${latestDeployCollectionLabels.length} collection${latestDeployCollectionLabels.length === 1 ? '' : 's'}`
-                  : 'Last publish details available'}
+                Last pushed by {latestDeploy.author} · {formatTimestamp(latestDeploy.date)}
               </div>
-              {latestDeployCollectionLabels.length ? (
+              <div className="sidebar-note-detail">{latestDeploy.message}</div>
+              {latestDeploy.collectionLabels.length ? (
                 <div className="sidebar-note-list">
-                  {latestDeployCollectionLabels.slice(0, 6).map(label => (
+                  {latestDeploy.collectionLabels.slice(0, 6).map(label => (
                     <span key={label} className="sidebar-note-chip">
                       {label}
                     </span>
                   ))}
-                  {latestDeployCollectionLabels.length > 6 ? (
-                    <span className="sidebar-note-chip">+{latestDeployCollectionLabels.length - 6} more</span>
+                  {latestDeploy.collectionLabels.length > 6 ? (
+                    <span className="sidebar-note-chip">+{latestDeploy.collectionLabels.length - 6} more</span>
                   ) : null}
                 </div>
               ) : null}
@@ -628,9 +975,33 @@ function AppShell({
                   Refresh history
                 </Button>
               </div>
+
+              <div className="sidebar-deploy-log">
+                {deploySummaries.slice(0, 3).map(deploy => (
+                  <div key={deploy.sha} className="sidebar-deploy-entry">
+                    <div className="sidebar-deploy-entry-head">
+                      <div className="sidebar-deploy-entry-author">{deploy.author}</div>
+                      <div className="sidebar-deploy-entry-date">{formatTimestamp(deploy.date)}</div>
+                    </div>
+                    <div className="sidebar-deploy-entry-message">{deploy.message}</div>
+                    {deploy.collectionLabels.length ? (
+                      <div className="sidebar-note-list">
+                        {deploy.collectionLabels.slice(0, 4).map(label => (
+                          <span key={`${deploy.sha}-${label}`} className="sidebar-note-chip">
+                            {label}
+                          </span>
+                        ))}
+                        {deploy.collectionLabels.length > 4 ? (
+                          <span className="sidebar-note-chip">+{deploy.collectionLabels.length - 4} more</span>
+                        ) : null}
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
             </>
           ) : (
-              <div className="sidebar-note-value">No publishes yet.</div>
+            <div className="sidebar-note-value">No publishes yet.</div>
           )}
         </div>
 
@@ -1413,6 +1784,7 @@ function useCmsBootstrap() {
   const [collections, setCollections] = useState([]);
   const [files, setFiles] = useState([]);
   const [drafts, setDrafts] = useState(() => new Map());
+  const [remoteDrafts, setRemoteDrafts] = useState(() => new Map());
   const [dirtyPaths, setDirtyPaths] = useState(() => new Set());
   const [currentPath, setCurrentPath] = useState(null);
   const [search, setSearch] = useState('');
@@ -1432,6 +1804,7 @@ function useCmsBootstrap() {
     setCollections([]);
     setFiles([]);
     setDrafts(new Map());
+    setRemoteDrafts(new Map());
     setDirtyPaths(new Set());
     setCurrentPath(null);
     setSearch('');
@@ -1549,6 +1922,7 @@ function useCmsBootstrap() {
 
           return {
             file,
+            remote: deepClone(remote),
             draft: deepClone(nextValue),
             dirty: Boolean(localDraft),
           };
@@ -1556,8 +1930,10 @@ function useCmsBootstrap() {
       );
 
       const nextDrafts = new Map();
+      const nextRemoteDrafts = new Map();
       const nextDirty = new Set();
       const loadedFiles = loadedEntries.map(entry => {
+        nextRemoteDrafts.set(entry.file.path, entry.remote);
         nextDrafts.set(entry.file.path, entry.draft);
         if (entry.dirty) {
           nextDirty.add(entry.file.path);
@@ -1568,6 +1944,7 @@ function useCmsBootstrap() {
       setCollections(manifestCollections);
       setFiles(loadedFiles);
       setDrafts(nextDrafts);
+      setRemoteDrafts(nextRemoteDrafts);
       setDirtyPaths(nextDirty);
       const nextCurrentPath = preferredPath && loadedFiles.some(file => file.path === preferredPath)
         ? preferredPath
@@ -1830,7 +2207,7 @@ function useCmsBootstrap() {
     }
 
     try {
-      const remote = await loadCmsFile(currentPath);
+      const remote = remoteDrafts.get(currentPath) || (await loadCmsFile(currentPath));
       setDrafts(prev => {
         const next = new Map(prev);
         next.set(currentPath, deepClone(remote));
