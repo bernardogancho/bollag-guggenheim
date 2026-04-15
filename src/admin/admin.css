@@ -268,7 +268,7 @@ button:disabled {
 }
 
 .deploys-card {
-  margin-top: 10px;
+  margin-top: 0;
   padding: 10px;
 }
 
@@ -339,11 +339,6 @@ button:disabled {
   gap: 8px;
 }
 
-.deploy-row-sha {
-  font-weight: 700;
-  font-size: 12px;
-}
-
 .deploy-row-date,
 .deploy-row-meta,
 .deploy-row-message {
@@ -365,10 +360,6 @@ button:disabled {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 8px;
-}
-
-.deploy-link {
-  text-decoration: none;
 }
 
 .status-success,
@@ -578,7 +569,7 @@ button:disabled {
   justify-content: space-between;
   align-items: flex-start;
   gap: 14px;
-  padding: 12px;
+  padding: 10px 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: #fff;
@@ -600,6 +591,56 @@ button:disabled {
   gap: 8px;
 }
 
+.workspace-tabs {
+  display: flex;
+  margin-top: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #fff;
+}
+
+.workspace-tab {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: var(--panel-soft);
+  color: var(--muted);
+  font-weight: 700;
+  text-align: left;
+}
+
+.workspace-tab:last-child {
+  border-right: 0;
+}
+
+.workspace-tab.is-active {
+  background: #fff;
+  color: var(--text);
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+.workspace-tab-count {
+  min-width: 24px;
+  padding: 2px 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel-soft);
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.workspace-note {
+  margin-top: 10px;
+}
+
 .editor-canvas {
   margin-top: 10px;
 }
@@ -607,6 +648,11 @@ button:disabled {
 .editor-stack {
   display: grid;
   gap: 10px;
+}
+
+.editor-toolbar {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .field-card {

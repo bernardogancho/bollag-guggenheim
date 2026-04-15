@@ -8,8 +8,6 @@ import {
   ChevronDown,
   ChevronRight,
   Copy,
-  FileUp,
-  ExternalLink,
   History,
   GripVertical,
   LoaderCircle,
@@ -358,7 +356,7 @@ function LoginScreen({ email, onEmailChange, onSubmit, pending, note, tone }) {
           </Button>
         </form>
 
-        <div className={cn('status-line', note && `status-${tone || 'neutral'}`)}>{note || 'The editor publishes to GitHub after Supabase login.'}</div>
+        <div className={cn('status-line', note && `status-${tone || 'neutral'}`)}>{note || 'The editor publishes after Supabase login.'}</div>
       </Card>
     </div>
   );
@@ -377,6 +375,8 @@ function AppShell({
   publishPending,
   workspaceNote,
   workspaceTone,
+  activeTab,
+  onTabChange,
   deploys,
   deploysLoading,
   deploysError,
@@ -460,50 +460,80 @@ function AppShell({
 
           <div className="workspace-actions">
             <Badge tone={dirtyCount ? 'warning' : 'neutral'}>{dirtyCount ? `${dirtyCount} unsaved` : 'No changes'}</Badge>
-            <Button
-              type="button"
-              variant="primary"
-              onClick={onPublish}
-              disabled={publishPending || dirtyCount === 0}
-              iconLeft={publishPending ? <LoaderCircle className="spinner" size={16} /> : <Upload size={16} />}
-            >
-              {publishPending ? 'Publishing' : 'Publish changes'}
-            </Button>
             <Button type="button" variant="ghost" onClick={onSignOut} iconLeft={<LogOut size={16} />}>
               Sign out
             </Button>
           </div>
         </header>
 
-        <div className={cn('workspace-note', `status-${workspaceTone || 'neutral'}`)}>{workspaceNote || 'Drafts autosave locally until you publish.'}</div>
-
-        <DeploysPanel
-          deploys={deploys}
-          loading={deploysLoading}
-          error={deploysError}
-          onRefresh={onRefreshDeploys}
-          onRevert={onRevertDeploy}
-          revertPendingSha={revertPendingSha}
-        />
-
-        <div className="editor-canvas">
-          {!currentFile || !currentDraft ? (
-            <EmptyState title="Pick a section" description="The current section will appear here once you select one from the sidebar." />
-          ) : (
-            <div className="editor-stack">
-              {currentFile.fields.map(field => (
-                <FieldRenderer
-                  key={field.name}
-                  field={field}
-                  value={currentDraft[field.name]}
-                  onChange={nextValue => onDraftChange(currentPath, field.name, nextValue)}
-                  uploadAsset={onUploadAsset}
-                  depth={0}
-                />
-              ))}
-            </div>
-          )}
+        <div className="workspace-tabs" role="tablist" aria-label="Admin workspace tabs">
+          <button
+            type="button"
+            className={cn('workspace-tab', activeTab === 'sections' && 'is-active')}
+            onClick={() => onTabChange('sections')}
+            aria-pressed={activeTab === 'sections'}
+          >
+            <span>Sections</span>
+            <span className="workspace-tab-count">{files.length}</span>
+          </button>
+          <button
+            type="button"
+            className={cn('workspace-tab', activeTab === 'deploys' && 'is-active')}
+            onClick={() => onTabChange('deploys')}
+            aria-pressed={activeTab === 'deploys'}
+          >
+            <span>Deploys</span>
+            <span className="workspace-tab-count">{deploys.length}</span>
+          </button>
         </div>
+
+        <div
+          className={cn('workspace-note', `status-${workspaceTone || 'neutral'}`)}
+        >
+          {workspaceNote || (activeTab === 'deploys' ? 'Recent publishes and rollback actions live here.' : 'Drafts autosave locally until you publish.')}
+        </div>
+
+        {activeTab === 'deploys' ? (
+          <DeploysPanel
+            deploys={deploys}
+            loading={deploysLoading}
+            error={deploysError}
+            onRefresh={onRefreshDeploys}
+            onRevert={onRevertDeploy}
+            revertPendingSha={revertPendingSha}
+          />
+        ) : (
+          <div className="editor-canvas">
+            {!currentFile || !currentDraft ? (
+              <EmptyState title="Pick a section" description="The current section will appear here once you select one from the sidebar." />
+            ) : (
+              <div className="editor-stack">
+                <div className="editor-toolbar">
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={onPublish}
+                    disabled={publishPending || dirtyCount === 0}
+                    iconLeft={publishPending ? <LoaderCircle className="spinner" size={16} /> : <Upload size={16} />}
+                  >
+                    {publishPending ? 'Publishing' : 'Publish changes'}
+                  </Button>
+                </div>
+
+                {currentFile.fields.map(field => (
+                  <FieldRenderer
+                    key={field.name}
+                    field={field}
+                    value={currentDraft[field.name]}
+                    onChange={nextValue => onDraftChange(currentPath, field.name, nextValue)}
+                    uploadAsset={onUploadAsset}
+                    depth={0}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </main>
     </div>
   );
@@ -520,7 +550,7 @@ function DeploysPanel({ deploys, loading, error, onRefresh, onRevert, revertPend
             <History size={14} />
             <span>Deploys</span>
           </div>
-          <div className="panel-meta">Recent CMS commits on main. Reverting creates a new rollback commit.</div>
+          <div className="panel-meta">Recent publishes. Reverting creates a new rollback publish.</div>
         </div>
 
         <div className="deploys-actions">
@@ -554,9 +584,8 @@ function DeploysPanel({ deploys, loading, error, onRefresh, onRevert, revertPend
               <div key={deploy.sha} className="deploy-row">
                 <div className="deploy-row-main">
                   <div className="deploy-row-top">
-                    <span className="deploy-row-sha">#{deploy.sha.slice(0, 7)}</span>
                     {index === 0 ? <Badge tone="neutral">Latest</Badge> : null}
-                    {deploy.isRevert ? <Badge tone="neutral">Revert</Badge> : null}
+                    {deploy.isRevert ? <Badge tone="neutral">Rollback</Badge> : null}
                     <span className="deploy-row-date">{formatTimestamp(deploy.date)}</span>
                   </div>
                   <div className="deploy-row-message">{deploy.message}</div>
@@ -568,12 +597,6 @@ function DeploysPanel({ deploys, loading, error, onRefresh, onRevert, revertPend
                 </div>
 
                 <div className="deploy-row-actions">
-                  {deploy.commitUrl ? (
-                    <a className="button button-ghost deploy-link" href={deploy.commitUrl} target="_blank" rel="noreferrer">
-                      <ExternalLink size={14} />
-                      GitHub
-                    </a>
-                  ) : null}
                   <Button
                     type="button"
                     variant="secondary"
@@ -1094,6 +1117,7 @@ function useCmsBootstrap() {
   const [dirtyPaths, setDirtyPaths] = useState(() => new Set());
   const [currentPath, setCurrentPath] = useState(null);
   const [search, setSearch] = useState('');
+  const [activeTab, setActiveTab] = useState('sections');
   const [publishPending, setPublishPending] = useState(false);
   const [loginPending, setLoginPending] = useState(false);
   const [loadingContent, setLoadingContent] = useState(false);
@@ -1109,6 +1133,7 @@ function useCmsBootstrap() {
     setDirtyPaths(new Set());
     setCurrentPath(null);
     setSearch('');
+    setActiveTab('sections');
     setPublishPending(false);
     setLoadingContent(false);
     setDeploys([]);
@@ -1555,6 +1580,8 @@ function useCmsBootstrap() {
     authNote,
     workspaceNote,
     workspaceTone,
+    activeTab,
+    setActiveTab,
     deploys,
     deploysLoading,
     deploysError,
@@ -1621,22 +1648,24 @@ function AdminApp() {
       currentPath={cms.currentPath}
       dirtyPaths={cms.dirtyPaths}
       onSelectFile={cms.onSelectFile}
-    onPublish={cms.onPublish}
-    onSignOut={cms.onSignOut}
-    publishPending={cms.publishPending}
-    workspaceNote={cms.workspaceNote}
-    workspaceTone={cms.workspaceTone}
-    deploys={cms.deploys}
-    deploysLoading={cms.deploysLoading}
-    deploysError={cms.deploysError}
-    onRefreshDeploys={cms.onRefreshDeploys}
-    onRevertDeploy={cms.onRevertDeploy}
-    revertPendingSha={cms.revertPendingSha}
-    files={cms.files}
-    drafts={cms.drafts}
-    onDraftChange={cms.onDraftChange}
-    onUploadAsset={cms.onUploadAsset}
-  />
+      onPublish={cms.onPublish}
+      onSignOut={cms.onSignOut}
+      publishPending={cms.publishPending}
+      workspaceNote={cms.workspaceNote}
+      workspaceTone={cms.workspaceTone}
+      activeTab={cms.activeTab}
+      onTabChange={cms.setActiveTab}
+      deploys={cms.deploys}
+      deploysLoading={cms.deploysLoading}
+      deploysError={cms.deploysError}
+      onRefreshDeploys={cms.onRefreshDeploys}
+      onRevertDeploy={cms.onRevertDeploy}
+      revertPendingSha={cms.revertPendingSha}
+      files={cms.files}
+      drafts={cms.drafts}
+      onDraftChange={cms.onDraftChange}
+      onUploadAsset={cms.onUploadAsset}
+    />
   );
 }
 
