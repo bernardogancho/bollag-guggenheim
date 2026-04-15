@@ -9,9 +9,10 @@
     "dev:css": "tailwindcss -i ./src/assets/styles/site.css -o ./_site/assets/styles/site.css --watch",
     "dev:site": "eleventy --serve",
     "cms:proxy": "PORT=8082 npx decap-server",
-    "build": "npm run build:css && npm run build:site",
+    "build": "npm run build:css && npm run build:site && npm run build:admin",
     "build:css": "tailwindcss -i ./src/assets/styles/site.css -o ./_site/assets/styles/site.css --minify",
     "build:site": "eleventy",
+    "build:admin": "esbuild src/admin/app.jsx --bundle --format=esm --platform=browser --target=es2020 --outfile=_site/admin/app.js",
     "serve": "eleventy --serve"
   },
   "devDependencies": {
@@ -20,6 +21,13 @@
     "tailwindcss": "^3.4.17"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.103.0"
+    "@radix-ui/react-collapsible": "^1.1.12",
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
+    "@supabase/supabase-js": "^2.103.0",
+    "esbuild": "^0.28.0",
+    "lucide-react": "^1.8.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "yaml": "^2.8.3"
   }
 }
