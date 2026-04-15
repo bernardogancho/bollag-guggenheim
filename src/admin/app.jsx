@@ -370,6 +370,7 @@ function AppShell({
   dirtyPaths,
   onSelectFile,
   onPublish,
+  onDiscardChanges,
   onSignOut,
   publishPending,
   workspaceNote,
@@ -389,7 +390,6 @@ function AppShell({
   const currentDraft = currentPath ? drafts.get(currentPath) : null;
   const dirtyCount = dirtyPaths.size;
   const latestDeploy = deploys[0] || null;
-  const latestDeployPaths = useMemo(() => new Set((latestDeploy?.files || []).map(file => file.path)), [latestDeploy]);
   const filesByPath = useMemo(() => new Map(files.map(file => [file.path, file])), [files]);
   const latestDeployCollectionLabels = useMemo(() => {
     const labels = [];
@@ -450,58 +450,66 @@ function AppShell({
         <div className="collection-list">
           {visibleCollections.length ? (
             visibleCollections.map(collection => (
-              <CollectionGroup
-                key={collection.name}
-                collection={collection}
-                currentPath={currentPath}
-                dirtyPaths={dirtyPaths}
-                updatedPaths={latestDeployPaths}
-                onSelectFile={onSelectFile}
-              />
-            ))
+            <CollectionGroup
+              key={collection.name}
+              collection={collection}
+              currentPath={currentPath}
+              dirtyPaths={dirtyPaths}
+              onSelectFile={onSelectFile}
+            />
+          ))
           ) : (
             <EmptyState title="No matching sections" description="Try a different search term or clear the filter." />
           )}
         </div>
 
-        {deploysLoading ? (
-          <div className="sidebar-note sidebar-note-compact sidebar-note-danger">
-            <div className="sidebar-note-label">Last publish</div>
+        <div className="sidebar-note sidebar-note-compact">
+          <div className="sidebar-note-label">Change log</div>
+          {deploysLoading ? (
             <div className="sidebar-note-value">Loading publish history...</div>
-          </div>
-        ) : deploysError ? (
-          <div className="sidebar-note sidebar-note-compact sidebar-note-danger">
-            <div className="sidebar-note-label">Last publish</div>
-            <div className="sidebar-note-value">Publish history unavailable</div>
-            <div className="sidebar-note-detail">{deploysError}</div>
-          </div>
-        ) : latestDeploy ? (
-          <div className="sidebar-note sidebar-note-compact sidebar-note-danger">
-            <div className="sidebar-note-label">Last publish</div>
-            <div className="sidebar-note-value">
-              {latestDeployCollectionLabels.length
-                ? `Changed ${latestDeployCollectionLabels.length} collection${latestDeployCollectionLabels.length === 1 ? '' : 's'}`
-                : 'No section details available'}
-            </div>
-            {latestDeployCollectionLabels.length ? (
-              <div className="sidebar-note-detail">{latestDeployCollectionLabels.slice(0, 3).join(' · ')}</div>
-            ) : null}
-            <div className="sidebar-note-actions">
-              <Button
-                type="button"
-                variant="secondary"
-                iconLeft={revertPendingSha === latestDeploy?.sha ? <LoaderCircle className="spinner" size={14} /> : <RotateCcw size={14} />}
-                onClick={() => latestDeploy && onRevertDeploy(latestDeploy.sha)}
-                disabled={!latestDeploy || Boolean(revertPendingSha) || deploysLoading}
-              >
-                {revertPendingSha === latestDeploy?.sha ? 'Reverting latest' : 'Revert latest'}
-              </Button>
-              <Button type="button" variant="ghost" iconLeft={<RefreshCw size={14} />} onClick={onRefreshDeploys} disabled={deploysLoading}>
-                Refresh history
-              </Button>
-            </div>
-          </div>
-        ) : null}
+          ) : deploysError ? (
+            <>
+              <div className="sidebar-note-value">Publish history unavailable</div>
+              <div className="sidebar-note-detail">{deploysError}</div>
+            </>
+          ) : latestDeploy ? (
+            <>
+              <div className="sidebar-note-value">
+                {latestDeployCollectionLabels.length
+                  ? `Last publish changed ${latestDeployCollectionLabels.length} collection${latestDeployCollectionLabels.length === 1 ? '' : 's'}`
+                  : 'Last publish details available'}
+              </div>
+              {latestDeployCollectionLabels.length ? (
+                <div className="sidebar-note-list">
+                  {latestDeployCollectionLabels.slice(0, 6).map(label => (
+                    <span key={label} className="sidebar-note-chip">
+                      {label}
+                    </span>
+                  ))}
+                  {latestDeployCollectionLabels.length > 6 ? (
+                    <span className="sidebar-note-chip">+{latestDeployCollectionLabels.length - 6} more</span>
+                  ) : null}
+                </div>
+              ) : null}
+              <div className="sidebar-note-actions">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  iconLeft={revertPendingSha === latestDeploy?.sha ? <LoaderCircle className="spinner" size={14} /> : <RotateCcw size={14} />}
+                  onClick={() => latestDeploy && onRevertDeploy(latestDeploy.sha)}
+                  disabled={!latestDeploy || Boolean(revertPendingSha) || deploysLoading}
+                >
+                  {revertPendingSha === latestDeploy?.sha ? 'Reverting latest' : 'Revert latest'}
+                </Button>
+                <Button type="button" variant="ghost" iconLeft={<RefreshCw size={14} />} onClick={onRefreshDeploys} disabled={deploysLoading}>
+                  Refresh history
+                </Button>
+              </div>
+            </>
+          ) : (
+            <div className="sidebar-note-value">No publishes yet.</div>
+          )}
+        </div>
       </aside>
 
       <main className="workspace">
@@ -536,6 +544,15 @@ function AppShell({
               <div className="editor-toolbar">
                 <Button
                   type="button"
+                  variant="secondary"
+                  onClick={onDiscardChanges}
+                  disabled={!currentPath || !dirtyPaths.has(currentPath)}
+                  iconLeft={<Trash2 size={16} />}
+                >
+                  Discard changes
+                </Button>
+                <Button
+                  type="button"
                   variant="primary"
                   onClick={onPublish}
                   disabled={publishPending || dirtyCount === 0}
@@ -563,9 +580,8 @@ function AppShell({
   );
 }
 
-function CollectionGroup({ collection, currentPath, dirtyPaths, updatedPaths, onSelectFile }) {
+function CollectionGroup({ collection, currentPath, dirtyPaths, onSelectFile }) {
   const active = collection.files.some(file => file.path === currentPath);
-  const hasUpdates = collection.files.some(file => updatedPaths?.has(file.path));
   const [open, setOpen] = useState(active);
 
   useEffect(() => {
@@ -576,17 +592,14 @@ function CollectionGroup({ collection, currentPath, dirtyPaths, updatedPaths, on
 
   return (
     <Collapsible.Root open={open} onOpenChange={setOpen}>
-      <div className={cn('collection-card', hasUpdates && 'is-updated')}>
+      <div className="collection-card">
         <Collapsible.Trigger asChild>
-          <button className={cn('collection-trigger', hasUpdates && 'is-updated')} type="button">
+          <button className="collection-trigger" type="button">
             <span className="collection-trigger-left">
               <span className="collection-chevron">{open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}</span>
-              <span className={cn('collection-label', hasUpdates && 'is-updated')}>{collection.label}</span>
+              <span className="collection-label">{collection.label}</span>
             </span>
-            <span className="collection-trigger-right">
-              {hasUpdates ? <span className="collection-updated">Updated</span> : null}
-              <span className={cn('collection-count', hasUpdates && 'is-updated')}>{collection.files.length}</span>
-            </span>
+            <span className="collection-count">{collection.files.length}</span>
           </button>
         </Collapsible.Trigger>
 
@@ -596,18 +609,14 @@ function CollectionGroup({ collection, currentPath, dirtyPaths, updatedPaths, on
               <button
                 key={file.path}
                 type="button"
-                className={cn('file-row', file.path === currentPath && 'is-active', updatedPaths?.has(file.path) && 'is-updated')}
+                className={cn('file-row', file.path === currentPath && 'is-active')}
                 onClick={() => onSelectFile(file.path)}
               >
                 <span className="file-row-main">
                   <span className="file-row-title">{file.fileLabel}</span>
-                  <span className="file-row-subtitle">
-                    {file.collectionLabel} section
-                    {updatedPaths?.has(file.path) ? ' · updated in last publish' : ''}
-                  </span>
+                  <span className="file-row-subtitle">{file.collectionLabel} section</span>
                 </span>
                 <span className="file-row-meta">
-                  {updatedPaths?.has(file.path) ? <span className="file-row-tag">Danger</span> : null}
                   <span className={cn('dirty-dot', dirtyPaths.has(file.path) && 'is-dirty')} />
                 </span>
               </button>
@@ -1423,6 +1432,34 @@ function useCmsBootstrap() {
     }
   };
 
+  const onDiscardChanges = async () => {
+    if (!currentPath || !dirtyPaths.has(currentPath)) {
+      return;
+    }
+
+    try {
+      const remote = await loadCmsFile(currentPath);
+      setDrafts(prev => {
+        const next = new Map(prev);
+        next.set(currentPath, deepClone(remote));
+        return next;
+      });
+
+      setDirtyPaths(prev => {
+        const next = new Set(prev);
+        next.delete(currentPath);
+        return next;
+      });
+
+      clearLocalDraft(currentPath);
+      setWorkspaceTone('neutral');
+      setWorkspaceNote('Discarded changes for the current section.');
+    } catch (error) {
+      setWorkspaceTone('error');
+      setWorkspaceNote(error.message || 'Could not discard changes.');
+    }
+  };
+
   const onRefreshDeploys = async () => {
     await loadDeploys(session);
   };
@@ -1556,6 +1593,7 @@ function useCmsBootstrap() {
     files,
     drafts,
     onDraftChange,
+    onDiscardChanges,
     onUploadAsset,
     loadingContent,
   };
@@ -1600,6 +1638,7 @@ function AdminApp() {
       dirtyPaths={cms.dirtyPaths}
       onSelectFile={cms.onSelectFile}
       onPublish={cms.onPublish}
+      onDiscardChanges={cms.onDiscardChanges}
       onSignOut={cms.onSignOut}
       publishPending={cms.publishPending}
       workspaceNote={cms.workspaceNote}
