@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
@@ -19,13 +19,16 @@ import {
   RotateCcw,
   Trash2,
   Upload,
+  UserPlus,
+  UserX,
+  Users,
 } from 'lucide-react';
 import './admin.css';
 
 const SUPABASE_URL = 'https://zttbkscbtvgeteawycsi.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_wJ-U3kVqV3ej7RJywW8iAA_hUbFQ3Z-';
 const LOGIN_REDIRECT = `${window.location.origin}/admin/`;
-const FALLBACK_EMAILS = ['bernardogancho99@gmail.com'];
+const OWNER_EMAIL = 'bernardogancho99@gmail.com';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
@@ -49,6 +52,10 @@ function normalizePath(path) {
 
 function normalizeEmail(email) {
   return String(email || '').trim().toLowerCase();
+}
+
+function isOwnerEmail(email) {
+  return normalizeEmail(email) === OWNER_EMAIL;
 }
 
 function draftStorageKey(path) {
@@ -225,15 +232,6 @@ async function loadManifest() {
   return parseYAML(raw);
 }
 
-async function loadAdminSettings() {
-  const raw = await fetchText('/admin/admin-settings.json');
-  try {
-    return JSON.parse(raw);
-  } catch (error) {
-    throw new Error(`Invalid JSON in /admin/admin-settings.json: ${error.message}`);
-  }
-}
-
 async function loadCmsFile(path) {
   const relativePath = normalizePath(path).replace(/^src\/_data\/cms\//, '');
   const response = await fetch(`/cms-data/${relativePath}`);
@@ -385,11 +383,20 @@ function AppShell({
   drafts,
   onDraftChange,
   onUploadAsset,
+  admins,
+  adminsLoading,
+  adminsError,
+  onRefreshAdmins,
+  onInviteAdmin,
+  onRevokeAdmin,
+  adminActionPendingEmail,
 }) {
+  const [activeView, setActiveView] = useState('sections');
   const currentFile = files.find(file => file.path === currentPath) || null;
   const currentDraft = currentPath ? drafts.get(currentPath) : null;
   const dirtyCount = dirtyPaths.size;
   const latestDeploy = deploys[0] || null;
+  const isOwner = isOwnerEmail(user?.email);
   const filesByPath = useMemo(() => new Map(files.map(file => [file.path, file])), [files]);
   const latestDeployCollectionLabels = useMemo(() => {
     const labels = [];
@@ -428,6 +435,11 @@ function AppShell({
       })
       .filter(collection => collection.files.length > 0);
   }, [collections, search]);
+
+  const workspaceStatusText =
+    activeView === 'access' && !workspaceTone && /^Loaded \d+ section/.test(workspaceNote)
+      ? 'Invite editors from the panel below. Access is managed in Supabase Auth.'
+      : workspaceNote || 'Drafts autosave locally until you publish.';
 
   return (
     <div className="admin-shell">
@@ -515,67 +527,266 @@ function AppShell({
       <main className="workspace">
         <header className="workspace-header">
           <div>
-            <div className="workspace-kicker">Now editing</div>
-            <h2 className="workspace-title">{currentFile?.fileLabel || 'Choose a section'}</h2>
+            <div className="workspace-kicker">{activeView === 'sections' ? 'Now editing' : 'Access control'}</div>
+            <h2 className="workspace-title">{activeView === 'sections' ? currentFile?.fileLabel || 'Choose a section' : 'Admin access'}</h2>
             <div className="workspace-subtitle">
-              {currentFile ? `${currentFile.collectionLabel} · ${currentFile.fileLabel}` : 'Select a section from the sidebar.'}
+              {activeView === 'sections'
+                ? currentFile
+                  ? `${currentFile.collectionLabel} · ${currentFile.fileLabel}`
+                  : 'Select a section from the sidebar.'
+                : 'Invite editors and revoke access without touching GitHub or Vercel.'}
             </div>
           </div>
 
           <div className="workspace-actions">
-            <Badge tone={dirtyCount ? 'warning' : 'neutral'}>{dirtyCount ? `${dirtyCount} unsaved` : 'No changes'}</Badge>
+            <Badge tone={dirtyCount ? 'warning' : 'neutral'}>
+              {activeView === 'sections'
+                ? dirtyCount
+                  ? `${dirtyCount} unsaved`
+                  : 'No changes'
+                : `${admins.length} account${admins.length === 1 ? '' : 's'}`}
+            </Badge>
             <Button type="button" variant="ghost" onClick={onSignOut} iconLeft={<LogOut size={16} />}>
               Sign out
             </Button>
           </div>
         </header>
 
-        <div
-          className={cn('workspace-note', `status-${workspaceTone || 'neutral'}`)}
-        >
-          {workspaceNote || 'Drafts autosave locally until you publish.'}
+        <div className="workspace-tabs" role="tablist" aria-label="Admin workspace">
+          <button
+            type="button"
+            className={cn('workspace-tab', activeView === 'sections' && 'is-active')}
+            onClick={() => setActiveView('sections')}
+            role="tab"
+            aria-selected={activeView === 'sections'}
+          >
+            <span>Sections</span>
+            <span className="workspace-tab-count">{collections.length}</span>
+          </button>
+          <button
+            type="button"
+            className={cn('workspace-tab', activeView === 'access' && 'is-active')}
+            onClick={() => setActiveView('access')}
+            role="tab"
+            aria-selected={activeView === 'access'}
+          >
+            <span className="workspace-tab-label">
+              <Users size={14} />
+              <span>Access</span>
+            </span>
+            <span className="workspace-tab-count">{admins.length}</span>
+          </button>
         </div>
 
-        <div className="editor-canvas">
-          {!currentFile || !currentDraft ? (
-            <EmptyState title="Pick a section" description="The current section will appear here once you select one from the sidebar." />
+        <div className={cn('workspace-note', `status-${workspaceTone || 'neutral'}`)}>{workspaceStatusText}</div>
+
+        {activeView === 'sections' ? (
+          <div className="editor-canvas">
+            {!currentFile || !currentDraft ? (
+              <EmptyState title="Pick a section" description="The current section will appear here once you select one from the sidebar." />
+            ) : (
+              <div className="editor-stack">
+                <div className="editor-toolbar">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={onDiscardChanges}
+                    disabled={!currentPath || !dirtyPaths.has(currentPath)}
+                    iconLeft={<Trash2 size={16} />}
+                  >
+                    Discard changes
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={onPublish}
+                    disabled={publishPending || dirtyCount === 0}
+                    iconLeft={publishPending ? <LoaderCircle className="spinner" size={16} /> : <Upload size={16} />}
+                  >
+                    {publishPending ? 'Publishing' : 'Publish changes'}
+                  </Button>
+                </div>
+
+                {currentFile.fields.map(field => (
+                  <FieldRenderer
+                    key={field.name}
+                    field={field}
+                    value={currentDraft[field.name]}
+                    onChange={nextValue => onDraftChange(currentPath, field.name, nextValue)}
+                    uploadAsset={onUploadAsset}
+                    depth={0}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <AccessPanel
+            admins={admins}
+            loading={adminsLoading}
+            error={adminsError}
+            onRefresh={onRefreshAdmins}
+            onInvite={onInviteAdmin}
+            onRevoke={onRevokeAdmin}
+            pendingEmail={adminActionPendingEmail}
+            isOwner={isOwner}
+            currentUserEmail={user?.email}
+          />
+        )}
+      </main>
+    </div>
+  );
+}
+
+function AccessPanel({
+  admins,
+  loading,
+  error,
+  onRefresh,
+  onInvite,
+  onRevoke,
+  pendingEmail,
+  isOwner,
+  currentUserEmail,
+}) {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  const activeAdmins = admins.filter(admin => admin.active);
+  const disabledAdmins = admins.filter(admin => !admin.active);
+
+  const handleSubmit = async event => {
+    event.preventDefault();
+    if (!email.trim()) {
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      await onInvite({ email: email.trim(), name: name.trim() });
+      setEmail('');
+      setName('');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="access-canvas">
+      <Card className="access-panel">
+        <div className="access-panel-head">
+          <div>
+            <div className="panel-label">Editor invites</div>
+            <div className="panel-meta">Add people here to give them CMS access. They receive a Supabase login link.</div>
+          </div>
+
+          <div className="access-panel-actions">
+            <Button type="button" variant="ghost" iconLeft={<RefreshCw size={14} />} onClick={onRefresh} disabled={loading}>
+              Refresh
+            </Button>
+          </div>
+        </div>
+
+        <form className="access-form" onSubmit={handleSubmit}>
+          <label className="field">
+            <span className="field-label">Email address</span>
+            <Input value={email} onChange={event => setEmail(event.target.value)} placeholder="person@company.com" autoComplete="email" disabled={!isOwner} />
+          </label>
+
+          <label className="field">
+            <span className="field-label">Name</span>
+            <Input value={name} onChange={event => setName(event.target.value)} placeholder="Optional display name" disabled={!isOwner} />
+          </label>
+
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={!isOwner || submitting || !email.trim()}
+            iconLeft={submitting || pendingEmail ? <LoaderCircle className="spinner" size={16} /> : <UserPlus size={16} />}
+          >
+            {submitting || pendingEmail ? 'Saving access' : 'Invite editor'}
+          </Button>
+        </form>
+
+        {!isOwner ? (
+          <div className="access-note">Only the owner can add or remove editor access.</div>
+        ) : null}
+
+        <div className="access-roster">
+          {loading ? (
+            <div className="access-empty">Loading access list...</div>
+          ) : error ? (
+            <div className="access-empty">
+              <div className="empty-state-title">Access list unavailable</div>
+              <div className="empty-state-description">{error}</div>
+            </div>
           ) : (
-            <div className="editor-stack">
-              <div className="editor-toolbar">
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={onDiscardChanges}
-                  disabled={!currentPath || !dirtyPaths.has(currentPath)}
-                  iconLeft={<Trash2 size={16} />}
-                >
-                  Discard changes
-                </Button>
-                <Button
-                  type="button"
-                  variant="primary"
-                  onClick={onPublish}
-                  disabled={publishPending || dirtyCount === 0}
-                  iconLeft={publishPending ? <LoaderCircle className="spinner" size={16} /> : <Upload size={16} />}
-                >
-                  {publishPending ? 'Publishing' : 'Publish changes'}
-                </Button>
+            <>
+              <div className="access-roster-head">
+                <div className="access-roster-title">Current access</div>
+                <div className="access-roster-count">{activeAdmins.length} active, {disabledAdmins.length} disabled</div>
               </div>
 
-              {currentFile.fields.map(field => (
-                <FieldRenderer
-                  key={field.name}
-                  field={field}
-                  value={currentDraft[field.name]}
-                  onChange={nextValue => onDraftChange(currentPath, field.name, nextValue)}
-                  uploadAsset={onUploadAsset}
-                  depth={0}
-                />
-              ))}
-            </div>
+              <div className="access-list">
+                {admins.length ? (
+                  admins.map(admin => (
+                    <div className="access-row" key={admin.id || admin.email}>
+                      <div className="access-row-main">
+                        <div className="access-row-top">
+                          <div className="access-row-email">{admin.email}</div>
+                          <Badge tone={admin.role === 'owner' ? 'neutral' : admin.active ? 'warning' : 'danger'}>
+                            {admin.role === 'owner' ? 'Owner' : admin.active ? 'Editor' : 'Disabled'}
+                          </Badge>
+                        </div>
+                        <div className="access-row-subtitle">
+                          {admin.name || 'No display name'}
+                          {admin.email === normalizeEmail(currentUserEmail) ? ' · you' : ''}
+                        </div>
+                        <div className="access-row-meta">
+                          {admin.lastSignInAt ? `Last sign in ${formatTimestamp(admin.lastSignInAt)}` : 'Never signed in'}
+                          {admin.invitedAt ? ` · Invited ${formatTimestamp(admin.invitedAt)}` : ''}
+                        </div>
+                      </div>
+
+                      <div className="access-row-actions">
+                        {admin.role === 'owner' ? (
+                          <Badge tone="neutral">Protected</Badge>
+                        ) : admin.active ? (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            iconLeft={pendingEmail === admin.email ? <LoaderCircle className="spinner" size={14} /> : <UserX size={14} />}
+                            onClick={() => onRevoke(admin.email)}
+                            disabled={!isOwner || pendingEmail === admin.email}
+                          >
+                            {pendingEmail === admin.email ? 'Updating' : 'Revoke'}
+                          </Button>
+                        ) : (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            iconLeft={pendingEmail === admin.email ? <LoaderCircle className="spinner" size={14} /> : <UserPlus size={14} />}
+                            onClick={() => onInvite({ email: admin.email, name: admin.name })}
+                            disabled={!isOwner || pendingEmail === admin.email}
+                          >
+                            {pendingEmail === admin.email ? 'Updating' : 'Restore'}
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="access-empty">
+                    <div className="empty-state-title">No editors yet</div>
+                    <div className="empty-state-description">Invite the first editor from this panel.</div>
+                  </div>
+                )}
+              </div>
+            </>
           )}
         </div>
-      </main>
+      </Card>
     </div>
   );
 }
@@ -1067,12 +1278,11 @@ function InputField({ field, value, onChange, widget }) {
 }
 
 function useCmsBootstrap() {
-  const approvedEmailsRef = useRef(new Set(FALLBACK_EMAILS.map(normalizeEmail)));
   const [mode, setMode] = useState('boot');
   const [authNote, setAuthNote] = useState({ text: '', tone: '' });
   const [workspaceNote, setWorkspaceNote] = useState('Loading content...');
   const [workspaceTone, setWorkspaceTone] = useState('');
-  const [email, setEmail] = useState(FALLBACK_EMAILS[0]);
+  const [email, setEmail] = useState(OWNER_EMAIL);
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(null);
   const [collections, setCollections] = useState([]);
@@ -1088,6 +1298,10 @@ function useCmsBootstrap() {
   const [deploysLoading, setDeploysLoading] = useState(false);
   const [deploysError, setDeploysError] = useState('');
   const [revertPendingSha, setRevertPendingSha] = useState(null);
+  const [admins, setAdmins] = useState([]);
+  const [adminsLoading, setAdminsLoading] = useState(false);
+  const [adminsError, setAdminsError] = useState('');
+  const [adminActionPendingEmail, setAdminActionPendingEmail] = useState('');
 
   const resetWorkspace = () => {
     setCollections([]);
@@ -1102,8 +1316,54 @@ function useCmsBootstrap() {
     setDeploysLoading(false);
     setDeploysError('');
     setRevertPendingSha(null);
+    setAdmins([]);
+    setAdminsLoading(false);
+    setAdminsError('');
+    setAdminActionPendingEmail('');
     setWorkspaceTone('');
     setWorkspaceNote('Loading content...');
+  };
+
+  const loadAdmins = async nextSession => {
+    const token = nextSession?.access_token;
+    if (!token) {
+      setAdmins([]);
+      setAdminsError('');
+      return [];
+    }
+
+    setAdminsLoading(true);
+    setAdminsError('');
+
+    try {
+      const response = await fetch('/api/admin/admins', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const raw = await response.text();
+      let payload = {};
+      try {
+        payload = raw ? JSON.parse(raw) : {};
+      } catch {
+        payload = { error: raw };
+      }
+
+      if (!response.ok) {
+        throw new Error(payload.error || `Could not load CMS access list (${response.status}).`);
+      }
+
+      const nextAdmins = Array.isArray(payload.admins) ? payload.admins : [];
+      setAdmins(nextAdmins);
+      return nextAdmins;
+    } catch (error) {
+      setAdmins([]);
+      setAdminsError(error.message || 'Could not load CMS access list.');
+      return [];
+    } finally {
+      setAdminsLoading(false);
+    }
   };
 
   const loadDeploys = async nextSession => {
@@ -1194,6 +1454,7 @@ function useCmsBootstrap() {
       setSession(nextSession);
       setUser(nextSession?.user || null);
       void loadDeploys(nextSession);
+      void loadAdmins(nextSession);
     } catch (error) {
       setWorkspaceTone('error');
       setWorkspaceNote(error.message || 'Could not load CMS data.');
@@ -1205,15 +1466,37 @@ function useCmsBootstrap() {
   };
 
   const ensureAuthorized = async nextSession => {
-    const nextEmail = normalizeEmail(nextSession?.user?.email);
-    if (!nextEmail || !approvedEmailsRef.current.has(nextEmail)) {
+    const accessToken = nextSession?.access_token;
+    if (!accessToken) {
+      return false;
+    }
+
+    try {
+      const response = await fetch('/api/admin/admins?limit=1', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        const raw = await response.text();
+        let payload = {};
+        try {
+          payload = raw ? JSON.parse(raw) : {};
+        } catch {
+          payload = { error: raw };
+        }
+        throw new Error(payload.error || 'That account does not have CMS access.');
+      }
+
+      return true;
+    } catch (error) {
       await supabase.auth.signOut();
-      setAuthNote({ text: 'That email is not approved for CMS access.', tone: 'error' });
+      setAuthNote({ text: error.message || 'That account is not approved for CMS access.', tone: 'error' });
       setMode('login');
       resetWorkspace();
       return false;
     }
-    return true;
   };
 
   useEffect(() => {
@@ -1221,24 +1504,13 @@ function useCmsBootstrap() {
 
     async function bootstrap() {
       try {
-        const settings = await loadAdminSettings();
-        if (cancelled) {
-          return;
-        }
-
-        const approvedList = Array.isArray(settings.approvedEmails) && settings.approvedEmails.length ? settings.approvedEmails : FALLBACK_EMAILS;
-        const approvedSet = new Set(approvedList.map(normalizeEmail).filter(Boolean));
-        approvedEmailsRef.current = approvedSet;
-
         const { data, error } = await supabase.auth.getSession();
         if (error) {
           throw error;
         }
 
         const nextSession = data.session || null;
-        const nextEmail = normalizeEmail(nextSession?.user?.email);
-
-        if (nextSession && nextEmail && approvedSet.has(nextEmail)) {
+        if (nextSession && (await ensureAuthorized(nextSession))) {
           await loadWorkspace(nextSession);
         } else {
           setMode('login');
@@ -1290,11 +1562,6 @@ function useCmsBootstrap() {
 
     if (!nextEmail) {
       setAuthNote({ text: 'Enter an email address first.', tone: 'error' });
-      return;
-    }
-
-    if (!approvedEmailsRef.current.has(nextEmail)) {
-      setAuthNote({ text: 'That email is not approved for CMS access.', tone: 'error' });
       return;
     }
 
@@ -1464,6 +1731,122 @@ function useCmsBootstrap() {
     await loadDeploys(session);
   };
 
+  const onRefreshAdmins = async () => {
+    await loadAdmins(session);
+  };
+
+  const onInviteAdmin = async ({ email: nextEmail, name }) => {
+    const accessToken = session?.access_token;
+    if (!accessToken) {
+      setWorkspaceTone('error');
+      setWorkspaceNote('Your session expired. Please sign in again.');
+      return;
+    }
+
+    const normalizedEmail = normalizeEmail(nextEmail);
+    if (!normalizedEmail) {
+      setWorkspaceTone('error');
+      setWorkspaceNote('Enter an email address first.');
+      return;
+    }
+
+    setAdminActionPendingEmail(normalizedEmail);
+    setWorkspaceTone('');
+    setWorkspaceNote(`Updating access for ${normalizedEmail}...`);
+
+    try {
+      const response = await fetch('/api/admin/admins', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: normalizedEmail,
+          name,
+        }),
+      });
+
+      const raw = await response.text();
+      let payload = {};
+      try {
+        payload = raw ? JSON.parse(raw) : {};
+      } catch {
+        payload = { error: raw };
+      }
+
+      if (!response.ok) {
+        throw new Error(payload.error || payload.message || `Could not update access (${response.status}).`);
+      }
+
+      setWorkspaceTone('success');
+      setWorkspaceNote(payload.message || 'Access updated.');
+      await loadAdmins(session);
+    } catch (error) {
+      setWorkspaceTone('error');
+      setWorkspaceNote(error.message || 'Could not update CMS access.');
+    } finally {
+      setAdminActionPendingEmail('');
+    }
+  };
+
+  const onRevokeAdmin = async nextEmail => {
+    const accessToken = session?.access_token;
+    if (!accessToken) {
+      setWorkspaceTone('error');
+      setWorkspaceNote('Your session expired. Please sign in again.');
+      return;
+    }
+
+    const normalizedEmail = normalizeEmail(nextEmail);
+    if (!normalizedEmail) {
+      return;
+    }
+
+    const confirmed = window.confirm(`Revoke CMS access for ${normalizedEmail}?`);
+    if (!confirmed) {
+      return;
+    }
+
+    setAdminActionPendingEmail(normalizedEmail);
+    setWorkspaceTone('');
+    setWorkspaceNote(`Updating access for ${normalizedEmail}...`);
+
+    try {
+      const response = await fetch('/api/admin/admins', {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: normalizedEmail,
+        }),
+      });
+
+      const raw = await response.text();
+      let payload = {};
+      try {
+        payload = raw ? JSON.parse(raw) : {};
+      } catch {
+        payload = { error: raw };
+      }
+
+      if (!response.ok) {
+        throw new Error(payload.error || payload.message || `Could not revoke access (${response.status}).`);
+      }
+
+      setWorkspaceTone('success');
+      setWorkspaceNote(payload.message || 'Access revoked.');
+      await loadAdmins(session);
+    } catch (error) {
+      setWorkspaceTone('error');
+      setWorkspaceNote(error.message || 'Could not revoke CMS access.');
+    } finally {
+      setAdminActionPendingEmail('');
+    }
+  };
+
   const onRevertDeploy = async sha => {
     const targetSha = String(sha || '').trim();
     if (!targetSha) {
@@ -1576,6 +1959,13 @@ function useCmsBootstrap() {
     onRefreshDeploys,
     onRevertDeploy,
     revertPendingSha,
+    admins,
+    adminsLoading,
+    adminsError,
+    onRefreshAdmins,
+    onInviteAdmin,
+    onRevokeAdmin,
+    adminActionPendingEmail,
     email,
     setEmail,
     loginPending,
@@ -1653,6 +2043,13 @@ function AdminApp() {
       drafts={cms.drafts}
       onDraftChange={cms.onDraftChange}
       onUploadAsset={cms.onUploadAsset}
+      admins={cms.admins}
+      adminsLoading={cms.adminsLoading}
+      adminsError={cms.adminsError}
+      onRefreshAdmins={cms.onRefreshAdmins}
+      onInviteAdmin={cms.onInviteAdmin}
+      onRevokeAdmin={cms.onRevokeAdmin}
+      adminActionPendingEmail={cms.adminActionPendingEmail}
     />
   );
 }

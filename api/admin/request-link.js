@@ -1,4 +1,4 @@
-const { ALLOWED_EMAILS, getAuthClient } = require('../_lib/supabase');
+const { isCmsEmailApproved, sendCmsLoginLink } = require('../_lib/supabase');
 
 function json(res, statusCode, payload) {
   res.statusCode = statusCode;
@@ -20,17 +20,14 @@ module.exports = async function handler(req, res) {
       return json(res, 400, { error: 'Email is required.' });
     }
 
-    if (!ALLOWED_EMAILS.has(email)) {
+    if (!(await isCmsEmailApproved(email))) {
       return json(res, 403, { error: 'That email is not approved for CMS access.' });
     }
 
-    const supabase = getAuthClient();
-    const { error } = await supabase.auth.signInWithOtp({
+    const { error } = await sendCmsLoginLink(
       email,
-      options: {
-        emailRedirectTo: body.redirectTo || `${process.env.PUBLIC_SITE_URL || 'https://bg-murex-three.vercel.app'}/admin/`,
-      },
-    });
+      body.redirectTo || `${process.env.PUBLIC_SITE_URL || 'https://bg-murex-three.vercel.app'}/admin/`,
+    );
 
     if (error) {
       return json(res, 500, { error: error.message || 'Could not send the invite link.' });
