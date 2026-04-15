@@ -9,6 +9,8 @@ import {
   ChevronRight,
   Copy,
   FileUp,
+  ExternalLink,
+  History,
   GripVertical,
   LoaderCircle,
   LogOut,
@@ -16,6 +18,8 @@ import {
   Plus,
   Search,
   Shield,
+  RefreshCw,
+  RotateCcw,
   Trash2,
   Upload,
 } from 'lucide-react';
@@ -195,6 +199,22 @@ function summarizeListItem(field, item, index) {
   return `${field.label || field.name} ${index + 1}`;
 }
 
+function formatTimestamp(value) {
+  if (!value) {
+    return 'Unknown date';
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return 'Unknown date';
+  }
+
+  return date.toLocaleString([], {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  });
+}
+
 async function fetchText(path) {
   const response = await fetch(path);
   if (!response.ok) {
@@ -357,6 +377,12 @@ function AppShell({
   publishPending,
   workspaceNote,
   workspaceTone,
+  deploys,
+  deploysLoading,
+  deploysError,
+  onRefreshDeploys,
+  onRevertDeploy,
+  revertPendingSha,
   files,
   drafts,
   onDraftChange,
@@ -451,6 +477,15 @@ function AppShell({
 
         <div className={cn('workspace-note', `status-${workspaceTone || 'neutral'}`)}>{workspaceNote || 'Drafts autosave locally until you publish.'}</div>
 
+        <DeploysPanel
+          deploys={deploys}
+          loading={deploysLoading}
+          error={deploysError}
+          onRefresh={onRefreshDeploys}
+          onRevert={onRevertDeploy}
+          revertPendingSha={revertPendingSha}
+        />
+
         <div className="editor-canvas">
           {!currentFile || !currentDraft ? (
             <EmptyState title="Pick a section" description="The current section will appear here once you select one from the sidebar." />
@@ -471,6 +506,92 @@ function AppShell({
         </div>
       </main>
     </div>
+  );
+}
+
+function DeploysPanel({ deploys, loading, error, onRefresh, onRevert, revertPendingSha }) {
+  const latestDeploy = deploys[0] || null;
+
+  return (
+    <Card className="deploys-card">
+      <div className="deploys-head">
+        <div>
+          <div className="panel-label deploys-label">
+            <History size={14} />
+            <span>Deploys</span>
+          </div>
+          <div className="panel-meta">Recent CMS commits on main. Reverting creates a new rollback commit.</div>
+        </div>
+
+        <div className="deploys-actions">
+          <Button type="button" variant="ghost" iconLeft={<RefreshCw size={14} />} onClick={onRefresh} disabled={loading}>
+            Refresh
+          </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            iconLeft={revertPendingSha === latestDeploy?.sha ? <LoaderCircle className="spinner" size={14} /> : <RotateCcw size={14} />}
+            onClick={() => latestDeploy && onRevert(latestDeploy.sha)}
+            disabled={!latestDeploy || Boolean(revertPendingSha) || loading}
+          >
+            {revertPendingSha === latestDeploy?.sha ? 'Reverting latest' : 'Revert latest'}
+          </Button>
+        </div>
+      </div>
+
+      {loading ? (
+        <div className="deploys-loading">
+          <LoaderCircle className="spinner" size={16} />
+          Loading deploy history...
+        </div>
+      ) : error ? (
+        <div className="deploys-error">{error}</div>
+      ) : deploys.length ? (
+        <div className="deploy-list">
+          {deploys.map((deploy, index) => {
+            const pending = revertPendingSha === deploy.sha;
+            return (
+              <div key={deploy.sha} className="deploy-row">
+                <div className="deploy-row-main">
+                  <div className="deploy-row-top">
+                    <span className="deploy-row-sha">#{deploy.sha.slice(0, 7)}</span>
+                    {index === 0 ? <Badge tone="neutral">Latest</Badge> : null}
+                    {deploy.isRevert ? <Badge tone="neutral">Revert</Badge> : null}
+                    <span className="deploy-row-date">{formatTimestamp(deploy.date)}</span>
+                  </div>
+                  <div className="deploy-row-message">{deploy.message}</div>
+                  <div className="deploy-row-meta">
+                    {deploy.author}
+                    {deploy.pathsPreview ? ` · ${deploy.pathsPreview}` : ''}
+                    {deploy.fileCount ? ` · ${deploy.fileCount} file${deploy.fileCount === 1 ? '' : 's'}` : ''}
+                  </div>
+                </div>
+
+                <div className="deploy-row-actions">
+                  {deploy.commitUrl ? (
+                    <a className="button button-ghost deploy-link" href={deploy.commitUrl} target="_blank" rel="noreferrer">
+                      <ExternalLink size={14} />
+                      GitHub
+                    </a>
+                  ) : null}
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    iconLeft={pending ? <LoaderCircle className="spinner" size={14} /> : <RotateCcw size={14} />}
+                    onClick={() => onRevert(deploy.sha)}
+                    disabled={pending || Boolean(revertPendingSha)}
+                  >
+                    {pending ? 'Reverting' : 'Revert'}
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <EmptyState title="No deploys yet" description="Publish once and the history will appear here." />
+      )}
+    </Card>
   );
 }
 
@@ -976,6 +1097,10 @@ function useCmsBootstrap() {
   const [publishPending, setPublishPending] = useState(false);
   const [loginPending, setLoginPending] = useState(false);
   const [loadingContent, setLoadingContent] = useState(false);
+  const [deploys, setDeploys] = useState([]);
+  const [deploysLoading, setDeploysLoading] = useState(false);
+  const [deploysError, setDeploysError] = useState('');
+  const [revertPendingSha, setRevertPendingSha] = useState(null);
 
   const resetWorkspace = () => {
     setCollections([]);
@@ -986,11 +1111,55 @@ function useCmsBootstrap() {
     setSearch('');
     setPublishPending(false);
     setLoadingContent(false);
+    setDeploys([]);
+    setDeploysLoading(false);
+    setDeploysError('');
+    setRevertPendingSha(null);
     setWorkspaceTone('');
     setWorkspaceNote('Loading content...');
   };
 
-  const loadWorkspace = async nextSession => {
+  const loadDeploys = async nextSession => {
+    const token = nextSession?.access_token;
+    if (!token) {
+      setDeploys([]);
+      setDeploysError('');
+      return;
+    }
+
+    setDeploysLoading(true);
+    setDeploysError('');
+
+    try {
+      const response = await fetch('/api/deploys?limit=6', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const raw = await response.text();
+      let payload = {};
+      try {
+        payload = raw ? JSON.parse(raw) : {};
+      } catch {
+        payload = { error: raw };
+      }
+
+      if (!response.ok) {
+        throw new Error(payload.error || `Could not load deploy history (${response.status}).`);
+      }
+
+      setDeploys(Array.isArray(payload.deploys) ? payload.deploys : []);
+    } catch (error) {
+      setDeploys([]);
+      setDeploysError(error.message || 'Could not load deploy history.');
+    } finally {
+      setDeploysLoading(false);
+    }
+  };
+
+  const loadWorkspace = async (nextSession, options = {}) => {
+    const preferredPath = options.preferredPath || null;
     setMode('boot');
     setLoadingContent(true);
     setWorkspaceTone('');
@@ -1028,12 +1197,16 @@ function useCmsBootstrap() {
       setFiles(loadedFiles);
       setDrafts(nextDrafts);
       setDirtyPaths(nextDirty);
-      setCurrentPath(loadedFiles[0]?.path || null);
+      const nextCurrentPath = preferredPath && loadedFiles.some(file => file.path === preferredPath)
+        ? preferredPath
+        : loadedFiles[0]?.path || null;
+      setCurrentPath(nextCurrentPath);
       setWorkspaceTone('success');
       setWorkspaceNote(`Loaded ${loadedFiles.length} section${loadedFiles.length === 1 ? '' : 's'}.`);
       setMode('app');
       setSession(nextSession);
       setUser(nextSession?.user || null);
+      void loadDeploys(nextSession);
     } catch (error) {
       setWorkspaceTone('error');
       setWorkspaceNote(error.message || 'Could not load CMS data.');
@@ -1263,11 +1436,82 @@ function useCmsBootstrap() {
           ? `Published commit ${payload.commitSha?.slice(0, 7) || ''}. ${payload.deployMessage}`
           : `Published commit ${payload.commitSha?.slice(0, 7) || ''}.`,
       );
+      await loadDeploys(session);
     } catch (error) {
       setWorkspaceTone('error');
       setWorkspaceNote(error.message || 'Could not publish changes.');
     } finally {
       setPublishPending(false);
+    }
+  };
+
+  const onRefreshDeploys = async () => {
+    await loadDeploys(session);
+  };
+
+  const onRevertDeploy = async sha => {
+    const targetSha = String(sha || '').trim();
+    if (!targetSha) {
+      return;
+    }
+
+    const confirmed = window.confirm(`Revert deploy ${targetSha.slice(0, 7)}? This will create a new rollback commit.`);
+    if (!confirmed) {
+      return;
+    }
+
+    const accessToken = session?.access_token;
+    if (!accessToken) {
+      setWorkspaceTone('error');
+      setWorkspaceNote('Your session expired. Please sign in again.');
+      return;
+    }
+
+    setRevertPendingSha(targetSha);
+    setWorkspaceTone('');
+    setWorkspaceNote(`Reverting ${targetSha.slice(0, 7)}...`);
+
+    try {
+      const response = await fetch('/api/revert', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sha: targetSha,
+        }),
+      });
+
+      const raw = await response.text();
+      let payload = {};
+      try {
+        payload = raw ? JSON.parse(raw) : {};
+      } catch {
+        payload = { error: raw };
+      }
+
+      if (!response.ok) {
+        throw new Error(payload.error || payload.message || `Revert failed (${response.status}).`);
+      }
+
+      for (const path of payload.revertedFiles || []) {
+        clearLocalDraft(path);
+      }
+
+      setWorkspaceTone('success');
+      setWorkspaceNote(
+        payload.deployMessage
+          ? `Published rollback commit ${payload.commitSha?.slice(0, 7) || ''}. ${payload.deployMessage}`
+          : `Published rollback commit ${payload.commitSha?.slice(0, 7) || ''}.`,
+      );
+
+      await loadWorkspace(session, { preferredPath: currentPath });
+    } catch (error) {
+      setWorkspaceTone('error');
+      setWorkspaceNote(error.message || 'Could not revert the deploy.');
+    } finally {
+      setRevertPendingSha(null);
     }
   };
 
@@ -1311,6 +1555,12 @@ function useCmsBootstrap() {
     authNote,
     workspaceNote,
     workspaceTone,
+    deploys,
+    deploysLoading,
+    deploysError,
+    onRefreshDeploys,
+    onRevertDeploy,
+    revertPendingSha,
     email,
     setEmail,
     loginPending,
@@ -1371,16 +1621,22 @@ function AdminApp() {
       currentPath={cms.currentPath}
       dirtyPaths={cms.dirtyPaths}
       onSelectFile={cms.onSelectFile}
-      onPublish={cms.onPublish}
-      onSignOut={cms.onSignOut}
-      publishPending={cms.publishPending}
-      workspaceNote={cms.workspaceNote}
-      workspaceTone={cms.workspaceTone}
-      files={cms.files}
-      drafts={cms.drafts}
-      onDraftChange={cms.onDraftChange}
-      onUploadAsset={cms.onUploadAsset}
-    />
+    onPublish={cms.onPublish}
+    onSignOut={cms.onSignOut}
+    publishPending={cms.publishPending}
+    workspaceNote={cms.workspaceNote}
+    workspaceTone={cms.workspaceTone}
+    deploys={cms.deploys}
+    deploysLoading={cms.deploysLoading}
+    deploysError={cms.deploysError}
+    onRefreshDeploys={cms.onRefreshDeploys}
+    onRevertDeploy={cms.onRevertDeploy}
+    revertPendingSha={cms.revertPendingSha}
+    files={cms.files}
+    drafts={cms.drafts}
+    onDraftChange={cms.onDraftChange}
+    onUploadAsset={cms.onUploadAsset}
+  />
   );
 }
 

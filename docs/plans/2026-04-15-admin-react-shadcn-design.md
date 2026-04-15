@@ -4,6 +4,8 @@
 
 **Architecture:** The admin page will become a bundled React app mounted from `/admin/app.js`. The app will keep the existing backend endpoints (`/api/admin/request-link`, `/api/publish`, `/api/upload`) and the same CMS file structure, but the UI will use Radix collapsibles and dropdown menus for compact, expandable editing and drag-and-drop list ordering.
 
+The next iteration adds a deploy history surface powered by new GitHub-backed API routes. Editors will be able to inspect recent CMS deploys and safely revert the latest one by creating a normal rollback commit on `main`.
+
 **Tech Stack:** React, esbuild, Radix UI, lucide-react, yaml, Supabase JS, Eleventy.
 ---
 
@@ -21,6 +23,7 @@
 - Keep the CMS config loading logic identical.
 - Keep login, upload, and publish endpoints unchanged.
 - Remove the old custom admin shell from the page entrypoint.
+- Add a deploy history panel with rollback controls backed by server-side GitHub commits.
 
 ## Verification
 
