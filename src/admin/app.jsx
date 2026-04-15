@@ -310,7 +310,7 @@ function EmptyState({ title, description }) {
   );
 }
 
-function PublishConfirmationDialog({ open, onClose, onConfirm, publishPending, dirtyFiles, dirtyCollections }) {
+function PublishConfirmationDialog({ open, onDiscard, onConfirm, publishPending, dirtyFiles, dirtyCollections }) {
   const confirmRef = useRef(null);
 
   useEffect(() => {
@@ -325,7 +325,7 @@ function PublishConfirmationDialog({ open, onClose, onConfirm, publishPending, d
 
     const handleKeyDown = event => {
       if (event.key === 'Escape') {
-        onClose();
+        onDiscard();
       }
     };
 
@@ -335,14 +335,14 @@ function PublishConfirmationDialog({ open, onClose, onConfirm, publishPending, d
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [open, onClose]);
+  }, [open, onDiscard]);
 
   if (!open) {
     return null;
   }
 
   return (
-    <div className="publish-modal" role="presentation" onClick={onClose}>
+    <div className="publish-modal" role="presentation" onClick={onDiscard}>
       <div
         className="publish-modal-card"
         role="dialog"
@@ -383,11 +383,11 @@ function PublishConfirmationDialog({ open, onClose, onConfirm, publishPending, d
           ))}
         </div>
 
-        <div className="publish-modal-note">You can still discard individual edits after this, but publishing will update the live site.</div>
+        <div className="publish-modal-note">Canceling here discards unpublished edits and restores the last saved version.</div>
 
         <div className="publish-modal-actions">
-          <Button type="button" variant="ghost" onClick={onClose}>
-            Cancel
+          <Button type="button" variant="ghost" onClick={onDiscard}>
+            Discard changes
           </Button>
           <Button
             ref={confirmRef}
@@ -463,6 +463,7 @@ function AppShell({
   onSelectFile,
   onPublish,
   onDiscardChanges,
+  onDiscardAllChanges,
   onSignOut,
   publishPending,
   workspaceNote,
@@ -749,7 +750,10 @@ function AppShell({
 
         <PublishConfirmationDialog
           open={publishConfirmOpen}
-          onClose={() => setPublishConfirmOpen(false)}
+          onDiscard={async () => {
+            setPublishConfirmOpen(false);
+            await onDiscardAllChanges();
+          }}
           onConfirm={() => {
             setPublishConfirmOpen(false);
             void onPublish();
@@ -1852,6 +1856,33 @@ function useCmsBootstrap() {
     }
   };
 
+  const onDiscardAllChanges = async () => {
+    const dirtyFiles = Array.from(dirtyPaths);
+    if (!dirtyFiles.length) {
+      return;
+    }
+
+    try {
+      const nextDrafts = new Map(drafts);
+      const nextDirty = new Set(dirtyPaths);
+
+      for (const path of dirtyFiles) {
+        const remote = await loadCmsFile(path);
+        nextDrafts.set(path, deepClone(remote));
+        nextDirty.delete(path);
+        clearLocalDraft(path);
+      }
+
+      setDrafts(nextDrafts);
+      setDirtyPaths(nextDirty);
+      setWorkspaceTone('neutral');
+      setWorkspaceNote('Discarded unpublished changes.');
+    } catch (error) {
+      setWorkspaceTone('error');
+      setWorkspaceNote(error.message || 'Could not discard changes.');
+    }
+  };
+
   const onRefreshDeploys = async () => {
     await loadDeploys(session);
   };
@@ -2109,6 +2140,7 @@ function useCmsBootstrap() {
     drafts,
     onDraftChange,
     onDiscardChanges,
+    onDiscardAllChanges,
     onUploadAsset,
     loadingContent,
   };
@@ -2154,6 +2186,7 @@ function AdminApp() {
       onSelectFile={cms.onSelectFile}
       onPublish={cms.onPublish}
       onDiscardChanges={cms.onDiscardChanges}
+      onDiscardAllChanges={cms.onDiscardAllChanges}
       onSignOut={cms.onSignOut}
       publishPending={cms.publishPending}
       workspaceNote={cms.workspaceNote}
