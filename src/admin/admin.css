@@ -516,7 +516,41 @@ button:disabled {
 }
 
 .sidebar-nav-admin {
-  color: #000;
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.sidebar-nav-admin.is-active {
+  background: #111;
+  border-color: #111;
+}
+
+.sidebar-nav-admin .sidebar-nav-count {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.sidebar-section-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  margin: 12px 0 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--text);
+  padding: 9px 10px;
+  text-align: left;
+  font-weight: 700;
+}
+
+.sidebar-section-toggle.is-active {
+  border-color: var(--accent);
+  background: var(--panel-soft);
 }
 
 .sidebar-nav-label {

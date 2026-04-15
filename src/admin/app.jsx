@@ -459,14 +459,6 @@ function AppShell({
         <div className="sidebar-nav">
           <button
             type="button"
-            className={cn('sidebar-nav-item', activeView === 'sections' && 'is-active')}
-            onClick={() => setActiveView('sections')}
-          >
-            <span className="sidebar-nav-label">Sections</span>
-            <span className="sidebar-nav-count">{collections.length}</span>
-          </button>
-          <button
-            type="button"
             className={cn('sidebar-nav-item', 'sidebar-nav-admin', activeView === 'access' && 'is-active')}
             onClick={() => setActiveView('access')}
           >
@@ -519,12 +511,21 @@ function AppShell({
               </div>
             </>
           ) : (
-            <div className="sidebar-note-value">No publishes yet.</div>
+              <div className="sidebar-note-value">No publishes yet.</div>
           )}
         </div>
 
         {activeView === 'sections' ? (
           <>
+            <button
+              type="button"
+              className={cn('sidebar-section-toggle', activeView === 'sections' && 'is-active')}
+              onClick={() => setActiveView('sections')}
+            >
+              <span className="sidebar-nav-label">Sections</span>
+              <span className="sidebar-nav-count">{collections.length}</span>
+            </button>
+
             <div className="sidebar-note">Each file is one section. Expand only what you need, then publish.</div>
 
             <div className="collection-list">
