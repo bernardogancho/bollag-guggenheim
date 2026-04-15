@@ -40,7 +40,7 @@ function injectStyles() {
   style.textContent = `
     :root {
       color-scheme: light;
-      --bg: #f7f7f5;
+      --bg: #f6f6f4;
       --panel: #ffffff;
       --panel-strong: #ffffff;
       --panel-border: rgba(20, 28, 33, 0.10);
@@ -50,7 +50,7 @@ function injectStyles() {
       --accent-strong: #0a4943;
       --danger: #9a3636;
       --warning: #9b6b1b;
-      --shadow: 0 10px 28px rgba(20, 28, 33, 0.05);
+      --shadow: none;
     }
 
     html, body {
@@ -80,7 +80,7 @@ function injectStyles() {
       width: min(100%, 480px);
       background: var(--panel);
       border: 1px solid var(--panel-border);
-      border-radius: 14px;
+      border-radius: 6px;
       box-shadow: var(--shadow);
       backdrop-filter: none;
       padding: 30px;
@@ -149,7 +149,7 @@ function injectStyles() {
       width: 100%;
       box-sizing: border-box;
       border: 1px solid rgba(31, 36, 40, 0.14);
-      border-radius: 14px;
+      border-radius: 4px;
       padding: 13px 15px;
       font: inherit;
       background: rgba(255, 255, 255, 0.95);
@@ -174,7 +174,7 @@ function injectStyles() {
     .btn {
       appearance: none;
       border: 0;
-      border-radius: 14px;
+      border-radius: 4px;
       padding: 12px 16px;
       font: inherit;
       font-weight: 700;
@@ -255,7 +255,7 @@ function injectStyles() {
     .sidebar {
       padding: 24px;
       border-right: 1px solid var(--panel-border);
-      background: rgba(255, 255, 255, 0.6);
+      background: #ffffff;
     }
 
     .sidebar-card,
@@ -263,7 +263,7 @@ function injectStyles() {
     .toolbar-card {
       background: var(--panel);
       border: 1px solid var(--panel-border);
-      border-radius: 14px;
+      border-radius: 6px;
       box-shadow: var(--shadow);
       backdrop-filter: none;
     }
@@ -294,9 +294,9 @@ function injectStyles() {
     .file-search {
       width: 100%;
       box-sizing: border-box;
-      border-radius: 14px;
+      border-radius: 4px;
       border: 1px solid rgba(31, 36, 40, 0.12);
-      background: rgba(255, 255, 255, 0.92);
+      background: #ffffff;
       padding: 12px 14px;
       font: inherit;
     }
@@ -331,10 +331,10 @@ function injectStyles() {
       width: 100%;
       border: 1px solid transparent;
       border-left-width: 3px;
-      border-radius: 10px;
-      background: #fafafa;
+      border-radius: 4px;
+      background: #ffffff;
       text-align: left;
-      padding: 11px 12px;
+      padding: 10px 12px;
       cursor: pointer;
       color: var(--text);
       transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
@@ -444,7 +444,7 @@ function injectStyles() {
 
     .section-panel {
       border: 1px solid rgba(20, 28, 33, 0.08);
-      border-radius: 14px;
+      border-radius: 6px;
       background: #ffffff;
       padding: 16px;
     }
@@ -479,8 +479,8 @@ function injectStyles() {
 
     .object-panel {
       border: 1px solid rgba(20, 28, 33, 0.08);
-      border-radius: 12px;
-      background: #fafafa;
+      border-radius: 6px;
+      background: #ffffff;
       padding: 16px;
     }
 
@@ -493,16 +493,15 @@ function injectStyles() {
 
     .list-panel {
       border: 1px solid rgba(20, 28, 33, 0.08);
-      border-radius: 12px;
-      background: #fafafa;
+      border-radius: 6px;
+      background: #ffffff;
       padding: 14px;
     }
 
     .list-item {
       border: 1px solid rgba(20, 28, 33, 0.08);
-      border-radius: 12px;
+      border-radius: 4px;
       background: #ffffff;
-      padding: 0;
       overflow: hidden;
     }
 
@@ -510,27 +509,39 @@ function injectStyles() {
       margin-top: 12px;
     }
 
-    .list-item summary {
-      list-style: none;
-      cursor: pointer;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
+    .list-item-head {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
       gap: 12px;
-      padding: 12px 12px 10px;
+      align-items: start;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(20, 28, 33, 0.08);
     }
 
-    .list-item summary::-webkit-details-marker {
-      display: none;
+    .list-item-content {
+      min-width: 0;
     }
 
     .list-item-grip {
       flex: 0 0 auto;
       margin-top: 2px;
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       letter-spacing: -0.08em;
       user-select: none;
+      cursor: grab;
+    }
+
+    .list-item-toggle {
+      appearance: none;
+      border: 1px solid rgba(20, 28, 33, 0.16);
+      background: #ffffff;
+      padding: 6px 10px;
+      border-radius: 4px;
+      color: var(--text);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
     }
 
     .list-item-title {
@@ -547,14 +558,9 @@ function injectStyles() {
       line-height: 1.45;
     }
 
-    .list-actions {
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
     .list-item-body {
       border-top: 1px solid rgba(20, 28, 33, 0.08);
-      padding: 14px;
+      padding: 12px;
       display: grid;
       gap: 14px;
     }
@@ -567,16 +573,12 @@ function injectStyles() {
     }
 
     .list-item[data-drop-target="true"] {
-      outline: 2px solid rgba(13, 91, 83, 0.22);
+      outline: 1px solid rgba(13, 91, 83, 0.35);
       outline-offset: 0;
     }
 
     .list-item[data-dragging="true"] {
       opacity: 0.55;
-    }
-
-    .list-item:not([open]) .list-item-body {
-      display: none;
     }
 
     .asset-row {
@@ -594,7 +596,7 @@ function injectStyles() {
       width: min(240px, 100%);
       max-height: 180px;
       object-fit: cover;
-      border-radius: 10px;
+      border-radius: 4px;
       border: 1px solid rgba(20, 28, 33, 0.12);
       background: #ffffff;
     }
@@ -1152,14 +1154,20 @@ function buildField(field, value, onChange) {
     let dragIndex = null;
 
     current.forEach((item, index) => {
-      const itemWrap = document.createElement('details');
+      const itemWrap = document.createElement('div');
       itemWrap.className = 'list-item';
-      itemWrap.open = false;
-      itemWrap.draggable = true;
       itemWrap.dataset.index = String(index);
 
-      const head = document.createElement('summary');
+      const head = document.createElement('div');
+      head.className = 'list-item-head';
 
+      const grip = document.createElement('span');
+      grip.className = 'list-item-grip';
+      grip.textContent = '⋮⋮';
+      grip.draggable = true;
+
+      const content = document.createElement('div');
+      content.className = 'list-item-content';
       const textWrap = document.createElement('div');
       const title = document.createElement('p');
       title.className = 'list-item-title';
@@ -1176,22 +1184,10 @@ function buildField(field, value, onChange) {
         : String(item ?? '');
       textWrap.appendChild(subtitle);
 
-      const grip = document.createElement('span');
-      grip.className = 'list-item-grip';
-      grip.textContent = '⋮⋮';
-
-      const upButton = document.createElement('button');
-      upButton.type = 'button';
-      upButton.className = 'btn btn-ghost';
-      upButton.textContent = 'Up';
-      upButton.disabled = index === 0;
-      upButton.addEventListener('click', () => {
-        const next = current.slice();
-        const [moved] = next.splice(index, 1);
-        next.splice(index - 1, 0, moved);
-        onChange(next);
-        renderEditor();
-      });
+      const toggleButton = document.createElement('button');
+      toggleButton.type = 'button';
+      toggleButton.className = 'list-item-toggle';
+      toggleButton.textContent = 'Open';
 
       const removeButton = document.createElement('button');
       removeButton.type = 'button';
@@ -1204,15 +1200,13 @@ function buildField(field, value, onChange) {
         renderEditor();
       });
 
-      head.append(grip, textWrap);
-      itemWrap.appendChild(head);
-
       const itemFields = document.createElement('div');
       itemFields.className = 'list-item-body';
+      itemFields.hidden = true;
 
       const actions = document.createElement('div');
       actions.className = 'list-item-actions';
-      actions.append(upButton, removeButton);
+      actions.append(removeButton);
       itemFields.appendChild(actions);
 
       if (field.fields) {
@@ -1233,7 +1227,24 @@ function buildField(field, value, onChange) {
         itemFields.appendChild(childField);
       }
 
+      content.append(textWrap);
+      head.append(grip, content, toggleButton);
+      itemWrap.appendChild(head);
       itemWrap.appendChild(itemFields);
+
+      const setOpenState = nextOpen => {
+        itemFields.hidden = !nextOpen;
+        toggleButton.textContent = nextOpen ? 'Close' : 'Open';
+        itemWrap.dataset.open = String(nextOpen);
+      };
+
+      setOpenState(false);
+
+      toggleButton.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        setOpenState(itemFields.hidden ? true : false);
+      });
 
       itemWrap.addEventListener('dragstart', event => {
         dragIndex = index;
@@ -1272,6 +1283,13 @@ function buildField(field, value, onChange) {
         const next = reorderArray(current, sourceIndex, index);
         onChange(next);
         renderEditor();
+      });
+
+      grip.addEventListener('dragstart', event => {
+        dragIndex = index;
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', String(index));
+        itemWrap.dataset.dragging = 'true';
       });
 
       list.appendChild(itemWrap);
