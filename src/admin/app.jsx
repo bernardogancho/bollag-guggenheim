@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
@@ -267,19 +267,19 @@ function clearLocalDraft(path) {
   window.localStorage.removeItem(draftStorageKey(path));
 }
 
-function Button({ className, variant = 'secondary', iconLeft, iconRight, children, ...props }) {
+const Button = React.forwardRef(function Button({ className, variant = 'secondary', iconLeft, iconRight, children, ...props }, ref) {
   return (
-    <button className={cn('button', `button-${variant}`, className)} {...props}>
+    <button ref={ref} className={cn('button', `button-${variant}`, className)} {...props}>
       {iconLeft ? <span className="button-icon">{iconLeft}</span> : null}
       <span>{children}</span>
       {iconRight ? <span className="button-icon">{iconRight}</span> : null}
     </button>
   );
-}
+});
 
-function IconButton({ className, variant = 'ghost', title, ...props }) {
-  return <button aria-label={title} title={title} className={cn('icon-button', `icon-button-${variant}`, className)} {...props} />;
-}
+const IconButton = React.forwardRef(function IconButton({ className, variant = 'ghost', title, ...props }, ref) {
+  return <button ref={ref} aria-label={title} title={title} className={cn('icon-button', `icon-button-${variant}`, className)} {...props} />;
+});
 
 function Input(props) {
   return <input className={cn('input', props.className)} {...props} />;
@@ -306,6 +306,101 @@ function EmptyState({ title, description }) {
     <div className="empty-state">
       <div className="empty-state-title">{title}</div>
       <div className="empty-state-description">{description}</div>
+    </div>
+  );
+}
+
+function PublishConfirmationDialog({ open, onClose, onConfirm, publishPending, dirtyFiles, dirtyCollections }) {
+  const confirmRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    confirmRef.current?.focus();
+
+    const handleKeyDown = event => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [open, onClose]);
+
+  if (!open) {
+    return null;
+  }
+
+  return (
+    <div className="publish-modal" role="presentation" onClick={onClose}>
+      <div
+        className="publish-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="publish-modal-title"
+        aria-describedby="publish-modal-description"
+        onClick={event => event.stopPropagation()}
+      >
+        <div className="publish-modal-head">
+          <div>
+            <div className="publish-modal-kicker">Confirm publish</div>
+            <h3 id="publish-modal-title" className="publish-modal-title">
+              Review changes before they go live
+            </h3>
+            <p id="publish-modal-description" className="publish-modal-copy">
+              These edits will be committed to `main` and published to production after you confirm.
+            </p>
+          </div>
+
+          <div className="publish-modal-counts">
+            <div className="publish-modal-count">{dirtyFiles.length} section{dirtyFiles.length === 1 ? '' : 's'}</div>
+            <div className="publish-modal-count">{dirtyCollections.length} collection{dirtyCollections.length === 1 ? '' : 's'}</div>
+          </div>
+        </div>
+
+        <div className="publish-modal-summary">
+          {dirtyCollections.map(group => (
+            <div key={group.label} className="publish-modal-group">
+              <div className="publish-modal-group-label">{group.label}</div>
+              <div className="publish-modal-group-items">
+                {group.files.map(file => (
+                  <span key={file.path} className="publish-modal-chip">
+                    {file.fileLabel}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="publish-modal-note">You can still discard individual edits after this, but publishing will update the live site.</div>
+
+        <div className="publish-modal-actions">
+          <Button type="button" variant="ghost" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button
+            ref={confirmRef}
+            type="button"
+            variant="primary"
+            onClick={onConfirm}
+            disabled={publishPending}
+            iconLeft={publishPending ? <LoaderCircle className="spinner" size={16} /> : <Upload size={16} />}
+          >
+            {publishPending ? 'Publishing' : 'Publish to production'}
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -391,12 +486,28 @@ function AppShell({
   adminActionPendingEmail,
 }) {
   const [activeView, setActiveView] = useState('sections');
+  const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
   const currentFile = files.find(file => file.path === currentPath) || null;
   const currentDraft = currentPath ? drafts.get(currentPath) : null;
   const dirtyCount = dirtyPaths.size;
   const latestDeploy = deploys[0] || null;
   const isOwner = isOwnerEmail(user?.email);
   const filesByPath = useMemo(() => new Map(files.map(file => [file.path, file])), [files]);
+  const dirtyFiles = useMemo(() => files.filter(file => dirtyPaths.has(file.path)), [files, dirtyPaths]);
+  const dirtyCollections = useMemo(() => {
+    const groups = new Map();
+
+    for (const file of dirtyFiles) {
+      const group = groups.get(file.collectionLabel) || [];
+      group.push(file);
+      groups.set(file.collectionLabel, group);
+    }
+
+    return Array.from(groups.entries()).map(([label, groupFiles]) => ({
+      label,
+      files: groupFiles,
+    }));
+  }, [dirtyFiles]);
   const latestDeployCollectionLabels = useMemo(() => {
     const labels = [];
     const seen = new Set();
@@ -601,7 +712,7 @@ function AppShell({
                   <Button
                     type="button"
                     variant="primary"
-                    onClick={onPublish}
+                    onClick={() => setPublishConfirmOpen(true)}
                     disabled={publishPending || dirtyCount === 0}
                     iconLeft={publishPending ? <LoaderCircle className="spinner" size={16} /> : <Upload size={16} />}
                   >
@@ -635,6 +746,18 @@ function AppShell({
             currentUserEmail={user?.email}
           />
         )}
+
+        <PublishConfirmationDialog
+          open={publishConfirmOpen}
+          onClose={() => setPublishConfirmOpen(false)}
+          onConfirm={() => {
+            setPublishConfirmOpen(false);
+            void onPublish();
+          }}
+          publishPending={publishPending}
+          dirtyFiles={dirtyFiles}
+          dirtyCollections={dirtyCollections}
+        />
       </main>
     </div>
   );
