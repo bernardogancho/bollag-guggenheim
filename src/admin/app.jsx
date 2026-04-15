@@ -391,6 +391,21 @@ function AppShell({
   const currentFile = files.find(file => file.path === currentPath) || null;
   const currentDraft = currentPath ? drafts.get(currentPath) : null;
   const dirtyCount = dirtyPaths.size;
+  const latestDeploy = deploys[0] || null;
+  const latestDeployPaths = useMemo(() => new Set((latestDeploy?.files || []).map(file => file.path)), [latestDeploy]);
+  const filesByPath = useMemo(() => new Map(files.map(file => [file.path, file])), [files]);
+  const latestDeployLabels = useMemo(
+    () =>
+      (latestDeploy?.files || []).map(file => {
+        const currentFileMeta = filesByPath.get(file.path);
+        if (!currentFileMeta) {
+          return file.path.replace(/^src\/_data\/cms\//, '');
+        }
+
+        return `${currentFileMeta.collectionLabel} · ${currentFileMeta.fileLabel}`;
+      }),
+    [latestDeploy, filesByPath],
+  );
 
   const visibleCollections = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -439,6 +454,7 @@ function AppShell({
                 collection={collection}
                 currentPath={currentPath}
                 dirtyPaths={dirtyPaths}
+                updatedPaths={latestDeployPaths}
                 onSelectFile={onSelectFile}
               />
             ))
@@ -446,6 +462,18 @@ function AppShell({
             <EmptyState title="No matching sections" description="Try a different search term or clear the filter." />
           )}
         </div>
+
+        {latestDeploy ? (
+          <div className="sidebar-note sidebar-note-compact">
+            <div className="sidebar-note-label">Last publish</div>
+            <div className="sidebar-note-value">
+              {latestDeployLabels.length
+                ? `Changed ${latestDeployLabels.length} section${latestDeployLabels.length === 1 ? '' : 's'}`
+                : 'No section details available'}
+            </div>
+            {latestDeployLabels.length ? <div className="sidebar-note-detail">{latestDeployLabels.slice(0, 3).join(' · ')}</div> : null}
+          </div>
+        ) : null}
       </aside>
 
       <main className="workspace">
@@ -498,6 +526,7 @@ function AppShell({
             deploys={deploys}
             loading={deploysLoading}
             error={deploysError}
+            latestDeployLabels={latestDeployLabels}
             onRefresh={onRefreshDeploys}
             onRevert={onRevertDeploy}
             revertPendingSha={revertPendingSha}
@@ -539,7 +568,7 @@ function AppShell({
   );
 }
 
-function DeploysPanel({ deploys, loading, error, onRefresh, onRevert, revertPendingSha }) {
+function DeploysPanel({ deploys, loading, error, latestDeployLabels, onRefresh, onRevert, revertPendingSha }) {
   const latestDeploy = deploys[0] || null;
 
   return (
@@ -577,39 +606,66 @@ function DeploysPanel({ deploys, loading, error, onRefresh, onRevert, revertPend
       ) : error ? (
         <div className="deploys-error">{error}</div>
       ) : deploys.length ? (
-        <div className="deploy-list">
-          {deploys.map((deploy, index) => {
-            const pending = revertPendingSha === deploy.sha;
-            return (
-              <div key={deploy.sha} className="deploy-row">
-                <div className="deploy-row-main">
-                  <div className="deploy-row-top">
-                    {index === 0 ? <Badge tone="neutral">Latest</Badge> : null}
-                    {deploy.isRevert ? <Badge tone="neutral">Rollback</Badge> : null}
-                    <span className="deploy-row-date">{formatTimestamp(deploy.date)}</span>
-                  </div>
-                  <div className="deploy-row-message">{deploy.message}</div>
-                  <div className="deploy-row-meta">
-                    {deploy.author}
-                    {deploy.pathsPreview ? ` · ${deploy.pathsPreview}` : ''}
-                    {deploy.fileCount ? ` · ${deploy.fileCount} file${deploy.fileCount === 1 ? '' : 's'}` : ''}
-                  </div>
-                </div>
-
-                <div className="deploy-row-actions">
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    iconLeft={pending ? <LoaderCircle className="spinner" size={14} /> : <RotateCcw size={14} />}
-                    onClick={() => onRevert(deploy.sha)}
-                    disabled={pending || Boolean(revertPendingSha)}
-                  >
-                    {pending ? 'Reverting' : 'Revert'}
-                  </Button>
+        <div className="deploy-stack">
+          {latestDeploy ? (
+            <div className="deploy-summary">
+              <div className="deploy-summary-head">
+                <div className="panel-label">What changed in the last publish</div>
+                <div className="deploy-summary-count">
+                  {latestDeployLabels.length} section{latestDeployLabels.length === 1 ? '' : 's'}
                 </div>
               </div>
-            );
-          })}
+              <div className="deploy-summary-list">
+                {latestDeployLabels.length ? (
+                  latestDeployLabels.slice(0, 6).map(label => (
+                    <span key={label} className="deploy-summary-chip">
+                      {label}
+                    </span>
+                  ))
+                ) : (
+                  <span className="deploy-summary-empty">No section details available.</span>
+                )}
+                {latestDeployLabels.length > 6 ? (
+                  <span className="deploy-summary-chip">+{latestDeployLabels.length - 6} more</span>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
+
+          <div className="deploy-list">
+            {deploys.map((deploy, index) => {
+              const pending = revertPendingSha === deploy.sha;
+              return (
+                <div key={deploy.sha} className="deploy-row">
+                  <div className="deploy-row-main">
+                    <div className="deploy-row-top">
+                      {index === 0 ? <Badge tone="neutral">Latest</Badge> : null}
+                      {deploy.isRevert ? <Badge tone="neutral">Rollback</Badge> : null}
+                      <span className="deploy-row-date">{formatTimestamp(deploy.date)}</span>
+                    </div>
+                    <div className="deploy-row-message">{deploy.message}</div>
+                    <div className="deploy-row-meta">
+                      {deploy.author}
+                      {deploy.pathsPreview ? ` · ${deploy.pathsPreview}` : ''}
+                      {deploy.fileCount ? ` · ${deploy.fileCount} file${deploy.fileCount === 1 ? '' : 's'}` : ''}
+                    </div>
+                  </div>
+
+                  <div className="deploy-row-actions">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      iconLeft={pending ? <LoaderCircle className="spinner" size={14} /> : <RotateCcw size={14} />}
+                      onClick={() => onRevert(deploy.sha)}
+                      disabled={pending || Boolean(revertPendingSha)}
+                    >
+                      {pending ? 'Reverting' : 'Revert'}
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       ) : (
         <EmptyState title="No deploys yet" description="Publish once and the history will appear here." />
@@ -618,7 +674,7 @@ function DeploysPanel({ deploys, loading, error, onRefresh, onRevert, revertPend
   );
 }
 
-function CollectionGroup({ collection, currentPath, dirtyPaths, onSelectFile }) {
+function CollectionGroup({ collection, currentPath, dirtyPaths, updatedPaths, onSelectFile }) {
   const active = collection.files.some(file => file.path === currentPath);
   const [open, setOpen] = useState(active);
 
@@ -647,14 +703,20 @@ function CollectionGroup({ collection, currentPath, dirtyPaths, onSelectFile }) 
               <button
                 key={file.path}
                 type="button"
-                className={cn('file-row', file.path === currentPath && 'is-active')}
+                className={cn('file-row', file.path === currentPath && 'is-active', updatedPaths?.has(file.path) && 'is-updated')}
                 onClick={() => onSelectFile(file.path)}
               >
                 <span className="file-row-main">
                   <span className="file-row-title">{file.fileLabel}</span>
-                  <span className="file-row-subtitle">{file.collectionLabel} section</span>
+                  <span className="file-row-subtitle">
+                    {file.collectionLabel} section
+                    {updatedPaths?.has(file.path) ? ' · updated in last publish' : ''}
+                  </span>
                 </span>
-                <span className={cn('dirty-dot', dirtyPaths.has(file.path) && 'is-dirty')} />
+                <span className="file-row-meta">
+                  {updatedPaths?.has(file.path) ? <span className="file-row-tag">Updated</span> : null}
+                  <span className={cn('dirty-dot', dirtyPaths.has(file.path) && 'is-dirty')} />
+                </span>
               </button>
             ))}
           </div>

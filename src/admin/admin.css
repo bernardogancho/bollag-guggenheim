@@ -315,6 +315,57 @@ button:disabled {
   margin-top: 10px;
 }
 
+.deploy-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.deploy-summary {
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px;
+  background: var(--panel-soft);
+}
+
+.deploy-summary-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.deploy-summary-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.deploy-summary-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.deploy-summary-chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.deploy-summary-empty {
+  font-size: 11px;
+  color: var(--muted);
+}
+
 .deploy-row {
   display: flex;
   justify-content: space-between;
@@ -447,6 +498,31 @@ button:disabled {
   font-size: 12px;
 }
 
+.sidebar-note-compact {
+  display: grid;
+  gap: 4px;
+}
+
+.sidebar-note-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.sidebar-note-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.sidebar-note-detail {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
 .collection-list {
   display: grid;
   gap: 8px;
@@ -531,6 +607,11 @@ button:disabled {
   background: rgba(15, 93, 85, 0.06);
 }
 
+.file-row.is-updated {
+  border-color: var(--line-strong);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.045) 0%, var(--panel-soft) 100%);
+}
+
 .file-row-main {
   min-width: 0;
   display: grid;
@@ -544,6 +625,26 @@ button:disabled {
 
 .file-row-subtitle {
   font-size: 11px;
+}
+
+.file-row-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-row-tag {
+  min-width: 54px;
+  padding: 2px 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--text);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
 }
 
 .dirty-dot {
