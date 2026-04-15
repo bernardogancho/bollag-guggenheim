@@ -475,34 +475,6 @@ function AppShell({
           </button>
         </div>
 
-        {activeView === 'sections' ? (
-          <>
-            <div className="sidebar-note">Each file is one section. Expand only what you need, then publish.</div>
-
-            <div className="collection-list">
-              {visibleCollections.length ? (
-                visibleCollections.map(collection => (
-                  <CollectionGroup
-                    key={collection.name}
-                    collection={collection}
-                    currentPath={currentPath}
-                    dirtyPaths={dirtyPaths}
-                    onSelectFile={onSelectFile}
-                  />
-                ))
-              ) : (
-                <EmptyState title="No matching sections" description="Try a different search term or clear the filter." />
-              )}
-            </div>
-          </>
-        ) : (
-          <div className="sidebar-note sidebar-note-compact">
-            <div className="sidebar-note-label">Admin</div>
-            <div className="sidebar-note-value">Manage editor access from the left menu.</div>
-            <div className="sidebar-note-detail">Use this when you need to invite, revoke, or review CMS access.</div>
-          </div>
-        )}
-
         <div className="sidebar-note sidebar-note-compact">
           <div className="sidebar-note-label">Change log</div>
           {deploysLoading ? (
@@ -550,6 +522,34 @@ function AppShell({
             <div className="sidebar-note-value">No publishes yet.</div>
           )}
         </div>
+
+        {activeView === 'sections' ? (
+          <>
+            <div className="sidebar-note">Each file is one section. Expand only what you need, then publish.</div>
+
+            <div className="collection-list">
+              {visibleCollections.length ? (
+                visibleCollections.map(collection => (
+                  <CollectionGroup
+                    key={collection.name}
+                    collection={collection}
+                    currentPath={currentPath}
+                    dirtyPaths={dirtyPaths}
+                    onSelectFile={onSelectFile}
+                  />
+                ))
+              ) : (
+                <EmptyState title="No matching sections" description="Try a different search term or clear the filter." />
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="sidebar-note sidebar-note-compact">
+            <div className="sidebar-note-label">Admin</div>
+            <div className="sidebar-note-value">Manage editor access from the left menu.</div>
+            <div className="sidebar-note-detail">Use this when you need to invite, revoke, or review CMS access.</div>
+          </div>
+        )}
       </aside>
 
       <main className="workspace">
