@@ -40,17 +40,17 @@ function injectStyles() {
   style.textContent = `
     :root {
       color-scheme: light;
-      --bg: #f5f1ea;
-      --panel: rgba(255, 252, 247, 0.92);
-      --panel-strong: #fffdf9;
-      --panel-border: rgba(37, 31, 27, 0.09);
-      --text: #192026;
-      --muted: #65707a;
+      --bg: #f7f7f5;
+      --panel: #ffffff;
+      --panel-strong: #ffffff;
+      --panel-border: rgba(20, 28, 33, 0.10);
+      --text: #172026;
+      --muted: #67727b;
       --accent: #0d5b53;
       --accent-strong: #0a4943;
       --danger: #9a3636;
       --warning: #9b6b1b;
-      --shadow: 0 18px 52px rgba(32, 30, 26, 0.08);
+      --shadow: 0 10px 28px rgba(20, 28, 33, 0.05);
     }
 
     html, body {
@@ -61,10 +61,7 @@ function injectStyles() {
       margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(13, 91, 83, 0.10), transparent 24%),
-        radial-gradient(circle at bottom right, rgba(112, 86, 51, 0.10), transparent 28%),
-        linear-gradient(180deg, #fbf8f3 0%, var(--bg) 100%);
+      background: linear-gradient(180deg, #fbfbfa 0%, var(--bg) 100%);
     }
 
     #admin-root {
@@ -83,9 +80,9 @@ function injectStyles() {
       width: min(100%, 480px);
       background: var(--panel);
       border: 1px solid var(--panel-border);
-      border-radius: 22px;
+      border-radius: 14px;
       box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
+      backdrop-filter: none;
       padding: 30px;
       box-sizing: border-box;
     }
@@ -105,9 +102,8 @@ function injectStyles() {
       margin: 0;
       font-size: clamp(2rem, 4.5vw, 2.8rem);
       line-height: 0.98;
-      font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
       letter-spacing: -0.04em;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .auth-copy,
@@ -259,8 +255,7 @@ function injectStyles() {
     .sidebar {
       padding: 24px;
       border-right: 1px solid var(--panel-border);
-      background: rgba(255, 255, 255, 0.48);
-      backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, 0.6);
     }
 
     .sidebar-card,
@@ -268,9 +263,9 @@ function injectStyles() {
     .toolbar-card {
       background: var(--panel);
       border: 1px solid var(--panel-border);
-      border-radius: 22px;
+      border-radius: 14px;
       box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
+      backdrop-filter: none;
     }
 
     .sidebar-card {
@@ -282,8 +277,7 @@ function injectStyles() {
       font-size: 2rem;
       line-height: 1;
       letter-spacing: -0.03em;
-      font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .sidebar-email {
@@ -337,10 +331,10 @@ function injectStyles() {
       width: 100%;
       border: 1px solid transparent;
       border-left-width: 3px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.55);
+      border-radius: 10px;
+      background: #fafafa;
       text-align: left;
-      padding: 12px 13px;
+      padding: 11px 12px;
       cursor: pointer;
       color: var(--text);
       transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
@@ -397,7 +391,7 @@ function injectStyles() {
 
     .toolbar-card {
       margin: 0 24px 16px 0;
-      padding: 22px 24px;
+      padding: 18px 20px;
       position: sticky;
       top: 18px;
       z-index: 2;
@@ -408,8 +402,7 @@ function injectStyles() {
       font-size: clamp(2rem, 4vw, 3rem);
       line-height: 0.96;
       letter-spacing: -0.04em;
-      font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .toolbar-status {
@@ -426,7 +419,7 @@ function injectStyles() {
       align-items: center;
       gap: 8px;
       border-radius: 999px;
-      padding: 9px 13px;
+      padding: 8px 12px;
       background: rgba(13, 91, 83, 0.08);
       color: var(--accent);
       font-size: 0.88rem;
@@ -435,7 +428,7 @@ function injectStyles() {
 
     .editor-card {
       margin-right: 24px;
-      padding: 22px 24px 24px;
+      padding: 18px 20px 20px;
       max-width: 980px;
     }
 
@@ -450,10 +443,10 @@ function injectStyles() {
     }
 
     .section-panel {
-      border: 1px solid rgba(37, 31, 27, 0.09);
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.84);
-      padding: 18px;
+      border: 1px solid rgba(20, 28, 33, 0.08);
+      border-radius: 14px;
+      background: #ffffff;
+      padding: 16px;
     }
 
     .section-panel + .section-panel {
@@ -465,8 +458,7 @@ function injectStyles() {
       font-size: 1.35rem;
       line-height: 1.2;
       letter-spacing: -0.02em;
-      font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .field-list {
@@ -486,9 +478,9 @@ function injectStyles() {
     }
 
     .object-panel {
-      border: 1px solid rgba(37, 31, 27, 0.09);
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(20, 28, 33, 0.08);
+      border-radius: 12px;
+      background: #fafafa;
       padding: 16px;
     }
 
@@ -496,21 +488,20 @@ function injectStyles() {
       margin: 0 0 12px;
       font-size: 1rem;
       line-height: 1.3;
-      font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .list-panel {
-      border: 1px solid rgba(37, 31, 27, 0.09);
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.78);
-      padding: 16px;
+      border: 1px solid rgba(20, 28, 33, 0.08);
+      border-radius: 12px;
+      background: #fafafa;
+      padding: 14px;
     }
 
     .list-item {
-      border: 1px solid rgba(37, 31, 27, 0.08);
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.90);
+      border: 1px solid rgba(20, 28, 33, 0.08);
+      border-radius: 12px;
+      background: #ffffff;
       padding: 0;
       overflow: hidden;
     }
@@ -526,18 +517,27 @@ function injectStyles() {
       align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
-      padding: 14px 14px 12px;
+      padding: 12px 12px 10px;
     }
 
     .list-item summary::-webkit-details-marker {
       display: none;
     }
 
+    .list-item-grip {
+      flex: 0 0 auto;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      letter-spacing: -0.08em;
+      user-select: none;
+    }
+
     .list-item-title {
       margin: 0;
       font-weight: 700;
       line-height: 1.3;
-      font-size: 1rem;
+      font-size: 0.98rem;
     }
 
     .list-item-subtitle {
@@ -553,7 +553,7 @@ function injectStyles() {
     }
 
     .list-item-body {
-      border-top: 1px solid rgba(37, 31, 27, 0.08);
+      border-top: 1px solid rgba(20, 28, 33, 0.08);
       padding: 14px;
       display: grid;
       gap: 14px;
@@ -564,6 +564,15 @@ function injectStyles() {
       gap: 8px;
       flex-wrap: wrap;
       justify-content: flex-end;
+    }
+
+    .list-item[data-drop-target="true"] {
+      outline: 2px solid rgba(13, 91, 83, 0.22);
+      outline-offset: 0;
+    }
+
+    .list-item[data-dragging="true"] {
+      opacity: 0.55;
     }
 
     .list-item:not([open]) .list-item-body {
@@ -585,9 +594,9 @@ function injectStyles() {
       width: min(240px, 100%);
       max-height: 180px;
       object-fit: cover;
-      border-radius: 14px;
-      border: 1px solid rgba(37, 31, 27, 0.12);
-      background: rgba(255, 255, 255, 0.85);
+      border-radius: 10px;
+      border: 1px solid rgba(20, 28, 33, 0.12);
+      background: #ffffff;
     }
 
     .asset-preview a {
@@ -704,6 +713,17 @@ function defaultValueForField(field) {
 
 function deepClone(value) {
   return typeof structuredClone === 'function' ? structuredClone(value) : JSON.parse(JSON.stringify(value));
+}
+
+function reorderArray(list, fromIndex, toIndex) {
+  if (fromIndex === toIndex) {
+    return list.slice();
+  }
+
+  const next = list.slice();
+  const [moved] = next.splice(fromIndex, 1);
+  next.splice(toIndex, 0, moved);
+  return next;
 }
 
 function flattenManifest(config) {
@@ -1129,11 +1149,14 @@ function buildField(field, value, onChange) {
     const list = document.createElement('div');
 
     const itemField = field.fields ? null : field.field;
+    let dragIndex = null;
 
     current.forEach((item, index) => {
       const itemWrap = document.createElement('details');
       itemWrap.className = 'list-item';
-      itemWrap.open = index === 0;
+      itemWrap.open = false;
+      itemWrap.draggable = true;
+      itemWrap.dataset.index = String(index);
 
       const head = document.createElement('summary');
 
@@ -1153,6 +1176,10 @@ function buildField(field, value, onChange) {
         : String(item ?? '');
       textWrap.appendChild(subtitle);
 
+      const grip = document.createElement('span');
+      grip.className = 'list-item-grip';
+      grip.textContent = '⋮⋮';
+
       const upButton = document.createElement('button');
       upButton.type = 'button';
       upButton.className = 'btn btn-ghost';
@@ -1162,19 +1189,6 @@ function buildField(field, value, onChange) {
         const next = current.slice();
         const [moved] = next.splice(index, 1);
         next.splice(index - 1, 0, moved);
-        onChange(next);
-        renderEditor();
-      });
-
-      const downButton = document.createElement('button');
-      downButton.type = 'button';
-      downButton.className = 'btn btn-ghost';
-      downButton.textContent = 'Down';
-      downButton.disabled = index === current.length - 1;
-      downButton.addEventListener('click', () => {
-        const next = current.slice();
-        const [moved] = next.splice(index, 1);
-        next.splice(index + 1, 0, moved);
         onChange(next);
         renderEditor();
       });
@@ -1190,7 +1204,7 @@ function buildField(field, value, onChange) {
         renderEditor();
       });
 
-      head.append(textWrap);
+      head.append(grip, textWrap);
       itemWrap.appendChild(head);
 
       const itemFields = document.createElement('div');
@@ -1198,7 +1212,7 @@ function buildField(field, value, onChange) {
 
       const actions = document.createElement('div');
       actions.className = 'list-item-actions';
-      actions.append(upButton, downButton, removeButton);
+      actions.append(upButton, removeButton);
       itemFields.appendChild(actions);
 
       if (field.fields) {
@@ -1220,6 +1234,46 @@ function buildField(field, value, onChange) {
       }
 
       itemWrap.appendChild(itemFields);
+
+      itemWrap.addEventListener('dragstart', event => {
+        dragIndex = index;
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', String(index));
+        itemWrap.dataset.dragging = 'true';
+      });
+
+      itemWrap.addEventListener('dragend', () => {
+        dragIndex = null;
+        delete itemWrap.dataset.dragging;
+        for (const node of list.querySelectorAll('.list-item[data-drop-target="true"]')) {
+          delete node.dataset.dropTarget;
+        }
+      });
+
+      itemWrap.addEventListener('dragover', event => {
+        event.preventDefault();
+        if (dragIndex === null || dragIndex === index) {
+          return;
+        }
+        itemWrap.dataset.dropTarget = 'true';
+      });
+
+      itemWrap.addEventListener('dragleave', () => {
+        delete itemWrap.dataset.dropTarget;
+      });
+
+      itemWrap.addEventListener('drop', event => {
+        event.preventDefault();
+        delete itemWrap.dataset.dropTarget;
+        const sourceIndex = dragIndex !== null ? dragIndex : Number(event.dataTransfer.getData('text/plain'));
+        if (Number.isNaN(sourceIndex) || sourceIndex === index) {
+          return;
+        }
+        const next = reorderArray(current, sourceIndex, index);
+        onChange(next);
+        renderEditor();
+      });
+
       list.appendChild(itemWrap);
     });
 
