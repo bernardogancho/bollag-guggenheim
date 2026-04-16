@@ -2,14 +2,19 @@
   "hero": {
     "eyebrow": "Company",
     "title": "Success, reliability and tradition.",
-    "summary": "Bollag Guggenheim Fashion Group has shaped the Swiss premium fashion market for over seven decades.",
+    "summary": "BGAG and The Wearhouse unites women's and men's wear in the contemporary, casual-trendy and jeans fashion segment, complemented by accessories and shoes.",
     "poster": "/assets/media/company/company-hero-poster.jpg",
     "video": "/assets/media/company/company-hero.mp4",
     "videoAlt": "Bollag Guggenheim showroom"
   },
   "intro": {
     "eyebrow": "The Company",
-    "titleLines": ["In the Swiss", "fashion market", "for over seven", "decades."],
+    "titleLines": [
+      "In the Swiss",
+      "fashion market",
+      "for over seven",
+      "decades."
+    ],
     "paragraphs": [
       "Bollag Guggenheim Fashion Group has been present in the Swiss fashion market for over seven decades. The company's emphasis on the premium lifestyle segment, profound knowhow and experience, as well as the synergy between wholesale and retail are key to its success.",
       "Bollag Guggenheim and The Wearhouse unites women's and men's wear in the contemporary, casual-trendy and jeans fashion segment, complemented by accessories and shoes.",
@@ -31,7 +36,11 @@
   },
   "distribution": {
     "eyebrow": "Distribution",
-    "titleLines": ["We create synergies", "between wholesale", "and retail."],
+    "titleLines": [
+      "We create synergies",
+      "between wholesale",
+      "and retail."
+    ],
     "images": [
       {
         "src": "/assets/media/company/company-distribution-1.jpg",
@@ -45,8 +54,8 @@
     "wholesale": {
       "eyebrow": "Wholesale",
       "paragraphs": [
-        "Bollag Guggenheim Fashion Group offers tailor-made services to brand partners and wholesale customers across 2,500 square meters.",
-        "Each brand has a dedicated brand manager and customer service team, while long-term collaborations across franchising, shop in shops, department stores and boutiques remain central to the model."
+        "Bollag-Guggenheim Fashion Group offers tailor made services to our brand partners and wholesale customers on 2'500 sqm. Each brand has a passionate brand manager and customer service team in order to ensure a successful distribution.",
+        "We have been able to build on mutual trust and long-term collaborations. Our services in franchising, shop in shops, department stores and boutiques are legendary."
       ]
     },
     "retail": {
