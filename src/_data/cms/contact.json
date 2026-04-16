@@ -74,7 +74,7 @@
     "title": "Explore the brands, stores, and showroom calendar.",
     "buttonLabel": "Go to Brands",
     "buttonHref": "/brands/",
-    "secondaryButtonLabel": "GO TO AGENDA",
+    "secondaryButtonLabel": "Go to Agenda",
     "secondaryButtonHref": "/agenda/"
   }
 }
