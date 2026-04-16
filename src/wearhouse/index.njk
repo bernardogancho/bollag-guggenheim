@@ -87,7 +87,7 @@ title: Wearhouse | Bollag Guggenheim
               </h3>
             </div>
             <div class="relative z-10 mt-8 flex items-center justify-between border-t border-black/10 pt-4 transition duration-500 {% if brand.hoverImage %}group-hover:border-white/18 group-focus-visible:border-white/18{% endif %}">
-              <span class="text-sm text-black/58 transition duration-300 group-hover:translate-x-1 {% if brand.hoverImage %}group-hover:text-white group-focus-visible:translate-x-1 group-focus-visible:text-white{% else %}group-hover:text-black{% endif %}">→</span>
+              <span class="text-sm text-black/58 opacity-0 transition duration-300 group-hover:translate-x-1 {% if brand.hoverImage %}group-hover:text-white group-focus-visible:translate-x-1 group-focus-visible:text-white{% else %}group-hover:text-black{% endif %}" aria-hidden="true">→</span>
             </div>
         </a>
       {% endfor %}
