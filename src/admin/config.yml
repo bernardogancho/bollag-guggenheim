@@ -391,6 +391,8 @@ collections:
               - { label: Title, name: title, widget: string }
               - { label: Button Label, name: buttonLabel, widget: string }
               - { label: Button Link, name: buttonHref, widget: string }
+              - { label: Secondary Button Label, name: secondaryButtonLabel, widget: string, required: false }
+              - { label: Secondary Button Link, name: secondaryButtonHref, widget: string, required: false }
 
   - name: stores_page
     label: Stores Page

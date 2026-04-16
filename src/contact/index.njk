@@ -173,10 +173,16 @@ title: Contact | Bollag Guggenheim
           {{ contact.cta.title }}
         </h2>
       </div>
-      <a href="{{ contact.cta.buttonHref }}" class="cta-button cta-button--dark" data-reveal>
-        <span>{{ contact.cta.buttonLabel }}</span>
-        <span aria-hidden="true">→</span>
-      </a>
+      <div class="flex flex-wrap gap-4">
+        <a href="{{ contact.cta.buttonHref }}" class="cta-button cta-button--dark" data-reveal>
+          <span>{{ contact.cta.buttonLabel }}</span>
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="{{ contact.cta.secondaryButtonHref }}" class="cta-button cta-button--dark" data-reveal>
+          <span>{{ contact.cta.secondaryButtonLabel }}</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
     </div>
   </div>
 </section>

@@ -73,6 +73,8 @@
     "eyebrow": "Next Step",
     "title": "Explore the brands, stores, and showroom calendar.",
     "buttonLabel": "Go to Brands",
-    "buttonHref": "/brands/"
+    "buttonHref": "/brands/",
+    "secondaryButtonLabel": "GO TO AGENDA",
+    "secondaryButtonHref": "/agenda/"
   }
 }
