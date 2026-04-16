@@ -26,8 +26,8 @@
       "phoneHref": "tel:+41438110000",
       "emailLabel": "welcome@bollag.net",
       "emailHref": "mailto:welcome@bollag.net",
-      "routeLabel": "Route map",
-      "routeHref": "https://www.bollagguggenheim.cyon.site/media/anfahrtsplantmc.pdf"
+      "routeLabel": "Open in Maps",
+      "routeHref": "https://www.google.com/maps/search/?api=1&query=Thurgauerstrasse+113,+CH-8152+Glattpark,+Switzerland"
     },
     "wearhouseContact": {
       "title": "Contact",
