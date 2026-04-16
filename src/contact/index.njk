@@ -178,8 +178,8 @@ title: Contact | Bollag Guggenheim
           <span>{{ contact.cta.buttonLabel }}</span>
           <span aria-hidden="true">→</span>
         </a>
-        <a href="{{ contact.cta.secondaryButtonHref }}" class="cta-button cta-button--dark" data-reveal>
-          <span>{{ contact.cta.secondaryButtonLabel }}</span>
+        <a href="{{ contact.cta.secondaryButtonHref or '/agenda/' }}" class="cta-button cta-button--dark" data-reveal>
+          <span>{{ contact.cta.secondaryButtonLabel or 'GO TO AGENDA' }}</span>
           <span aria-hidden="true">→</span>
         </a>
       </div>
