@@ -2,7 +2,7 @@
   "hero": {
     "eyebrow": "Agenda",
     "title": "What is next across the brand calendar.",
-    "summary": "Upcoming showroom appointments and collection windows across the Bollag Guggenheim portfolio, presented as one continuous seasonal schedule.",
+    "summary": "Upcoming showroom appointments and collection windows across the Bollag Guggenheim and The Wearhouse portfolio.",
     "quote": "",
     "poster": "/assets/media/page-heroes/contact-hero-poster.jpg",
     "video": "/assets/media/page-heroes/contact-hero.mp4",
@@ -10,7 +10,7 @@
   },
   "calendarSection": {
     "eyebrow": "Showroom Calendar",
-    "title": "Seasonal windows across the portfolio.",
+    "title": "Seasonal sales window.",
     "summary": "A direct view into upcoming collection presentations, delivery periods, and showroom timing in Zurich."
   },
   "cta": {
