@@ -63,7 +63,7 @@
       "stores": [
         {
           "name": "Spreitenbach, Shoppi Tivoli",
-          "image": "/assets/media/stores/gallery-spreitenbach.jpg",
+          "image": "/assets/media/stores/gallery-spreitenbach.avif",
           "address": [
             "Shoppi Tivoli - Centermall",
             "8957 Spreitenbach"
@@ -76,7 +76,7 @@
         },
         {
           "name": "Zurich",
-          "image": "/assets/media/stores/gallery-zurich.jpg",
+          "image": "/assets/media/stores/gallery-zurich.avif",
           "address": [
             "Lowenstrasse 40",
             "8001 Zurich"
@@ -98,7 +98,7 @@
       "stores": [
         {
           "name": "Schonenwerd",
-          "image": "/assets/media/stores/outlet-fashion-fish.jpg",
+          "image": "/assets/media/stores/outlet-fashion-fish.avif",
           "address": [
             "Fashion Fish / Bally Areal",
             "Parkstrasse 1",
