@@ -121,3 +121,82 @@ if (driftItems.length && !prefersReducedMotion.matches) {
 } else {
   driftItems.forEach((item) => item.style.setProperty("--drift-y", "0px"));
 }
+
+const contactForm = document.querySelector("[data-contact-form]");
+
+if (contactForm) {
+  const statusEl = contactForm.querySelector("[data-contact-status]");
+  const submitButton = contactForm.querySelector("[data-contact-submit]");
+  const buttonLabel = contactForm.querySelector("[data-contact-button-label]");
+  const defaultButtonLabel = buttonLabel?.textContent || "Send Message";
+  const defaultStatus = statusEl?.textContent || "";
+
+  const setStatus = (message, tone = "neutral") => {
+    if (!statusEl) return;
+    statusEl.textContent = message;
+    statusEl.setAttribute("data-tone", tone);
+    statusEl.style.color = tone === "success" ? "rgb(21, 128, 61)" : tone === "error" ? "rgb(153, 27, 27)" : "";
+  };
+
+  const sentFlag = new URLSearchParams(window.location.search).get("sent");
+  if (sentFlag === "1") {
+    setStatus("Thanks. Your message has been sent.", "success");
+  }
+
+  contactForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!submitButton || !buttonLabel) return;
+
+    const formData = new FormData(contactForm);
+    const payload = Object.fromEntries(formData.entries());
+
+    if (String(payload.website || "").trim()) {
+      contactForm.reset();
+      setStatus("Thanks. Your message has been sent.", "success");
+      return;
+    }
+
+    const requiredFields = ["first_name", "last_name", "email", "subject", "message"];
+    const missingField = requiredFields.find((field) => !String(payload[field] || "").trim());
+
+    if (missingField) {
+      setStatus("Please complete the required fields before sending.", "error");
+      contactForm.querySelector(`[name="${missingField}"]`)?.focus();
+      return;
+    }
+
+    submitButton.disabled = true;
+    buttonLabel.textContent = "Sending...";
+    setStatus("Sending your message...", "neutral");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(result.error || "Could not send your message.");
+      }
+
+      contactForm.reset();
+      setStatus(result.message || "Thanks. Your message has been sent.", "success");
+    } catch (error) {
+      setStatus(error.message || "Could not send your message right now.", "error");
+    } finally {
+      submitButton.disabled = false;
+      buttonLabel.textContent = defaultButtonLabel;
+    }
+  });
+
+  if (statusEl && defaultStatus && sentFlag !== "1") {
+    statusEl.textContent = defaultStatus;
+  }
+}

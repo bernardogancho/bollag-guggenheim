@@ -122,39 +122,45 @@ title: Contact | Bollag Guggenheim
           <h3 class="type-section-title-block text-black">{{ contact.form.title }}</h3>
           <p class="type-body mt-4 text-black/68">{{ contact.form.summary }}</p>
         </div>
-        <form class="space-y-5" onsubmit="return false;" aria-label="Contact enquiry form">
+        <form class="space-y-5" method="post" action="/api/contact" data-contact-form aria-label="Contact enquiry form">
           <div class="grid gap-5 sm:grid-cols-2">
             <label class="block">
               <span class="type-label mb-3 block text-black/38">{{ contact.form.fields.firstName }}</span>
-              <input type="text" name="first_name" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.firstName }}">
+              <input type="text" name="first_name" autocomplete="given-name" required class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.firstName }}">
             </label>
             <label class="block">
               <span class="type-label mb-3 block text-black/38">{{ contact.form.fields.lastName }}</span>
-              <input type="text" name="last_name" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.lastName }}">
+              <input type="text" name="last_name" autocomplete="family-name" required class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.lastName }}">
             </label>
           </div>
           <div class="grid gap-5 sm:grid-cols-2">
             <label class="block">
               <span class="type-label mb-3 block text-black/38">{{ contact.form.fields.email }}</span>
-              <input type="email" name="email" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.email }}">
+              <input type="email" name="email" autocomplete="email" required class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.email }}">
             </label>
             <label class="block">
               <span class="type-label mb-3 block text-black/38">{{ contact.form.fields.company }}</span>
-              <input type="text" name="company" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.company }}">
+              <input type="text" name="company" autocomplete="organization" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.company }}">
             </label>
           </div>
           <label class="block">
             <span class="type-label mb-3 block text-black/38">{{ contact.form.fields.subject }}</span>
-            <input type="text" name="subject" class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.subject }}">
+            <input type="text" name="subject" required class="w-full border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.subject }}">
           </label>
           <label class="block">
             <span class="type-label mb-3 block text-black/38">{{ contact.form.fields.message }}</span>
-            <textarea name="message" rows="7" class="w-full resize-none border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm leading-[1.8] text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.message }}"></textarea>
+            <textarea name="message" rows="7" required class="w-full resize-none border border-black/10 bg-white/70 px-4 py-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm leading-[1.8] text-black outline-none transition duration-300 placeholder:text-black/30 focus:border-black/24 focus:bg-white focus:shadow-[0_0_0_3px_rgba(40,32,22,0.08)]" placeholder="{{ contact.form.placeholders.message }}"></textarea>
           </label>
+          <div class="sr-only" aria-hidden="true">
+            <label>
+              <span>Website</span>
+              <input type="text" name="website" tabindex="-1" autocomplete="off">
+            </label>
+          </div>
           <div class="flex flex-col gap-4 border-t border-black/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
-            <p class="type-body-sm max-w-[24rem] text-black/56">{{ contact.form.disclaimer }}</p>
-            <button type="button" class="cta-button cta-button--dark">
-              <span>{{ contact.form.buttonLabel }}</span>
+            <p class="type-body-sm max-w-[24rem] text-black/56" data-contact-status aria-live="polite">{{ contact.form.disclaimer }}</p>
+            <button type="submit" class="cta-button cta-button--dark" data-contact-submit>
+              <span data-contact-button-label>{{ contact.form.buttonLabel }}</span>
               <span aria-hidden="true">→</span>
             </button>
           </div>

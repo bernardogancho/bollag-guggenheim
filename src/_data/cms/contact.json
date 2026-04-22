@@ -47,11 +47,11 @@
     "mapsHref": "https://www.google.com/maps/search/?api=1&query=Seestrasse+78,+8703+Erlenbach,+Schweiz"
   },
   "form": {
-    "sectionLabel": "Enquiry Form",
-    "title": "A direct enquiry, prepared for launch.",
-    "summary": "The submission flow is not connected yet, but the form structure is now in place. For immediate contact, use the phone or email details on this page.",
-    "disclaimer": "Submission is not active yet. For now, please contact the team directly by email or phone.",
-    "buttonLabel": "Send Enquiry",
+    "sectionLabel": "Contact Form",
+    "title": "Send us a message.",
+    "summary": "Use this form for showroom visits, brand enquiries, or general questions. The team will reply by email.",
+    "disclaimer": "We’ll get back to you by email as soon as possible.",
+    "buttonLabel": "Send Message",
     "fields": {
       "firstName": "First Name",
       "lastName": "Last Name",
@@ -65,8 +65,8 @@
       "lastName": "Last name",
       "email": "name@company.com",
       "company": "Company name",
-      "subject": "What is this regarding?",
-      "message": "Tell us about your enquiry."
+      "subject": "What is this about?",
+      "message": "Tell us a bit more."
     }
   },
   "cta": {
