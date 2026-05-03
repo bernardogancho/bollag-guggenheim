@@ -606,32 +606,32 @@
     justify-content: flex-end;
     font-family: "Helvetica Neue", Arial, sans-serif;
     font-weight: 900;
-    letter-spacing: -0.08em;
-    line-height: 0.88;
+    letter-spacing: -0.1em;
+    line-height: 0.84;
     text-transform: uppercase;
   }
 
   .footer-wearhouse-mark__the {
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
     line-height: 1;
-    margin-left: 4.1rem;
+    margin-left: 3.1rem;
   }
 
   .footer-wearhouse-mark__name {
-    font-size: clamp(2.45rem, 2.05rem + 0.9vw, 3.15rem);
-    line-height: 0.84;
+    font-size: clamp(2.1rem, 1.85rem + 0.65vw, 2.65rem);
+    line-height: 0.82;
   }
 
   .footer-wearhouse-mark__sub {
     display: flex;
     flex-direction: column;
     align-self: flex-end;
-    margin-top: 0.05rem;
-    margin-right: 0.1rem;
-    font-size: 0.68rem;
-    letter-spacing: 0.09em;
-    line-height: 0.95;
+    margin-top: 0.08rem;
+    margin-right: 0.04rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    line-height: 0.92;
   }
 
   .footer-brand-card {
