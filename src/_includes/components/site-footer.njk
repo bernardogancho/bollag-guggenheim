@@ -1,50 +1,34 @@
 <footer class="bg-[#FAF8F6] text-ink">
   {% set footer = cms.site.footer %}
   <div class="mx-auto w-full max-w-[1600px] px-6 pb-10 pt-20 sm:px-10 lg:px-16 lg:pb-12 lg:pt-24">
-    <div class="grid gap-14 border-t border-black/10 pt-8 lg:grid-cols-[1.15fr_0.85fr_0.85fr_0.75fr] lg:gap-12 lg:pt-10">
-      <div>
-        <a href="/" class="mb-8 inline-flex" aria-label="Bollag-Guggenheim home">
-          <img src="/assets/media/logo.svg" alt="Bollag-Guggenheim" class="h-[2rem] w-auto md:h-[2.3rem]">
+    <div class="grid gap-14 border-t border-black/10 pt-8 lg:grid-cols-[1.12fr_0.88fr_0.72fr] lg:gap-12 lg:pt-10">
+      <div class="max-w-[22rem]">
+        <a href="/" class="inline-flex" aria-label="Bollag-Guggenheim home">
+          <img src="/assets/media/logo.svg" alt="Bollag-Guggenheim" class="h-[2.35rem] w-auto md:h-[2.75rem]">
         </a>
-        <div class="mt-10 border-t border-black/10 pt-5">
-          <p class="type-label mb-4 text-black/42">
-            {{ footer.groupLabel }}
-          </p>
-          <a href="/wearhouse/" class="nav-link inline-flex pb-1 text-black/90 transition duration-300 hover:text-black">
-            <span class="flex flex-col leading-none font-['Helvetica_Neue',_Arial,_sans-serif] font-black uppercase">
-              <span class="ml-[4rem] text-[0.66rem] tracking-[-0.06em]">{{ footer.wearhouseWordmark.prefix }}</span>
-              <span class="text-[1.74rem] tracking-[-0.095em]">{{ footer.wearhouseWordmark.name }}</span>
-              <span class="ml-[5.2rem] -mt-0.5 flex flex-col text-[0.58rem] tracking-[-0.05em]">
-                {% for line in footer.wearhouseWordmark.suffix %}
-                  <span>{{ line }}</span>
-                {% endfor %}
-              </span>
-            </span>
-          </a>
-        </div>
-      </div>
 
-      <div>
-        <p class="type-label mb-4 text-black/42">
-          {{ footer.bgContact.title }}
-        </p>
-        <div class="type-body-sm type-body-stack-tight text-black/72">
-          <p>
-            {{ footer.bgContact.name }}<br>
-            {% for line in footer.bgContact.address %}
-              {{ line }}{% if not loop.last %}<br>{% endif %}
-            {% endfor %}
+        <div class="mt-10 border-t border-black/10 pt-6">
+          <p class="type-label mb-4 text-black/42">
+            {{ footer.bgContact.title }}
           </p>
-          <p>
-            <a href="{{ footer.bgContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ footer.bgContact.phoneLabel }}</a><br>
-            <a href="{{ footer.bgContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ footer.bgContact.emailLabel }}</a>
-          </p>
-          <p>
-            <a href="{{ footer.bgContact.routeHref }}" class="nav-link inline-flex items-center gap-3 pb-1 transition duration-300 hover:text-black">
-              <span>{{ footer.bgContact.routeLabel }}</span>
-              <span aria-hidden="true">→</span>
-            </a>
-          </p>
+          <div class="type-body-sm type-body-stack-tight text-black/72">
+            <p>
+              {{ footer.bgContact.name }}<br>
+              {% for line in footer.bgContact.address %}
+                {{ line }}{% if not loop.last %}<br>{% endif %}
+              {% endfor %}
+            </p>
+            <p>
+              <a href="{{ footer.bgContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ footer.bgContact.phoneLabel }}</a><br>
+              <a href="{{ footer.bgContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ footer.bgContact.emailLabel }}</a>
+            </p>
+            <p>
+              <a href="{{ footer.bgContact.routeHref }}" class="nav-link inline-flex items-center gap-3 pb-1 transition duration-300 hover:text-black">
+                <span>{{ footer.bgContact.routeLabel }}</span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </p>
+          </div>
         </div>
       </div>
 
@@ -76,13 +60,15 @@
         <p class="type-label mb-4 text-black/42">
           {{ footer.navigation.title }}
         </p>
-        <nav>
-          <ul class="space-y-3 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm font-medium uppercase tracking-[0.18em] text-black/72 lg:text-[0.82rem]">
-            {% for item in footer.navigation.items %}
-              <li><a href="{{ item.href }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ item.label }}</a></li>
-            {% endfor %}
-          </ul>
-        </nav>
+        <div class="type-body-sm type-body-stack-tight text-black/72">
+          <nav>
+            <ul class="space-y-3 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm font-medium uppercase tracking-[0.18em] text-black/72 lg:text-[0.82rem]">
+              {% for item in footer.navigation.items %}
+                <li><a href="{{ item.href }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ item.label }}</a></li>
+              {% endfor %}
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
 
