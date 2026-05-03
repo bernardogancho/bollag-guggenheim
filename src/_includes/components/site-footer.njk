@@ -3,11 +3,14 @@
   <div class="mx-auto w-full max-w-[1600px] px-6 pb-10 pt-20 sm:px-10 lg:px-16 lg:pb-12 lg:pt-24">
     <div class="border-t border-black/10 pt-8 lg:pt-10">
       <div class="grid gap-14 lg:grid-cols-[1.08fr_1fr_0.72fr] lg:gap-14">
-        <section class="space-y-6">
-          <a href="/" class="inline-flex max-w-[16rem]" aria-label="Bollag-Guggenheim home">
-            <img src="/assets/media/logo.svg" alt="Bollag-Guggenheim" class="h-[2.6rem] w-auto md:h-[3rem]">
-          </a>
-          <div class="max-w-[19rem] border-t border-black/10 pt-6">
+        <section class="footer-column">
+          <div class="footer-brand-head">
+            <a href="/" class="footer-brand-link" aria-label="Bollag-Guggenheim home">
+              <img src="/assets/media/logo.svg" alt="Bollag-Guggenheim" class="footer-brand-logo footer-brand-logo--bg">
+            </a>
+          </div>
+
+          <div class="footer-brand-card">
             <p class="type-label mb-4 text-black/42">{{ footer.bgContact.title }}</p>
             <div class="type-body-sm type-body-stack-tight text-black/74">
               <p>
@@ -30,11 +33,20 @@
           </div>
         </section>
 
-        <section class="space-y-6">
-          <a href="/wearhouse/" class="inline-flex max-w-[17rem]" aria-label="The Wearhouse">
-            <img src="/assets/media/wearhouse-logo.avif" alt="The Wearhouse" class="h-[5rem] w-auto md:h-[5.8rem]">
-          </a>
-          <div class="max-w-[19rem] border-t border-black/10 pt-6">
+        <section class="footer-column">
+          <div class="footer-brand-head">
+            <a href="/wearhouse/" class="footer-wearhouse-mark" aria-label="The Wearhouse">
+              <span class="footer-wearhouse-mark__the">The</span>
+              <span class="footer-wearhouse-mark__name">Wearhouse</span>
+              <span class="footer-wearhouse-mark__sub">
+                {% for line in footer.wearhouseWordmark.suffix %}
+                  <span>{{ line }}</span>
+                {% endfor %}
+              </span>
+            </a>
+          </div>
+
+          <div class="footer-brand-card">
             <p class="type-label mb-4 text-black/42">{{ footer.wearhouseContact.title }}</p>
             <div class="type-body-sm type-body-stack-tight text-black/74">
               <p>
@@ -57,9 +69,11 @@
           </div>
         </section>
 
-        <section class="space-y-6">
-          <p class="type-label text-black/42">{{ footer.navigation.title }}</p>
-          <nav aria-label="{{ footer.navigation.title }}">
+        <section class="footer-column">
+          <div class="footer-brand-head">
+            <p class="type-label text-black/42">{{ footer.navigation.title }}</p>
+          </div>
+          <nav aria-label="{{ footer.navigation.title }}" class="footer-brand-card">
             <ul class="space-y-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm font-medium uppercase tracking-[0.18em] text-black/74 lg:text-[0.82rem]">
               {% for item in footer.navigation.items %}
                 <li><a href="{{ item.href }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ item.label }}</a></li>

@@ -571,6 +571,74 @@
     background: #000;
     color: #fff;
   }
+
+  .footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .footer-brand-head {
+    display: flex;
+    min-height: 5.3rem;
+    align-items: flex-end;
+  }
+
+  .footer-brand-link {
+    display: inline-flex;
+    max-width: 16rem;
+  }
+
+  .footer-brand-logo {
+    display: block;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .footer-brand-logo--bg {
+    height: 2.8rem;
+  }
+
+  .footer-wearhouse-mark {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.08em;
+    line-height: 0.88;
+    text-transform: uppercase;
+  }
+
+  .footer-wearhouse-mark__the {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    margin-left: 4.1rem;
+  }
+
+  .footer-wearhouse-mark__name {
+    font-size: clamp(2.45rem, 2.05rem + 0.9vw, 3.15rem);
+    line-height: 0.84;
+  }
+
+  .footer-wearhouse-mark__sub {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
+    margin-top: 0.05rem;
+    margin-right: 0.1rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.09em;
+    line-height: 0.95;
+  }
+
+  .footer-brand-card {
+    max-width: 19rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 1.5rem;
+  }
 }
 
 @layer utilities {
