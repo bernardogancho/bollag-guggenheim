@@ -609,6 +609,8 @@
     letter-spacing: -0.1em;
     line-height: 0.84;
     text-transform: uppercase;
+    transform: scale(0.9);
+    transform-origin: left bottom;
   }
 
   .footer-wearhouse-mark__the {
