@@ -146,6 +146,17 @@
           "location": "Showroom Zurich"
         }
       ]
+    },
+    {
+      "month": "December",
+      "events": [
+        {
+          "dateLabel": "2 - 27 November 2026",
+          "brand": "GUESS",
+          "detail": "Collection Pre Fall 2027, delivery May - July 2027",
+          "location": "Showroom Zurich"
+        }
+      ]
     }
   ]
 }
