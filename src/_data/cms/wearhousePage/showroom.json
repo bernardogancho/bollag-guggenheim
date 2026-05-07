@@ -1,7 +1,7 @@
 {
   "showroomSection": {
     "eyebrow": "Showroom Journal",
-    "title": "A direct view into the Wearhouse showroom atmosphere.",
+    "title": "A direct view into the Wearhouse showroom.",
     "summary": "",
     "items": [
       {
@@ -31,10 +31,6 @@
       {
         "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-08.jpeg",
         "note": "Wearhouse showroom impression 8"
-      },
-      {
-        "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-11.jpeg",
-        "note": "Wearhouse showroom impression 11"
       },
       {
         "image": "/assets/media/wearhouse/showroom/wearhouse-showroom-12.jpeg",
