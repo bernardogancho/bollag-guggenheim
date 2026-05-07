@@ -9,7 +9,7 @@
     "videoAlt": "Bollag-Guggenheim building approach"
   },
   "officeSection": {
-    "eyebrow": "Office",
+    "eyebrow": "",
     "title": "Write to the team.",
     "summary": ""
   },
@@ -33,7 +33,7 @@
     "googleMapsHref": "https://www.google.com/maps?q=47.423764,8.557306"
   },
   "wearhousePartner": {
-    "sectionLabel": "Partner Contact",
+    "sectionLabel": "",
     "name": "The Wearhouse Fashion Trade GmbH",
     "address": [
       "Seestrasse 78",
@@ -50,7 +50,7 @@
     "sectionLabel": "Contact Form",
     "title": "Send us a message.",
     "summary": "Use this form for showroom visits, brand enquiries, or general questions. The team will reply by email.",
-    "disclaimer": "We’ll get back to you by email as soon as possible.",
+    "disclaimer": "We’ll get back to you as soon as possible.",
     "buttonLabel": "Send Message",
     "fields": {
       "firstName": "First Name",
