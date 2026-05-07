@@ -1,14 +1,32 @@
 {
   "nav": {
     "left": [
-      { "label": "Company", "href": "/company/" },
-      { "label": "The WEARHOUSE", "href": "/wearhouse/" },
-      { "label": "Brands", "href": "/brands/" }
+      {
+        "label": "Company",
+        "href": "/company/"
+      },
+      {
+        "label": "The WEARHOUSE",
+        "href": "/wearhouse/"
+      },
+      {
+        "label": "Brands",
+        "href": "/brands/"
+      }
     ],
     "right": [
-      { "label": "Stores", "href": "/stores/" },
-      { "label": "Agenda", "href": "/agenda/" },
-      { "label": "Contact", "href": "/contact/" }
+      {
+        "label": "Stores",
+        "href": "/stores/"
+      },
+      {
+        "label": "Agenda",
+        "href": "/agenda/"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact/"
+      }
     ]
   },
   "footer": {
@@ -16,12 +34,18 @@
     "wearhouseWordmark": {
       "prefix": "The",
       "name": "Wearhouse",
-      "suffix": ["Fashion Trade", "GmbH"]
+      "suffix": [
+        "Fashion Trade",
+        "GmbH"
+      ]
     },
     "bgContact": {
       "title": "Contact",
       "name": "Bollag-Guggenheim AG",
-      "address": ["Thurgauerstrasse 113", "CH-8152 Glattpark"],
+      "address": [
+        "Thurgauerstrasse 113",
+        "CH-8152 Glattpark"
+      ],
       "phoneLabel": "+41 43 811 00 00",
       "phoneHref": "tel:+41438110000",
       "emailLabel": "welcome@bollag.net",
@@ -32,7 +56,10 @@
     "wearhouseContact": {
       "title": "Contact",
       "name": "The Wearhouse Fashion Trade GmbH",
-      "address": ["Seestrasse 78", "8703 Erlenbach"],
+      "address": [
+        "Seestrasse 78",
+        "8703 Erlenbach"
+      ],
       "phoneLabel": "+41 44 912 12 00",
       "phoneHref": "tel:+41449121200",
       "emailLabel": "wearhouse@wearhouse.ch",
@@ -43,15 +70,30 @@
     "navigation": {
       "title": "Navigation",
       "items": [
-        { "label": "Company", "href": "/company/" },
-        { "label": "Brands", "href": "/brands/" },
-        { "label": "Stores", "href": "/stores/" },
-        { "label": "Agenda", "href": "/agenda/" },
-        { "label": "Contact", "href": "/contact/" }
+        {
+          "label": "Company",
+          "href": "/company/"
+        },
+        {
+          "label": "Brands",
+          "href": "/brands/"
+        },
+        {
+          "label": "Stores",
+          "href": "/stores/"
+        },
+        {
+          "label": "Agenda",
+          "href": "/agenda/"
+        },
+        {
+          "label": "Contact",
+          "href": "/contact/"
+        }
       ]
     },
     "meta": {
-      "since": "Since 1947",
+      "since": "",
       "groupName": "Bollag-Guggenheim Fashion Group Switzerland"
     }
   }
