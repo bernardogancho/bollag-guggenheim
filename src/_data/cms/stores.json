@@ -59,7 +59,7 @@
       "id": "gallery",
       "label": "Multibrand Stores",
       "title": "The Gallery",
-      "intro": "A multibrand retail concept combining contemporary fashion, accessories, and a more editorial in-store perspective.",
+      "intro": "A multibrand retail concept combining contemporary fashion, accessories",
       "stores": [
         {
           "name": "Spreitenbach, Shoppi Tivoli",
@@ -94,7 +94,7 @@
       "id": "outlet",
       "label": "Outlet",
       "title": "The Gallery Outlet",
-      "intro": "An outlet format in Schonenwerd that extends the retail network with year-round access to selected assortments.",
+      "intro": "The outlet in Schönenwerd",
       "stores": [
         {
           "name": "Schonenwerd",
@@ -119,7 +119,7 @@
   "online": {
     "label": "Online Shop",
     "title": "The Gallery Shop",
-    "summary": "The online extension of the multibrand concept, offering a direct digital storefront alongside the physical network.",
+    "summary": "",
     "href": "https://thegalleryconcept.ch"
   }
 }
