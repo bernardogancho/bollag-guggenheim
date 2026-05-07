@@ -15,7 +15,7 @@
   },
   "cta": {
     "eyebrow": "Appointments",
-    "title": "For showroom enquiries, contact our team.",
+    "title": "",
     "buttonLabel": "Go to Contact",
     "buttonHref": "/contact/"
   },
