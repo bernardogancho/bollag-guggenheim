@@ -289,6 +289,31 @@
       }
     },
     {
+      "name": "Cuoieria Fiorentina",
+      "slug": "Cuoieria Fiorentina",
+      "card": {
+        "eyebrow": "Handbags and Accessories",
+        "heroTitle": "Crafted in Tuscany. Carried with Pride",
+        "summary": "An Italian heritage brand built around exceptional leather craftsmanship and timeless design",
+        "heroImage": ""
+      },
+      "detail": {
+        "intro": "Rooted in Tuscan tradition, Cuoieria Fiorentina has built its identity around premium leather goods, blending authentic Italian craftsmanship with timeless design and enduring sophistication.",
+        "focus": "Innovation is expressed through craftsmanship, where Tuscan leather heritage is continuously reinterpreted into contemporary design defined by precision, functionality, and refined modernity.",
+        "atmosphere": "Focused, refined, tradition, innovation.",
+        "categories": [
+          "Accessories",
+          "Lethergoods",
+          "Handbags",
+          "Made in Italy"
+        ],
+        "tone": "A traditionnal brand built on consistency, signature product focus, and fashion-driven characte.",
+        "detailHeroImage": "",
+        "gallery": [],
+        "detailGallery": []
+      }
+    },
+    {
       "name": "Drykorn",
       "slug": "drykorn",
       "card": {
@@ -1323,31 +1348,6 @@
             "source": "https://www.instagram.com/p/DUJDIVij-4A/"
           }
         ]
-      }
-    },
-    {
-      "name": "Cuoieria Fiorentina",
-      "slug": "Cuoieria Fiorentina",
-      "card": {
-        "eyebrow": "Handbags and Accessories",
-        "heroTitle": "Crafted in Tuscany. Carried with Pride",
-        "summary": "An Italian heritage brand built around exceptional leather craftsmanship and timeless design",
-        "heroImage": ""
-      },
-      "detail": {
-        "intro": "Rooted in Tuscan tradition, Cuoieria Fiorentina has built its identity around premium leather goods, blending authentic Italian craftsmanship with timeless design and enduring sophistication.",
-        "focus": "Innovation is expressed through craftsmanship, where Tuscan leather heritage is continuously reinterpreted into contemporary design defined by precision, functionality, and refined modernity.",
-        "atmosphere": "Focused, refined, tradition, innovation.",
-        "categories": [
-          "Accessories",
-          "Lethergoods",
-          "Handbags",
-          "Made in Italy"
-        ],
-        "tone": "A traditionnal brand built on consistency, signature product focus, and fashion-driven characte.",
-        "detailHeroImage": "",
-        "gallery": [],
-        "detailGallery": []
       }
     }
   ]
