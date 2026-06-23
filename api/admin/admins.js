@@ -38,7 +38,7 @@ module.exports = async function handler(req, res) {
         ok: true,
         action: result.action,
         admin: normalizeResponseAdmin(result.user),
-        message: result.action === 'invited' ? 'Invite sent.' : 'Access updated and login link sent.',
+        message: result.action === 'invited' ? 'Invite sent — they will get an email to set their password.' : 'Access updated — a set-password email was sent.',
       });
     }
 
@@ -71,7 +71,8 @@ function normalizeResponseAdmin(user) {
   }
 
   const email = String(user.email || '').trim().toLowerCase();
-  const role = String(user?.app_metadata?.cmsRole || user?.user_metadata?.cmsRole || '').trim().toLowerCase();
+  // Only app_metadata is authoritative for roles (user_metadata is self-writable).
+  const role = String(user?.app_metadata?.cmsRole || '').trim().toLowerCase();
   const active = role !== 'disabled' && user?.app_metadata?.cmsAccess !== false;
 
   return {

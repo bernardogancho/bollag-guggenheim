@@ -151,8 +151,13 @@ async function listCmsDeploys({ limit = 6, searchLimit = 25 } = {}) {
   const deploys = [];
   const cmsPrefix = 'src/_data/cms/';
 
-  for (const summary of summaries) {
-    const detail = await getCommitDetails(summary.sha);
+  // Fetch the per-commit detail (which includes the file list) in parallel.
+  // Previously this awaited one commit at a time, so the change log loaded with
+  // N sequential GitHub round-trips.
+  const details = await Promise.all(summaries.map(summary => getCommitDetails(summary.sha)));
+
+  for (const detail of details) {
+    const summary = detail;
     const cmsFiles = (detail.files || []).filter(file => normalizeRepoPath(file.filename).startsWith(cmsPrefix));
 
     if (!cmsFiles.length) {

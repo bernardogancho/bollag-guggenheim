@@ -2,7 +2,12 @@ const { createClient } = require('@supabase/supabase-js');
 const SUPABASE_URL = 'https://zttbkscbtvgeteawycsi.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_wJ-U3kVqV3ej7RJywW8iAA_hUbFQ3Z-';
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-const OWNER_EMAILS = new Set(['bernardogancho99@gmail.com']);
+const OWNER_EMAILS = new Set(
+  (process.env.CMS_OWNER_EMAILS || 'bernardogancho99@gmail.com')
+    .split(',')
+    .map(email => email.trim().toLowerCase())
+    .filter(Boolean),
+);
 const CMS_ROLES = new Set(['owner', 'editor']);
 
 let adminClient;
@@ -17,7 +22,10 @@ function isOwnerEmail(email) {
 }
 
 function getCmsRole(user) {
-  return String(user?.app_metadata?.cmsRole || user?.user_metadata?.cmsRole || '').trim().toLowerCase();
+  // Only trust app_metadata. user_metadata is writable by the user themselves
+  // (via supabase.auth.updateUser), so honoring it here would let any signed-in
+  // user grant themselves an editor role.
+  return String(user?.app_metadata?.cmsRole || '').trim().toLowerCase();
 }
 
 function isCmsAccessActive(user) {
@@ -155,8 +163,21 @@ async function sendCmsLoginLink(email, redirectTo) {
   return supabase.auth.signInWithOtp({
     email: normalizeEmail(email),
     options: {
+      // Never auto-create accounts from a login attempt. Access is provisioned
+      // explicitly via upsertCmsAdmin (invite), so a magic-link request for an
+      // unknown address must not mint a new user.
+      shouldCreateUser: false,
       emailRedirectTo: redirectTo || `${process.env.PUBLIC_SITE_URL || 'https://bg-murex-three.vercel.app'}/admin/`,
     },
+  });
+}
+
+async function sendCmsPasswordSetup(email, redirectTo) {
+  // Sends a recovery email that lets a new or existing editor set their password.
+  // The link returns to /admin/ and triggers the "Set your password" screen.
+  const supabase = getAuthClient();
+  return supabase.auth.resetPasswordForEmail(normalizeEmail(email), {
+    redirectTo: redirectTo || `${process.env.PUBLIC_SITE_URL || 'https://bg-murex-three.vercel.app'}/admin/`,
   });
 }
 
@@ -272,7 +293,7 @@ async function upsertCmsAdmin({ email, name = '', redirectTo, role = 'editor' })
       };
     }
 
-    await sendCmsLoginLink(normalizedEmail, redirectTo);
+    await sendCmsPasswordSetup(normalizedEmail, redirectTo);
 
     return {
       action: 'updated',
@@ -280,48 +301,31 @@ async function upsertCmsAdmin({ email, name = '', redirectTo, role = 'editor' })
     };
   }
 
-  const { data, error } = await adminClient.auth.admin.inviteUserByEmail(normalizedEmail, {
-    data: name ? { name } : undefined,
-    redirectTo,
+  // New editor: create a confirmed account with access granted, then email them
+  // a link to set their own password. createUser sends no email itself, so the
+  // password-setup email is the single, clear onboarding message they receive.
+  const { data, error } = await adminClient.auth.admin.createUser({
+    email: normalizedEmail,
+    email_confirm: true,
+    app_metadata: {
+      cmsRole: nextRole,
+      cmsAccess: true,
+      cmsGrantedAt: now,
+      cmsRevokedAt: null,
+    },
+    ...(name ? { user_metadata: { name } } : {}),
   });
 
   if (error) {
     throw error;
   }
 
-  const invitedUser = data?.user || null;
-  if (invitedUser?.id) {
-    const { data: updatedData, error: updateError } = await adminClient.auth.admin.updateUserById(invitedUser.id, {
-      app_metadata: {
-        ...(invitedUser.app_metadata || {}),
-        cmsRole: nextRole,
-        cmsAccess: true,
-        cmsGrantedAt: now,
-        cmsRevokedAt: null,
-      },
-      ...(name
-        ? {
-            user_metadata: {
-              ...(invitedUser.user_metadata || {}),
-              name,
-            },
-          }
-        : {}),
-    });
-
-    if (updateError) {
-      throw updateError;
-    }
-
-    return {
-      action: 'invited',
-      user: updatedData?.user || invitedUser,
-    };
-  }
+  const createdUser = data?.user || null;
+  await sendCmsPasswordSetup(normalizedEmail, redirectTo);
 
   return {
     action: 'invited',
-    user: invitedUser,
+    user: createdUser,
   };
 }
 
@@ -406,6 +410,7 @@ module.exports = {
   listCmsAdminRecords,
   isCmsEmailApproved,
   sendCmsLoginLink,
+  sendCmsPasswordSetup,
   upsertCmsAdmin,
   revokeCmsAdmin,
   SUPABASE_URL,
