@@ -27,7 +27,6 @@ import './admin.css';
 const SUPABASE_URL = 'https://zttbkscbtvgeteawycsi.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_wJ-U3kVqV3ej7RJywW8iAA_hUbFQ3Z-';
 const LOGIN_REDIRECT = `${window.location.origin}/admin/`;
-const OWNER_EMAIL = 'bernardogancho99@gmail.com';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
@@ -51,10 +50,6 @@ function normalizePath(path) {
 
 function normalizeEmail(email) {
   return String(email || '').trim().toLowerCase();
-}
-
-function isOwnerEmail(email) {
-  return normalizeEmail(email) === OWNER_EMAIL;
 }
 
 function draftStorageKey(path) {
@@ -310,7 +305,7 @@ function EmptyState({ title, description }) {
   );
 }
 
-function PublishConfirmationDialog({ open, onDiscard, onConfirm, publishPending, dirtyFiles, dirtyCollections }) {
+function PublishConfirmationDialog({ open, onClose, onDiscardAll, onConfirm, publishPending, dirtyFiles, dirtyCollections }) {
   const confirmRef = useRef(null);
 
   useEffect(() => {
@@ -325,7 +320,7 @@ function PublishConfirmationDialog({ open, onDiscard, onConfirm, publishPending,
 
     const handleKeyDown = event => {
       if (event.key === 'Escape') {
-        onDiscard();
+        onClose();
       }
     };
 
@@ -335,14 +330,14 @@ function PublishConfirmationDialog({ open, onDiscard, onConfirm, publishPending,
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [open, onDiscard]);
+  }, [open, onClose]);
 
   if (!open) {
     return null;
   }
 
   return (
-    <div className="publish-modal" role="presentation" onClick={onDiscard}>
+    <div className="publish-modal" role="presentation" onClick={onClose}>
       <div
         className="publish-modal-card"
         role="dialog"
@@ -383,11 +378,14 @@ function PublishConfirmationDialog({ open, onDiscard, onConfirm, publishPending,
           ))}
         </div>
 
-        <div className="publish-modal-note">Canceling here discards unpublished edits and restores the last saved version.</div>
+        <div className="publish-modal-note">Cancel keeps your edits. Discard all changes restores the last published version and cannot be undone.</div>
 
         <div className="publish-modal-actions">
-          <Button type="button" variant="ghost" onClick={onDiscard}>
-            Discard changes
+          <Button type="button" variant="ghost" onClick={onClose} disabled={publishPending}>
+            Cancel
+          </Button>
+          <Button type="button" variant="danger" onClick={onDiscardAll} disabled={publishPending} iconLeft={<Trash2 size={16} />}>
+            Discard all changes
           </Button>
           <Button
             ref={confirmRef}
@@ -421,13 +419,13 @@ function BootScreen({ label = 'Loading admin' }) {
   );
 }
 
-function LoginScreen({ email, onEmailChange, onSubmit, pending, note, tone }) {
+function LoginScreen({ email, onEmailChange, password, onPasswordChange, onSubmit, onResetRequest, pending, resetPending, note, tone }) {
   return (
     <div className="auth-shell">
       <Card className="auth-card">
         <div className="auth-kicker">Admin access</div>
         <h1 className="auth-title">Bollag CMS</h1>
-        <p className="auth-copy">Sign in with an approved email to edit sections, reorder items, and publish changes.</p>
+        <p className="auth-copy">Sign in with your email and password to edit sections and publish changes.</p>
 
         <form className="auth-form" onSubmit={onSubmit}>
           <label className="field">
@@ -437,17 +435,82 @@ function LoginScreen({ email, onEmailChange, onSubmit, pending, note, tone }) {
               autoComplete="email"
               value={email}
               onChange={event => onEmailChange(event.target.value)}
-              placeholder="bernardogancho99@gmail.com"
+              placeholder="you@company.com"
               required
             />
           </label>
 
-          <Button type="submit" variant="primary" disabled={pending} iconLeft={pending ? <LoaderCircle className="spinner" size={16} /> : <Shield size={16} />}>
-            {pending ? 'Sending link' : 'Send magic link'}
+          <label className="field">
+            <span className="field-label">Password</span>
+            <Input
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={event => onPasswordChange(event.target.value)}
+              placeholder="Your password"
+              required
+            />
+          </label>
+
+          <Button type="submit" variant="primary" disabled={pending || resetPending} iconLeft={pending ? <LoaderCircle className="spinner" size={16} /> : <Shield size={16} />}>
+            {pending ? 'Signing in' : 'Sign in'}
           </Button>
         </form>
 
-        <div className={cn('status-line', note && `status-${tone || 'neutral'}`)}>{note || 'The editor publishes after Supabase login.'}</div>
+        <div className={cn('status-line', note && `status-${tone || 'neutral'}`)}>
+          {note || 'Only approved accounts can sign in.'}
+        </div>
+
+        <div className="auth-fallback">
+          <button type="button" className="auth-fallback-toggle" onClick={onResetRequest} disabled={resetPending}>
+            {resetPending ? 'Sending password email...' : 'First time here, or forgot your password? Set it via email'}
+          </button>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+function ResetPasswordScreen({ onSubmit, pending, note, tone }) {
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    if (password !== confirm) {
+      return;
+    }
+    onSubmit(password);
+  };
+
+  const mismatch = confirm.length > 0 && password !== confirm;
+
+  return (
+    <div className="auth-shell">
+      <Card className="auth-card">
+        <div className="auth-kicker">Set your password</div>
+        <h1 className="auth-title">Choose a password</h1>
+        <p className="auth-copy">Pick a password of at least 8 characters. You will use it with your email to sign in.</p>
+
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <label className="field">
+            <span className="field-label">New password</span>
+            <Input type="password" autoComplete="new-password" value={password} onChange={event => setPassword(event.target.value)} placeholder="At least 8 characters" required />
+          </label>
+
+          <label className="field">
+            <span className="field-label">Confirm password</span>
+            <Input type="password" autoComplete="new-password" value={confirm} onChange={event => setConfirm(event.target.value)} placeholder="Re-enter the password" required />
+          </label>
+
+          <Button type="submit" variant="primary" disabled={pending || mismatch || password.length < 8} iconLeft={pending ? <LoaderCircle className="spinner" size={16} /> : <Shield size={16} />}>
+            {pending ? 'Saving' : 'Save password'}
+          </Button>
+        </form>
+
+        <div className={cn('status-line', (mismatch || note) && `status-${mismatch ? 'error' : tone || 'neutral'}`)}>
+          {mismatch ? 'The two passwords do not match.' : note || 'After saving, sign in with your email and new password.'}
+        </div>
       </Card>
     </div>
   );
@@ -492,7 +555,10 @@ function AppShell({
   const currentDraft = currentPath ? drafts.get(currentPath) : null;
   const dirtyCount = dirtyPaths.size;
   const latestDeploy = deploys[0] || null;
-  const isOwner = isOwnerEmail(user?.email);
+  const isOwner = useMemo(() => {
+    const me = normalizeEmail(user?.email);
+    return Boolean(me) && admins.some(admin => admin.email === me && admin.role === 'owner');
+  }, [admins, user]);
   const filesByPath = useMemo(() => new Map(files.map(file => [file.path, file])), [files]);
   const dirtyFiles = useMemo(() => files.filter(file => dirtyPaths.has(file.path)), [files, dirtyPaths]);
   const dirtyCollections = useMemo(() => {
@@ -750,7 +816,15 @@ function AppShell({
 
         <PublishConfirmationDialog
           open={publishConfirmOpen}
-          onDiscard={async () => {
+          onClose={() => setPublishConfirmOpen(false)}
+          onDiscardAll={async () => {
+            const count = dirtyFiles.length;
+            const confirmed = window.confirm(
+              `Discard unpublished changes to ${count} section${count === 1 ? '' : 's'}? This restores the last published version and cannot be undone.`,
+            );
+            if (!confirmed) {
+              return;
+            }
             setPublishConfirmOpen(false);
             await onDiscardAllChanges();
           }}
@@ -807,7 +881,7 @@ function AccessPanel({
         <div className="access-panel-head">
           <div>
             <div className="panel-label">Editor invites</div>
-            <div className="panel-meta">Add people here to give them CMS access. They receive a Supabase login link.</div>
+            <div className="panel-meta">Add people here to give them CMS access. They receive an email to set their password and sign in.</div>
           </div>
 
           <div className="access-panel-actions">
@@ -1061,6 +1135,22 @@ function ObjectField({ field, value, onChange, uploadAsset, depth }) {
 function ListField({ field, value, onChange, uploadAsset, depth }) {
   const current = Array.isArray(value) ? value : [];
   const [dropIndex, setDropIndex] = useState(null);
+  const [openIndices, setOpenIndices] = useState(() => new Set());
+
+  const setItemOpen = (index, open) => {
+    setOpenIndices(prev => {
+      const next = new Set(prev);
+      if (open) {
+        next.add(index);
+      } else {
+        next.delete(index);
+      }
+      return next;
+    });
+  };
+
+  const expandAll = () => setOpenIndices(new Set(current.map((_, index) => index)));
+  const collapseAll = () => setOpenIndices(new Set());
 
   const addItem = () => {
     const next = current.slice();
@@ -1111,9 +1201,21 @@ function ListField({ field, value, onChange, uploadAsset, depth }) {
             <div className="panel-label">{field.label || field.name}</div>
             <div className="panel-meta">Drag the handle to reorder. Use the chevron to expand an item.</div>
           </div>
-          <Button type="button" variant="secondary" iconLeft={<Plus size={16} />} onClick={addItem}>
-            Add item
-          </Button>
+          <div className="list-panel-actions">
+            {current.length > 1 ? (
+              <>
+                <Button type="button" variant="ghost" onClick={expandAll}>
+                  Expand all
+                </Button>
+                <Button type="button" variant="ghost" onClick={collapseAll}>
+                  Collapse all
+                </Button>
+              </>
+            ) : null}
+            <Button type="button" variant="secondary" iconLeft={<Plus size={16} />} onClick={addItem}>
+              Add item
+            </Button>
+          </div>
         </div>
 
         <div className="list-items">
@@ -1132,6 +1234,8 @@ function ListField({ field, value, onChange, uploadAsset, depth }) {
                 onRemove={removeItem}
                 onUpdate={nextItem => updateItem(index, nextItem)}
                 uploadAsset={uploadAsset}
+                open={openIndices.has(index)}
+                onOpenChange={next => setItemOpen(index, next)}
               />
             ))
           ) : (
@@ -1155,8 +1259,9 @@ function ListItemEditor({
   onRemove,
   onUpdate,
   uploadAsset,
+  open,
+  onOpenChange,
 }) {
-  const [open, setOpen] = useState(false);
   const isObjectItem = Boolean(field.fields);
   const summary = summarizeListItem(field, item, index);
 
@@ -1215,7 +1320,7 @@ function ListItemEditor({
           <GripVertical size={16} />
         </button>
 
-        <button type="button" className="list-item-toggle" onClick={() => setOpen(next => !next)} aria-expanded={open}>
+        <button type="button" className="list-item-toggle" onClick={() => onOpenChange(!open)} aria-expanded={open}>
           <span className={cn('list-item-toggle-icon', open && 'is-open')}>
             <ChevronRight size={14} />
           </span>
@@ -1235,11 +1340,11 @@ function ListItemEditor({
           </DropdownMenu.Trigger>
 
           <DropdownMenu.Content className="menu-content" sideOffset={6} align="end">
-            <DropdownMenu.Item className="menu-item" onSelect={() => setOpen(true)}>
+            <DropdownMenu.Item className="menu-item" onSelect={() => onOpenChange(true)}>
               <ChevronDown size={14} />
               Open
             </DropdownMenu.Item>
-            <DropdownMenu.Item className="menu-item" onSelect={() => setOpen(false)}>
+            <DropdownMenu.Item className="menu-item" onSelect={() => onOpenChange(false)}>
               <ChevronRight size={14} />
               Close
             </DropdownMenu.Item>
@@ -1263,7 +1368,7 @@ function ListItemEditor({
         </DropdownMenu.Root>
       </div>
 
-      <Collapsible.Root open={open} onOpenChange={setOpen}>
+      <Collapsible.Root open={open} onOpenChange={onOpenChange}>
         <Collapsible.Content className="list-item-content">
           <div className="list-item-body">
             {isObjectItem && field.fields ? (
@@ -1291,10 +1396,14 @@ function ListItemEditor({
 
 function AssetField({ field, value, onChange, uploadAsset, kind }) {
   const [uploading, setUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+  const [showPath, setShowPath] = useState(false);
+  const inputRef = useRef(null);
   const current = String(value || '');
+  const isImage = kind === 'image';
+  const hasPreview = current && isImage && isImagePath(current);
 
-  const handlePickFile = async event => {
-    const file = event.target.files?.[0];
+  const uploadFile = async file => {
     if (!file) {
       return;
     }
@@ -1307,43 +1416,81 @@ function AssetField({ field, value, onChange, uploadAsset, kind }) {
       window.alert(error.message || 'Could not upload file.');
     } finally {
       setUploading(false);
-      event.target.value = '';
     }
   };
 
-  const clearAsset = () => onChange('');
+  const handlePickFile = async event => {
+    await uploadFile(event.target.files?.[0]);
+    event.target.value = '';
+  };
+
+  const handleDrop = async event => {
+    event.preventDefault();
+    setDragOver(false);
+    await uploadFile(event.dataTransfer.files?.[0]);
+  };
 
   return (
     <div className="field-stack">
       <label className="field-label">{field.label || field.name}</label>
       {field.description ? <div className="field-help">{field.description}</div> : null}
 
-      <div className="asset-row">
+      <input ref={inputRef} type="file" className="hidden-input" accept={isImage ? 'image/*' : '*'} onChange={handlePickFile} />
+
+      {current ? (
+        <div className="asset-card">
+          {hasPreview ? (
+            <img className="asset-card-image" src={current} alt={field.label || field.name} />
+          ) : (
+            <a className="asset-card-file" href={current} target="_blank" rel="noreferrer">
+              {current}
+            </a>
+          )}
+          <div className="asset-card-actions">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => inputRef.current?.click()}
+              disabled={uploading}
+              iconLeft={uploading ? <LoaderCircle className="spinner" size={16} /> : <Upload size={16} />}
+            >
+              {uploading ? 'Uploading' : 'Replace'}
+            </Button>
+            <Button type="button" variant="ghost" onClick={() => onChange('')} disabled={uploading} iconLeft={<Trash2 size={16} />}>
+              Remove
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <button
+          type="button"
+          className={cn('asset-dropzone', dragOver && 'is-dragover')}
+          onClick={() => inputRef.current?.click()}
+          onDragOver={event => {
+            event.preventDefault();
+            setDragOver(true);
+          }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={handleDrop}
+          disabled={uploading}
+        >
+          {uploading ? <LoaderCircle className="spinner" size={22} /> : <Upload size={22} />}
+          <span className="asset-dropzone-title">
+            {uploading ? 'Uploading…' : isImage ? 'Drop an image here, or click to choose one' : 'Drop a file here, or click to choose one'}
+          </span>
+          {!uploading ? <span className="asset-dropzone-hint">{isImage ? 'JPG, PNG, WEBP, SVG or GIF' : 'Any file type'}</span> : null}
+        </button>
+      )}
+
+      <button type="button" className="asset-path-toggle" onClick={() => setShowPath(value => !value)}>
+        {showPath ? 'Hide file path' : 'Edit file path manually'}
+      </button>
+      {showPath ? (
         <Input
           value={current}
           onChange={event => onChange(event.target.value)}
-          placeholder={kind === 'image' ? '/assets/media/example.jpg' : '/assets/media/example.mp4'}
+          placeholder={isImage ? '/assets/media/example.jpg' : '/assets/media/example.mp4'}
         />
-
-        <div className="asset-actions">
-          <label className="button button-secondary asset-upload">
-            <Upload size={16} />
-            <span>{uploading ? 'Uploading' : 'Upload'}</span>
-            <input type="file" className="hidden-input" accept={kind === 'image' ? 'image/*' : '*'} onChange={handlePickFile} />
-          </label>
-          <Button type="button" variant="ghost" onClick={clearAsset} disabled={!current}>
-            Clear
-          </Button>
-        </div>
-      </div>
-
-      {current ? (
-        <div className="asset-preview">
-          {kind === 'image' && isImagePath(current) ? <img src={current} alt={field.label || field.name} /> : null}
-          <a href={current} target="_blank" rel="noreferrer">
-            {current}
-          </a>
-        </div>
       ) : null}
     </div>
   );
@@ -1411,7 +1558,7 @@ function useCmsBootstrap() {
   const [authNote, setAuthNote] = useState({ text: '', tone: '' });
   const [workspaceNote, setWorkspaceNote] = useState('Loading content...');
   const [workspaceTone, setWorkspaceTone] = useState('');
-  const [email, setEmail] = useState(OWNER_EMAIL);
+  const [email, setEmail] = useState('');
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(null);
   const [collections, setCollections] = useState([]);
@@ -1421,7 +1568,10 @@ function useCmsBootstrap() {
   const [currentPath, setCurrentPath] = useState(null);
   const [search, setSearch] = useState('');
   const [publishPending, setPublishPending] = useState(false);
+  const [password, setPassword] = useState('');
   const [loginPending, setLoginPending] = useState(false);
+  const [resetPending, setResetPending] = useState(false);
+  const isRecovering = useRef(false);
   const [loadingContent, setLoadingContent] = useState(false);
   const [deploys, setDeploys] = useState([]);
   const [deploysLoading, setDeploysLoading] = useState(false);
@@ -1663,7 +1813,21 @@ function useCmsBootstrap() {
     bootstrap();
 
     const { data } = supabase.auth.onAuthStateChange(async (event, nextSession) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        // The user arrived from a "set / reset password" email. Hold them on the
+        // password screen instead of dropping them into the editor.
+        isRecovering.current = true;
+        setSession(nextSession || null);
+        setUser(nextSession?.user || null);
+        setMode('reset');
+        setAuthNote({ text: 'Choose a password to finish setting up your account.', tone: '' });
+        return;
+      }
+
       if (event === 'SIGNED_IN' && nextSession) {
+        if (isRecovering.current) {
+          return;
+        }
         const authorized = await ensureAuthorized(nextSession);
         if (authorized) {
           await loadWorkspace(nextSession);
@@ -1689,43 +1853,85 @@ function useCmsBootstrap() {
     event.preventDefault();
     const nextEmail = normalizeEmail(email);
 
-    if (!nextEmail) {
-      setAuthNote({ text: 'Enter an email address first.', tone: 'error' });
+    if (!nextEmail || !password) {
+      setAuthNote({ text: 'Enter your email and password.', tone: 'error' });
       return;
     }
 
     setLoginPending(true);
-    setAuthNote({ text: 'Sending your login link...', tone: '' });
+    setAuthNote({ text: 'Signing in...', tone: '' });
 
     try {
-      const response = await fetch('/api/admin/request-link', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: nextEmail,
-          redirectTo: LOGIN_REDIRECT,
-        }),
+      const { error } = await supabase.auth.signInWithPassword({
+        email: nextEmail,
+        password,
       });
 
-      const raw = await response.text();
-      let payload = {};
-      try {
-        payload = raw ? JSON.parse(raw) : {};
-      } catch {
-        payload = { error: raw };
+      if (error) {
+        throw error;
       }
-
-      if (!response.ok) {
-        throw new Error(payload.error || `Could not send the login link (${response.status}).`);
-      }
-
-      setAuthNote({ text: payload.message || 'Check your email for the login link.', tone: 'success' });
+      // On success, onAuthStateChange (SIGNED_IN) authorizes and loads the workspace.
+      setPassword('');
     } catch (error) {
-      setAuthNote({ text: error.message || 'Could not send the login link.', tone: 'error' });
+      setAuthNote({ text: error.message || 'Could not sign in. Check your email and password.', tone: 'error' });
     } finally {
       setLoginPending(false);
+    }
+  };
+
+  const onRequestPasswordReset = async () => {
+    const nextEmail = normalizeEmail(email);
+    if (!nextEmail) {
+      setAuthNote({ text: 'Enter your email address first, then choose "Set or reset password".', tone: 'error' });
+      return;
+    }
+
+    setResetPending(true);
+    setAuthNote({ text: 'Sending password email...', tone: '' });
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(nextEmail, {
+        redirectTo: LOGIN_REDIRECT,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      setAuthNote({
+        text: 'Check your email for a link to set your password. If you do not have access, the email will not arrive.',
+        tone: 'success',
+      });
+    } catch (error) {
+      setAuthNote({ text: error.message || 'Could not send the password email.', tone: 'error' });
+    } finally {
+      setResetPending(false);
+    }
+  };
+
+  const onUpdatePassword = async newPassword => {
+    if (!newPassword || newPassword.length < 8) {
+      setAuthNote({ text: 'Choose a password with at least 8 characters.', tone: 'error' });
+      return;
+    }
+
+    setResetPending(true);
+    setAuthNote({ text: 'Saving your password...', tone: '' });
+
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) {
+        throw error;
+      }
+
+      isRecovering.current = false;
+      await supabase.auth.signOut();
+      setMode('login');
+      setAuthNote({ text: 'Password saved. Please sign in with your new password.', tone: 'success' });
+    } catch (error) {
+      setAuthNote({ text: error.message || 'Could not save your password.', tone: 'error' });
+    } finally {
+      setResetPending(false);
     }
   };
 
@@ -2117,7 +2323,12 @@ function useCmsBootstrap() {
     email,
     setEmail,
     loginPending,
+    resetPending,
+    password,
+    setPassword,
     onSubmitLogin,
+    onRequestPasswordReset,
+    onUpdatePassword,
     user,
     collections,
     currentPath,
@@ -2154,13 +2365,28 @@ function AdminApp() {
     return <BootScreen label={cms.loadingContent ? 'Loading sections' : 'Loading admin'} />;
   }
 
+  if (cms.mode === 'reset') {
+    return (
+      <ResetPasswordScreen
+        onSubmit={cms.onUpdatePassword}
+        pending={cms.resetPending}
+        note={cms.authNote.text}
+        tone={cms.authNote.tone}
+      />
+    );
+  }
+
   if (cms.mode === 'login') {
     return (
       <LoginScreen
         email={cms.email}
         onEmailChange={cms.setEmail}
+        password={cms.password}
+        onPasswordChange={cms.setPassword}
         onSubmit={cms.onSubmitLogin}
+        onResetRequest={cms.onRequestPasswordReset}
         pending={cms.loginPending}
+        resetPending={cms.resetPending}
         note={cms.authNote.text}
         tone={cms.authNote.tone}
       />

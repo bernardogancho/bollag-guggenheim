@@ -1,17 +1,8 @@
-backend:
-  name: github
-  repo: bernardogancho/bollag-guggenheim
-  branch: main
-
-local_backend:
-  url: http://localhost:8082/api/v1
-
-media_folder: src/assets/media
-public_folder: /assets/media
-
-site_url: https://bg-murex-three.vercel.app
-display_url: https://bg-murex-three.vercel.app
-
+# Field manifest for the custom Bollag CMS admin (src/admin/app.jsx).
+# This was originally a Decap/Netlify CMS config; the admin app only reads
+# `collections` (labels, files, and field definitions). The former Decap
+# backend keys (backend, local_backend, media_folder, site_url, ...) were
+# unused by the custom app and have been removed.
 collections:
   - name: site_settings
     label: Site Settings
@@ -91,6 +82,18 @@ collections:
                   - { label: Route Link, name: routeHref, widget: string }
               - label: Footer Navigation
                 name: navigation
+                widget: object
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - label: Links
+                    name: links
+                    widget: list
+                    summary: "{{fields.label}} -> {{fields.href}}"
+                    fields:
+                      - { label: Label, name: label, widget: string }
+                      - { label: Link, name: href, widget: string }
+              - label: Legal Notice
+                name: legal
                 widget: object
                 fields:
                   - { label: Title, name: title, widget: string }
@@ -568,6 +571,7 @@ collections:
             fields:
               - { label: Name, name: name, widget: string }
               - { label: Slug, name: slug, widget: string }
+              - { label: Logo Image, name: logoImage, widget: image, required: false }
               - label: Brand Card Div
                 name: card
                 widget: object
