@@ -128,12 +128,12 @@ collections:
             fields:
               - { label: Title, name: title, widget: string }
               - { label: Subline, name: subline, widget: string }
-              - { label: Poster Image, name: poster, widget: image }
+              - { label: Poster Image, name: poster, widget: image, description: "Still image shown while the video loads (and if it cannot play)." }
               - { label: Video File, name: video, widget: file }
-              - { label: Video Alt Text, name: videoAlt, widget: string }
-              - { label: Mobile Object Position, name: mobileObjectPosition, widget: string }
-              - { label: Small Screen Object Position, name: smallObjectPosition, widget: string }
-              - { label: Desktop Object Position, name: desktopObjectPosition, widget: string }
+              - { label: Video Alt Text, name: videoAlt, widget: string, description: "Short description of the video for screen readers and SEO, e.g. 'Atelier craftspeople at work'." }
+              - { label: Mobile Object Position, name: mobileObjectPosition, widget: string, description: "Which part of the video stays visible on phones. Use words like 'center', 'top', or 'center top'. Leave as 'center' if unsure." }
+              - { label: Small Screen Object Position, name: smallObjectPosition, widget: string, description: "Same as above, for small tablets. Leave as 'center' if unsure." }
+              - { label: Desktop Object Position, name: desktopObjectPosition, widget: string, description: "Same as above, for large screens. Leave as 'center' if unsure." }
       - label: Intro Div
         name: home_intro
         file: src/_data/cms/home/intro.json
@@ -554,7 +554,7 @@ collections:
             fields:
               - { label: Overview Eyebrow, name: overviewEyebrow, widget: string }
               - { label: Visual Journal Eyebrow, name: visualJournalEyebrow, widget: string }
-              - { label: Visual Journal Title Template, name: visualJournalTitleTemplate, widget: string }
+              - { label: Visual Journal Title Template, name: visualJournalTitleTemplate, widget: string, description: "Heading for each brand's image gallery. Write {{name}} where the brand name should appear, e.g. '{{name}} — Visual Journal'." }
               - { label: CTA Eyebrow, name: ctaEyebrow, widget: string }
               - { label: CTA Title, name: ctaTitle, widget: string }
               - { label: CTA Button Label, name: ctaButtonLabel, widget: string }
@@ -570,7 +570,7 @@ collections:
             summary: "{{fields.name}}"
             fields:
               - { label: Name, name: name, widget: string }
-              - { label: Slug, name: slug, widget: string }
+              - { label: Slug, name: slug, widget: string, description: "The brand's web-address piece: lowercase, words joined by hyphens (e.g. 'cuoieria-fiorentina'). Changing it changes the page's URL." }
               - { label: Logo Image, name: logoImage, widget: image, required: false }
               - label: Brand Card Div
                 name: card
@@ -661,7 +661,7 @@ collections:
                 summary: "{{fields.name}}"
                 fields:
                   - { label: Name, name: name, widget: string }
-                  - { label: Slug, name: slug, widget: string }
+                  - { label: Slug, name: slug, widget: string, description: "The brand's web-address piece: lowercase, words joined by hyphens (e.g. 'cuoieria-fiorentina'). Changing it changes the page's URL." }
                   - { label: Segment, name: segment, widget: string }
                   - { label: Page Link, name: pageHref, widget: string }
                   - { label: Logo Image, name: logoSrc, widget: image, required: false }
@@ -743,7 +743,7 @@ collections:
             summary: "{{fields.name}}"
             fields:
               - { label: Name, name: name, widget: string }
-              - { label: Slug, name: slug, widget: string }
+              - { label: Slug, name: slug, widget: string, description: "The brand's web-address piece: lowercase, words joined by hyphens (e.g. 'cuoieria-fiorentina'). Changing it changes the page's URL." }
               - label: Roster Card Div
                 name: rosterCard
                 widget: object
