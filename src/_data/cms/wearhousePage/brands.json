@@ -336,7 +336,7 @@
       "name": "VIA MASINI",
       "slug": "via-masini",
       "rosterCard": {
-        "segment": "donna",
+        "segment": "Women",
         "websiteHref": "https://viamasini80.it/",
         "hoverImage": "/assets/media/wearhouse/brands/viamasini-matrix.jpg",
         "logoLines": [
@@ -353,6 +353,25 @@
           "Womenswear"
         ]
       }
+    },
+    {
+      "name": "HELMUR",
+      "slug": "",
+      "rosterCard": {
+        "segment": "",
+        "websiteHref": "",
+        "logoSrc": "",
+        "hoverImage": "",
+        "detailImage": "",
+        "logoLines": []
+      },
+      "detail": {
+        "summary": "",
+        "intro": ""
+      },
+      "focus": "",
+      "atmosphere": "",
+      "categories": []
     }
   ]
 }
