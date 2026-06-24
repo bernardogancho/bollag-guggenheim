@@ -353,6 +353,25 @@
           "Womenswear"
         ]
       }
+    },
+    {
+      "name": "SOSUE",
+      "slug": "SoSue",
+      "rosterCard": {
+        "segment": "Women",
+        "websiteHref": "https://so-sue.com/",
+        "logoSrc": "",
+        "hoverImage": "/assets/media/uploads/1782304146543-skirt-audreyas1638-whi-s-top-audreyas1606-whi-s_m005.jpg",
+        "detailImage": "",
+        "logoLines": []
+      },
+      "detail": {
+        "summary": "SoSue is a modern fashion brand that focuses on trendy, feminine, and everyday women’s fashion. ",
+        "intro": "The brand combines elegant basics with eye-catching statement pieces and is aimed primarily at fashion-conscious women looking for a stylish, effortless look. \nSoSue is particularly known for its high-quality fabrics, contemporary cuts, and a blend of casual chic and glamour."
+      },
+      "focus": "",
+      "atmosphere": "",
+      "categories": []
     }
   ]
 }
