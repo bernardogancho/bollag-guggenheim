@@ -5,34 +5,10 @@
     "summary": "A curated premium brand portfolio within the corporate group, featuring women and men's fashion, accessories, and lifestyle products",
     "items": [
       {
-        "name": "MASON`S",
-        "segment": "women & men",
-        "pageHref": "/wearhouse/masons/",
-        "hoverImage": "/assets/media/wearhouse/brands/masons-matrix.jpg"
-      },
-      {
         "name": "CIRCOLO 1901",
         "segment": "women & men",
         "pageHref": "/wearhouse/circolo-1901/",
         "hoverImage": "/assets/media/wearhouse/brands/circolo1901-matrix.jpg"
-      },
-      {
-        "name": "SAVE THE DUCK",
-        "segment": "women & men",
-        "pageHref": "/wearhouse/save-the-duck/",
-        "hoverImage": "/assets/media/wearhouse/brands/savetheduck-matrix.jpg"
-      },
-      {
-        "name": "DANIELE FIESOLI",
-        "segment": "women & men",
-        "pageHref": "/wearhouse/daniele-fiesoli/",
-        "hoverImage": "/assets/media/wearhouse/brands/danielefiesoli-matrix.jpg"
-      },
-      {
-        "name": "TINTORIA MATTEI",
-        "segment": "women & men",
-        "pageHref": "/wearhouse/tintoria-mattei/",
-        "hoverImage": "/assets/media/wearhouse/brands/tintoriamattei-matrix.jpg"
       },
       {
         "name": "CALIBAN",
@@ -41,52 +17,10 @@
         "hoverImage": "/assets/media/wearhouse/brands/caliban-matrix.jpg"
       },
       {
-        "name": "DUNO",
+        "name": "DANIELE FIESOLI",
         "segment": "women & men",
-        "pageHref": "/wearhouse/duno/",
-        "hoverImage": "/assets/media/wearhouse/brands/duno-matrix.jpg"
-      },
-      {
-        "name": "IBELIV",
-        "segment": "women & men",
-        "pageHref": "/wearhouse/ibeliv/",
-        "hoverImage": "/assets/media/wearhouse/brands/ibeliv-matrix.jpg"
-      },
-      {
-        "name": "LE BONNET",
-        "segment": "women & men",
-        "pageHref": "/wearhouse/le-bonnet/",
-        "hoverImage": "/assets/media/wearhouse/brands/lebonnet-matrix.jpg"
-      },
-      {
-        "name": "edelle",
-        "segment": "women & men",
-        "pageHref": "/wearhouse/edelle/",
-        "hoverImage": "/assets/media/wearhouse/brands/edelle-matrix.jpg"
-      },
-      {
-        "name": "VIA MASINI",
-        "segment": "women & men",
-        "pageHref": "/wearhouse/via-masini/",
-        "hoverImage": "/assets/media/wearhouse/brands/viamasini-matrix.jpg"
-      },
-      {
-        "name": "VELVET",
-        "segment": "women & men",
-        "pageHref": "/wearhouse/velvet/",
-        "hoverImage": "/assets/media/wearhouse/brands/velvet-matrix.jpg"
-      },
-      {
-        "name": "TANTÄ",
-        "segment": "women & men",
-        "pageHref": "/wearhouse/tanta/",
-        "hoverImage": "/assets/media/wearhouse/brands/tanta-matrix.webp"
-      },
-      {
-        "name": "SASSENBACH",
-        "segment": "women & men",
-        "pageHref": "/wearhouse/sassenbach/",
-        "hoverImage": "/assets/media/wearhouse/brands/sassenbach-matrix.jpg"
+        "pageHref": "/wearhouse/daniele-fiesoli/",
+        "hoverImage": "/assets/media/wearhouse/brands/danielefiesoli-matrix.jpg"
       },
       {
         "name": "DEA KUDIBAL",
@@ -95,10 +29,70 @@
         "hoverImage": "/assets/media/wearhouse/brands/deakudibal-matrix.webp"
       },
       {
+        "name": "DUNO",
+        "segment": "women & men",
+        "pageHref": "/wearhouse/duno/",
+        "hoverImage": "/assets/media/wearhouse/brands/duno-matrix.jpg"
+      },
+      {
+        "name": "edelle",
+        "segment": "women & men",
+        "pageHref": "/wearhouse/edelle/",
+        "hoverImage": "/assets/media/wearhouse/brands/edelle-matrix.jpg"
+      },
+      {
         "name": "FFC",
         "segment": "women & men",
         "pageHref": "/wearhouse/ffc/",
         "hoverImage": "/assets/media/wearhouse/brands/ffc-matrix.jpg"
+      },
+      {
+        "name": "IBELIV",
+        "segment": "women & men",
+        "pageHref": "/wearhouse/ibeliv/",
+        "hoverImage": "/assets/media/wearhouse/brands/ibeliv-matrix.jpg"
+      },
+      {
+        "name": "MASON`S",
+        "segment": "women & men",
+        "pageHref": "/wearhouse/masons/",
+        "hoverImage": "/assets/media/wearhouse/brands/masons-matrix.jpg"
+      },
+      {
+        "name": "SAVE THE DUCK",
+        "segment": "women & men",
+        "pageHref": "/wearhouse/save-the-duck/",
+        "hoverImage": "/assets/media/wearhouse/brands/savetheduck-matrix.jpg"
+      },
+      {
+        "name": "SASSENBACH",
+        "segment": "women & men",
+        "pageHref": "/wearhouse/sassenbach/",
+        "hoverImage": "/assets/media/wearhouse/brands/sassenbach-matrix.jpg"
+      },
+      {
+        "name": "TANTÄ",
+        "segment": "women & men",
+        "pageHref": "/wearhouse/tanta/",
+        "hoverImage": "/assets/media/wearhouse/brands/tanta-matrix.webp"
+      },
+      {
+        "name": "TINTORIA MATTEI",
+        "segment": "women & men",
+        "pageHref": "/wearhouse/tintoria-mattei/",
+        "hoverImage": "/assets/media/wearhouse/brands/tintoriamattei-matrix.jpg"
+      },
+      {
+        "name": "VELVET",
+        "segment": "women & men",
+        "pageHref": "/wearhouse/velvet/",
+        "hoverImage": "/assets/media/wearhouse/brands/velvet-matrix.jpg"
+      },
+      {
+        "name": "VIA MASINI",
+        "segment": "women & men",
+        "pageHref": "/wearhouse/via-masini/",
+        "hoverImage": "/assets/media/wearhouse/brands/viamasini-matrix.jpg"
       }
     ]
   }
