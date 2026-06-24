@@ -353,25 +353,6 @@
           "Womenswear"
         ]
       }
-    },
-    {
-      "name": "HELMUR",
-      "slug": "",
-      "rosterCard": {
-        "segment": "",
-        "websiteHref": "",
-        "logoSrc": "",
-        "hoverImage": "",
-        "detailImage": "",
-        "logoLines": []
-      },
-      "detail": {
-        "summary": "",
-        "intro": ""
-      },
-      "focus": "",
-      "atmosphere": "",
-      "categories": []
     }
   ]
 }
