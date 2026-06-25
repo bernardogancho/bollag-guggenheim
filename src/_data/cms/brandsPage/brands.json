@@ -1349,6 +1349,27 @@
           }
         ]
       }
+    },
+    {
+      "name": "Daniele Fiesoli",
+      "slug": "",
+      "logoImage": "",
+      "card": {
+        "eyebrow": "",
+        "heroTitle": "",
+        "summary": "The official brand material places inspiration, observation, curiosity, and experimentation at the centre of the label. \nKnitwear is not treated as a basic category, but as a field for material research and emotional design, where artisanal Italian know-how meets a more modern, exploratory sensibility.\n\nFor Bollag-Guggenheim, DANIELE FIESOLI strengthens the premium Womenswear offer through elevated knitwear and a more cultured product language. \nIt is less about trend noise and more about fabric, touch, and long-term wardrobe value.",
+        "heroImage": ""
+      },
+      "detail": {
+        "intro": "",
+        "focus": "",
+        "atmosphere": "",
+        "categories": [],
+        "tone": "",
+        "detailHeroImage": "",
+        "gallery": [],
+        "detailGallery": []
+      }
     }
   ]
 }
