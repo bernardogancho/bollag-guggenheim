@@ -4,7 +4,7 @@
       "name": "Closed",
       "slug": "closed",
       "card": {
-        "eyebrow": "Modern Essentials",
+        "eyebrow": "Women & Men",
         "heroTitle": "Made with Love",
         "summary": "European denim and wardrobe foundations shaped through French vision, Italian making, and German precision.",
         "heroImage": "/assets/media/uploads/1782387619695-closed_picture-brand_portrait.jpg"
@@ -1348,31 +1348,6 @@
             "source": "https://www.instagram.com/p/DUJDIVij-4A/"
           }
         ]
-      }
-    },
-    {
-      "name": "Daniele Fiesoli",
-      "slug": "",
-      "logoImage": "",
-      "card": {
-        "eyebrow": "",
-        "heroTitle": "",
-        "summary": "DANIELE FIESOLI introduces a knitwear-led, Made in Italy point of view to the Bollag-Guggenheim portfolio, centred on texture, research, and understated refinement.\n",
-        "heroImage": "/assets/media/uploads/1782388274840-daniele-fiesoli_women_picture-brand_portrait.jpg"
-      },
-      "detail": {
-        "intro": "The official brand material places inspiration, observation, curiosity, and experimentation at the centre of the label. Knitwear is not treated as a basic category, but as a field for material research and emotional design, where artisanal Italian know-how meets a more modern, exploratory sensibility.",
-        "focus": "",
-        "atmosphere": "",
-        "categories": [
-          "Premium fashion",
-          "Made in Itay",
-          "Knitwear"
-        ],
-        "tone": "",
-        "detailHeroImage": "/assets/media/uploads/1782388230808-daniele-fiesoli_women_banner.jpg",
-        "gallery": [],
-        "detailGallery": []
       }
     }
   ]
