@@ -1349,6 +1349,31 @@
           }
         ]
       }
+    },
+    {
+      "name": "Daniele Fiesoli",
+      "slug": "",
+      "logoImage": "",
+      "card": {
+        "eyebrow": "Women",
+        "heroTitle": "",
+        "summary": "DANIELE FIESOLI introduces a knitwear-led, Made in Italy point of view to the Bollag-Guggenheim portfolio, centred on texture, research, and understated refinement.",
+        "heroImage": "/assets/media/uploads/1782390469622-daniele-fiesoli_women_banner.jpg"
+      },
+      "detail": {
+        "intro": "The official brand material places inspiration, observation, curiosity, and experimentation at the centre of the label. Knitwear is not treated as a basic category, but as a field for material research and emotional design, where artisanal Italian know-how meets a more modern, exploratory sensibility.",
+        "focus": "",
+        "atmosphere": "",
+        "categories": [
+          "Premium Womenswear",
+          "Made in Italy",
+          "Knitwear"
+        ],
+        "tone": "",
+        "detailHeroImage": "/assets/media/uploads/1782390495938-daniele-fiesoli_women_picture-brand_portrait.jpg",
+        "gallery": [],
+        "detailGallery": []
+      }
     }
   ]
 }
