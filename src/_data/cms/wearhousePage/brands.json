@@ -52,14 +52,15 @@
       "name": "DANIELE FIESOLI",
       "slug": "daniele-fiesoli",
       "rosterCard": {
-        "segment": "uomo",
+        "segment": "Men",
         "websiteHref": "https://www.danielefiesoli.com/",
         "logoSrc": "/assets/media/wearhouse/logos/daniele-fiesoli.clean.png",
-        "hoverImage": "/assets/media/wearhouse/brands/danielefiesoli-matrix.jpg",
+        "hoverImage": "/assets/media/uploads/1782390306616-daniele-fiesoli_men_banner.jpg",
         "logoLines": [
           "DANIELE",
           "FIESOLI"
-        ]
+        ],
+        "detailImage": "/assets/media/uploads/1782390285348-daniele-fiesoli_women_picture-brand_portrait.jpg"
       },
       "detail": {
         "summary": "DANIELE FIESOLI introduces a knitwear-led, Made in Italy point of view to the Wearhouse portfolio, centred on texture, research, and understated refinement.",
