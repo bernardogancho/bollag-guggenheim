@@ -1,4 +1,4 @@
-const { requireAdmin } = require('./_lib/supabase');
+const { requireUser } = require('./_lib/supabase');
 const { createCommit } = require('./_lib/github');
 const VERCEL_DEPLOY_HOOK_URL = process.env.VERCEL_DEPLOY_HOOK_URL || '';
 
@@ -15,7 +15,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    await requireAdmin(req);
+    await requireUser(req);
     const body = await readJson(req);
     const files = Array.isArray(body.files) ? body.files : [];
 

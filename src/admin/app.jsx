@@ -20,13 +20,11 @@ import {
   Trash2,
   Upload,
   UserPlus,
-  UserX,
 } from 'lucide-react';
 import './admin.css';
 
 const SUPABASE_URL = 'https://zttbkscbtvgeteawycsi.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_wJ-U3kVqV3ej7RJywW8iAA_hUbFQ3Z-';
-const LOGIN_REDIRECT = `${window.location.origin}/admin/`;
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
@@ -419,13 +417,13 @@ function BootScreen({ label = 'Loading admin' }) {
   );
 }
 
-function LoginScreen({ email, onEmailChange, password, onPasswordChange, onSubmit, onResetRequest, pending, resetPending, note, tone }) {
+function LoginScreen({ email, onEmailChange, password, onPasswordChange, onSubmit, pending, note, tone }) {
   return (
     <div className="auth-shell">
       <Card className="auth-card">
         <div className="auth-kicker">Admin access</div>
         <h1 className="auth-title">Bollag CMS</h1>
-        <p className="auth-copy">Sign in with your email and password to edit sections and publish changes.</p>
+        <p className="auth-copy">Sign in with your email and password to edit the website.</p>
 
         <form className="auth-form" onSubmit={onSubmit}>
           <label className="field">
@@ -452,64 +450,13 @@ function LoginScreen({ email, onEmailChange, password, onPasswordChange, onSubmi
             />
           </label>
 
-          <Button type="submit" variant="primary" disabled={pending || resetPending} iconLeft={pending ? <LoaderCircle className="spinner" size={16} /> : <Shield size={16} />}>
+          <Button type="submit" variant="primary" disabled={pending} iconLeft={pending ? <LoaderCircle className="spinner" size={16} /> : <Shield size={16} />}>
             {pending ? 'Signing in' : 'Sign in'}
           </Button>
         </form>
 
         <div className={cn('status-line', note && `status-${tone || 'neutral'}`)}>
-          {note || 'Only approved accounts can sign in.'}
-        </div>
-
-        <div className="auth-fallback">
-          <button type="button" className="auth-fallback-toggle" onClick={onResetRequest} disabled={resetPending}>
-            {resetPending ? 'Sending password email...' : 'First time here, or forgot your password? Set it via email'}
-          </button>
-        </div>
-      </Card>
-    </div>
-  );
-}
-
-function ResetPasswordScreen({ onSubmit, pending, note, tone }) {
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    if (password !== confirm) {
-      return;
-    }
-    onSubmit(password);
-  };
-
-  const mismatch = confirm.length > 0 && password !== confirm;
-
-  return (
-    <div className="auth-shell">
-      <Card className="auth-card">
-        <div className="auth-kicker">Set your password</div>
-        <h1 className="auth-title">Choose a password</h1>
-        <p className="auth-copy">Pick a password of at least 8 characters. You will use it with your email to sign in.</p>
-
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <label className="field">
-            <span className="field-label">New password</span>
-            <Input type="password" autoComplete="new-password" value={password} onChange={event => setPassword(event.target.value)} placeholder="At least 8 characters" required />
-          </label>
-
-          <label className="field">
-            <span className="field-label">Confirm password</span>
-            <Input type="password" autoComplete="new-password" value={confirm} onChange={event => setConfirm(event.target.value)} placeholder="Re-enter the password" required />
-          </label>
-
-          <Button type="submit" variant="primary" disabled={pending || mismatch || password.length < 8} iconLeft={pending ? <LoaderCircle className="spinner" size={16} /> : <Shield size={16} />}>
-            {pending ? 'Saving' : 'Save password'}
-          </Button>
-        </form>
-
-        <div className={cn('status-line', (mismatch || note) && `status-${mismatch ? 'error' : tone || 'neutral'}`)}>
-          {mismatch ? 'The two passwords do not match.' : note || 'After saving, sign in with your email and new password.'}
+          {note || 'Forgot your password? Ask an admin to reset it for you.'}
         </div>
       </Card>
     </div>
@@ -541,13 +488,14 @@ function AppShell({
   drafts,
   onDraftChange,
   onUploadAsset,
-  admins,
-  adminsLoading,
-  adminsError,
-  onRefreshAdmins,
-  onInviteAdmin,
-  onRevokeAdmin,
-  adminActionPendingEmail,
+  people,
+  peopleLoading,
+  peopleError,
+  onRefreshPeople,
+  onAddPerson,
+  onUpdatePerson,
+  onRemovePerson,
+  personActionPendingId,
 }) {
   const [activeView, setActiveView] = useState('sections');
   const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
@@ -555,10 +503,7 @@ function AppShell({
   const currentDraft = currentPath ? drafts.get(currentPath) : null;
   const dirtyCount = dirtyPaths.size;
   const latestDeploy = deploys[0] || null;
-  const isOwner = useMemo(() => {
-    const me = normalizeEmail(user?.email);
-    return Boolean(me) && admins.some(admin => admin.email === me && admin.role === 'owner');
-  }, [admins, user]);
+  const isAdmin = user?.role === 'admin';
   const filesByPath = useMemo(() => new Map(files.map(file => [file.path, file])), [files]);
   const dirtyFiles = useMemo(() => files.filter(file => dirtyPaths.has(file.path)), [files, dirtyPaths]);
   const dirtyCollections = useMemo(() => {
@@ -614,8 +559,8 @@ function AppShell({
   }, [collections, search]);
 
   const workspaceStatusText =
-    activeView === 'access' && !workspaceTone && /^Loaded \d+ section/.test(workspaceNote)
-      ? 'Invite editors from the panel below. Access is managed in Supabase Auth.'
+    activeView === 'people' && !workspaceTone && /^Loaded \d+ section/.test(workspaceNote)
+      ? 'Add people with an email and password. Admins manage people; editors edit the website.'
       : workspaceNote || 'Drafts autosave locally until you publish.';
 
   return (
@@ -643,14 +588,16 @@ function AppShell({
             <span className="sidebar-nav-label">Sections</span>
             <span className="sidebar-nav-count">{collections.length}</span>
           </button>
-          <button
-            type="button"
-            className={cn('sidebar-nav-item', 'sidebar-nav-admin', activeView === 'access' && 'is-active')}
-            onClick={() => setActiveView('access')}
-          >
-            <span className="sidebar-nav-label">Admin</span>
-            <span className="sidebar-nav-count">{admins.length}</span>
-          </button>
+          {isAdmin ? (
+            <button
+              type="button"
+              className={cn('sidebar-nav-item', 'sidebar-nav-admin', activeView === 'people' && 'is-active')}
+              onClick={() => setActiveView('people')}
+            >
+              <span className="sidebar-nav-label">People</span>
+              <span className="sidebar-nav-count">{people.length}</span>
+            </button>
+          ) : null}
         </div>
 
         <div className="sidebar-note sidebar-note-compact">
@@ -723,9 +670,9 @@ function AppShell({
           </>
         ) : (
           <div className="sidebar-note sidebar-note-compact">
-            <div className="sidebar-note-label">Admin</div>
-            <div className="sidebar-note-value">Manage editor access from the left menu.</div>
-            <div className="sidebar-note-detail">Use this when you need to invite, revoke, or review CMS access.</div>
+            <div className="sidebar-note-label">People</div>
+            <div className="sidebar-note-value">Add or remove people who can edit the website.</div>
+            <div className="sidebar-note-detail">Give each person an email and password. Admins can manage people too.</div>
           </div>
         )}
       </aside>
@@ -733,14 +680,14 @@ function AppShell({
       <main className="workspace">
         <header className="workspace-header">
           <div>
-            <div className="workspace-kicker">{activeView === 'sections' ? 'Now editing' : 'Access control'}</div>
-            <h2 className="workspace-title">{activeView === 'sections' ? currentFile?.fileLabel || 'Choose a section' : 'Admin access'}</h2>
+            <div className="workspace-kicker">{activeView === 'sections' ? 'Now editing' : 'People'}</div>
+            <h2 className="workspace-title">{activeView === 'sections' ? currentFile?.fileLabel || 'Choose a section' : 'Manage people'}</h2>
             <div className="workspace-subtitle">
               {activeView === 'sections'
                 ? currentFile
                   ? `${currentFile.collectionLabel} · ${currentFile.fileLabel}`
                   : 'Select a section from the sidebar.'
-                : 'Invite editors and revoke access without touching GitHub or Vercel.'}
+                : 'Add or remove people and set their passwords.'}
             </div>
           </div>
 
@@ -750,7 +697,7 @@ function AppShell({
                 ? dirtyCount
                   ? `${dirtyCount} unsaved`
                   : 'No changes'
-                : `${admins.length} account${admins.length === 1 ? '' : 's'}`}
+                : `${people.length} ${people.length === 1 ? 'person' : 'people'}`}
             </Badge>
             <Button type="button" variant="ghost" onClick={onSignOut} iconLeft={<LogOut size={16} />}>
               Sign out
@@ -801,16 +748,16 @@ function AppShell({
             )}
           </div>
         ) : (
-          <AccessPanel
-            admins={admins}
-            loading={adminsLoading}
-            error={adminsError}
-            onRefresh={onRefreshAdmins}
-            onInvite={onInviteAdmin}
-            onRevoke={onRevokeAdmin}
-            pendingEmail={adminActionPendingEmail}
-            isOwner={isOwner}
-            currentUserEmail={user?.email}
+          <PeoplePanel
+            people={people}
+            loading={peopleLoading}
+            error={peopleError}
+            onRefresh={onRefreshPeople}
+            onAdd={onAddPerson}
+            onUpdate={onUpdatePerson}
+            onRemove={onRemovePerson}
+            pendingId={personActionPendingId}
+            currentUserId={user?.id}
           />
         )}
 
@@ -841,35 +788,41 @@ function AppShell({
   );
 }
 
-function AccessPanel({
-  admins,
+function PeoplePanel({
+  people,
   loading,
   error,
   onRefresh,
-  onInvite,
-  onRevoke,
-  pendingEmail,
-  isOwner,
-  currentUserEmail,
+  onAdd,
+  onUpdate,
+  onRemove,
+  pendingId,
+  currentUserId,
 }) {
-  const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('editor');
   const [submitting, setSubmitting] = useState(false);
 
-  const activeAdmins = admins.filter(admin => admin.active);
-  const disabledAdmins = admins.filter(admin => !admin.active);
+  const adminCount = people.filter(person => person.role === 'admin').length;
+  const editorCount = people.length - adminCount;
 
   const handleSubmit = async event => {
     event.preventDefault();
-    if (!email.trim()) {
+    if (!email.trim() || password.length < 6) {
       return;
     }
 
     setSubmitting(true);
     try {
-      await onInvite({ email: email.trim(), name: name.trim() });
-      setEmail('');
-      setName('');
+      const ok = await onAdd({ name: name.trim(), email: email.trim(), password, role });
+      if (ok) {
+        setName('');
+        setEmail('');
+        setPassword('');
+        setRole('editor');
+      }
     } finally {
       setSubmitting(false);
     }
@@ -880,8 +833,8 @@ function AccessPanel({
       <Card className="access-panel">
         <div className="access-panel-head">
           <div>
-            <div className="panel-label">Editor invites</div>
-            <div className="panel-meta">Add people here to give them CMS access. They receive an email to set their password and sign in.</div>
+            <div className="panel-label">People</div>
+            <div className="panel-meta">Add someone with an email and a password and they can sign in right away. Admins can manage people; editors can only edit the website.</div>
           </div>
 
           <div className="access-panel-actions">
@@ -893,96 +846,130 @@ function AccessPanel({
 
         <form className="access-form" onSubmit={handleSubmit}>
           <label className="field">
-            <span className="field-label">Email address</span>
-            <Input value={email} onChange={event => setEmail(event.target.value)} placeholder="person@company.com" autoComplete="email" disabled={!isOwner} />
+            <span className="field-label">Name</span>
+            <Input value={name} onChange={event => setName(event.target.value)} placeholder="Full name" />
           </label>
 
           <label className="field">
-            <span className="field-label">Name</span>
-            <Input value={name} onChange={event => setName(event.target.value)} placeholder="Optional display name" disabled={!isOwner} />
+            <span className="field-label">Email</span>
+            <Input type="email" value={email} onChange={event => setEmail(event.target.value)} placeholder="person@company.com" autoComplete="off" />
+          </label>
+
+          <label className="field">
+            <span className="field-label">Password</span>
+            <Input type="text" value={password} onChange={event => setPassword(event.target.value)} placeholder="At least 6 characters" autoComplete="off" />
+          </label>
+
+          <label className="field">
+            <span className="field-label">Role</span>
+            <Select value={role} onChange={event => setRole(event.target.value)}>
+              <option value="editor">Editor — can edit the website</option>
+              <option value="admin">Admin — can also manage people</option>
+            </Select>
           </label>
 
           <Button
             type="submit"
             variant="primary"
-            disabled={!isOwner || submitting || !email.trim()}
-            iconLeft={submitting || pendingEmail ? <LoaderCircle className="spinner" size={16} /> : <UserPlus size={16} />}
+            disabled={submitting || !email.trim() || password.length < 6}
+            iconLeft={submitting ? <LoaderCircle className="spinner" size={16} /> : <UserPlus size={16} />}
           >
-            {submitting || pendingEmail ? 'Saving access' : 'Invite editor'}
+            {submitting ? 'Saving' : 'Add person'}
           </Button>
         </form>
 
-        {!isOwner ? (
-          <div className="access-note">Only the owner can add or remove editor access.</div>
-        ) : null}
-
         <div className="access-roster">
           {loading ? (
-            <div className="access-empty">Loading access list...</div>
+            <div className="access-empty">Loading people…</div>
           ) : error ? (
             <div className="access-empty">
-              <div className="empty-state-title">Access list unavailable</div>
+              <div className="empty-state-title">Could not load people</div>
               <div className="empty-state-description">{error}</div>
             </div>
           ) : (
             <>
               <div className="access-roster-head">
-                <div className="access-roster-title">Current access</div>
-                <div className="access-roster-count">{activeAdmins.length} active, {disabledAdmins.length} disabled</div>
+                <div className="access-roster-title">Current people</div>
+                <div className="access-roster-count">
+                  {adminCount} admin{adminCount === 1 ? '' : 's'}, {editorCount} editor{editorCount === 1 ? '' : 's'}
+                </div>
               </div>
 
               <div className="access-list">
-                {admins.length ? (
-                  admins.map(admin => (
-                    <div className="access-row" key={admin.id || admin.email}>
-                      <div className="access-row-main">
-                        <div className="access-row-top">
-                          <div className="access-row-email">{admin.email}</div>
-                          <Badge tone={admin.role === 'owner' ? 'neutral' : admin.active ? 'warning' : 'danger'}>
-                            {admin.role === 'owner' ? 'Owner' : admin.active ? 'Editor' : 'Disabled'}
-                          </Badge>
+                {people.length ? (
+                  people.map(person => {
+                    const isSelf = person.id === currentUserId;
+                    const busy = pendingId === person.id;
+                    return (
+                      <div className="access-row" key={person.id || person.email}>
+                        <div className="access-row-main">
+                          <div className="access-row-top">
+                            <div className="access-row-email">{person.email}</div>
+                            <Badge tone={person.role === 'admin' ? 'warning' : 'neutral'}>
+                              {person.role === 'admin' ? 'Admin' : 'Editor'}
+                            </Badge>
+                          </div>
+                          <div className="access-row-subtitle">
+                            {person.name || 'No name'}
+                            {isSelf ? ' · you' : ''}
+                          </div>
+                          <div className="access-row-meta">
+                            {person.lastSignInAt ? `Last sign in ${formatTimestamp(person.lastSignInAt)}` : 'Never signed in'}
+                          </div>
                         </div>
-                        <div className="access-row-subtitle">
-                          {admin.name || 'No display name'}
-                          {admin.email === normalizeEmail(currentUserEmail) ? ' · you' : ''}
-                        </div>
-                        <div className="access-row-meta">
-                          {admin.lastSignInAt ? `Last sign in ${formatTimestamp(admin.lastSignInAt)}` : 'Never signed in'}
-                          {admin.invitedAt ? ` · Invited ${formatTimestamp(admin.invitedAt)}` : ''}
-                        </div>
-                      </div>
 
-                      <div className="access-row-actions">
-                        {admin.role === 'owner' ? (
-                          <Badge tone="neutral">Protected</Badge>
-                        ) : admin.active ? (
+                        <div className="access-row-actions">
                           <Button
                             type="button"
                             variant="ghost"
-                            iconLeft={pendingEmail === admin.email ? <LoaderCircle className="spinner" size={14} /> : <UserX size={14} />}
-                            onClick={() => onRevoke(admin.email)}
-                            disabled={!isOwner || pendingEmail === admin.email}
+                            disabled={busy}
+                            onClick={() => {
+                              const next = window.prompt(`Set a new password for ${person.email} (at least 6 characters):`);
+                              if (next === null) {
+                                return;
+                              }
+                              if (next.length < 6) {
+                                window.alert('Password must be at least 6 characters.');
+                                return;
+                              }
+                              onUpdate(person.id, { password: next });
+                            }}
                           >
-                            {pendingEmail === admin.email ? 'Updating' : 'Revoke'}
+                            Reset password
                           </Button>
-                        ) : (
                           <Button
                             type="button"
                             variant="ghost"
-                            iconLeft={pendingEmail === admin.email ? <LoaderCircle className="spinner" size={14} /> : <UserPlus size={14} />}
-                            onClick={() => onInvite({ email: admin.email, name: admin.name })}
-                            disabled={!isOwner || pendingEmail === admin.email}
+                            disabled={busy || isSelf}
+                            onClick={() => onUpdate(person.id, { role: person.role === 'admin' ? 'editor' : 'admin' })}
                           >
-                            {pendingEmail === admin.email ? 'Updating' : 'Restore'}
+                            {person.role === 'admin' ? 'Make editor' : 'Make admin'}
                           </Button>
-                        )}
+                          {isSelf ? (
+                            <Badge tone="neutral">You</Badge>
+                          ) : (
+                            <Button
+                              type="button"
+                              variant="danger"
+                              disabled={busy}
+                              iconLeft={busy ? <LoaderCircle className="spinner" size={14} /> : <Trash2 size={14} />}
+                              onClick={() => {
+                                if (window.confirm(`Remove ${person.email}? They lose access immediately.`)) {
+                                  onRemove(person.id);
+                                }
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 ) : (
                   <div className="access-empty">
-                    <div className="empty-state-title">No editors yet</div>
-                    <div className="empty-state-description">Invite the first editor from this panel.</div>
+                    <div className="empty-state-title">No people yet</div>
+                    <div className="empty-state-description">Add the first person above.</div>
                   </div>
                 )}
               </div>
@@ -1570,17 +1557,15 @@ function useCmsBootstrap() {
   const [publishPending, setPublishPending] = useState(false);
   const [password, setPassword] = useState('');
   const [loginPending, setLoginPending] = useState(false);
-  const [resetPending, setResetPending] = useState(false);
-  const isRecovering = useRef(false);
   const [loadingContent, setLoadingContent] = useState(false);
   const [deploys, setDeploys] = useState([]);
   const [deploysLoading, setDeploysLoading] = useState(false);
   const [deploysError, setDeploysError] = useState('');
   const [revertPendingSha, setRevertPendingSha] = useState(null);
-  const [admins, setAdmins] = useState([]);
-  const [adminsLoading, setAdminsLoading] = useState(false);
-  const [adminsError, setAdminsError] = useState('');
-  const [adminActionPendingEmail, setAdminActionPendingEmail] = useState('');
+  const [people, setPeople] = useState([]);
+  const [peopleLoading, setPeopleLoading] = useState(false);
+  const [peopleError, setPeopleError] = useState('');
+  const [personActionPendingId, setPersonActionPendingId] = useState('');
 
   const resetWorkspace = () => {
     setCollections([]);
@@ -1595,30 +1580,30 @@ function useCmsBootstrap() {
     setDeploysLoading(false);
     setDeploysError('');
     setRevertPendingSha(null);
-    setAdmins([]);
-    setAdminsLoading(false);
-    setAdminsError('');
-    setAdminActionPendingEmail('');
+    setPeople([]);
+    setPeopleLoading(false);
+    setPeopleError('');
+    setPersonActionPendingId('');
     setWorkspaceTone('');
     setWorkspaceNote('Loading content...');
   };
 
-  const loadAdmins = async nextSession => {
+  // Only admins can list people. For editors this returns 403, which we treat as
+  // "no people to show" rather than an error (the People screen is hidden anyway).
+  const loadPeople = async (nextSession, currentRole) => {
     const token = nextSession?.access_token;
-    if (!token) {
-      setAdmins([]);
-      setAdminsError('');
+    if (!token || currentRole !== 'admin') {
+      setPeople([]);
+      setPeopleError('');
       return [];
     }
 
-    setAdminsLoading(true);
-    setAdminsError('');
+    setPeopleLoading(true);
+    setPeopleError('');
 
     try {
-      const response = await fetch('/api/admin/admins', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const response = await fetch('/api/admin/users', {
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const raw = await response.text();
@@ -1630,18 +1615,18 @@ function useCmsBootstrap() {
       }
 
       if (!response.ok) {
-        throw new Error(payload.error || `Could not load CMS access list (${response.status}).`);
+        throw new Error(payload.error || `Could not load people (${response.status}).`);
       }
 
-      const nextAdmins = Array.isArray(payload.admins) ? payload.admins : [];
-      setAdmins(nextAdmins);
-      return nextAdmins;
+      const nextPeople = Array.isArray(payload.users) ? payload.users : [];
+      setPeople(nextPeople);
+      return nextPeople;
     } catch (error) {
-      setAdmins([]);
-      setAdminsError(error.message || 'Could not load CMS access list.');
+      setPeople([]);
+      setPeopleError(error.message || 'Could not load people.');
       return [];
     } finally {
-      setAdminsLoading(false);
+      setPeopleLoading(false);
     }
   };
 
@@ -1684,7 +1669,7 @@ function useCmsBootstrap() {
     }
   };
 
-  const loadWorkspace = async (nextSession, options = {}) => {
+  const loadWorkspace = async (nextSession, me, options = {}) => {
     const preferredPath = options.preferredPath || null;
     setMode('boot');
     setLoadingContent(true);
@@ -1731,9 +1716,9 @@ function useCmsBootstrap() {
       setWorkspaceNote(`Loaded ${loadedFiles.length} section${loadedFiles.length === 1 ? '' : 's'}.`);
       setMode('app');
       setSession(nextSession);
-      setUser(nextSession?.user || null);
+      setUser(me || null);
       void loadDeploys(nextSession);
-      void loadAdmins(nextSession);
+      void loadPeople(nextSession, me?.role);
     } catch (error) {
       setWorkspaceTone('error');
       setWorkspaceNote(error.message || 'Could not load CMS data.');
@@ -1744,37 +1729,38 @@ function useCmsBootstrap() {
     }
   };
 
+  // Returns the signed-in person { id, email, name, role } if they have access,
+  // otherwise signs them out and returns null.
   const ensureAuthorized = async nextSession => {
     const accessToken = nextSession?.access_token;
     if (!accessToken) {
-      return false;
+      return null;
     }
 
     try {
-      const response = await fetch('/api/admin/admins?limit=1', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+      const response = await fetch('/api/me', {
+        headers: { Authorization: `Bearer ${accessToken}` },
       });
 
+      const raw = await response.text();
+      let payload = {};
+      try {
+        payload = raw ? JSON.parse(raw) : {};
+      } catch {
+        payload = { error: raw };
+      }
+
       if (!response.ok) {
-        const raw = await response.text();
-        let payload = {};
-        try {
-          payload = raw ? JSON.parse(raw) : {};
-        } catch {
-          payload = { error: raw };
-        }
         throw new Error(payload.error || 'That account does not have CMS access.');
       }
 
-      return true;
+      return payload.user || null;
     } catch (error) {
       await supabase.auth.signOut();
-      setAuthNote({ text: error.message || 'That account is not approved for CMS access.', tone: 'error' });
+      setAuthNote({ text: error.message || 'That account does not have CMS access.', tone: 'error' });
       setMode('login');
       resetWorkspace();
-      return false;
+      return null;
     }
   };
 
@@ -1789,8 +1775,9 @@ function useCmsBootstrap() {
         }
 
         const nextSession = data.session || null;
-        if (nextSession && (await ensureAuthorized(nextSession))) {
-          await loadWorkspace(nextSession);
+        const me = nextSession ? await ensureAuthorized(nextSession) : null;
+        if (me) {
+          await loadWorkspace(nextSession, me);
         } else {
           setMode('login');
           setSession(null);
@@ -1813,24 +1800,10 @@ function useCmsBootstrap() {
     bootstrap();
 
     const { data } = supabase.auth.onAuthStateChange(async (event, nextSession) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        // The user arrived from a "set / reset password" email. Hold them on the
-        // password screen instead of dropping them into the editor.
-        isRecovering.current = true;
-        setSession(nextSession || null);
-        setUser(nextSession?.user || null);
-        setMode('reset');
-        setAuthNote({ text: 'Choose a password to finish setting up your account.', tone: '' });
-        return;
-      }
-
       if (event === 'SIGNED_IN' && nextSession) {
-        if (isRecovering.current) {
-          return;
-        }
-        const authorized = await ensureAuthorized(nextSession);
-        if (authorized) {
-          await loadWorkspace(nextSession);
+        const me = await ensureAuthorized(nextSession);
+        if (me) {
+          await loadWorkspace(nextSession, me);
         }
       }
 
@@ -1879,61 +1852,6 @@ function useCmsBootstrap() {
     }
   };
 
-  const onRequestPasswordReset = async () => {
-    const nextEmail = normalizeEmail(email);
-    if (!nextEmail) {
-      setAuthNote({ text: 'Enter your email address first, then choose "Set or reset password".', tone: 'error' });
-      return;
-    }
-
-    setResetPending(true);
-    setAuthNote({ text: 'Sending password email...', tone: '' });
-
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(nextEmail, {
-        redirectTo: LOGIN_REDIRECT,
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      setAuthNote({
-        text: 'Check your email for a link to set your password. If you do not have access, the email will not arrive.',
-        tone: 'success',
-      });
-    } catch (error) {
-      setAuthNote({ text: error.message || 'Could not send the password email.', tone: 'error' });
-    } finally {
-      setResetPending(false);
-    }
-  };
-
-  const onUpdatePassword = async newPassword => {
-    if (!newPassword || newPassword.length < 8) {
-      setAuthNote({ text: 'Choose a password with at least 8 characters.', tone: 'error' });
-      return;
-    }
-
-    setResetPending(true);
-    setAuthNote({ text: 'Saving your password...', tone: '' });
-
-    try {
-      const { error } = await supabase.auth.updateUser({ password: newPassword });
-      if (error) {
-        throw error;
-      }
-
-      isRecovering.current = false;
-      await supabase.auth.signOut();
-      setMode('login');
-      setAuthNote({ text: 'Password saved. Please sign in with your new password.', tone: 'success' });
-    } catch (error) {
-      setAuthNote({ text: error.message || 'Could not save your password.', tone: 'error' });
-    } finally {
-      setResetPending(false);
-    }
-  };
 
   const onDraftChange = (path, fieldName, nextValue) => {
     setDrafts(prev => {
@@ -2089,40 +2007,27 @@ function useCmsBootstrap() {
     await loadDeploys(session);
   };
 
-  const onRefreshAdmins = async () => {
-    await loadAdmins(session);
+  const onRefreshPeople = async () => {
+    await loadPeople(session, user?.role);
   };
 
-  const onInviteAdmin = async ({ email: nextEmail, name }) => {
+  const peopleRequest = async (method, body, pendingId, pendingNote) => {
     const accessToken = session?.access_token;
     if (!accessToken) {
       setWorkspaceTone('error');
       setWorkspaceNote('Your session expired. Please sign in again.');
-      return;
+      return { ok: false };
     }
 
-    const normalizedEmail = normalizeEmail(nextEmail);
-    if (!normalizedEmail) {
-      setWorkspaceTone('error');
-      setWorkspaceNote('Enter an email address first.');
-      return;
-    }
-
-    setAdminActionPendingEmail(normalizedEmail);
+    setPersonActionPendingId(pendingId);
     setWorkspaceTone('');
-    setWorkspaceNote(`Updating access for ${normalizedEmail}...`);
+    setWorkspaceNote(pendingNote);
 
     try {
-      const response = await fetch('/api/admin/admins', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: normalizedEmail,
-          name,
-        }),
+      const response = await fetch('/api/admin/users', {
+        method,
+        headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
       });
 
       const raw = await response.text();
@@ -2134,75 +2039,39 @@ function useCmsBootstrap() {
       }
 
       if (!response.ok) {
-        throw new Error(payload.error || payload.message || `Could not update access (${response.status}).`);
+        throw new Error(payload.error || `Could not save (${response.status}).`);
       }
 
       setWorkspaceTone('success');
-      setWorkspaceNote(payload.message || 'Access updated.');
-      await loadAdmins(session);
+      setWorkspaceNote(payload.message || 'Saved.');
+      await loadPeople(session, user?.role);
+      return { ok: true, payload };
     } catch (error) {
       setWorkspaceTone('error');
-      setWorkspaceNote(error.message || 'Could not update CMS access.');
+      setWorkspaceNote(error.message || 'Could not save.');
+      return { ok: false };
     } finally {
-      setAdminActionPendingEmail('');
+      setPersonActionPendingId('');
     }
   };
 
-  const onRevokeAdmin = async nextEmail => {
-    const accessToken = session?.access_token;
-    if (!accessToken) {
-      setWorkspaceTone('error');
-      setWorkspaceNote('Your session expired. Please sign in again.');
+  const onAddPerson = async ({ name, email, password, role }) => {
+    const result = await peopleRequest('POST', { name, email, password, role }, 'new', `Saving ${normalizeEmail(email)}…`);
+    return result.ok;
+  };
+
+  const onUpdatePerson = async (id, changes) => {
+    if (!id) {
       return;
     }
+    await peopleRequest('PATCH', { id, ...changes }, id, changes.password ? 'Updating password…' : 'Saving…');
+  };
 
-    const normalizedEmail = normalizeEmail(nextEmail);
-    if (!normalizedEmail) {
+  const onRemovePerson = async id => {
+    if (!id) {
       return;
     }
-
-    const confirmed = window.confirm(`Revoke CMS access for ${normalizedEmail}?`);
-    if (!confirmed) {
-      return;
-    }
-
-    setAdminActionPendingEmail(normalizedEmail);
-    setWorkspaceTone('');
-    setWorkspaceNote(`Updating access for ${normalizedEmail}...`);
-
-    try {
-      const response = await fetch('/api/admin/admins', {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: normalizedEmail,
-        }),
-      });
-
-      const raw = await response.text();
-      let payload = {};
-      try {
-        payload = raw ? JSON.parse(raw) : {};
-      } catch {
-        payload = { error: raw };
-      }
-
-      if (!response.ok) {
-        throw new Error(payload.error || payload.message || `Could not revoke access (${response.status}).`);
-      }
-
-      setWorkspaceTone('success');
-      setWorkspaceNote(payload.message || 'Access revoked.');
-      await loadAdmins(session);
-    } catch (error) {
-      setWorkspaceTone('error');
-      setWorkspaceNote(error.message || 'Could not revoke CMS access.');
-    } finally {
-      setAdminActionPendingEmail('');
-    }
+    await peopleRequest('DELETE', { id }, id, 'Removing…');
   };
 
   const onRevertDeploy = async sha => {
@@ -2258,7 +2127,7 @@ function useCmsBootstrap() {
       setWorkspaceTone('success');
       setWorkspaceNote('Published. This may take a few minutes to be live on the website.');
 
-      await loadWorkspace(session, { preferredPath: currentPath });
+      await loadWorkspace(session, user, { preferredPath: currentPath });
     } catch (error) {
       setWorkspaceTone('error');
       setWorkspaceNote(error.message || 'Could not revert the deploy.');
@@ -2313,22 +2182,20 @@ function useCmsBootstrap() {
     onRefreshDeploys,
     onRevertDeploy,
     revertPendingSha,
-    admins,
-    adminsLoading,
-    adminsError,
-    onRefreshAdmins,
-    onInviteAdmin,
-    onRevokeAdmin,
-    adminActionPendingEmail,
+    people,
+    peopleLoading,
+    peopleError,
+    onRefreshPeople,
+    onAddPerson,
+    onUpdatePerson,
+    onRemovePerson,
+    personActionPendingId,
     email,
     setEmail,
     loginPending,
-    resetPending,
     password,
     setPassword,
     onSubmitLogin,
-    onRequestPasswordReset,
-    onUpdatePassword,
     user,
     collections,
     currentPath,
@@ -2365,17 +2232,6 @@ function AdminApp() {
     return <BootScreen label={cms.loadingContent ? 'Loading sections' : 'Loading admin'} />;
   }
 
-  if (cms.mode === 'reset') {
-    return (
-      <ResetPasswordScreen
-        onSubmit={cms.onUpdatePassword}
-        pending={cms.resetPending}
-        note={cms.authNote.text}
-        tone={cms.authNote.tone}
-      />
-    );
-  }
-
   if (cms.mode === 'login') {
     return (
       <LoginScreen
@@ -2384,9 +2240,7 @@ function AdminApp() {
         password={cms.password}
         onPasswordChange={cms.setPassword}
         onSubmit={cms.onSubmitLogin}
-        onResetRequest={cms.onRequestPasswordReset}
         pending={cms.loginPending}
-        resetPending={cms.resetPending}
         note={cms.authNote.text}
         tone={cms.authNote.tone}
       />
@@ -2419,13 +2273,14 @@ function AdminApp() {
       drafts={cms.drafts}
       onDraftChange={cms.onDraftChange}
       onUploadAsset={cms.onUploadAsset}
-      admins={cms.admins}
-      adminsLoading={cms.adminsLoading}
-      adminsError={cms.adminsError}
-      onRefreshAdmins={cms.onRefreshAdmins}
-      onInviteAdmin={cms.onInviteAdmin}
-      onRevokeAdmin={cms.onRevokeAdmin}
-      adminActionPendingEmail={cms.adminActionPendingEmail}
+      people={cms.people}
+      peopleLoading={cms.peopleLoading}
+      peopleError={cms.peopleError}
+      onRefreshPeople={cms.onRefreshPeople}
+      onAddPerson={cms.onAddPerson}
+      onUpdatePerson={cms.onUpdatePerson}
+      onRemovePerson={cms.onRemovePerson}
+      personActionPendingId={cms.personActionPendingId}
     />
   );
 }

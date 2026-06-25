@@ -1,4 +1,4 @@
-const { requireAdmin } = require('./_lib/supabase');
+const { requireUser } = require('./_lib/supabase');
 const { listCmsDeploys, revertCmsDeploy } = require('./_lib/github');
 
 function json(res, statusCode, payload) {
@@ -14,7 +14,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    await requireAdmin(req);
+    await requireUser(req);
     const body = await readJson(req);
     const requestedSha = String(body.sha || '').trim();
     const message = String(body.message || '').trim();

@@ -1,4 +1,4 @@
-const { requireAdmin } = require('./_lib/supabase');
+const { requireUser } = require('./_lib/supabase');
 const { createCommit } = require('./_lib/github');
 
 function json(res, statusCode, payload) {
@@ -22,7 +22,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    await requireAdmin(req);
+    await requireUser(req);
     const body = await readJson(req);
     const name = String(body.name || '').trim();
     const data = String(body.data || '').trim();

@@ -1,4 +1,4 @@
-const { requireAdmin } = require('./_lib/supabase');
+const { requireUser } = require('./_lib/supabase');
 const { listCmsDeploys } = require('./_lib/github');
 
 function json(res, statusCode, payload) {
@@ -14,7 +14,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    await requireAdmin(req);
+    await requireUser(req);
 
     const url = new URL(req.url, 'http://localhost');
     const limit = Math.max(1, Math.min(10, Number(url.searchParams.get('limit') || 6) || 6));
