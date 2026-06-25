@@ -173,7 +173,7 @@
       "name": "Codello",
       "slug": "codello",
       "card": {
-        "eyebrow": "Accessories",
+        "eyebrow": "Accessory Color",
         "heroTitle": "Accessories that makes people happy.",
         "summary": "Scarves and accessories driven by print, color, craft, and a long-standing signature in silk.",
         "heroImage": "/assets/media/uploads/1782387734403-codello_picture-brand_portrait.jpg"
@@ -317,7 +317,7 @@
       "name": "Drykorn",
       "slug": "drykorn",
       "card": {
-        "eyebrow": "Contemporary Tailoring",
+        "eyebrow": "Women & Men",
         "heroTitle": "For Beautiful People",
         "summary": "Sharper silhouettes and modern tailoring for independent dressers with a metropolitan point of view.",
         "heroImage": "/assets/media/brand-pages/drykorn-page-1.jpg"
@@ -486,7 +486,7 @@
       "name": "G-Lab",
       "slug": "g-lab",
       "card": {
-        "eyebrow": "Performance Outerwear",
+        "eyebrow": "Women & Men",
         "heroTitle": "Always in Your Element",
         "summary": "Technical outerwear that bridges functional protection with a cleaner contemporary fashion sensibility.",
         "heroImage": "/assets/media/brand-pages/g-lab-page-1.jpg"
@@ -540,7 +540,7 @@
       "name": "GUESS",
       "slug": "guess",
       "card": {
-        "eyebrow": "Global Lifestyle",
+        "eyebrow": "Women & Men",
         "heroTitle": "The Essence of Sexyness",
         "summary": "A globally recognised lifestyle label combining denim heritage, accessories, and a more overt sense of fashion image-making.",
         "heroImage": "/assets/media/brand-pages/guess-page-1.jpg"
@@ -699,7 +699,7 @@
       "name": "iBlues",
       "slug": "iblues",
       "card": {
-        "eyebrow": "Modern Femininity",
+        "eyebrow": "Women",
         "heroTitle": "Glamour for Fashionable Women",
         "summary": "Italian womenswear with bold shapes, expressive color, and an effortless version of glamour.",
         "heroImage": "/assets/media/brand-pages/iblues-page-1.jpg"
@@ -838,7 +838,7 @@
       "name": "More & More",
       "slug": "more-and-more",
       "card": {
-        "eyebrow": "Everyday Elegance",
+        "eyebrow": "Women",
         "heroTitle": "More Inspiration",
         "summary": "German womenswear built around feminine dressing, practical coordination, and strong day-to-day value.",
         "heroImage": "/assets/media/brand-pages/more-and-more-page-1.jpg"
@@ -982,7 +982,7 @@
       "name": "Rich & Royal",
       "slug": "rich-royal",
       "card": {
-        "eyebrow": "Premium Lifestyle",
+        "eyebrow": "Women",
         "heroTitle": "Live rich - act royal",
         "summary": "Contemporary premium fashion with expressive color, tactile fabrics, and a strong feminine self-image.",
         "heroImage": "/assets/media/brand-pages/rich-royal-page-1.jpg"
@@ -1121,7 +1121,7 @@
       "name": "YAYA",
       "slug": "yaya",
       "card": {
-        "eyebrow": "Soft Modernity",
+        "eyebrow": "Women",
         "heroTitle": "It's A State of Mind",
         "summary": "A lifestyle brand built around soft fabrics, toned-down color, and accessible design with long-term wearability.",
         "heroImage": "/assets/media/brand-pages/yaya-page-1.jpg"
@@ -1275,7 +1275,7 @@
       "name": "0039 Italy",
       "slug": "0039-italy",
       "card": {
-        "eyebrow": "Blouse Expertise",
+        "eyebrow": "Women",
         "heroTitle": "True to itself and to its Roots",
         "summary": "A German Brand with an Italian sensibility, built around blouses as the enduring center of its identity.",
         "heroImage": "/assets/media/brand-pages/0039-italy-page-1.jpg"
