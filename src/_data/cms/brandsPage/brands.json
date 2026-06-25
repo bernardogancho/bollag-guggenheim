@@ -862,7 +862,7 @@
         "eyebrow": "Women",
         "heroTitle": "More Inspiration",
         "summary": "German womenswear built around feminine dressing, practical coordination, and strong day-to-day value.",
-        "heroImage": "/assets/media/uploads/1782399854929-more-more_picture-brand_portrait.jpg"
+        "heroImage": "/assets/media/brand-pages/more-and-more-page-1.jpg"
       },
       "detail": {
         "intro": "Founded in 1982 in Starnberg, More & More has developed a consistent proposition across feminine businesswear, polished everyday dressing, and casual pieces with easy coordination.",
@@ -1369,6 +1369,27 @@
             "source": "https://www.instagram.com/p/DUJDIVij-4A/"
           }
         ]
+      }
+    },
+    {
+      "name": "Le Tricot Perugia",
+      "slug": "Le-Tricot-Perugia",
+      "logoImage": "",
+      "card": {
+        "eyebrow": "Women",
+        "heroTitle": "",
+        "summary": "Le Tricot Perugia is a premium Italian fashion brand from Umbria that specializes in high-quality women’s knitwear and elegant total-look collections",
+        "heroImage": ""
+      },
+      "detail": {
+        "intro": "The brand stands for “Made in Italy,” fine natural materials such as cashmere, merino wool, silk, and linen, as well as artisanal craftsmanship with a timelessly elegant style. \nSustainability and regional production also play an important role: The raw materials come primarily from Italy, and manufacturing is carried out in accordance with high quality and environmental standards.",
+        "focus": "",
+        "atmosphere": "",
+        "categories": [],
+        "tone": "",
+        "detailHeroImage": "",
+        "gallery": [],
+        "detailGallery": []
       }
     }
   ]
