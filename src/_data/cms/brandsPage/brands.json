@@ -12,41 +12,25 @@
       "detail": {
         "intro": "Closed began as one of the first Italian denim labels before evolving into a wider premium wardrobe brand headquartered in Hamburg. Its identity still turns on denim, but the proposition is broader: precise essentials, measured luxury, and clothing that avoids excess.",
         "focus": "The brand's strength comes from long-standing Italian production partnerships, deep material knowledge, and a confidence that does not need theatrical branding to register. It reads as premium through cut, fabric, and restraint.",
-        "atmosphere": "",
-        "categories": [],
+        "atmosphere": "Restrained, tactile, exacting.",
+        "categories": [
+          "Denim",
+          "Tailoring",
+          "Wardrobe Foundations"
+        ],
         "tone": "A quiet luxury language built around material confidence and enduring fit.",
         "detailHeroImage": "/assets/media/uploads/1782387591679-closed_banner.jpg",
         "gallery": [
           {
-            "image": "/assets/media/uploads/1782482125005-closed_banner.jpg",
+            "image": "/assets/media/brand-pages/closed-page-1.jpg",
             "note": "Closed editorial selection"
           },
           {
-            "image": "/assets/media/uploads/1782482141944-closed_picture-brand_portrait.jpg",
+            "image": "/assets/media/brand-pages/closed-page-2.jpg",
             "note": "Closed editorial selection"
           }
         ],
         "detailGallery": [
-          {
-            "image": "/assets/media/brand-pages/closed-page-1.jpg",
-            "note": "Closed editorial image 1"
-          },
-          {
-            "image": "/assets/media/brand-pages/closed-page-2.jpg",
-            "note": "Closed editorial image 2"
-          },
-          {
-            "image": "/assets/media/brand-pages/closed-page-3.jpg",
-            "note": "Closed editorial image 3"
-          },
-          {
-            "image": "/assets/media/brand-pages/closed-page-4.jpg",
-            "note": "Closed editorial image 4"
-          },
-          {
-            "image": "/assets/media/brand-pages/closed-page-5.jpg",
-            "note": "Closed editorial image 5"
-          },
           {
             "image": "/assets/media/feed/closed-wall-18125867929561796.jpg",
             "note": "Tori-X. Brand new. Already a favourite.",
@@ -146,21 +130,6 @@
             "image": "/assets/media/feed/closed-wall-18078997523349780.jpg",
             "note": "The barrel shape that everyone continues to require. Our Jazzie. #closedofficial",
             "source": "https://www.instagram.com/p/DTXKdKUkm3D/"
-          },
-          {
-            "image": "/assets/media/feed/closed-wall-18077835998242140.jpg",
-            "note": "Introducing fresh arrivals, yet denim continues to take center stage in 2026 #closedofficial",
-            "source": "https://www.instagram.com/p/DTPZOueAN2s/"
-          },
-          {
-            "image": "/assets/media/feed/closed-wall-18064908410541211.jpg",
-            "note": "What fashion goals have you established for this new year?⁠ ⁠ ⁠ ⁠ We aim to incorporate beautiful colours and stunning designs paired with denim. #closedofficia",
-            "source": "https://www.instagram.com/p/DTNmN1ekg82/"
-          },
-          {
-            "image": "/assets/media/feed/closed-wall-18090303290473596.jpg",
-            "note": "Stunning fresh color options. #closedofficial",
-            "source": "https://www.instagram.com/p/DTIUBWDkocp/"
           }
         ]
       }
