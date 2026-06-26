@@ -1166,7 +1166,7 @@
         "eyebrow": "Women",
         "heroTitle": "It's A State of Mind",
         "summary": "A lifestyle brand built around soft fabrics, toned-down color, and accessible design with long-term wearability.",
-        "heroImage": "/assets/media/brand-pages/yaya-page-1.jpg"
+        "heroImage": "/assets/media/uploads/1782458564014-yaya_picture-brand_portrait.jpg"
       },
       "detail": {
         "intro": "Founded in 1992 near Amsterdam, YAYA extends beyond womenswear into home accessories, but keeps the same values across both worlds: comfort, femininity, and a calm, desirable design language.",
@@ -1174,11 +1174,11 @@
         "atmosphere": "Soft, calm, lifestyle-led.",
         "categories": [
           "Womenswear",
-          "Home Accessories",
+          "Lifestyle",
           "Soft Essentials"
         ],
         "tone": "A quieter lifestyle proposition defined by warmth, accessibility, and understated charm.",
-        "detailHeroImage": "/assets/media/brand-pages/yaya-header.jpg",
+        "detailHeroImage": "/assets/media/uploads/1782458578986-yaya_banner.jpg",
         "gallery": [
           {
             "image": "/assets/media/brand-pages/yaya-page-1.jpg",
