@@ -339,10 +339,11 @@
         "segment": "Women & Men",
         "websiteHref": "https://tantarainwear.com/",
         "logoSrc": "/assets/media/wearhouse/logos/tanta.png",
-        "hoverImage": "",
+        "hoverImage": "/assets/media/uploads/1782478152136-tant-_banner.jpg",
         "logoLines": [
           "TANTÄ"
-        ]
+        ],
+        "detailImage": "/assets/media/uploads/1782478161782-tant-_picture-brand_portrait.jpeg"
       },
       "detail": {
         "summary": "TANTÄ adds a colorful waterproof proposition to the Wearhouse portfolio, grounded in rainwear expertise, durability, and a distinctive Basque brand identity.",
