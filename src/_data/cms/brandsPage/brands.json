@@ -823,44 +823,11 @@
         "intro": "Rich & Royal positions itself as a modern German lifestyle brand, built around premium dressing that feels current, feminine, and responsive to trend without becoming disposable.",
         "focus": "The brand's language is carried by fabric feel, color, and considered detailing. It also places visible importance on sustainability through materials, packaging, supplier selection, and production standards.",
         "atmosphere": "Confident, premium, trend-aware.",
-        "categories": [
-          "Premium Womenswear",
-          "Lifestyle Fashion",
-          "Responsible Production"
-        ],
+        "categories": [],
         "tone": "A premium fashion voice that combines femininity, confidence, and material attention.",
         "detailHeroImage": "/assets/media/uploads/1782458486117-rich-royal_banner.jpg",
-        "gallery": [
-          {
-            "image": "/assets/media/brand-pages/rich-royal-page-1.jpg",
-            "note": "Rich & Royal editorial selection"
-          },
-          {
-            "image": "/assets/media/brand-pages/rich-royal-page-2.jpg",
-            "note": "Rich & Royal editorial selection"
-          }
-        ],
+        "gallery": [],
         "detailGallery": [
-          {
-            "image": "/assets/media/brand-pages/rich-royal-page-1.jpg",
-            "note": "Rich & Royal editorial image 1"
-          },
-          {
-            "image": "/assets/media/brand-pages/rich-royal-page-2.jpg",
-            "note": "Rich & Royal editorial image 2"
-          },
-          {
-            "image": "/assets/media/brand-pages/rich-royal-page-3.jpg",
-            "note": "Rich & Royal editorial image 3"
-          },
-          {
-            "image": "/assets/media/brand-pages/rich-royal-page-4.jpg",
-            "note": "Rich & Royal editorial image 4"
-          },
-          {
-            "image": "/assets/media/brand-pages/rich-royal-page-5.jpg",
-            "note": "Rich & Royal editorial image 5"
-          },
           {
             "image": "/assets/media/feed/rich-royal-wall-17850270870641162.jpg",
             "note": "Sailor stripes, gold buttons, and classic collars bring the sea to your summer wardrobe.",
