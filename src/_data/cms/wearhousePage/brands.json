@@ -269,10 +269,11 @@
         "segment": "Women",
         "websiteHref": "https://www.sassenbach-style.de/",
         "logoSrc": "/assets/media/wearhouse/logos/sassenbach.svg",
-        "hoverImage": "/assets/media/wearhouse/brands/sassenbach-matrix.jpg",
+        "hoverImage": "/assets/media/uploads/1782476303379-sassenbach_banner.jpg",
         "logoLines": [
           "SASSENBACH"
-        ]
+        ],
+        "detailImage": "/assets/media/uploads/1782476310693-sassenbach_picture-brand_portrait.jpg"
       },
       "detail": {
         "summary": "SASSENBACH brings a focused women's proposition into the Wearhouse portfolio through easy elegance, comfort, and a product language built for everyday sophistication.",
