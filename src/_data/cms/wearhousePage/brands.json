@@ -125,7 +125,7 @@
       "name": "edelle",
       "slug": "edelle",
       "rosterCard": {
-        "segment": "donna",
+        "segment": "Women",
         "websiteHref": "https://edelle.de/",
         "logoSrc": "/assets/media/wearhouse/logos/edelle.svg",
         "hoverImage": "/assets/media/uploads/1782474909718-edelle_banner.jpg",
@@ -178,7 +178,9 @@
         "logoSrc": "/assets/media/uploads/1782459887184-logo-web_nero.jpg",
         "hoverImage": "/assets/media/uploads/1782459913878-helmur_banner.jpg",
         "detailImage": "/assets/media/uploads/1782459932421-helmur_picture-brand_portrait.jpg",
-        "logoLines": []
+        "logoLines": [
+          "Helmur"
+        ]
       },
       "detail": {
         "summary": "The fashion brand HELMUR is known for modern, minimalist women’s fashion featuring timeless cuts and high-quality craftsmanship. ",
@@ -186,10 +188,7 @@
       },
       "focus": "",
       "atmosphere": "",
-      "categories": [
-        "Made in Italy",
-        "Fashion"
-      ]
+      "categories": []
     },
     {
       "name": "IBELIV",
