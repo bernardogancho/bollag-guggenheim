@@ -928,45 +928,12 @@
       "detail": {
         "intro": "Founded in 1992 near Amsterdam, YAYA extends beyond womenswear into home accessories, but keeps the same values across both worlds: comfort, femininity, and a calm, desirable design language.",
         "focus": "The collections are known for softness, ease of styling, and a lowered visual volume that still retains charm. YAYA presents itself less as a demographic label and more as an attitude toward everyday living.",
-        "atmosphere": "Soft, calm, lifestyle-led.",
-        "categories": [
-          "Womenswear",
-          "Lifestyle",
-          "Soft Essentials"
-        ],
+        "atmosphere": "",
+        "categories": [],
         "tone": "A quieter lifestyle proposition defined by warmth, accessibility, and understated charm.",
         "detailHeroImage": "/assets/media/uploads/1782458578986-yaya_banner.jpg",
-        "gallery": [
-          {
-            "image": "/assets/media/brand-pages/yaya-page-1.jpg",
-            "note": "YAYA editorial selection"
-          },
-          {
-            "image": "/assets/media/brand-pages/yaya-page-2.jpg",
-            "note": "YAYA editorial selection"
-          }
-        ],
+        "gallery": [],
         "detailGallery": [
-          {
-            "image": "/assets/media/brand-pages/yaya-page-1.jpg",
-            "note": "YAYA editorial image 1"
-          },
-          {
-            "image": "/assets/media/brand-pages/yaya-page-2.jpg",
-            "note": "YAYA editorial image 2"
-          },
-          {
-            "image": "/assets/media/brand-pages/yaya-page-3.jpg",
-            "note": "YAYA editorial image 3"
-          },
-          {
-            "image": "/assets/media/brand-pages/yaya-page-4.jpg",
-            "note": "YAYA editorial image 4"
-          },
-          {
-            "image": "/assets/media/brand-pages/yaya-page-5.jpg",
-            "note": "YAYA editorial image 5"
-          },
           {
             "image": "/assets/media/feed/yaya-wall-18341409493210383.jpg",
             "note": "Explore a collection inspired by the calm of the sea 💙",
