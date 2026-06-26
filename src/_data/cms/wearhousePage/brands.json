@@ -384,8 +384,8 @@
         "segment": "Men",
         "websiteHref": "https://giemmebrandscorporate.com/en-eu/collections/tintoria-mattei",
         "logoSrc": "/assets/media/wearhouse/logos/tintoria-mattei.clean.png",
-        "hoverImage": "/assets/media/wearhouse/brands/tintoriamattei-matrix.jpg",
-        "detailImage": "/assets/media/wearhouse/brands/tintoriamattei.jpg",
+        "hoverImage": "/assets/media/uploads/1782479480423-tintoria-mattei_banner.jpg",
+        "detailImage": "/assets/media/uploads/1782479489062-tintoria-mattei_portrait.jpeg",
         "logoLines": [
           "TINTORIA",
           "MATTEI"
@@ -409,11 +409,10 @@
         "segment": "Women",
         "websiteHref": "https://velvet-tees.com/",
         "logoSrc": "/assets/media/wearhouse/logos/velvet.svg",
-        "hoverImage": "/assets/media/uploads/1782480994530-velvet_banner.jpg",
+        "hoverImage": "/assets/media/wearhouse/brands/velvet-matrix.jpg",
         "logoLines": [
           "VELVET"
-        ],
-        "detailImage": "/assets/media/uploads/1782481039846-velvet_picture-brand_portrait.jpeg"
+        ]
       },
       "detail": {
         "summary": "VELVET brings relaxed premium essentials into the Wearhouse portfolio, blending Californian ease with fabric quality and a wardrobe-first approach.",
@@ -432,10 +431,11 @@
       "rosterCard": {
         "segment": "Women",
         "websiteHref": "https://viamasini80.it/",
-        "hoverImage": "/assets/media/wearhouse/brands/viamasini-matrix.jpg",
+        "hoverImage": "/assets/media/uploads/1782481263187-via-masini_banner.jpg",
         "logoLines": [
           "VIA MASINI"
-        ]
+        ],
+        "detailImage": "/assets/media/uploads/1782481271446-via-masini_picture-brand_portrait.jpeg"
       },
       "detail": {
         "summary": "VIA MASINI adds a focused Italian womenswear voice to the Wearhouse portfolio, with an emphasis on trousers, modern silhouettes, and confident day-to-evening dressing.",
