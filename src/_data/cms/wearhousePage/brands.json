@@ -194,11 +194,11 @@
       "name": "IBELIV",
       "slug": "ibeliv",
       "rosterCard": {
-        "segment": "donna & uomo",
-        "websiteHref": "https://www.wearhouse.ch/ibeliv",
-        "logoSrc": "/assets/media/wearhouse/logos/ibeliv.clean.png",
-        "hoverImage": "/assets/media/wearhouse/brands/ibeliv-matrix.jpg",
-        "detailImage": "/assets/media/wearhouse/brands/ibeliv.jpg",
+        "segment": "Accessories",
+        "websiteHref": "https://de.ibeliv.fr/",
+        "logoSrc": "/assets/media/uploads/1782475178698-ibeliv-logo.jpg",
+        "hoverImage": "/assets/media/uploads/1782475476087-ibeliv_banner.jpg",
+        "detailImage": "/assets/media/uploads/1782475488657-ibeliv_picture-brand_portrait.jpg",
         "logoLines": [
           "IBELIV"
         ]
