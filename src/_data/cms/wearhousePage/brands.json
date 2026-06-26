@@ -219,7 +219,7 @@
       "slug": "masons",
       "rosterCard": {
         "segment": "Women & Men",
-        "websiteHref": "https://www.wearhouse.ch/masons",
+        "websiteHref": "https://en.masons.it/",
         "logoSrc": "/assets/media/wearhouse/logos/masons.clean.png",
         "hoverImage": "/assets/media/wearhouse/brands/masons-matrix.jpg",
         "detailImage": "/assets/media/wearhouse/brands/masons.jpg",
@@ -266,7 +266,7 @@
       "name": "SASSENBACH",
       "slug": "sassenbach",
       "rosterCard": {
-        "segment": "donna",
+        "segment": "Women",
         "websiteHref": "https://www.sassenbach-style.de/",
         "logoSrc": "/assets/media/wearhouse/logos/sassenbach.svg",
         "hoverImage": "/assets/media/wearhouse/brands/sassenbach-matrix.jpg",
