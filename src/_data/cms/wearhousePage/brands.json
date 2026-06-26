@@ -148,13 +148,14 @@
       "name": "FFC",
       "slug": "ffc",
       "rosterCard": {
-        "segment": "donna",
+        "segment": "Women",
         "websiteHref": "https://www.ffc-fashion.de/",
         "logoSrc": "/assets/media/wearhouse/logos/ffc.clean.png",
-        "hoverImage": "/assets/media/wearhouse/brands/ffc-matrix.jpg",
+        "hoverImage": "/assets/media/uploads/1782475015466-ffc_banner.jpg",
         "logoLines": [
           "FFC"
-        ]
+        ],
+        "detailImage": "/assets/media/uploads/1782475025581-ffc_picture-brand_portrait.jpg"
       },
       "detail": {
         "summary": "FFC brings modern premium womenswear into the Wearhouse portfolio, with a particular strength in knitwear, soft tailoring, and polished everyday separates.",
