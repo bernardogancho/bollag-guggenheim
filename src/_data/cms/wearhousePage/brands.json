@@ -383,18 +383,21 @@
       "rosterCard": {
         "segment": "Women & Men",
         "websiteHref": "https://helmur.it/",
-        "logoSrc": "",
-        "hoverImage": "",
-        "detailImage": "",
+        "logoSrc": "/assets/media/uploads/1782459887184-logo-web_nero.jpg",
+        "hoverImage": "/assets/media/uploads/1782459913878-helmur_banner.jpg",
+        "detailImage": "/assets/media/uploads/1782459932421-helmur_picture-brand_portrait.jpg",
         "logoLines": []
       },
       "detail": {
-        "summary": "",
-        "intro": ""
+        "summary": "The fashion brand HELMUR is known for modern, minimalist women’s fashion featuring timeless cuts and high-quality craftsmanship. ",
+        "intro": "The collections combine elegant silhouettes with urban casual style and emphasize comfort and versatile, mix-and-match designs."
       },
       "focus": "",
       "atmosphere": "",
-      "categories": []
+      "categories": [
+        "Made in Italy",
+        "Fashion"
+      ]
     }
   ]
 }
