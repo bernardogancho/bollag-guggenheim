@@ -237,6 +237,30 @@
       }
     },
     {
+      "name": "No Maps society",
+      "slug": "No-Maps-society",
+      "rosterCard": {
+        "segment": "Shoes",
+        "websiteHref": "https://nomapsociety.com/home",
+        "logoSrc": "/assets/media/uploads/1782464238628-logo-postformat_weiss-hg.jpg",
+        "hoverImage": "/assets/media/uploads/1782465792786-the-jack-leather_banner.jpg",
+        "detailImage": "/assets/media/uploads/1782465809684-nomap-society_picture-brand_portrait.jpg",
+        "logoLines": [
+          ""
+        ]
+      },
+      "detail": {
+        "summary": "No Maps Society is developed and manufactured in Apulia, Italy—a region with a strong tradition of shoemaking.",
+        "intro": " At its core is a clear balance between vision and execution, between market understanding and artisanal precision. \nThis results in a holistic system in which design, comfort, materials, and distribution are consistently aligned.\nNo Maps Society does not follow trends, but rather a clear purpose—defined by quality, clarity, and consistency."
+      },
+      "focus": "",
+      "atmosphere": "Shoes",
+      "categories": [
+        "Shoes",
+        "Made in Italy"
+      ]
+    },
+    {
       "name": "SASSENBACH",
       "slug": "sassenbach",
       "rosterCard": {
@@ -398,30 +422,6 @@
           "Womenswear"
         ]
       }
-    },
-    {
-      "name": "No Maps society",
-      "slug": "No-Maps-society",
-      "rosterCard": {
-        "segment": "Shoes",
-        "websiteHref": "https://nomapsociety.com/home",
-        "logoSrc": "/assets/media/uploads/1782464238628-logo-postformat_weiss-hg.jpg",
-        "hoverImage": "/assets/media/uploads/1782465792786-the-jack-leather_banner.jpg",
-        "detailImage": "/assets/media/uploads/1782465809684-nomap-society_picture-brand_portrait.jpg",
-        "logoLines": [
-          ""
-        ]
-      },
-      "detail": {
-        "summary": "No Maps Society is developed and manufactured in Apulia, Italy—a region with a strong tradition of shoemaking.",
-        "intro": " At its core is a clear balance between vision and execution, between market understanding and artisanal precision. \nThis results in a holistic system in which design, comfort, materials, and distribution are consistently aligned.\nNo Maps Society does not follow trends, but rather a clear purpose—defined by quality, clarity, and consistency."
-      },
-      "focus": "",
-      "atmosphere": "Shoes",
-      "categories": [
-        "Shoes",
-        "Made in Italy"
-      ]
     }
   ]
 }
