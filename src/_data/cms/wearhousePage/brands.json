@@ -127,10 +127,11 @@
         "segment": "donna",
         "websiteHref": "https://edelle.de/",
         "logoSrc": "/assets/media/wearhouse/logos/edelle.svg",
-        "hoverImage": "/assets/media/wearhouse/brands/edelle-matrix.jpg",
+        "hoverImage": "/assets/media/uploads/1782474909718-edelle_banner.jpg",
         "logoLines": [
           "EDELLE"
-        ]
+        ],
+        "detailImage": "/assets/media/uploads/1782474923503-edelle_picture-brand_portrait.jpg"
       },
       "detail": {
         "summary": "edelle brings a feminine, detail-focused collection into the Wearhouse portfolio, centred on blouses, dresses, knitwear, and a softer form of everyday elegance.",
