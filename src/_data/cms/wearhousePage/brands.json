@@ -4,11 +4,11 @@
       "name": "CALIBAN",
       "slug": "caliban",
       "rosterCard": {
-        "segment": "donna",
+        "segment": "Women",
         "websiteHref": "https://www.wearhouse.ch/caliban",
         "logoSrc": "/assets/media/wearhouse/logos/caliban.clean.png",
-        "hoverImage": "/assets/media/wearhouse/brands/caliban-matrix.jpg",
-        "detailImage": "/assets/media/wearhouse/brands/caliban.jpg",
+        "hoverImage": "/assets/media/uploads/1782459302079-caliban_banner.jpg",
+        "detailImage": "/assets/media/uploads/1782459354438-caliban_picture-brand_portrait.jpg",
         "logoLines": [
           "CALIBAN"
         ]
@@ -376,6 +376,25 @@
           "Womenswear"
         ]
       }
+    },
+    {
+      "name": "",
+      "slug": "",
+      "rosterCard": {
+        "segment": "",
+        "websiteHref": "",
+        "logoSrc": "",
+        "hoverImage": "",
+        "detailImage": "",
+        "logoLines": []
+      },
+      "detail": {
+        "summary": "",
+        "intro": ""
+      },
+      "focus": "",
+      "atmosphere": "",
+      "categories": []
     }
   ]
 }
