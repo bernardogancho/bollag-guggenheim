@@ -336,10 +336,10 @@
       "name": "TANTÄ",
       "slug": "tanta",
       "rosterCard": {
-        "segment": "mujer hombre",
+        "segment": "Women & Men",
         "websiteHref": "https://tantarainwear.com/",
         "logoSrc": "/assets/media/wearhouse/logos/tanta.png",
-        "hoverImage": "/assets/media/wearhouse/brands/tanta-matrix.webp",
+        "hoverImage": "",
         "logoLines": [
           "TANTÄ"
         ]
