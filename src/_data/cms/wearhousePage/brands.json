@@ -318,9 +318,11 @@
         "segment": "Women",
         "websiteHref": "https://so-sue.com/",
         "logoSrc": "/assets/media/uploads/1782304323803-sosue_black_300dpi.jpg",
-        "hoverImage": "/assets/media/uploads/1782304146543-skirt-audreyas1638-whi-s-top-audreyas1606-whi-s_m005.jpg",
-        "detailImage": "/assets/media/uploads/1782305940791-skirt-claireas1639-whs-s-v-neck-topas1605-whi-s_m067.jpg",
-        "logoLines": []
+        "hoverImage": "/assets/media/uploads/1782477705809-sosue_banner.jpg",
+        "detailImage": "/assets/media/uploads/1782477714093-sosue_picture-brand_portrait.jpeg",
+        "logoLines": [
+          "SoSue"
+        ]
       },
       "detail": {
         "summary": "SoSue is a modern fashion brand that focuses on trendy, feminine, and everyday women’s fashion. ",
@@ -328,10 +330,7 @@
       },
       "focus": "",
       "atmosphere": "",
-      "categories": [
-        "Womenswear",
-        "Premium Fashion"
-      ]
+      "categories": []
     },
     {
       "name": "TANTÄ",
