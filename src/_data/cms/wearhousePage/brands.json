@@ -80,11 +80,10 @@
         "segment": "donna",
         "websiteHref": "https://deakudibal.de/",
         "logoSrc": "/assets/media/wearhouse/logos/dea-kudibal.svg",
-        "hoverImage": "/assets/media/uploads/1782474752183-dea-kudibal_banner.jpg",
+        "hoverImage": "/assets/media/wearhouse/brands/deakudibal-matrix.webp",
         "logoLines": [
           "DEA KUDIBAL"
-        ],
-        "detailImage": "/assets/media/uploads/1782474763780-dea-kudibal_women_picture-brand_portrait.jpg"
+        ]
       },
       "detail": {
         "summary": "DEA KUDIBAL adds a more expressive luxury womenswear angle to the Wearhouse portfolio, known for rich prints, fluid fabrics, and feminine silhouettes.",
@@ -102,10 +101,10 @@
       "slug": "duno",
       "rosterCard": {
         "segment": "donna & uomo",
-        "websiteHref": "https://www.wearhouse.ch/duno",
+        "websiteHref": "https://d-duno.it/",
         "logoSrc": "/assets/media/wearhouse/logos/duno.clean.png",
-        "hoverImage": "/assets/media/wearhouse/brands/duno-matrix.jpg",
-        "detailImage": "/assets/media/wearhouse/brands/duno.jpg",
+        "hoverImage": "/assets/media/uploads/1782474836398-duno_banner.jpg",
+        "detailImage": "/assets/media/uploads/1782474851184-duno_picture-brand_portrait.jpg",
         "logoLines": [
           "DUNO"
         ]
