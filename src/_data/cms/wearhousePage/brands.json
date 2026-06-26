@@ -406,10 +406,11 @@
         "segment": "Women",
         "websiteHref": "https://velvet-tees.com/",
         "logoSrc": "/assets/media/wearhouse/logos/velvet.svg",
-        "hoverImage": "/assets/media/wearhouse/brands/velvet-matrix.jpg",
+        "hoverImage": "/assets/media/uploads/1782481911996-velvet_banner.jpg",
         "logoLines": [
           "VELVET"
-        ]
+        ],
+        "detailImage": "/assets/media/uploads/1782481927488-velvet_picture-brand_portrait.jpeg"
       },
       "detail": {
         "summary": "VELVET brings relaxed premium essentials into the Wearhouse portfolio, blending Californian ease with fabric quality and a wardrobe-first approach.",
