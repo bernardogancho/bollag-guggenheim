@@ -430,16 +430,7 @@
         ],
         "tone": "A performance-led brand made credible through understatement rather than noise.",
         "detailHeroImage": "/assets/media/brand-pages/g-lab-header.jpg",
-        "gallery": [
-          {
-            "image": "/assets/media/brand-pages/g-lab-page-1.jpg",
-            "note": "G-Lab editorial selection"
-          },
-          {
-            "image": "/assets/media/brand-pages/g-lab-page-2.jpg",
-            "note": "G-Lab editorial selection"
-          }
-        ],
+        "gallery": [],
         "detailGallery": [
           {
             "image": "/assets/media/brand-pages/g-lab-page-1.jpg",
@@ -452,14 +443,6 @@
           {
             "image": "/assets/media/brand-pages/g-lab-page-3.jpg",
             "note": "G-Lab editorial image 3"
-          },
-          {
-            "image": "/assets/media/brand-pages/g-lab-page-4.jpg",
-            "note": "G-Lab editorial image 4"
-          },
-          {
-            "image": "/assets/media/brand-pages/g-lab-page-5.jpg",
-            "note": "G-Lab editorial image 5"
           }
         ]
       }
@@ -484,37 +467,8 @@
         ],
         "tone": "A statement brand whose commercial strength is reinforced by visual memory and image power.",
         "detailHeroImage": "/assets/media/brand-pages/guess-header.jpg",
-        "gallery": [
-          {
-            "image": "/assets/media/brand-pages/guess-page-1.jpg",
-            "note": "GUESS editorial selection"
-          },
-          {
-            "image": "/assets/media/brand-pages/guess-page-2.jpg",
-            "note": "GUESS editorial selection"
-          }
-        ],
+        "gallery": [],
         "detailGallery": [
-          {
-            "image": "/assets/media/brand-pages/guess-page-1.jpg",
-            "note": "GUESS editorial image 1"
-          },
-          {
-            "image": "/assets/media/brand-pages/guess-page-2.jpg",
-            "note": "GUESS editorial image 2"
-          },
-          {
-            "image": "/assets/media/brand-pages/guess-page-3.jpg",
-            "note": "GUESS editorial image 3"
-          },
-          {
-            "image": "/assets/media/brand-pages/guess-page-4.jpg",
-            "note": "GUESS editorial image 4"
-          },
-          {
-            "image": "/assets/media/brand-pages/guess-page-5.jpg",
-            "note": "GUESS editorial image 5"
-          },
           {
             "image": "/assets/media/feed/guess-wall-17919593598256347.jpg",
             "note": "All eyes on #TheCamdenBag. Your new everyday statement.",
@@ -636,44 +590,11 @@
         "intro": "Founded in 1975 within the Max Mara Fashion Group, iBlues developed into a total-look collection spanning ready-to-wear, shoes, bags, and accessories.",
         "focus": "Its customer is curious, fashion-aware, and willing to take stylistic risks. The brand responds with feminine silhouettes, clean detailing, and fabrics that support a polished but easy kind of glamour.",
         "atmosphere": "Feminine, current, self-assured.",
-        "categories": [
-          "Womenswear",
-          "Accessories",
-          "Effortless Glamour"
-        ],
+        "categories": [],
         "tone": "A more fashion-forward feminine voice that remains wearable and composed.",
         "detailHeroImage": "/assets/media/brand-pages/iblues-header.jpg",
-        "gallery": [
-          {
-            "image": "/assets/media/brand-pages/iblues-page-1.jpg",
-            "note": "iBlues editorial selection"
-          },
-          {
-            "image": "/assets/media/brand-pages/iblues-page-2.jpg",
-            "note": "iBlues editorial selection"
-          }
-        ],
+        "gallery": [],
         "detailGallery": [
-          {
-            "image": "/assets/media/brand-pages/iblues-page-1.jpg",
-            "note": "iBlues editorial image 1"
-          },
-          {
-            "image": "/assets/media/brand-pages/iblues-page-2.jpg",
-            "note": "iBlues editorial image 2"
-          },
-          {
-            "image": "/assets/media/brand-pages/iblues-page-3.jpg",
-            "note": "iBlues editorial image 3"
-          },
-          {
-            "image": "/assets/media/brand-pages/iblues-page-4.jpg",
-            "note": "iBlues editorial image 4"
-          },
-          {
-            "image": "/assets/media/brand-pages/iblues-page-5.jpg",
-            "note": "iBlues editorial image 5"
-          },
           {
             "image": "/assets/media/feed/iblues-wall-18088471763124366.jpg",
             "note": "Stressed, but still well dressed 💅🏻✨  #iBlues",
@@ -768,7 +689,7 @@
       "logoImage": "",
       "card": {
         "eyebrow": "Women",
-        "heroTitle": "",
+        "heroTitle": "Made with Love",
         "summary": "Le Tricot Perugia is a premium Italian fashion brand from Umbria that specializes in high-quality women’s knitwear and elegant total-look collections",
         "heroImage": "/assets/media/uploads/1782400285410-le-tricot-perugia_picture-brand_portrait.jpg"
       },
