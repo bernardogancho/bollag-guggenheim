@@ -242,12 +242,7 @@
         "intro": "Rooted in Tuscan tradition, Cuoieria Fiorentina has built its identity around premium leather goods, blending authentic Italian craftsmanship with timeless design and enduring sophistication.",
         "focus": "Innovation is expressed through craftsmanship, where Tuscan leather heritage is continuously reinterpreted into contemporary design defined by precision, functionality, and refined modernity.",
         "atmosphere": "Focused, refined, tradition, innovation.",
-        "categories": [
-          "Accessories",
-          "Lethergoods",
-          "Handbags",
-          "Made in Italy"
-        ],
+        "categories": [],
         "tone": "A traditionnal brand built on consistency, signature product focus, and fashion-driven characte.",
         "detailHeroImage": "/assets/media/uploads/1782391756105-cuoieria-fiorentina_banner.jpg",
         "gallery": [],
@@ -282,7 +277,7 @@
         "eyebrow": "Women & Men",
         "heroTitle": "For Beautiful People",
         "summary": "Sharper silhouettes and modern tailoring for independent dressers with a metropolitan point of view.",
-        "heroImage": "/assets/media/brand-pages/drykorn-page-1.jpg"
+        "heroImage": "/assets/media/uploads/1782482580496-drykorn_picture-brand_portrait.jpg"
       },
       "detail": {
         "intro": "Drykorn began with a simple proposition: fashionable trousers at accessible prices. From that focused start, it expanded into an international label defined by contemporary tailoring, urban clarity, and a more self-possessed kind of dressing.",
@@ -294,38 +289,9 @@
           "Modern Separates"
         ],
         "tone": "A sharper editorial voice carried through fit, attitude, and metropolitan precision.",
-        "detailHeroImage": "/assets/media/brand-pages/drykorn-header.jpg",
-        "gallery": [
-          {
-            "image": "/assets/media/brand-pages/drykorn-page-1.jpg",
-            "note": "Drykorn editorial selection"
-          },
-          {
-            "image": "/assets/media/brand-pages/drykorn-page-2.jpg",
-            "note": "Drykorn editorial selection"
-          }
-        ],
+        "detailHeroImage": "/assets/media/uploads/1782482598345-drykorn_banner.jpg",
+        "gallery": [],
         "detailGallery": [
-          {
-            "image": "/assets/media/brand-pages/drykorn-page-1.jpg",
-            "note": "Drykorn editorial image 1"
-          },
-          {
-            "image": "/assets/media/brand-pages/drykorn-page-2.jpg",
-            "note": "Drykorn editorial image 2"
-          },
-          {
-            "image": "/assets/media/brand-pages/drykorn-page-3.jpg",
-            "note": "Drykorn editorial image 3"
-          },
-          {
-            "image": "/assets/media/brand-pages/drykorn-page-4.jpg",
-            "note": "Drykorn editorial image 4"
-          },
-          {
-            "image": "/assets/media/brand-pages/drykorn-page-5.jpg",
-            "note": "Drykorn editorial image 5"
-          },
           {
             "image": "/assets/media/feed/drykorn-wall-18129406192470283.jpg",
             "note": "Getting ready for spring, with an eye on summer.⁠ ⁠ An oversized blazer paired with wide trousers, crafted from pure linen, creates a breathable, relaxed silhou",
