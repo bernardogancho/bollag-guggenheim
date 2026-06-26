@@ -357,6 +357,27 @@
       }
     },
     {
+      "name": "The Jack Leathers",
+      "slug": "The-Jack-Leathers",
+      "rosterCard": {
+        "segment": "Women & Men",
+        "websiteHref": "https://www.jackleathers.com/the-jack-leathers/",
+        "logoSrc": "/assets/media/uploads/1782465997749-logo-the-jack-leather_weiss-hg.jpg",
+        "hoverImage": "/assets/media/uploads/1782466014752-the-jack-leather_banner.jpg",
+        "detailImage": "/assets/media/uploads/1782466022206-the-jack-leather_picture-brand_portrait.jpg",
+        "logoLines": [
+          "The Jack Leather"
+        ]
+      },
+      "detail": {
+        "summary": "The Jack Leathers is an Italian fashion brand that specializes in high-quality leather jackets, accessories, and urban-inspired outerwear",
+        "intro": " The brand combines traditional leather craftsmanship with modern design. \nIts signature features include vintage effects, waxed and textured leather surfaces, and a distinctive, rock-inspired urban style. "
+      },
+      "focus": "",
+      "atmosphere": "Women & Men",
+      "categories": []
+    },
+    {
       "name": "TINTORIA MATTEI",
       "slug": "tintoria-mattei",
       "rosterCard": {
@@ -425,28 +446,6 @@
           "Womenswear"
         ]
       }
-    },
-    {
-      "name": "The Jack Leathers",
-      "slug": "The-Jack-Leathers",
-      "rosterCard": {
-        "segment": "Women & Men",
-        "websiteHref": "https://www.jackleathers.com/the-jack-leathers/",
-        "logoSrc": "/assets/media/uploads/1782465997749-logo-the-jack-leather_weiss-hg.jpg",
-        "hoverImage": "/assets/media/uploads/1782466014752-the-jack-leather_banner.jpg",
-        "detailImage": "/assets/media/uploads/1782466022206-the-jack-leather_picture-brand_portrait.jpg",
-        "logoLines": []
-      },
-      "detail": {
-        "summary": "The Jack Leathers is an Italian fashion brand that specializes in high-quality leather jackets, accessories, and urban-inspired outerwear",
-        "intro": " The brand combines traditional leather craftsmanship with modern design. \nIts signature features include vintage effects, waxed and textured leather surfaces, and a distinctive, rock-inspired urban style. "
-      },
-      "focus": "",
-      "atmosphere": "Women& Men",
-      "categories": [
-        "Leather Jacket",
-        "Leather goods"
-      ]
     }
   ]
 }
