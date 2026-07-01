@@ -9,6 +9,11 @@ eleventyComputed:
   title: "{{ brand.name }} | Bollag-Guggenheim"
 ---
 {% include "components/site-header.njk" %}
+{% set brandLogo = brand.logoImage or ("/assets/media/brands/" ~ brand.slug ~ ".svg") %}
+{% set brandLogoClass = "max-h-10 w-auto brightness-0 invert drop-shadow-[0_8px_22px_rgba(0,0,0,0.28)]" %}
+{% if brand.name == "Cuoieria Fiorentina" %}
+  {% set brandLogoClass = "max-h-16 w-auto brightness-0 invert drop-shadow-[0_8px_22px_rgba(0,0,0,0.28)]" %}
+{% endif %}
 
 <section class="relative isolate overflow-hidden bg-ink text-bone">
   <div class="absolute inset-0">
@@ -28,7 +33,7 @@ eleventyComputed:
     <div class="max-w-[60rem]">
       <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>{{ brand.eyebrow }}</p>
       <div class="mb-7 max-w-[14rem]" data-reveal>
-        <img src="/assets/media/brands/{{ brand.slug }}.svg" alt="{{ brand.name }}" class="max-h-10 w-auto brightness-0 invert drop-shadow-[0_8px_22px_rgba(0,0,0,0.28)]">
+        <img src="{{ brandLogo }}" alt="{{ brand.name }}" class="{{ brandLogoClass }}">
       </div>
       <h1 class="type-hero-title max-w-[14ch] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)]" data-reveal>
         {{ brand.heroTitle or brand.summary }}

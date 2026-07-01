@@ -2,7 +2,7 @@
   "hero": {
     "eyebrow": "Company",
     "title": "Success, reliability and tradition.",
-    "summary": "BGAG and The Wearhouse unites women - and men's fashion in the contemporary, casual-trendy and jeans segment, complemented by accessories and shoes.",
+    "summary": "BGAG and The Wearhouse unites women's and men's wear in the contemporary, casual-trendy and jeans fashion segment, complemented by accessories and shoes.",
     "poster": "/assets/media/company/company-hero-poster.jpg",
     "video": "/assets/media/company/company-hero.mp4",
     "videoAlt": "Bollag-Guggenheim showroom"
@@ -10,26 +10,26 @@
   "intro": {
     "eyebrow": "The Company",
     "titleLines": [
-      "We bring our",
-      "partners 70",
-      "years of fashion",
-      "experience."
+      "In the Swiss",
+      "fashion market",
+      "for over seven",
+      "decades."
     ],
     "paragraphs": [
-      "Bollag-Guggenheim Fashion Group has been present in the Swiss fashion market for over seven decades. The company’s success in the premium lifestyle segment is driven by its profound knowhow and experience, as well as the strong synergy between wholesale and retail.",
+      "Bollag-Guggenheim Fashion Group has been present in the Swiss fashion market for over seven decades. The company's emphasis on the premium lifestyle segment, profound knowhow and experience, as well as the synergy between wholesale and retail are key to its success.",
       "BGAG and The Wearhouse unites women's and men's wear in the contemporary, casual-trendy and jeans fashion segment, complemented by accessories and shoes.",
-      "Reliable and respectful collaborations create sustainable success for franchise -, shop-in-shop -, and wholesale partners. Art remains an integral part of the showrooms.\n"
+      "Reliable and respectful partnerships create sustainable success for franchise partners, shop in shop partners and other wholesale partners. Art remains an integral part of the showrooms."
     ],
     "image": "/assets/media/company/company-portrait-2.jpg",
     "imageAlt": "Bollag-Guggenheim showroom portrait"
   },
   "history": {
     "eyebrow": "Our History",
-    "title": "",
+    "title": "We bring our partners 70 years of fashion experience.",
     "paragraphs": [
       "Bollag-Guggenheim Fashion Group is nationally and internationally regarded as a guarantor for successful fashion distribution in Switzerland and the Principality of Liechtenstein.",
       "Sami Bollag, who passed away in 2017, built and led the company to its success. His entrepreneurial mentality left a lasting imprint on the culture of the Bollag-Guggenheim Fashion Group.",
-      "Today, the business is guided by a family board and run by a strong, experienced management with its passionate and highly motivated team of over 30 employees."
+      "Today, the business is guided by a family board and run by a strong, highly experienced management with its passionate and highly motivated team of over 30 employees."
     ],
     "image": "/assets/media/company/company-history.jpg",
     "imageAlt": "Sami Bollag portrait"
@@ -61,7 +61,8 @@
     "retail": {
       "eyebrow": "Retail",
       "paragraphs": [
-        "With mono- and multibrand stores, the group gathers direct retail experience and market information that strengthens its relationships with both wholesale customers and brand partners."
+        "With monobrand and multibrand stores, the group gathers direct retail experience and market information that strengthens its relationships with both wholesale customers and brand partners.",
+        "That store-level knowledge supports stronger brand management and a more informed distribution strategy overall."
       ]
     }
   }

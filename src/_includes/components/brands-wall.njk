@@ -16,6 +16,10 @@
 
     <div class="grid grid-cols-2 border border-black/12 bg-white/28 backdrop-blur-[2px] sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
       {% for brand in cms.home.brandsWall.items %}
+        {% set logoClass = "relative z-10 max-h-10 w-auto max-w-[10rem] opacity-85 grayscale transition duration-500 group-hover:-translate-y-1 group-hover:opacity-100 group-hover:grayscale-0 group-hover:brightness-0 group-hover:invert group-focus-visible:-translate-y-1 group-focus-visible:opacity-100 group-focus-visible:grayscale-0 group-focus-visible:brightness-0 group-focus-visible:invert" %}
+        {% if brand.href == "/brands/cuoieria-fiorentina/" %}
+          {% set logoClass = "relative z-10 max-h-16 w-auto max-w-[13rem] opacity-85 grayscale transition duration-500 group-hover:-translate-y-1 group-hover:opacity-100 group-hover:grayscale-0 group-hover:brightness-0 group-hover:invert group-focus-visible:-translate-y-1 group-focus-visible:opacity-100 group-focus-visible:grayscale-0 group-focus-visible:brightness-0 group-focus-visible:invert" %}
+        {% endif %}
         <a href="{{ brand.href }}" class="group relative flex min-h-40 items-center justify-center overflow-hidden border-b border-r border-black/12 px-6 py-10 transition duration-500 hover:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.05)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black/30 sm:min-h-44 lg:min-h-48" data-reveal aria-label="View {{ brand.name }} brand page">
           {% if brand.heroImage %}
             <img
@@ -28,7 +32,7 @@
           <img
             src="{{ brand.logoImage }}"
             alt="{{ brand.name }}"
-            class="relative z-10 max-h-10 w-auto max-w-[10rem] opacity-85 grayscale transition duration-500 group-hover:-translate-y-1 group-hover:opacity-100 group-hover:grayscale-0 group-hover:brightness-0 group-hover:invert group-focus-visible:-translate-y-1 group-focus-visible:opacity-100 group-focus-visible:grayscale-0 group-focus-visible:brightness-0 group-focus-visible:invert"
+            class="{{ logoClass }}"
           >
         </a>
       {% endfor %}

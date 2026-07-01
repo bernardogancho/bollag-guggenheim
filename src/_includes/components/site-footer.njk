@@ -80,6 +80,16 @@
               {% endfor %}
             </ul>
           </nav>
+          {% if footer.legal and footer.legal.links %}
+            <nav aria-label="{{ footer.legal.title }}" class="footer-brand-card">
+              <p class="type-label mb-4 text-black/42">{{ footer.legal.title }}</p>
+              <ul class="space-y-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm font-medium uppercase tracking-[0.18em] text-black/74 lg:text-[0.82rem]">
+                {% for item in footer.legal.links %}
+                  <li><a href="{{ item.href }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ item.label }}</a></li>
+                {% endfor %}
+              </ul>
+            </nav>
+          {% endif %}
         </section>
       </div>
 

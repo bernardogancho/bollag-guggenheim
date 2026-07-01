@@ -398,12 +398,14 @@
 
   .hero-typewriter {
     display: inline-block;
-    white-space: nowrap;
+    max-width: min(100%, 20ch);
+    white-space: normal;
     border-right: 1px solid rgba(250, 248, 246, 0.82);
     font-family: Inter, "Helvetica Neue", Arial, sans-serif;
-    font-size: clamp(1.9rem, 4vw, 2.5rem);
+    font-size: 1.52rem;
     font-weight: 500;
-    letter-spacing: 0.16em;
+    line-height: 1.08;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: rgba(250, 248, 246, 0.88);
     animation: caret-blink 820ms 420ms steps(1) infinite;
@@ -430,6 +432,22 @@
   .hero-typewriter-subline.is-visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  @media (min-width: 640px) {
+    .hero-typewriter {
+      max-width: none;
+      white-space: nowrap;
+      font-size: 1.68rem;
+      letter-spacing: 0.14em;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-typewriter {
+      font-size: 2rem;
+      letter-spacing: 0.16em;
+    }
   }
 
   .nav-link {
@@ -696,7 +714,6 @@
     }
 
     .hero-typewriter {
-      white-space: nowrap;
       border-right-color: transparent !important;
     }
 

@@ -63,32 +63,38 @@ title: Wearhouse | Bollag-Guggenheim
       </div>
     </div>
 
-    <div class="grid grid-cols-2 border border-black/12 bg-white/28 backdrop-blur-[2px] sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {% for brand in wearhouse.brands %}
-        <a
-          href="{{ brand.pageHref }}"
-          class="group relative flex min-h-40 flex-col justify-between overflow-hidden border-b border-r border-black/12 px-5 py-5 transition duration-500 hover:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.05)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black/30 sm:min-h-44 sm:px-6 sm:py-6 lg:min-h-48 lg:px-7 lg:py-7"
-          data-reveal
-        >
-            {% if brand.hoverImage %}
-              <img
-                src="{{ brand.hoverImage }}"
-                alt=""
-                class="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"
-              >
-              <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.16),rgba(0,0,0,0.48)_100%)] opacity-0 transition duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"></div>
-            {% endif %}
-            <div class="relative z-10">
-              <p class="mb-8 text-[0.68rem] uppercase tracking-[0.28em] text-black/38 transition duration-500 {% if brand.hoverImage %}group-hover:text-white/70 group-focus-visible:text-white/70{% endif %}">
-                {{ brand.segment }}
-              </p>
-              <h3 class="max-w-[13ch] font-display text-[1.7rem] leading-[0.95] tracking-[-0.04em] text-black transition duration-500 {% if brand.hoverImage %}group-hover:text-white group-focus-visible:text-white{% endif %}">
-                {{ brand.name }}
-              </h3>
+        {% set logoClass = 'h-10 sm:h-12 lg:h-14 w-auto max-w-[12rem] object-contain object-left' %}
+        {% set bodyClass = 'type-body-sm max-w-[24rem]' %}
+        {% set imageClass = 'object-center' %}
+        {% set cardImage = brand.detailHeroImage or brand.hoverImage %}
+        {% set logoImage = brand.logoSrc or brand.logoSvg %}
+        {% if brand.slug == 'save-the-duck' %}
+          {% set logoImage = brand.logoSvg %}
+        {% endif %}
+        <a href="{{ brand.pageHref }}" class="group relative block min-h-[24rem] overflow-hidden border border-black/5 bg-[#FAF7F4]" data-reveal>
+          {% if cardImage %}
+            <img src="{{ cardImage }}" alt="{{ brand.name }} image" class="absolute inset-0 h-full w-full object-cover {{ imageClass }} transition duration-[1100ms] group-hover:scale-[1.04] group-hover:opacity-92">
+          {% endif %}
+          <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.22),rgba(0,0,0,0.34)_28%,rgba(0,0,0,0.86)_100%)]"></div>
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_34%),linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0)_30%,rgba(0,0,0,0.24)_100%)] opacity-90"></div>
+          <div class="relative flex h-full flex-col justify-between p-6 lg:p-7">
+            <div class="flex items-start justify-between gap-4">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/16 bg-white/10 text-sm text-white/72 transition duration-300 group-hover:bg-white group-hover:text-black">→</span>
             </div>
-            <div class="relative z-10 mt-8 flex items-center justify-between border-t border-black/10 pt-4 transition duration-500 {% if brand.hoverImage %}group-hover:border-white/18 group-focus-visible:border-white/18{% endif %}">
-              <span class="text-sm text-black/58 opacity-0 transition duration-300 group-hover:translate-x-1 {% if brand.hoverImage %}group-hover:text-white group-focus-visible:translate-x-1 group-focus-visible:text-white{% else %}group-hover:text-black{% endif %}" aria-hidden="true">→</span>
+            <div class="max-w-[28rem]">
+              <p class="type-label mb-3 text-white/80">Women &amp; Men</p>
+              <div class="mb-4 flex max-w-full items-center">
+                {% if logoImage %}
+                  <img src="{{ logoImage }}" alt="{{ brand.name }}" class="block brightness-0 invert drop-shadow-[0_8px_22px_rgba(0,0,0,0.38)] {{ logoClass }}">
+                {% else %}
+                  <span class="font-display text-[2rem] leading-none tracking-[-0.04em] text-white drop-shadow-[0_8px_22px_rgba(0,0,0,0.38)]">{{ brand.name }}</span>
+                {% endif %}
+              </div>
+              <p class="text-white {{ bodyClass }}">{{ brand.summary }}</p>
             </div>
+          </div>
         </a>
       {% endfor %}
     </div>

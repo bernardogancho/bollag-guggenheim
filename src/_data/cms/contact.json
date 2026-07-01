@@ -3,7 +3,7 @@
     "eyebrow": "Contact",
     "quote": "",
     "title": "A direct line to Bollag-Guggenheim and The Wearhouse.",
-    "summary": "",
+    "summary": "For showroom visits, brand enquiries, or general contact, the team is based in Glattpark and Erlenbach.",
     "poster": "/assets/media/page-heroes/contact-hero-poster.jpg",
     "video": "/assets/media/stores/stores-hero.mp4",
     "videoAlt": "Bollag-Guggenheim building approach"
@@ -33,7 +33,7 @@
     "googleMapsHref": "https://www.google.com/maps?q=47.423764,8.557306"
   },
   "wearhousePartner": {
-    "sectionLabel": "",
+    "sectionLabel": "Partner Contact",
     "name": "The Wearhouse Fashion Trade GmbH",
     "address": [
       "Seestrasse 78",
@@ -50,7 +50,7 @@
     "sectionLabel": "Contact Form",
     "title": "Send us a message.",
     "summary": "Use this form for showroom visits, brand enquiries, or general questions. The team will reply by email.",
-    "disclaimer": "We’ll get back to you as soon as possible.",
+    "disclaimer": "We’ll get back to you by email as soon as possible.",
     "buttonLabel": "Send Message",
     "fields": {
       "firstName": "First Name",

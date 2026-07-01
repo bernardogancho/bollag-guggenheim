@@ -2,7 +2,7 @@
   "brandsWall": {
     "eyebrow": "",
     "title": "Bollag-Guggenheim portfolio",
-    "summary": "Each label brings its own identity, product world and commercial energy into the Bollag-Guggenheim portfolio.",
+    "summary": "Each label brings its own identity, product world, and commercial energy into the Bollag-Guggenheim portfolio.",
     "items": [
       {
         "name": "Closed",
@@ -63,6 +63,12 @@
         "href": "/brands/0039-italy/",
         "logoImage": "/assets/media/brands/0039-italy.svg",
         "heroImage": "/assets/media/brand-pages/0039-italy-page-1.jpg"
+      },
+      {
+        "name": "Cuoieria Fiorentina",
+        "href": "/brands/cuoieria-fiorentina/",
+        "logoImage": "/assets/media/brands/cuoieria-fiorentina.png",
+        "heroImage": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg"
       }
     ]
   }

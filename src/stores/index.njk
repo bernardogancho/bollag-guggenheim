@@ -64,7 +64,7 @@ title: Stores | Bollag-Guggenheim
             <p class="type-body mt-5 max-w-[22rem] text-black/68" data-reveal>{{ group.intro }}</p>
           </div>
 
-          <div class="grid gap-5 {% if group.stores | length > 1 %}xl:grid-cols-2{% endif %}">
+          <div class="grid gap-5 xl:grid-cols-2">
             {% for store in group.stores %}
               <article class="group overflow-hidden border border-black/10 bg-white/38 transition duration-300 hover:border-black/18 hover:bg-white/46" data-reveal>
                 <div class="relative aspect-[4/3] overflow-hidden bg-black/5">

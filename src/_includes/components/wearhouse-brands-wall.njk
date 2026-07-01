@@ -1,49 +1,47 @@
 <section class="relative overflow-hidden bg-[#FAF8F6] text-ink">
-  <div class="relative mx-auto w-full max-w-[1600px] px-6 pb-28 pt-8 sm:px-10 lg:px-16 lg:pb-36 lg:pt-10">
-    <div class="mb-10 border-t border-black/10 pt-8 lg:mb-12">
-      <div class="max-w-[42rem]">
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/40" data-reveal>
+  <div class="relative mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
+    <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
+      <div class="max-w-[38rem]">
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal>
           {{ cms.home.wearhouseWall.eyebrow }}
         </p>
-        <h2 class="max-w-[11ch] font-display text-[1.9rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.55rem] lg:text-[3.4rem]" data-reveal>
+        <h2 class="type-section-title max-w-[15ch] text-black" data-reveal>
           {{ cms.home.wearhouseWall.title }}
         </h2>
-        <p class="mt-5 max-w-[34rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[0.98rem] leading-[1.8] text-black/64 lg:text-[1.04rem]" data-reveal>
-          {{ cms.home.wearhouseWall.summary }}
-        </p>
       </div>
     </div>
 
-    <div class="grid grid-cols-2 border border-black/12 bg-white/28 backdrop-blur-[2px] sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-      {% for brand in cms.home.wearhouseWall.items %}
-        <a
-          href="{{ brand.pageHref }}"
-          class="group relative flex min-h-40 flex-col justify-between overflow-hidden border-b border-r border-black/12 px-5 py-5 transition duration-500 hover:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.05)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black/30 sm:min-h-44 sm:px-6 sm:py-6 lg:min-h-48 lg:px-7 lg:py-7"
-          data-reveal
-          aria-label="View {{ brand.name }} via The Wearhouse"
-        >
-          {% if brand.hoverImage %}
-            <img
-              src="{{ brand.hoverImage }}"
-              alt=""
-              class="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"
-            >
-            <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.14),rgba(0,0,0,0.48)_100%)] opacity-0 transition duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"></div>
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {% for brand in wearhouse.brands %}
+        {% set logoClass = 'h-10 sm:h-12 lg:h-14 w-auto max-w-[12rem] object-contain object-left' %}
+        {% set bodyClass = 'type-body-sm max-w-[24rem]' %}
+        {% set imageClass = 'object-center' %}
+        {% set cardImage = brand.detailHeroImage or brand.hoverImage %}
+        {% set logoImage = brand.logoSrc or brand.logoSvg %}
+        {% if brand.slug == 'save-the-duck' %}
+          {% set logoImage = brand.logoSvg %}
+        {% endif %}
+        <a href="{{ brand.pageHref }}" class="group relative block min-h-[24rem] overflow-hidden border border-black/5 bg-[#FAF7F4]" data-reveal>
+          {% if cardImage %}
+            <img src="{{ cardImage }}" alt="{{ brand.name }} image" class="absolute inset-0 h-full w-full object-cover {{ imageClass }} transition duration-[1100ms] group-hover:scale-[1.04] group-hover:opacity-92">
           {% endif %}
-
-          <div class="relative z-10">
-            <p class="mb-6 text-[0.66rem] uppercase tracking-[0.28em] text-black/42 transition duration-500 group-hover:text-white group-focus-visible:text-white">
-              {{ brand.segment }}
-            </p>
-            <h3 class="max-w-[12ch] font-display text-[1.45rem] leading-[0.94] tracking-[-0.04em] text-black transition duration-500 group-hover:text-white group-focus-visible:text-white sm:text-[1.6rem] lg:text-[1.75rem]">
-              {{ brand.name }}
-            </h3>
-          </div>
-
-          <div class="relative z-10 mt-8 flex items-center justify-between border-t border-black/10 pt-4 transition duration-500 group-hover:border-white/18 group-focus-visible:border-white/18">
-            <span class="text-sm text-black/56 opacity-0 transition duration-300 group-hover:translate-x-1 group-hover:text-white group-focus-visible:translate-x-1 group-focus-visible:text-white" aria-hidden="true">
-              →
-            </span>
+          <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.22),rgba(0,0,0,0.34)_28%,rgba(0,0,0,0.86)_100%)]"></div>
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_34%),linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0)_30%,rgba(0,0,0,0.24)_100%)] opacity-90"></div>
+          <div class="relative flex h-full flex-col justify-between p-6 lg:p-7">
+            <div class="flex items-start justify-between gap-4">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/16 bg-white/10 text-sm text-white/72 transition duration-300 group-hover:bg-white group-hover:text-black">→</span>
+            </div>
+            <div class="max-w-[28rem]">
+              <p class="type-label mb-3 text-white/80">Women &amp; Men</p>
+              <div class="mb-4 flex max-w-full items-center">
+                {% if logoImage %}
+                  <img src="{{ logoImage }}" alt="{{ brand.name }}" class="block brightness-0 invert drop-shadow-[0_8px_22px_rgba(0,0,0,0.38)] {{ logoClass }}">
+                {% else %}
+                  <span class="font-display text-[2rem] leading-none tracking-[-0.04em] text-white drop-shadow-[0_8px_22px_rgba(0,0,0,0.38)]">{{ brand.name }}</span>
+                {% endif %}
+              </div>
+              <p class="text-white {{ bodyClass }}">{{ brand.summary }}</p>
+            </div>
           </div>
         </a>
       {% endfor %}

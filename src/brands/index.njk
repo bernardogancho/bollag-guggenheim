@@ -50,6 +50,10 @@ title: Brands | Bollag-Guggenheim
         {% set logoClass = 'h-10 sm:h-12 lg:h-14 w-auto max-w-[12rem] object-contain object-left' %}
         {% set bodyClass = 'type-body-sm max-w-[24rem]' %}
         {% set imageClass = 'object-center' %}
+        {% set logoImage = brand.logoImage or ("/assets/media/brands/" ~ brand.slug ~ ".svg") %}
+        {% if brand.name == 'Cuoieria Fiorentina' %}
+          {% set logoClass = 'h-16 sm:h-20 lg:h-24 w-auto max-w-[16rem] object-contain object-left' %}
+        {% endif %}
         {% if brand.slug == 'more-and-more' %}
           {% set imageClass = 'object-[58%_24%]' %}
         {% endif %}
@@ -62,9 +66,9 @@ title: Brands | Bollag-Guggenheim
                             <span class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/16 bg-white/10 text-sm text-white/72 transition duration-300 group-hover:bg-white group-hover:text-black">→</span>
             </div>
             <div class="max-w-[28rem]">
-              <p class="type-label mb-3 text-white/80">{{ brand.eyebrow }}</p>
+              <p class="type-label mb-3 text-white/80">Women &amp; Men</p>
               <div class="mb-4 flex max-w-full items-center">
-                <img src="/assets/media/brands/{{ brand.slug }}.svg" alt="{{ brand.name }}" class="block brightness-0 invert drop-shadow-[0_8px_22px_rgba(0,0,0,0.38)] {{ logoClass }}">
+                <img src="{{ logoImage }}" alt="{{ brand.name }}" class="block brightness-0 invert drop-shadow-[0_8px_22px_rgba(0,0,0,0.38)] {{ logoClass }}">
               </div>
               <p class="text-white {{ bodyClass }}">{{ brand.summary }}</p>
             </div>
