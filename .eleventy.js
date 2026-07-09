@@ -1,5 +1,6 @@
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/assets/media": "assets/media" });
+  eleventyConfig.addPassthroughCopy({ "src/assets/documents": "assets/documents" });
   eleventyConfig.addPassthroughCopy({ "src/assets/scripts": "assets/scripts" });
   eleventyConfig.addPassthroughCopy({ "src/admin/config.yml": "admin/config.yml" });
   eleventyConfig.addPassthroughCopy({ "src/_data/cms": "cms-data" });
