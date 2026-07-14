@@ -6,14 +6,14 @@
   "scripts": {
     "dev": "concurrently \"npm:dev:css\" \"npm:dev:admin\" \"npm:dev:vercel\"",
     "dev:static": "concurrently \"npm:dev:css\" \"npm:dev:admin\" \"npm:dev:site\"",
-    "dev:admin": "esbuild src/admin/app.jsx --bundle --format=esm --platform=browser --target=es2020 --outfile=_site/admin/app.js --watch",
+    "dev:admin": "esbuild src/admin/main.jsx --bundle --format=esm --platform=browser --target=es2020 --outfile=_site/admin/app.js --watch",
     "dev:css": "tailwindcss -i ./src/assets/styles/site.css -o ./_site/assets/styles/site.css --watch",
     "dev:site": "eleventy --serve",
     "dev:vercel": "vercel dev --listen 3000",
     "build": "npm run build:css && npm run build:site && npm run build:admin",
     "build:css": "tailwindcss -i ./src/assets/styles/site.css -o ./_site/assets/styles/site.css --minify",
     "build:site": "eleventy",
-    "build:admin": "esbuild src/admin/app.jsx --bundle --format=esm --platform=browser --target=es2020 --outfile=_site/admin/app.js",
+    "build:admin": "esbuild src/admin/main.jsx --bundle --format=esm --platform=browser --target=es2020 --outfile=_site/admin/app.js",
     "serve": "eleventy --serve",
     "test": "vitest run",
     "test:watch": "vitest"
