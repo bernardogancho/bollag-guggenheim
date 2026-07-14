@@ -2187,6 +2187,7 @@ import { FieldShell } from './basics.jsx';
 
 export function InlineListField({ field, value, onChange }) {
   const items = Array.isArray(value) ? value : [];
+  const isTextarea = field?.field?.widget === 'text';
   const setItem = (index, next) => {
     const copy = items.slice();
     copy[index] = next;
@@ -2198,7 +2199,11 @@ export function InlineListField({ field, value, onChange }) {
       <div className="inline-list">
         {items.map((item, index) => (
           <div className="inline-list-row" key={index}>
-            <input className="input" value={item ?? ''} onChange={event => setItem(index, event.target.value)} />
+            {isTextarea ? (
+              <textarea className="textarea" rows={3} value={item ?? ''} onChange={event => setItem(index, event.target.value)} />
+            ) : (
+              <input className="input" value={item ?? ''} onChange={event => setItem(index, event.target.value)} />
+            )}
             <div className="inline-list-actions">
               <button type="button" className="icon-button" title="Move up" disabled={index === 0} onClick={() => onChange(reorder(items, index, index - 1))}>↑</button>
               <button type="button" className="icon-button" title="Move down" disabled={index === items.length - 1} onClick={() => onChange(reorder(items, index, index + 1))}>↓</button>
@@ -2486,6 +2491,10 @@ function readFileAsDataUrl(file) {
 
 const IMAGE_SHAPE = /\.(avif|gif|jpe?g|png|svg|webp)$/i;
 
+// Vercel serverless functions reject request bodies over ~4.5 MB and base64
+// encoding adds ~33%, so the practical raw-file ceiling is ~3 MB.
+const MAX_UPLOAD_BYTES = 3 * 1024 * 1024;
+
 export function MediaPicker({ kind, onSelect, onClose }) {
   const { api, mediaIndex, setMediaIndex } = useAdmin();
   const toast = useToast();
@@ -2495,7 +2504,7 @@ export function MediaPicker({ kind, onSelect, onClose }) {
 
   const files = useMemo(() => {
     const all = mediaIndex?.files || [];
-    const typed = kind === 'image' ? all.filter(file => IMAGE_SHAPE.test(file.path)) : all;
+    const typed = kind === 'image' ? all.filter(file => IMAGE_SHAPE.test(file.path)) : all.filter(file => !IMAGE_SHAPE.test(file.path));
     const needle = query.trim().toLowerCase();
     return needle ? typed.filter(file => file.path.toLowerCase().includes(needle)) : typed;
   }, [mediaIndex, kind, query]);
@@ -2503,6 +2512,11 @@ export function MediaPicker({ kind, onSelect, onClose }) {
   const handleUpload = async event => {
     const file = event.target.files?.[0];
     if (!file) {
+      return;
+    }
+    if (file.size > MAX_UPLOAD_BYTES) {
+      toast('Files must be smaller than 3 MB. Compress it and try again.', 'error');
+      event.target.value = '';
       return;
     }
     setUploading(true);
@@ -2531,7 +2545,7 @@ export function MediaPicker({ kind, onSelect, onClose }) {
           <button type="button" className="button button-primary" disabled={uploading} onClick={() => fileInput.current?.click()}>
             {uploading ? 'Uploading…' : 'Upload new'}
           </button>
-          <input ref={fileInput} type="file" className="hidden-input" accept={kind === 'image' ? 'image/*' : '*'} onChange={handleUpload} />
+          <input ref={fileInput} type="file" className="hidden-input" accept={kind === 'image' ? 'image/*' : 'video/*'} onChange={handleUpload} />
         </div>
         <div className="picker-grid">
           {files.length ? files.map(file => (
