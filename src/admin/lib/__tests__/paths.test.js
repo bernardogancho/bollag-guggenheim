@@ -28,6 +28,13 @@ describe('paths', () => {
     expect(obj.a.b).toBe(5);
   });
 
+  it('setAtPath creates arrays for numeric next segments', () => {
+    const obj = {};
+    setAtPath(obj, 'a.0.b', 2);
+    expect(Array.isArray(obj.a)).toBe(true);
+    expect(obj.a[0].b).toBe(2);
+  });
+
   it('reorder moves an item and returns a new array', () => {
     const list = ['a', 'b', 'c'];
     expect(reorder(list, 0, 2)).toEqual(['b', 'c', 'a']);

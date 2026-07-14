@@ -22,6 +22,14 @@ describe('store', () => {
     expect(store.isDirty(FILE)).toBe(true);
   });
 
+  it('falls back to remote when the persisted draft is corrupted JSON', () => {
+    localStorage.setItem(DRAFT_PREFIX + FILE, '{not valid json');
+    const store = createStore();
+    store.loadFile(FILE, remote());
+    expect(store.getDraft(FILE)).toEqual(remote());
+    expect(store.isDirty(FILE)).toBe(false);
+  });
+
   it('update mutates a clone, persists, and marks dirty (per top-level key too)', () => {
     const store = createStore();
     store.loadFile(FILE, remote());

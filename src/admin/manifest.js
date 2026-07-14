@@ -2,7 +2,7 @@
 // each page's sections appear in on-page order with editor-facing names.
 // `file` + `keys` address the existing JSON content; field definitions still
 // come from config.yml. The Wearhouse brand roster spans two files and is
-// handled by the wearhouse adapter (see adapters/wearhouse.js).
+// handled by the wearhouse adapter.
 
 const CMS = 'src/_data/cms';
 

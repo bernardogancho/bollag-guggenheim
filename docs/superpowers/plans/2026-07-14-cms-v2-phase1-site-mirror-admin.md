@@ -83,7 +83,7 @@ export default defineConfig({
 `src/admin/lib/__tests__/setup.js` (localStorage stub so store tests run in node):
 
 ```js
-if (typeof globalThis.localStorage === 'undefined') {
+if (typeof globalThis.localStorage?.setItem !== 'function') {
   const map = new Map();
   globalThis.localStorage = {
     getItem: key => (map.has(key) ? map.get(key) : null),
@@ -145,6 +145,13 @@ describe('paths', () => {
     expect(obj.a.b).toBe(5);
   });
 
+  it('setAtPath creates arrays for numeric next segments', () => {
+    const obj = {};
+    setAtPath(obj, 'a.0.b', 2);
+    expect(Array.isArray(obj.a)).toBe(true);
+    expect(obj.a[0].b).toBe(2);
+  });
+
   it('reorder moves an item and returns a new array', () => {
     const list = ['a', 'b', 'c'];
     expect(reorder(list, 0, 2)).toEqual(['b', 'c', 'a']);
@@ -183,9 +190,13 @@ export function setAtPath(obj, path, value) {
   const keys = String(path).split('.');
   const last = keys.pop();
   let current = obj;
-  for (const key of keys) {
+  for (let i = 0; i < keys.length; i += 1) {
+    const key = keys[i];
     if (current[key] === null || current[key] === undefined || typeof current[key] !== 'object') {
-      current[key] = /^\d+$/.test(key) ? [] : {};
+      // A missing intermediate's type is chosen by the NEXT segment (the one that
+      // will index into it): numeric next segment → array, otherwise object.
+      const nextKey = i + 1 < keys.length ? keys[i + 1] : last;
+      current[key] = /^\d+$/.test(nextKey) ? [] : {};
     }
     current = current[key];
   }
@@ -202,7 +213,7 @@ export function reorder(list, fromIndex, toIndex) {
 
 - [ ] **Step 4: Run tests**
 
-Run: `npm test` — Expected: PASS (5 tests).
+Run: `npm test` — Expected: PASS (6 tests).
 
 - [ ] **Step 5: Commit**
 
@@ -297,7 +308,7 @@ describe('manifest integrity', () => {
 // each page's sections appear in on-page order with editor-facing names.
 // `file` + `keys` address the existing JSON content; field definitions still
 // come from config.yml. The Wearhouse brand roster spans two files and is
-// handled by the wearhouse adapter (see adapters/wearhouse.js).
+// handled by the wearhouse adapter.
 
 const CMS = 'src/_data/cms';
 
@@ -445,6 +456,14 @@ describe('store', () => {
     expect(store.isDirty(FILE)).toBe(true);
   });
 
+  it('falls back to remote when the persisted draft is corrupted JSON', () => {
+    localStorage.setItem(DRAFT_PREFIX + FILE, '{not valid json');
+    const store = createStore();
+    store.loadFile(FILE, remote());
+    expect(store.getDraft(FILE)).toEqual(remote());
+    expect(store.isDirty(FILE)).toBe(false);
+  });
+
   it('update mutates a clone, persists, and marks dirty (per top-level key too)', () => {
     const store = createStore();
     store.loadFile(FILE, remote());
@@ -519,12 +538,20 @@ export function createStore() {
     }
   };
 
+  // Equality is JSON.stringify-based; mutations must preserve key order
+  // (clone-then-mutate does). Do not rebuild objects with reordered keys.
+  // localStorage failures (quota, private browsing) are swallowed so they can
+  // never prevent emit() from running — drafts then live only in memory.
   const persist = filePath => {
     const entry = files.get(filePath);
-    if (JSON.stringify(entry.draft) !== JSON.stringify(entry.remote)) {
-      localStorage.setItem(DRAFT_PREFIX + filePath, JSON.stringify(entry.draft));
-    } else {
-      localStorage.removeItem(DRAFT_PREFIX + filePath);
+    try {
+      if (JSON.stringify(entry.draft) !== JSON.stringify(entry.remote)) {
+        localStorage.setItem(DRAFT_PREFIX + filePath, JSON.stringify(entry.draft));
+      } else {
+        localStorage.removeItem(DRAFT_PREFIX + filePath);
+      }
+    } catch {
+      // Storage unavailable — continue with in-memory draft only.
     }
   };
 
@@ -537,13 +564,13 @@ export function createStore() {
 
     loadFile(filePath, remote) {
       let draft = null;
-      const raw = localStorage.getItem(DRAFT_PREFIX + filePath);
-      if (raw) {
-        try {
+      try {
+        const raw = localStorage.getItem(DRAFT_PREFIX + filePath);
+        if (raw) {
           draft = JSON.parse(raw);
-        } catch {
-          draft = null;
         }
+      } catch {
+        draft = null;
       }
       files.set(filePath, { remote: deepClone(remote), draft: draft || deepClone(remote) });
       emit();
@@ -566,6 +593,8 @@ export function createStore() {
       emit();
     },
 
+    // Dirty checks share the JSON.stringify key-order-sensitive invariant
+    // documented on persist() above.
     isDirty(filePath) {
       const entry = files.get(filePath);
       return Boolean(entry) && JSON.stringify(entry.draft) !== JSON.stringify(entry.remote);
@@ -586,7 +615,11 @@ export function createStore() {
         return;
       }
       entry.draft = deepClone(entry.remote);
-      localStorage.removeItem(DRAFT_PREFIX + filePath);
+      try {
+        localStorage.removeItem(DRAFT_PREFIX + filePath);
+      } catch {
+        // Storage unavailable — in-memory state is already reset.
+      }
       emit();
     },
 
@@ -604,7 +637,11 @@ export function createStore() {
         const entry = files.get(filePath);
         if (entry) {
           entry.remote = deepClone(entry.draft);
-          localStorage.removeItem(DRAFT_PREFIX + filePath);
+          try {
+            localStorage.removeItem(DRAFT_PREFIX + filePath);
+          } catch {
+            // Storage unavailable — in-memory state is already published.
+          }
         }
       }
       emit();

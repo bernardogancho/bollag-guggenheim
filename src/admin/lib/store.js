@@ -17,12 +17,20 @@ export function createStore() {
     }
   };
 
+  // Equality is JSON.stringify-based; mutations must preserve key order
+  // (clone-then-mutate does). Do not rebuild objects with reordered keys.
+  // localStorage failures (quota, private browsing) are swallowed so they can
+  // never prevent emit() from running — drafts then live only in memory.
   const persist = filePath => {
     const entry = files.get(filePath);
-    if (JSON.stringify(entry.draft) !== JSON.stringify(entry.remote)) {
-      localStorage.setItem(DRAFT_PREFIX + filePath, JSON.stringify(entry.draft));
-    } else {
-      localStorage.removeItem(DRAFT_PREFIX + filePath);
+    try {
+      if (JSON.stringify(entry.draft) !== JSON.stringify(entry.remote)) {
+        localStorage.setItem(DRAFT_PREFIX + filePath, JSON.stringify(entry.draft));
+      } else {
+        localStorage.removeItem(DRAFT_PREFIX + filePath);
+      }
+    } catch {
+      // Storage unavailable — continue with in-memory draft only.
     }
   };
 
@@ -35,13 +43,13 @@ export function createStore() {
 
     loadFile(filePath, remote) {
       let draft = null;
-      const raw = localStorage.getItem(DRAFT_PREFIX + filePath);
-      if (raw) {
-        try {
+      try {
+        const raw = localStorage.getItem(DRAFT_PREFIX + filePath);
+        if (raw) {
           draft = JSON.parse(raw);
-        } catch {
-          draft = null;
         }
+      } catch {
+        draft = null;
       }
       files.set(filePath, { remote: deepClone(remote), draft: draft || deepClone(remote) });
       emit();
@@ -64,6 +72,8 @@ export function createStore() {
       emit();
     },
 
+    // Dirty checks share the JSON.stringify key-order-sensitive invariant
+    // documented on persist() above.
     isDirty(filePath) {
       const entry = files.get(filePath);
       return Boolean(entry) && JSON.stringify(entry.draft) !== JSON.stringify(entry.remote);
@@ -84,7 +94,11 @@ export function createStore() {
         return;
       }
       entry.draft = deepClone(entry.remote);
-      localStorage.removeItem(DRAFT_PREFIX + filePath);
+      try {
+        localStorage.removeItem(DRAFT_PREFIX + filePath);
+      } catch {
+        // Storage unavailable — in-memory state is already reset.
+      }
       emit();
     },
 
@@ -102,7 +116,11 @@ export function createStore() {
         const entry = files.get(filePath);
         if (entry) {
           entry.remote = deepClone(entry.draft);
-          localStorage.removeItem(DRAFT_PREFIX + filePath);
+          try {
+            localStorage.removeItem(DRAFT_PREFIX + filePath);
+          } catch {
+            // Storage unavailable — in-memory state is already published.
+          }
         }
       }
       emit();
