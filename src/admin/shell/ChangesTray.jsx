@@ -31,7 +31,7 @@ export function ChangesTray() {
   const [revertPending, setRevertPending] = useState(false);
 
   const dirtyPaths = store.dirtyPaths();
-  const rows = useMemo(() => allSections().filter(section => sectionIsDirty(store, section)), [store.getVersion(), dirtyPaths.length]);
+  const rows = useMemo(() => allSections().filter(section => sectionIsDirty(store, section)), [store.getVersion()]);
 
   // Warn when leaving mid-publish or with unpublished changes.
   useEffect(() => {
@@ -76,7 +76,10 @@ export function ChangesTray() {
   }, [store.getVersion()]);
 
   const discardRow = section => {
-    if (!window.confirm(`Discard unpublished changes to “${section.label}”?`)) {
+    const message = section.joined
+      ? `Discard unpublished changes to “${section.label}”? This restores both Wearhouse files to the published version.`
+      : `Discard unpublished changes to “${section.label}”?`;
+    if (!window.confirm(message)) {
       return;
     }
     if (section.joined) {
@@ -90,15 +93,21 @@ export function ChangesTray() {
   const publish = async () => {
     setPublishPending(true);
     try {
+      // Snapshot the payload ONCE and account against that exact snapshot:
+      // an edit made while the request is in flight must stay dirty rather
+      // than being silently marked clean by a re-read of the current drafts.
       const paths = store.dirtyPaths();
-      await api.publish(
-        paths.map(path => ({ path, content: `${JSON.stringify(store.getDraft(path), null, 2)}\n` })),
-        `Update CMS content (${paths.length} file${paths.length === 1 ? '' : 's'})`,
-      );
-      store.markPublished(paths);
+      const files = paths.map(path => ({ path, content: `${JSON.stringify(store.getDraft(path), null, 2)}\n` }));
+      const result = await api.publish(files, `Update CMS content (${paths.length} file${paths.length === 1 ? '' : 's'})`);
+      store.markPublishedContent(files);
       setConfirming(false);
       setOpen(false);
-      toast('Published. The website updates in about a minute.', 'success');
+      toast(
+        result.deployTriggered === false
+          ? 'Published. The site did not redeploy automatically — it may need a manual deploy.'
+          : 'Published. The website updates in about a minute.',
+        'success',
+      );
     } catch (error) {
       toast(error.message || 'Could not publish.', 'error');
     } finally {

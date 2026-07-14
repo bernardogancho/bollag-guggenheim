@@ -1318,6 +1318,11 @@ button:disabled {
   color: var(--text);
 }
 
+/* Child spans must not steal dragenter/dragleave — prevents dragover flicker. */
+.asset-dropzone > * {
+  pointer-events: none;
+}
+
 .asset-dropzone.is-dragover {
   border-color: var(--accent);
   border-style: solid;

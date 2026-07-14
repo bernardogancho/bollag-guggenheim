@@ -58,6 +58,7 @@ export function Search() {
         className="input" placeholder="Search pages, sections, brands, stores…"
         value={query} onChange={event => setQuery(event.target.value)}
         onKeyDown={event => { if (event.key === 'Escape') setQuery(''); }}
+        onBlur={() => setTimeout(() => setQuery(''), 150)} // delayed so a hit's onMouseDown (which fires before blur completes) still navigates
       />
       {hits.length ? (
         <div className="search-pop">

@@ -493,14 +493,34 @@ describe('store', () => {
     expect(store.isDirty(FILE)).toBe(true);
   });
 
-  it('markPublished snapshots draft as new remote and clears storage', () => {
+  it('markPublishedContent makes the sent snapshot the new remote and clears storage', () => {
     const store = createStore();
     store.loadFile(FILE, remote());
     store.update(FILE, draft => { draft.hero.title = 'New'; });
-    store.markPublished([FILE]);
+    const files = [{ path: FILE, content: `${JSON.stringify(store.getDraft(FILE), null, 2)}\n` }];
+    store.markPublishedContent(files);
     expect(store.isDirty(FILE)).toBe(false);
     expect(store.getRemote(FILE).hero.title).toBe('New');
     expect(localStorage.getItem(DRAFT_PREFIX + FILE)).toBeNull();
+  });
+
+  it('markPublishedContent keeps an edit made during the publish flight dirty and persisted', () => {
+    const store = createStore();
+    store.loadFile(FILE, remote());
+    store.update(FILE, draft => { draft.hero.title = 'A'; });
+    const snapshot = [{ path: FILE, content: `${JSON.stringify(store.getDraft(FILE), null, 2)}\n` }];
+    store.update(FILE, draft => { draft.hero.title = 'B'; }); // mid-flight edit
+    store.markPublishedContent(snapshot);
+    expect(store.getRemote(FILE).hero.title).toBe('A'); // what was actually published
+    expect(store.isDirty(FILE)).toBe(true); // edit B survives as an unpublished change
+    expect(JSON.parse(localStorage.getItem(DRAFT_PREFIX + FILE)).hero.title).toBe('B');
+  });
+
+  it('markPublishedContent ignores paths that are not loaded', () => {
+    const store = createStore();
+    store.loadFile(FILE, remote());
+    expect(() => store.markPublishedContent([{ path: 'src/_data/cms/nope.json', content: '{}' }])).not.toThrow();
+    expect(store.isDirty(FILE)).toBe(false);
   });
 
   it('notifies subscribers on change', () => {
@@ -632,17 +652,19 @@ export function createStore() {
       });
     },
 
-    markPublished(filePaths) {
-      for (const filePath of filePaths) {
-        const entry = files.get(filePath);
-        if (entry) {
-          entry.remote = deepClone(entry.draft);
-          try {
-            localStorage.removeItem(DRAFT_PREFIX + filePath);
-          } catch {
-            // Storage unavailable — in-memory state is already published.
-          }
+    // Snapshot-based publish accounting: entries are the EXACT {path, content}
+    // payloads sent to /api/publish. The published content — not the current
+    // draft — becomes the new remote, so an edit made while the publish
+    // request was in flight stays dirty (an unpublished change) instead of
+    // being silently marked clean.
+    markPublishedContent(entries) {
+      for (const { path, content } of entries) {
+        const entry = files.get(path);
+        if (!entry) {
+          continue;
         }
+        entry.remote = JSON.parse(content);
+        persist(path); // draft equals new remote → clears storage; still different → stays dirty
       }
       emit();
     },
@@ -1986,6 +2008,8 @@ git commit -m "feat(cms-v2): hash router, toasts, sidebar/topbar shell"
 ```
 
 - [ ] **Step 1b: Remove the old `.field-grid` rule** — delete the legacy `.field-grid { display: grid; gap: 10px; }` rule near the `.field-body`/`.panel-label` definitions. It was used only by the dead `app.jsx` and would otherwise be shadowed by the new block's `.field-grid` (gap: 14px), leaving one definition in the file.
+
+Note (added with Task 18's drag-and-drop): the pre-existing `.asset-dropzone` section (next to `.asset-dropzone:hover`) also gains `.asset-dropzone > * { pointer-events: none; }` so the dropzone's child spans cannot steal dragenter/dragleave and flicker the `is-dragover` state.
 
 - [ ] **Step 2: Verify** — `npm run build` green (CSS bundles through the esbuild import).
 
@@ -3390,7 +3414,7 @@ export function ChangesTray() {
   const [revertPending, setRevertPending] = useState(false);
 
   const dirtyPaths = store.dirtyPaths();
-  const rows = useMemo(() => allSections().filter(section => sectionIsDirty(store, section)), [store.getVersion(), dirtyPaths.length]);
+  const rows = useMemo(() => allSections().filter(section => sectionIsDirty(store, section)), [store.getVersion()]);
 
   // Warn when leaving mid-publish or with unpublished changes.
   useEffect(() => {
@@ -3435,7 +3459,10 @@ export function ChangesTray() {
   }, [store.getVersion()]);
 
   const discardRow = section => {
-    if (!window.confirm(`Discard unpublished changes to “${section.label}”?`)) {
+    const message = section.joined
+      ? `Discard unpublished changes to “${section.label}”? This restores both Wearhouse files to the published version.`
+      : `Discard unpublished changes to “${section.label}”?`;
+    if (!window.confirm(message)) {
       return;
     }
     if (section.joined) {
@@ -3449,15 +3476,21 @@ export function ChangesTray() {
   const publish = async () => {
     setPublishPending(true);
     try {
+      // Snapshot the payload ONCE and account against that exact snapshot:
+      // an edit made while the request is in flight must stay dirty rather
+      // than being silently marked clean by a re-read of the current drafts.
       const paths = store.dirtyPaths();
-      await api.publish(
-        paths.map(path => ({ path, content: `${JSON.stringify(store.getDraft(path), null, 2)}\n` })),
-        `Update CMS content (${paths.length} file${paths.length === 1 ? '' : 's'})`,
-      );
-      store.markPublished(paths);
+      const files = paths.map(path => ({ path, content: `${JSON.stringify(store.getDraft(path), null, 2)}\n` }));
+      const result = await api.publish(files, `Update CMS content (${paths.length} file${paths.length === 1 ? '' : 's'})`);
+      store.markPublishedContent(files);
       setConfirming(false);
       setOpen(false);
-      toast('Published. The website updates in about a minute.', 'success');
+      toast(
+        result.deployTriggered === false
+          ? 'Published. The site did not redeploy automatically — it may need a manual deploy.'
+          : 'Published. The website updates in about a minute.',
+        'success',
+      );
     } catch (error) {
       toast(error.message || 'Could not publish.', 'error');
     } finally {
@@ -3576,6 +3609,8 @@ export function ChangesTray() {
 }
 ```
 
+Known limitation (pre-existing, identical to the old admin): if the publish commit lands but the deploy hook then fails, `/api/publish` responds 502 — the tray shows an error toast and keeps the files dirty even though the commit is already on GitHub; a retry produces a duplicate-content commit. (A 200 with `deployTriggered: false` means no deploy hook is configured; the success toast says the site may need a manual deploy.)
+
 - [ ] **Step 2: Mount in `src/admin/shell/Topbar.jsx`** — replace `<div id="topbar-tray-slot" />` with `<ChangesTray />` and add `import { ChangesTray } from './ChangesTray.jsx';`.
 
 - [ ] **Step 3: Verify** — `npm test` PASS; `npm run build` green.
@@ -3649,9 +3684,11 @@ Remove the now-unused local upload state/logic.
 
 ```jsx
 import { MediaPicker, useMediaUpload } from './MediaPicker.jsx';
+import { useToast } from '../shell/Toasts.jsx';
 // inside the component:
 const [dragOver, setDragOver] = useState(false);
 const { uploading, upload } = useMediaUpload(path => onChange(path));
+const toast = useToast();
 ```
 
 Replace the empty-state dropzone button with:
@@ -3667,9 +3704,17 @@ Replace the empty-state dropzone button with:
     event.preventDefault();
     setDragOver(false);
     const file = event.dataTransfer.files?.[0];
-    if (file) {
-      upload(file);
+    if (!file) {
+      return;
     }
+    // Match the picker's accept filter: image fields take images,
+    // file fields take videos.
+    const fits = kind === 'image' ? file.type.startsWith('image/') : file.type.startsWith('video/');
+    if (!fits) {
+      toast('That file type does not fit this field.', 'error');
+      return;
+    }
+    upload(file);
   }}
 >
   <span className="asset-dropzone-title">{uploading ? 'Uploading…' : kind === 'image' ? 'Choose an image' : 'Choose a file'}</span>
@@ -3677,7 +3722,7 @@ Replace the empty-state dropzone button with:
 </button>
 ```
 
-(`.asset-dropzone.is-dragover` already exists in `admin.css`.)
+(`.asset-dropzone.is-dragover` already exists in `admin.css`; `.asset-dropzone > * { pointer-events: none; }` keeps child spans from stealing dragenter/dragleave and flickering the dragover state.)
 
 - [ ] **Step 2: Create `src/admin/screens/MediaScreen.jsx`**
 
@@ -3982,6 +4027,7 @@ export function Search() {
         className="input" placeholder="Search pages, sections, brands, stores…"
         value={query} onChange={event => setQuery(event.target.value)}
         onKeyDown={event => { if (event.key === 'Escape') setQuery(''); }}
+        onBlur={() => setTimeout(() => setQuery(''), 150)} // delayed so a hit's onMouseDown (which fires before blur completes) still navigates
       />
       {hits.length ? (
         <div className="search-pop">

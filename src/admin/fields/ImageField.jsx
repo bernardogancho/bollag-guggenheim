@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FieldShell } from './basics.jsx';
 import { MediaPicker, useMediaUpload } from './MediaPicker.jsx';
+import { useToast } from '../shell/Toasts.jsx';
 
 const IMAGE_SHAPE = /\.(avif|gif|jpe?g|png|svg|webp)$/i;
 
@@ -9,6 +10,7 @@ export function ImageField({ field, value, onChange, kind = 'image' }) {
   const [showPath, setShowPath] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const { uploading, upload } = useMediaUpload(path => onChange(path));
+  const toast = useToast();
   const current = String(value || '');
   const hasPreview = current && IMAGE_SHAPE.test(current);
 
@@ -33,9 +35,17 @@ export function ImageField({ field, value, onChange, kind = 'image' }) {
             event.preventDefault();
             setDragOver(false);
             const file = event.dataTransfer.files?.[0];
-            if (file) {
-              upload(file);
+            if (!file) {
+              return;
             }
+            // Match the picker's accept filter: image fields take images,
+            // file fields take videos.
+            const fits = kind === 'image' ? file.type.startsWith('image/') : file.type.startsWith('video/');
+            if (!fits) {
+              toast('That file type does not fit this field.', 'error');
+              return;
+            }
+            upload(file);
           }}
         >
           <span className="asset-dropzone-title">{uploading ? 'Uploading…' : kind === 'image' ? 'Choose an image' : 'Choose a file'}</span>

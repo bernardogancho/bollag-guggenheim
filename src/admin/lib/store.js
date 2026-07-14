@@ -111,17 +111,19 @@ export function createStore() {
       });
     },
 
-    markPublished(filePaths) {
-      for (const filePath of filePaths) {
-        const entry = files.get(filePath);
-        if (entry) {
-          entry.remote = deepClone(entry.draft);
-          try {
-            localStorage.removeItem(DRAFT_PREFIX + filePath);
-          } catch {
-            // Storage unavailable — in-memory state is already published.
-          }
+    // Snapshot-based publish accounting: entries are the EXACT {path, content}
+    // payloads sent to /api/publish. The published content — not the current
+    // draft — becomes the new remote, so an edit made while the publish
+    // request was in flight stays dirty (an unpublished change) instead of
+    // being silently marked clean.
+    markPublishedContent(entries) {
+      for (const { path, content } of entries) {
+        const entry = files.get(path);
+        if (!entry) {
+          continue;
         }
+        entry.remote = JSON.parse(content);
+        persist(path); // draft equals new remote → clears storage; still different → stays dirty
       }
       emit();
     },

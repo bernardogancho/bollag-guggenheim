@@ -59,14 +59,34 @@ describe('store', () => {
     expect(store.isDirty(FILE)).toBe(true);
   });
 
-  it('markPublished snapshots draft as new remote and clears storage', () => {
+  it('markPublishedContent makes the sent snapshot the new remote and clears storage', () => {
     const store = createStore();
     store.loadFile(FILE, remote());
     store.update(FILE, draft => { draft.hero.title = 'New'; });
-    store.markPublished([FILE]);
+    const files = [{ path: FILE, content: `${JSON.stringify(store.getDraft(FILE), null, 2)}\n` }];
+    store.markPublishedContent(files);
     expect(store.isDirty(FILE)).toBe(false);
     expect(store.getRemote(FILE).hero.title).toBe('New');
     expect(localStorage.getItem(DRAFT_PREFIX + FILE)).toBeNull();
+  });
+
+  it('markPublishedContent keeps an edit made during the publish flight dirty and persisted', () => {
+    const store = createStore();
+    store.loadFile(FILE, remote());
+    store.update(FILE, draft => { draft.hero.title = 'A'; });
+    const snapshot = [{ path: FILE, content: `${JSON.stringify(store.getDraft(FILE), null, 2)}\n` }];
+    store.update(FILE, draft => { draft.hero.title = 'B'; }); // mid-flight edit
+    store.markPublishedContent(snapshot);
+    expect(store.getRemote(FILE).hero.title).toBe('A'); // what was actually published
+    expect(store.isDirty(FILE)).toBe(true); // edit B survives as an unpublished change
+    expect(JSON.parse(localStorage.getItem(DRAFT_PREFIX + FILE)).hero.title).toBe('B');
+  });
+
+  it('markPublishedContent ignores paths that are not loaded', () => {
+    const store = createStore();
+    store.loadFile(FILE, remote());
+    expect(() => store.markPublishedContent([{ path: 'src/_data/cms/nope.json', content: '{}' }])).not.toThrow();
+    expect(store.isDirty(FILE)).toBe(false);
   });
 
   it('notifies subscribers on change', () => {
