@@ -760,6 +760,6 @@ collections:
                 fields:
                   - { label: Summary, name: summary, widget: text }
                   - { label: Intro, name: intro, widget: text }
-              - { label: Focus, name: focus, widget: text }
-              - { label: Atmosphere, name: atmosphere, widget: string }
-              - { label: Categories, name: categories, widget: list, field: { label: Category, name: category, widget: string } }
+                  - { label: Focus, name: focus, widget: text }
+                  - { label: Atmosphere, name: atmosphere, widget: string }
+                  - { label: Categories, name: categories, widget: list, field: { label: Category, name: category, widget: string } }
