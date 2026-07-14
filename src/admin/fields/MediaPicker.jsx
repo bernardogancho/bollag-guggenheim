@@ -17,28 +17,14 @@ const IMAGE_SHAPE = /\.(avif|gif|jpe?g|png|svg|webp)$/i;
 // encoding adds ~33%, so the practical raw-file ceiling is ~3 MB.
 const MAX_UPLOAD_BYTES = 3 * 1024 * 1024;
 
-export function MediaPicker({ kind, onSelect, onClose }) {
-  const { api, mediaIndex, setMediaIndex } = useAdmin();
+export function useMediaUpload(onUploaded, successMessage = 'Uploaded. Use it in a section and publish to show it on the website.') {
+  const { api, setMediaIndex } = useAdmin();
   const toast = useToast();
-  const [query, setQuery] = useState('');
   const [uploading, setUploading] = useState(false);
-  const fileInput = useRef(null);
 
-  const files = useMemo(() => {
-    const all = mediaIndex?.files || [];
-    const typed = kind === 'image' ? all.filter(file => IMAGE_SHAPE.test(file.path)) : all.filter(file => !IMAGE_SHAPE.test(file.path));
-    const needle = query.trim().toLowerCase();
-    return needle ? typed.filter(file => file.path.toLowerCase().includes(needle)) : typed;
-  }, [mediaIndex, kind, query]);
-
-  const handleUpload = async event => {
-    const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
+  const upload = async file => {
     if (file.size > MAX_UPLOAD_BYTES) {
       toast('Files must be smaller than 3 MB. Compress it and try again.', 'error');
-      event.target.value = '';
       return;
     }
     setUploading(true);
@@ -49,14 +35,37 @@ export function MediaPicker({ kind, onSelect, onClose }) {
         ...(current || { files: [] }),
         files: [{ path: result.publicPath, name: file.name, size: file.size }, ...(current?.files || [])],
       }));
-      toast('Uploaded. It appears on the website after your next publish.', 'success');
-      onSelect(result.publicPath);
+      toast(successMessage, 'success');
+      onUploaded(result.publicPath);
     } catch (error) {
       toast(error.message || 'Could not upload the file.', 'error');
     } finally {
       setUploading(false);
-      event.target.value = '';
     }
+  };
+
+  return { uploading, upload };
+}
+
+export function MediaPicker({ kind, onSelect, onClose }) {
+  const { mediaIndex } = useAdmin();
+  const [query, setQuery] = useState('');
+  const fileInput = useRef(null);
+  const { uploading, upload } = useMediaUpload(path => onSelect(path));
+
+  const files = useMemo(() => {
+    const all = mediaIndex?.files || [];
+    const typed = kind === 'image' ? all.filter(file => IMAGE_SHAPE.test(file.path)) : all.filter(file => !IMAGE_SHAPE.test(file.path));
+    const needle = query.trim().toLowerCase();
+    return needle ? typed.filter(file => file.path.toLowerCase().includes(needle)) : typed;
+  }, [mediaIndex, kind, query]);
+
+  const handleUpload = event => {
+    const file = event.target.files?.[0];
+    if (file) {
+      upload(file);
+    }
+    event.target.value = '';
   };
 
   return (

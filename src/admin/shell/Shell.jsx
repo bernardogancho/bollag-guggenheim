@@ -6,6 +6,7 @@ import { ToastProvider } from './Toasts.jsx';
 import { Topbar } from './Topbar.jsx';
 import { PageScreen } from '../screens/PageScreen.jsx';
 import { SectionScreen } from '../screens/SectionScreen.jsx';
+import { MediaScreen } from '../screens/MediaScreen.jsx';
 
 function sectionDirty(store, section) {
   if (section.joined) {
@@ -78,7 +79,7 @@ function Content({ route }) {
     return null;
   }
   if (route[0] === 'media') {
-    return <div className="empty-state"><div className="empty-state-title">Media library</div><div className="empty-state-description">Arrives in a later task.</div></div>;
+    return <MediaScreen />;
   }
   if (route[0] === 'people') {
     return <div className="empty-state"><div className="empty-state-title">People</div><div className="empty-state-description">Arrives in a later task.</div></div>;
