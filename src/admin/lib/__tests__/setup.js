@@ -1,4 +1,4 @@
-if (typeof globalThis.localStorage === 'undefined') {
+if (typeof globalThis.localStorage?.setItem !== 'function') {
   const map = new Map();
   globalThis.localStorage = {
     getItem: key => (map.has(key) ? map.get(key) : null),
