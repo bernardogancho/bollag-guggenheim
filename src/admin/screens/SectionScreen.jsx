@@ -3,6 +3,7 @@ import { useAdmin, useStoreVersion } from '../lib/context.js';
 import { navigate } from '../lib/router.js';
 import { useToast } from '../shell/Toasts.jsx';
 import { FieldRenderer } from '../fields/FieldRenderer.jsx';
+import { pruneEmptyAdditions } from '../lib/prune.js';
 import { ItemListScreen } from './ItemListScreen.jsx';
 import { ItemEditScreen } from './ItemEditScreen.jsx';
 import { WearhouseScreen } from './WearhouseScreen.jsx';
@@ -76,7 +77,7 @@ export function SectionScreen({ page, section, rest }) {
             key={field.name}
             field={field}
             value={draft[field.name]}
-            onChange={next => store.update(section.file, draftCopy => { draftCopy[field.name] = next; })}
+            onChange={next => store.update(section.file, draftCopy => { draftCopy[field.name] = pruneEmptyAdditions(next, store.getRemote(section.file)?.[field.name]); })}
             pathPrefix={field.name}
             routeBase={[page.id, section.id]}
           />
