@@ -8,7 +8,14 @@ import { useEffect, useState } from 'react';
 //   #/page/wearhouse/wearhouse-brands/<slug>                (joined item editor)
 //   #/media   #/people
 export function parseRoute() {
-  return window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
+  // A malformed hash (e.g. a stray "%" makes decodeURIComponent throw) must
+  // not crash the SPA — there is no error boundary above the router. Fall
+  // back to [] so the shell's homepage redirect takes over.
+  try {
+    return window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
+  } catch {
+    return [];
+  }
 }
 
 export function navigate(...parts) {

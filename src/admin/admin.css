@@ -1155,11 +1155,6 @@ button:disabled {
   gap: 10px;
 }
 
-.field-grid {
-  display: grid;
-  gap: 10px;
-}
-
 .panel-label {
   font-size: 13px;
   font-weight: 700;

@@ -1439,6 +1439,19 @@ function BootScreen() {
   );
 }
 
+function LoadErrorScreen({ message, onRetry }) {
+  return (
+    <div className="auth-shell">
+      <section className="card auth-card">
+        <div className="auth-kicker">Bollag CMS</div>
+        <h1 className="auth-title">Could not load the website content</h1>
+        <p className="auth-copy">{message}</p>
+        <button type="button" className="button button-primary" onClick={onRetry}>Try again</button>
+      </section>
+    </div>
+  );
+}
+
 function AdminRoot() {
   const [mode, setMode] = useState('boot');
   const [user, setUser] = useState(null);
@@ -1448,28 +1461,44 @@ function AdminRoot() {
   const [password, setPassword] = useState('');
   const [loginPending, setLoginPending] = useState(false);
   const [note, setNote] = useState({ text: '', tone: '' });
+  const [loadError, setLoadError] = useState('');
 
-  async function enterApp(session) {
-    accessToken = session.access_token;
-    const { user: me } = await api.me(); // throws if the account has no CMS role
+  async function loadWorkspace() {
     const [config, media] = await Promise.all([loadFieldConfig(), loadMediaIndex()]);
     await Promise.all(ALL_FILES.map(async filePath => store.loadFile(filePath, await loadContentFile(filePath))));
     setFieldConfig(config);
     setMediaIndex(media);
-    setUser(me);
     setMode('app');
   }
 
-  async function tryEnter(session) {
+  // Workspace load failures are usually transient (a blip on one of the 22
+  // content fetches); keep the session and offer a retry instead of signing
+  // the user out.
+  async function enterWorkspace() {
     try {
-      await enterApp(session);
+      await loadWorkspace();
+    } catch (error) {
+      setLoadError(error.message || 'Something went wrong while loading the content.');
+      setMode('error');
+    }
+  }
+
+  async function tryEnter(session) {
+    accessToken = session.access_token;
+    // Auth gate first, in its own try/catch: only a rejected account is
+    // signed out. Load failures after this point never revoke the session.
+    try {
+      const { user: me } = await api.me(); // throws if the account has no CMS role
+      setUser(me);
     } catch (error) {
       await supabase.auth.signOut();
       accessToken = '';
       setUser(null);
       setMode('login');
       setNote({ text: error.message || 'That account does not have CMS access.', tone: 'error' });
+      return;
     }
+    await enterWorkspace();
   }
 
   useEffect(() => {
@@ -1519,6 +1548,17 @@ function AdminRoot() {
 
   if (mode === 'boot') {
     return <BootScreen />;
+  }
+  if (mode === 'error') {
+    return (
+      <LoadErrorScreen
+        message={loadError}
+        onRetry={() => {
+          setMode('boot');
+          void enterWorkspace();
+        }}
+      />
+    );
   }
   if (mode === 'login') {
     return (
@@ -1583,7 +1623,14 @@ import { useEffect, useState } from 'react';
 //   #/page/wearhouse/wearhouse-brands/<slug>                (joined item editor)
 //   #/media   #/people
 export function parseRoute() {
-  return window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
+  // A malformed hash (e.g. a stray "%" makes decodeURIComponent throw) must
+  // not crash the SPA — there is no error boundary above the router. Fall
+  // back to [] so the shell's homepage redirect takes over.
+  try {
+    return window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
+  } catch {
+    return [];
+  }
 }
 
 export function navigate(...parts) {
@@ -1604,7 +1651,7 @@ export function useRoute() {
 - [ ] **Step 2: Create `src/admin/shell/Toasts.jsx`**
 
 ```jsx
-import React, { createContext, useCallback, useContext, useRef, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 const ToastContext = createContext(() => {});
 export const useToast = () => useContext(ToastContext);
@@ -1612,11 +1659,22 @@ export const useToast = () => useContext(ToastContext);
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
   const nextId = useRef(1);
+  const timers = useRef(new Set());
 
   const push = useCallback((message, tone = 'neutral') => {
     const id = nextId.current++;
     setToasts(current => [...current, { id, message, tone }]);
-    setTimeout(() => setToasts(current => current.filter(toast => toast.id !== id)), 4200);
+    const timer = setTimeout(() => {
+      timers.current.delete(timer);
+      setToasts(current => current.filter(toast => toast.id !== id));
+    }, 4200);
+    timers.current.add(timer);
+  }, []);
+
+  // Clear pending dismiss timers on unmount so none outlive the provider.
+  useEffect(() => {
+    const pending = timers.current;
+    return () => pending.forEach(clearTimeout);
   }, []);
 
   return (
@@ -1715,7 +1773,7 @@ function NotFound() {
   return (
     <div className="empty-state">
       <div className="empty-state-title">Nothing here</div>
-      <div className="empty-state-description">This link points at a section that no longer exists. Pick a page from the left.</div>
+      <div className="empty-state-description">This link points at a page or section that no longer exists. Pick a page from the left.</div>
     </div>
   );
 }
@@ -1809,7 +1867,7 @@ git commit -m "feat(cms-v2): hash router, toasts, sidebar/topbar shell"
 ### Task 11: CSS additions (complete block)
 
 **Files:**
-- Modify: `src/admin/admin.css` (append the block below at the end of the file, verbatim)
+- Modify: `src/admin/admin.css` (append the block below at the end of the file, verbatim; also remove the old `.field-grid` rule)
 
 - [ ] **Step 1: Append to `src/admin/admin.css`**
 
@@ -1926,6 +1984,8 @@ git commit -m "feat(cms-v2): hash router, toasts, sidebar/topbar shell"
 .issue-row { font-size: 13px; }
 .issue-row strong { color: var(--danger); }
 ```
+
+- [ ] **Step 1b: Remove the old `.field-grid` rule** — delete the legacy `.field-grid { display: grid; gap: 10px; }` rule near the `.field-body`/`.panel-label` definitions. It was used only by the dead `app.jsx` and would otherwise be shadowed by the new block's `.field-grid` (gap: 14px), leaving one definition in the file.
 
 - [ ] **Step 2: Verify** — `npm run build` green (CSS bundles through the esbuild import).
 

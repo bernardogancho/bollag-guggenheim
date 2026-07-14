@@ -62,7 +62,7 @@ function NotFound() {
   return (
     <div className="empty-state">
       <div className="empty-state-title">Nothing here</div>
-      <div className="empty-state-description">This link points at a section that no longer exists. Pick a page from the left.</div>
+      <div className="empty-state-description">This link points at a page or section that no longer exists. Pick a page from the left.</div>
     </div>
   );
 }

@@ -33,6 +33,19 @@ function BootScreen() {
   );
 }
 
+function LoadErrorScreen({ message, onRetry }) {
+  return (
+    <div className="auth-shell">
+      <section className="card auth-card">
+        <div className="auth-kicker">Bollag CMS</div>
+        <h1 className="auth-title">Could not load the website content</h1>
+        <p className="auth-copy">{message}</p>
+        <button type="button" className="button button-primary" onClick={onRetry}>Try again</button>
+      </section>
+    </div>
+  );
+}
+
 function AdminRoot() {
   const [mode, setMode] = useState('boot');
   const [user, setUser] = useState(null);
@@ -42,28 +55,44 @@ function AdminRoot() {
   const [password, setPassword] = useState('');
   const [loginPending, setLoginPending] = useState(false);
   const [note, setNote] = useState({ text: '', tone: '' });
+  const [loadError, setLoadError] = useState('');
 
-  async function enterApp(session) {
-    accessToken = session.access_token;
-    const { user: me } = await api.me(); // throws if the account has no CMS role
+  async function loadWorkspace() {
     const [config, media] = await Promise.all([loadFieldConfig(), loadMediaIndex()]);
     await Promise.all(ALL_FILES.map(async filePath => store.loadFile(filePath, await loadContentFile(filePath))));
     setFieldConfig(config);
     setMediaIndex(media);
-    setUser(me);
     setMode('app');
   }
 
-  async function tryEnter(session) {
+  // Workspace load failures are usually transient (a blip on one of the 22
+  // content fetches); keep the session and offer a retry instead of signing
+  // the user out.
+  async function enterWorkspace() {
     try {
-      await enterApp(session);
+      await loadWorkspace();
+    } catch (error) {
+      setLoadError(error.message || 'Something went wrong while loading the content.');
+      setMode('error');
+    }
+  }
+
+  async function tryEnter(session) {
+    accessToken = session.access_token;
+    // Auth gate first, in its own try/catch: only a rejected account is
+    // signed out. Load failures after this point never revoke the session.
+    try {
+      const { user: me } = await api.me(); // throws if the account has no CMS role
+      setUser(me);
     } catch (error) {
       await supabase.auth.signOut();
       accessToken = '';
       setUser(null);
       setMode('login');
       setNote({ text: error.message || 'That account does not have CMS access.', tone: 'error' });
+      return;
     }
+    await enterWorkspace();
   }
 
   useEffect(() => {
@@ -113,6 +142,17 @@ function AdminRoot() {
 
   if (mode === 'boot') {
     return <BootScreen />;
+  }
+  if (mode === 'error') {
+    return (
+      <LoadErrorScreen
+        message={loadError}
+        onRetry={() => {
+          setMode('boot');
+          void enterWorkspace();
+        }}
+      />
+    );
   }
   if (mode === 'login') {
     return (
