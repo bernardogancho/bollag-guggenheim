@@ -42,12 +42,12 @@ export function ItemEditScreen({ page, section, listPath, index }) {
       <div className="screen-header">
         <div>
           <h2 className="screen-title">{itemTitle(item)}</h2>
-          <p className="screen-subtitle">Item {Number(index) + 1} of {items.length} in {listField.label || listField.name}.</p>
+          <p className="screen-subtitle">Item {index + 1} of {items.length} in {listField.label || listField.name}.</p>
         </div>
         <div className="screen-actions">
           <button type="button" className="button button-danger" onClick={() => {
             if (window.confirm(`Delete “${itemTitle(item)}”? This is removed from the website on your next publish.`)) {
-              store.update(section.file, draftCopy => setAtPath(draftCopy, listPath, items.filter((_, i) => i !== Number(index))));
+              store.update(section.file, draftCopy => setAtPath(draftCopy, listPath, items.filter((_, i) => i !== index)));
               toast('Item deleted.');
               navigate(...listRoute);
             }

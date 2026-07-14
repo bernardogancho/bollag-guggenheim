@@ -1620,7 +1620,7 @@ import { useEffect, useState } from 'react';
 //   #/page/<pageId>/<sectionId>
 //   #/page/<pageId>/<sectionId>/list/<listPath>            (managed item list)
 //   #/page/<pageId>/<sectionId>/list/<listPath>/<index>    (item editor)
-//   #/page/wearhouse/wearhouse-brands/<slug>                (joined item editor)
+//   #/page/wearhouse/wearhouse-brands/<recordIndex>         (joined item editor)
 //   #/media   #/people
 export function parseRoute() {
   // A malformed hash (e.g. a stray "%" makes decodeURIComponent throw) must
@@ -3010,12 +3010,12 @@ export function ItemEditScreen({ page, section, listPath, index }) {
       <div className="screen-header">
         <div>
           <h2 className="screen-title">{itemTitle(item)}</h2>
-          <p className="screen-subtitle">Item {Number(index) + 1} of {items.length} in {listField.label || listField.name}.</p>
+          <p className="screen-subtitle">Item {index + 1} of {items.length} in {listField.label || listField.name}.</p>
         </div>
         <div className="screen-actions">
           <button type="button" className="button button-danger" onClick={() => {
             if (window.confirm(`Delete “${itemTitle(item)}”? This is removed from the website on your next publish.`)) {
-              store.update(section.file, draftCopy => setAtPath(draftCopy, listPath, items.filter((_, i) => i !== Number(index))));
+              store.update(section.file, draftCopy => setAtPath(draftCopy, listPath, items.filter((_, i) => i !== index)));
               toast('Item deleted.');
               navigate(...listRoute);
             }
@@ -3080,6 +3080,7 @@ import { navigate } from '../lib/router.js';
 import { resolveListField, defaultValueForFields } from '../lib/configPath.js';
 import { joinWearhouse, splitWearhouse, blankRosterItem, blankBrandEntry } from '../adapters/wearhouse.js';
 import { reorder } from '../lib/paths.js';
+import { pruneEmptyAdditions } from '../lib/prune.js';
 import { FieldRenderer } from '../fields/FieldRenderer.jsx';
 import { Breadcrumbs } from './SectionScreen.jsx';
 import { useToast } from '../shell/Toasts.jsx';
@@ -3111,14 +3112,30 @@ export function WearhouseScreen({ page, section, rest }) {
     store.update(brandsFile, draft => { draft.brands = brandEntries; });
   };
 
-  const updateRecord = (slug, patch) => {
-    writeRecords(records.map(record => (record.slug === slug ? { ...record, ...patch } : record)));
+  // Records are identified by index, never by slug: joinWearhouse deliberately
+  // preserves duplicate-slug records (marked so an editor can fix them), so a
+  // slug does not uniquely name a record.
+  const updateRecord = (idx, patch) => {
+    const next = { ...patch };
+    // Prune touched-into-existence '' keys from a patched half against its
+    // remote counterpart, matched by the record's CURRENT (pre-patch) slug —
+    // the halves live in two files where slug is the join key. New or renamed
+    // records have no remote match and pass through unpruned.
+    if (next.roster) {
+      const remoteItem = (store.getRemote(rosterFile)?.rosterSection?.items || []).find(item => item.slug === records[idx].slug);
+      next.roster = remoteItem ? pruneEmptyAdditions(next.roster, remoteItem) : next.roster;
+    }
+    if (next.brand) {
+      const remoteEntry = (store.getRemote(brandsFile)?.brands || []).find(entry => entry.slug === records[idx].slug);
+      next.brand = remoteEntry ? pruneEmptyAdditions(next.brand, remoteEntry) : next.brand;
+    }
+    writeRecords(records.map((record, i) => (i === idx ? { ...record, ...next } : record)));
   };
 
   // ---------- item mode ----------
-  const slug = rest[0];
-  if (slug) {
-    const record = records.find(candidate => candidate.slug === slug);
+  if (rest.length) {
+    const idx = Number(rest[0]);
+    const record = Number.isInteger(idx) ? records[idx] : undefined;
     if (!record) {
       return (
         <div className="empty-state">
@@ -3143,7 +3160,7 @@ export function WearhouseScreen({ page, section, rest }) {
             {record.brand ? <a className="button button-ghost" href={`/wearhouse/${record.slug}/`} target="_blank" rel="noreferrer">View page ↗</a> : null}
             <button type="button" className="button button-danger" onClick={() => {
               if (window.confirm(`Delete “${record.name}” from the Wearhouse (card and detail page)?`)) {
-                writeRecords(records.filter(candidate => candidate.slug !== slug));
+                writeRecords(records.filter((_, i) => i !== idx));
                 toast('Brand deleted.');
                 navigate('page', page.id, section.id);
               }
@@ -3158,7 +3175,7 @@ export function WearhouseScreen({ page, section, rest }) {
               <span className="field-label">Brand name</span>
               <input className="input" value={record.name} onChange={event => {
                 const name = event.target.value;
-                updateRecord(slug, {
+                updateRecord(idx, {
                   name,
                   roster: record.roster ? { ...record.roster, name } : record.roster,
                   brand: record.brand ? { ...record.brand, name } : record.brand,
@@ -3182,13 +3199,12 @@ export function WearhouseScreen({ page, section, rest }) {
                   toast('That address is already used by another brand.', 'error');
                   return;
                 }
-                writeRecords(records.map(candidate => (candidate.slug === record.slug ? {
+                writeRecords(records.map((candidate, i) => (i === idx ? {
                   ...candidate,
                   slug: nextSlug,
                   roster: candidate.roster ? { ...candidate.roster, slug: nextSlug, pageHref: `/wearhouse/${nextSlug}/` } : candidate.roster,
                   brand: candidate.brand ? { ...candidate.brand, slug: nextSlug } : candidate.brand,
                 } : candidate)));
-                navigate('page', page.id, section.id, nextSlug);
               }}>Rename address</button>
             </div>
           </div>
@@ -3200,15 +3216,15 @@ export function WearhouseScreen({ page, section, rest }) {
             <div className="field-grid">
               {rosterItemFields.filter(field => !['name', 'slug'].includes(field.name)).map(field => (
                 <FieldRenderer key={field.name} field={field} value={record.roster[field.name]}
-                  onChange={next => updateRecord(slug, { roster: { ...record.roster, [field.name]: next } })}
-                  pathPrefix={`__wearhouse.${slug}.roster.${field.name}`} routeBase={[page.id, section.id]} />
+                  onChange={next => updateRecord(idx, { roster: { ...record.roster, [field.name]: next } })}
+                  pathPrefix={`__wearhouse.${idx}.roster.${field.name}`} routeBase={[page.id, section.id]} />
               ))}
             </div>
           ) : (
             <div className="empty-state">
               <div className="empty-state-title">No card yet</div>
               <div className="empty-state-description">This brand has a detail page but no card on the Wearhouse page.</div>
-              <button type="button" className="button button-secondary" onClick={() => updateRecord(slug, { roster: blankRosterItem(record), missing: null })}>Create the card</button>
+              <button type="button" className="button button-secondary" onClick={() => updateRecord(idx, { roster: blankRosterItem(record), missing: null })}>Create the card</button>
             </div>
           )}
         </section>
@@ -3219,15 +3235,15 @@ export function WearhouseScreen({ page, section, rest }) {
             <div className="field-grid">
               {brandEntryFields.filter(field => !['name', 'slug'].includes(field.name)).map(field => (
                 <FieldRenderer key={field.name} field={field} value={record.brand[field.name]}
-                  onChange={next => updateRecord(slug, { brand: { ...record.brand, [field.name]: next } })}
-                  pathPrefix={`__wearhouse.${slug}.brand.${field.name}`} routeBase={[page.id, section.id]} />
+                  onChange={next => updateRecord(idx, { brand: { ...record.brand, [field.name]: next } })}
+                  pathPrefix={`__wearhouse.${idx}.brand.${field.name}`} routeBase={[page.id, section.id]} />
               ))}
             </div>
           ) : (
             <div className="empty-state">
               <div className="empty-state-title">No detail page yet</div>
               <div className="empty-state-description">This brand has a card but no detail page of its own.</div>
-              <button type="button" className="button button-secondary" onClick={() => updateRecord(slug, { brand: blankBrandEntry(record), missing: null })}>Create the detail page</button>
+              <button type="button" className="button button-secondary" onClick={() => updateRecord(idx, { brand: blankBrandEntry(record), missing: null })}>Create the detail page</button>
             </div>
           )}
         </section>
@@ -3255,7 +3271,9 @@ export function WearhouseScreen({ page, section, rest }) {
     }
     writeRecords([...records, { slug: nextSlug, name, roster: blankRosterItem({ slug: nextSlug, name }), brand: blankBrandEntry({ slug: nextSlug, name }), missing: null }]);
     setNewName('');
-    navigate('page', page.id, section.id, nextSlug);
+    // The new record has a roster half, so after the split/re-join it sits at
+    // the end of the roster-ordered records, BEFORE any brand-only orphans.
+    navigate('page', page.id, section.id, String(records.filter(record => record.roster).length));
   };
 
   return (
@@ -3287,9 +3305,9 @@ export function WearhouseScreen({ page, section, rest }) {
         {records.map((record, index) => {
           const thumb = record.roster?.hoverImage || record.roster?.logoSrc || record.brand?.rosterCard?.detailImage || null;
           return (
-            <div key={record.slug} className="item-card" role="button" tabIndex={0}
-              onClick={() => navigate('page', page.id, section.id, record.slug)}
-              onKeyDown={event => { if (event.key === 'Enter') navigate('page', page.id, section.id, record.slug); }}>
+            <div key={index} className="item-card" role="button" tabIndex={0}
+              onClick={() => navigate('page', page.id, section.id, String(index))}
+              onKeyDown={event => { if (event.key === 'Enter') navigate('page', page.id, section.id, String(index)); }}>
               <div className="item-card-thumb">
                 {thumb ? <img src={thumb} alt="" loading="lazy" /> : <span className="item-card-thumb-empty">No image</span>}
               </div>
@@ -3934,11 +3952,13 @@ export function Search() {
       }
     });
     const rosterItems = store.getDraft(`${CMS}/wearhousePage/roster.json`)?.rosterSection?.items || [];
-    for (const item of rosterItems) {
+    // Wearhouse records are index-addressed (roster order = joined-record
+    // order for records with a roster half), matching WearhouseScreen.
+    rosterItems.forEach((item, index) => {
       if ((item.name || '').toLowerCase().includes(needle)) {
-        results.push({ title: item.name, sub: 'Wearhouse brand', to: ['page', 'wearhouse', 'wearhouse-brands', item.slug] });
+        results.push({ title: item.name, sub: 'Wearhouse brand', to: ['page', 'wearhouse', 'wearhouse-brands', String(index)] });
       }
-    }
+    });
     const groups = store.getDraft(`${CMS}/stores.json`)?.groups || [];
     groups.forEach((group, groupIndex) => {
       (group.stores || []).forEach((storeItem, storeIndex) => {
