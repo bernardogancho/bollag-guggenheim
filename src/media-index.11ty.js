@@ -27,7 +27,12 @@ module.exports = class MediaIndex {
         }
       }
     };
-    walk(root);
+    // If the media directory is missing, emit an empty index instead of
+    // throwing — this template must never kill the whole Eleventy build
+    // (matches loadMediaIndex's degrade-gracefully posture in the admin).
+    if (fs.existsSync(root)) {
+      walk(root);
+    }
     files.sort((a, b) => a.path.localeCompare(b.path));
     return JSON.stringify({ generatedAt: new Date().toISOString(), files });
   }

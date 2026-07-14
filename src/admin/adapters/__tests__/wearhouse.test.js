@@ -37,6 +37,23 @@ describe('wearhouse adapter', () => {
     const { rosterItems, brandEntries } = splitWearhouse(records);
     expect(rosterItems[0]).toEqual(roster[0]);
     expect(brandEntries[0]).toEqual(brands[0]);
+    expect(rosterItems[1]).toEqual(roster[1]); // roster-only entry survives split intact
+    expect(brandEntries[1]).toEqual(brands[1]); // brand-only entry survives split intact
+    expect(rosterItems).toEqual(roster);
+    expect(brandEntries).toEqual(brands);
+  });
+
+  it('marks duplicate roster slugs and never emits their brand entry twice', () => {
+    const dupRoster = [...roster, { name: 'Circolo Again', slug: 'circolo-1901', segment: 'Dup' }];
+    const { records } = joinWearhouse(dupRoster, brands);
+    const dupRecord = records.find(record => record.duplicate);
+    expect(dupRecord.slug).toBe('circolo-1901');
+    expect(dupRecord.brand).toBeNull();
+    expect(dupRecord.missing).toBe('brand');
+    expect(dupRecord.duplicate).toBe(true);
+    const { rosterItems, brandEntries } = splitWearhouse(records);
+    expect(rosterItems).toHaveLength(3); // roster rows are all kept for the editor to fix
+    expect(brandEntries.filter(entry => entry.slug === 'circolo-1901')).toHaveLength(1);
   });
 
   it('blank factories carry the slug and name over', () => {

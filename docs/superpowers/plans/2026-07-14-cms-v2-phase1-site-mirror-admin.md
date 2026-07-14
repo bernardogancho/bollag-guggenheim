@@ -840,6 +840,23 @@ describe('wearhouse adapter', () => {
     const { rosterItems, brandEntries } = splitWearhouse(records);
     expect(rosterItems[0]).toEqual(roster[0]);
     expect(brandEntries[0]).toEqual(brands[0]);
+    expect(rosterItems[1]).toEqual(roster[1]); // roster-only entry survives split intact
+    expect(brandEntries[1]).toEqual(brands[1]); // brand-only entry survives split intact
+    expect(rosterItems).toEqual(roster);
+    expect(brandEntries).toEqual(brands);
+  });
+
+  it('marks duplicate roster slugs and never emits their brand entry twice', () => {
+    const dupRoster = [...roster, { name: 'Circolo Again', slug: 'circolo-1901', segment: 'Dup' }];
+    const { records } = joinWearhouse(dupRoster, brands);
+    const dupRecord = records.find(record => record.duplicate);
+    expect(dupRecord.slug).toBe('circolo-1901');
+    expect(dupRecord.brand).toBeNull();
+    expect(dupRecord.missing).toBe('brand');
+    expect(dupRecord.duplicate).toBe(true);
+    const { rosterItems, brandEntries } = splitWearhouse(records);
+    expect(rosterItems).toHaveLength(3); // roster rows are all kept for the editor to fix
+    expect(brandEntries.filter(entry => entry.slug === 'circolo-1901')).toHaveLength(1);
   });
 
   it('blank factories carry the slug and name over', () => {
@@ -865,6 +882,21 @@ export function joinWearhouse(rosterItems, brandEntries) {
   const records = [];
 
   for (const item of rosterItems || []) {
+    if (seen.has(item.slug)) {
+      // Duplicate roster slug: never attach the same brand entry object to a
+      // second record, or a split would re-emit that brand twice into
+      // brands.json. `duplicate` documents why the brand half is missing;
+      // the UI renders a warning badge from `missing`.
+      records.push({
+        slug: item.slug,
+        name: item.name || item.slug,
+        roster: item,
+        brand: null,
+        missing: 'brand',
+        duplicate: true,
+      });
+      continue;
+    }
     const brand = bySlug.get(item.slug) || null;
     seen.add(item.slug);
     records.push({
@@ -878,6 +910,7 @@ export function joinWearhouse(rosterItems, brandEntries) {
 
   for (const entry of brandEntries || []) {
     if (!seen.has(entry.slug)) {
+      seen.add(entry.slug);
       records.push({ slug: entry.slug, name: entry.name || entry.slug, roster: null, brand: entry, missing: 'roster' });
     }
   }
@@ -886,9 +919,19 @@ export function joinWearhouse(rosterItems, brandEntries) {
 }
 
 export function splitWearhouse(records) {
+  // Dedupe brand entries by slug (first occurrence wins) so a brand entry
+  // can never be emitted twice into brands.json regardless of the input.
+  const emitted = new Set();
+  const brandEntries = [];
+  for (const record of records) {
+    if (record.brand && !emitted.has(record.brand.slug)) {
+      emitted.add(record.brand.slug);
+      brandEntries.push(record.brand);
+    }
+  }
   return {
     rosterItems: records.filter(record => record.roster).map(record => record.roster),
-    brandEntries: records.filter(record => record.brand).map(record => record.brand),
+    brandEntries,
   };
 }
 
@@ -939,6 +982,7 @@ git commit -m "feat(cms-v2): wearhouse slug adapter; align config.yml with real 
 - Create: `src/admin/lib/api.js`
 - Create: `src/admin/lib/content.js`
 - Test: `src/admin/lib/__tests__/api.test.js`
+- Test: `src/admin/lib/__tests__/content.test.js`
 
 - [ ] **Step 1: Write failing tests** (error surfacing is the risky part)
 
@@ -986,6 +1030,7 @@ describe('createApi', () => {
 // All server calls in one place. Every endpoint already exists — this file
 // only wraps them with auth and error handling. Backend must not change.
 export function createApi(getToken, fetcher = (...args) => fetch(...args)) {
+  // Network-level rejections (fetcher throwing) intentionally propagate to callers.
   async function request(method, url, body) {
     const response = await fetcher(url, {
       method,
@@ -1024,7 +1069,7 @@ export function createApi(getToken, fetcher = (...args) => fetch(...args)) {
 }
 ```
 
-- [ ] **Step 4: Implement `src/admin/lib/content.js`** (no unit tests — thin fetch wrappers exercised in the walkthrough)
+- [ ] **Step 4: Implement `src/admin/lib/content.js`**
 
 ```js
 import { parse as parseYAML } from 'yaml';
@@ -1068,10 +1113,83 @@ export async function loadMediaIndex() {
 }
 ```
 
+- [ ] **Step 4b: Add `src/admin/lib/__tests__/content.test.js`** (mocked global fetch; restored after each test)
+
+```js
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import { loadFieldConfig, loadContentFile, loadMediaIndex } from '../content.js';
+
+const CONFIG_YAML = `
+collections:
+  - name: homepage
+    files:
+      - name: home_hero
+        label: Hero
+        file: src/_data/cms/home/hero.json
+        fields:
+          - { label: Title, name: title, widget: string }
+`;
+
+function stubFetch(impl) {
+  const fetcher = vi.fn(impl);
+  vi.stubGlobal('fetch', fetcher);
+  return fetcher;
+}
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
+
+describe('loadFieldConfig', () => {
+  it('throws with the status in the message on a non-ok response', async () => {
+    stubFetch(async () => ({ ok: false, status: 404 }));
+    await expect(loadFieldConfig()).rejects.toThrow(/404/);
+  });
+
+  it('returns a Map keyed by file path with a fields array', async () => {
+    stubFetch(async () => ({ ok: true, text: async () => CONFIG_YAML }));
+    const byFile = await loadFieldConfig();
+    expect(byFile).toBeInstanceOf(Map);
+    const entry = byFile.get('src/_data/cms/home/hero.json');
+    expect(entry.name).toBe('home_hero');
+    expect(Array.isArray(entry.fields)).toBe(true);
+    expect(entry.fields[0].name).toBe('title');
+  });
+});
+
+describe('loadContentFile', () => {
+  it('strips the src/_data/cms/ prefix when fetching', async () => {
+    const fetcher = stubFetch(async () => ({ ok: true, json: async () => ({ hero: {} }) }));
+    const data = await loadContentFile('src/_data/cms/home/hero.json');
+    expect(fetcher.mock.calls[0][0]).toBe('/cms-data/home/hero.json');
+    expect(data).toEqual({ hero: {} });
+  });
+
+  it('throws on a non-ok response', async () => {
+    stubFetch(async () => ({ ok: false, status: 500 }));
+    await expect(loadContentFile('src/_data/cms/home/hero.json')).rejects.toThrow(/500/);
+  });
+});
+
+describe('loadMediaIndex', () => {
+  it('returns null on a non-ok response', async () => {
+    stubFetch(async () => ({ ok: false, status: 404 }));
+    await expect(loadMediaIndex()).resolves.toBeNull();
+  });
+
+  it('returns null when the fetch itself rejects', async () => {
+    stubFetch(async () => {
+      throw new Error('network down');
+    });
+    await expect(loadMediaIndex()).resolves.toBeNull();
+  });
+});
+```
+
 - [ ] **Step 5: Run tests** — `npm test` → PASS. Then commit:
 
 ```bash
-git add src/admin/lib/api.js src/admin/lib/content.js src/admin/lib/__tests__/api.test.js
+git add src/admin/lib/api.js src/admin/lib/content.js src/admin/lib/__tests__/api.test.js src/admin/lib/__tests__/content.test.js
 git commit -m "feat(cms-v2): add api client and content loaders"
 ```
 
@@ -1116,7 +1234,12 @@ module.exports = class MediaIndex {
         }
       }
     };
-    walk(root);
+    // If the media directory is missing, emit an empty index instead of
+    // throwing — this template must never kill the whole Eleventy build
+    // (matches loadMediaIndex's degrade-gracefully posture in the admin).
+    if (fs.existsSync(root)) {
+      walk(root);
+    }
     files.sort((a, b) => a.path.localeCompare(b.path));
     return JSON.stringify({ generatedAt: new Date().toISOString(), files });
   }

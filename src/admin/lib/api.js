@@ -1,6 +1,7 @@
 // All server calls in one place. Every endpoint already exists — this file
 // only wraps them with auth and error handling. Backend must not change.
 export function createApi(getToken, fetcher = (...args) => fetch(...args)) {
+  // Network-level rejections (fetcher throwing) intentionally propagate to callers.
   async function request(method, url, body) {
     const response = await fetcher(url, {
       method,
