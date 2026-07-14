@@ -4149,7 +4149,7 @@ module.exports = {
 };
 ```
 
-- [ ] **Step 3: Rewrite `src/legal-notice/index.njk`** to render from `cms.legalNotice.*`, preserving the exact design. Address lines and paragraph lists render via `{% for %}` loops with leading-whitespace trim (`{%- for ... %}` / `{%- endfor %}`) so the built HTML has no extra blank lines. The two fields containing a literal `&` (`hero.title`, `liability.title`) are rendered with the `| safe` filter so Nunjucks doesn't entity-escape them to `&amp;` — that keeps the built HTML byte-identical to the original hardcoded markup (both render identically in a browser regardless, since `&amp;` and a bare `&` between tags display the same glyph; `| safe` was chosen purely to make the before/after diff empty). The two contact blocks keep pulling phone/email from `cms.site.footer.bgContact` / `wearhouseContact`, unchanged. The privacy section's first, link-bearing paragraph stays hardcoded above the `paragraphs` loop (see design note above).
+- [ ] **Step 3: Rewrite `src/legal-notice/index.njk`** to render from `cms.legalNotice.*`, preserving the exact design. Address lines and paragraph lists render via `{% for %}` loops with leading-whitespace trim (`{%- for ... %}` / `{%- endfor %}`) so the built HTML has no extra blank lines. All CMS-sourced fields go through Nunjucks' default auto-escaping (no `| safe`), like every other CMS field on the site — so the two fields containing a literal `&` (`hero.title`, `liability.title`) come out as `&amp;` in the built HTML. Those two `&` → `&amp;` hunks are the only expected before/after diff and are visually identical: browsers render `&amp;` and a bare `&` between tags as the same glyph, and escaping keeps these fields from being an HTML-injection surface. The two contact blocks keep pulling phone/email from `cms.site.footer.bgContact` / `wearhouseContact`, unchanged. The privacy section's first, link-bearing paragraph stays hardcoded above the `paragraphs` loop (see design note above).
 
 ```njk
 ---
@@ -4163,7 +4163,7 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
     <div class="max-w-[64rem]">
       <p class="type-eyebrow-hero mb-4 text-bone/54" data-reveal>{{ cms.legalNotice.hero.eyebrow }}</p>
       <h1 class="type-hero-title max-w-[12ch]" data-reveal>
-        {{ cms.legalNotice.hero.title | safe }}
+        {{ cms.legalNotice.hero.title }}
       </h1>
       <p class="type-body-lg mt-6 max-w-[42rem] text-bone/82" data-reveal>
         {{ cms.legalNotice.hero.summary }}
@@ -4211,7 +4211,7 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
         </section>
 
         <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
-          <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.liability.title | safe }}</p>
+          <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.liability.title }}</p>
           <div class="type-body type-body-stack text-black/72">
             {%- for paragraph in cms.legalNotice.liability.paragraphs %}
             <p>
@@ -4352,7 +4352,7 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
 - [ ] **Step 6: Verify.**
   - `npm test` — 57/57 tests pass (manifest integrity suite covers the new `legalNotice.json` file and its section keys).
   - `npm run build` — green.
-  - Built `_site/legal-notice/index.html` diffed byte-for-byte against a pre-change build: **empty diff**.
+  - Built `_site/legal-notice/index.html` diffed against a pre-change build: the only hunks are the two expected `&` → `&amp;` entity encodings in `hero.title` and `liability.title` (see Step 3) — visually identical, no other differences.
   - `_site/cms-data/legalNotice.json` present (existing `src/_data/cms` → `cms-data` passthrough copy already covers it).
 
 - [ ] **Step 7: Commit**
