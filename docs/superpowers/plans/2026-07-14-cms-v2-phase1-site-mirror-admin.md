@@ -3594,7 +3594,7 @@ git commit -m "feat(cms-v2): changes tray with validation-gated publish, undo, u
 - Create: `src/admin/screens/MediaScreen.jsx`
 - Modify: `src/admin/shell/Shell.jsx` (route `media` to the real screen)
 
-- [ ] **Step 1: Extract the upload hook in `MediaPicker.jsx`.** Add this export and rewrite the picker's `handleUpload` to use it (behavior unchanged):
+- [ ] **Step 1: Extract the upload hook in `MediaPicker.jsx`.** Add this export and rewrite the picker's `handleUpload` to use it (behavior unchanged). Note: a review fix on `MediaPicker.jsx` already added a `MAX_UPLOAD_BYTES` size guard (Vercel's ~4.5 MB request-body ceiling, ~3 MB after base64 overhead) ahead of this task — the guard moves into the hook so every caller (picker, field, media screen) gets it, checked before the file is read/encoded:
 
 ```jsx
 export function useMediaUpload(onUploaded, successMessage = 'Uploaded. Use it in a section and publish to show it on the website.') {
@@ -3603,6 +3603,10 @@ export function useMediaUpload(onUploaded, successMessage = 'Uploaded. Use it in
   const [uploading, setUploading] = useState(false);
 
   const upload = async file => {
+    if (file.size > MAX_UPLOAD_BYTES) {
+      toast('Files must be smaller than 3 MB. Compress it and try again.', 'error');
+      return;
+    }
     setUploading(true);
     try {
       const data = await readFileAsDataUrl(file);
