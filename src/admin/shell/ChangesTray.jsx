@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useAdmin, useStoreVersion } from '../lib/context.js';
-import { allSections } from '../manifest.js';
+import { allSections, sectionsForFile } from '../manifest.js';
 import { navigate } from '../lib/router.js';
 import { validateValue } from '../lib/validate.js';
 import { useToast } from './Toasts.jsx';
@@ -66,7 +66,8 @@ export function ChangesTray() {
         if (!store.isKeyDirty(filePath, field.name)) {
           continue;
         }
-        const owner = allSections().find(section => !section.joined && section.file === filePath && section.keys.includes(field.name));
+        const owner = allSections().find(section => !section.joined && section.file === filePath && section.keys.includes(field.name))
+          || sectionsForFile(filePath)[0];
         const crumb = owner ? `${owner.pageLabel} — ${owner.label}` : entry.label || filePath;
         found.push(...validateValue([field], store.getDraft(filePath), crumb));
       }
