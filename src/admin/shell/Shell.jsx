@@ -7,6 +7,7 @@ import { Topbar } from './Topbar.jsx';
 import { PageScreen } from '../screens/PageScreen.jsx';
 import { SectionScreen } from '../screens/SectionScreen.jsx';
 import { MediaScreen } from '../screens/MediaScreen.jsx';
+import { PeopleScreen } from '../screens/PeopleScreen.jsx';
 
 function sectionDirty(store, section) {
   if (section.joined) {
@@ -69,6 +70,7 @@ function NotFound() {
 }
 
 function Content({ route }) {
+  const { user } = useAdmin();
   useEffect(() => {
     if (route.length === 0) {
       navigate('page', 'homepage');
@@ -82,7 +84,7 @@ function Content({ route }) {
     return <MediaScreen />;
   }
   if (route[0] === 'people') {
-    return <div className="empty-state"><div className="empty-state-title">People</div><div className="empty-state-description">Arrives in a later task.</div></div>;
+    return user?.role === 'admin' ? <PeopleScreen /> : <NotFound />;
   }
   if (route[0] === 'page') {
     const page = findPage(route[1]);
