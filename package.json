@@ -14,12 +14,15 @@
     "build:css": "tailwindcss -i ./src/assets/styles/site.css -o ./_site/assets/styles/site.css --minify",
     "build:site": "eleventy",
     "build:admin": "esbuild src/admin/app.jsx --bundle --format=esm --platform=browser --target=es2020 --outfile=_site/admin/app.js",
-    "serve": "eleventy --serve"
+    "serve": "eleventy --serve",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
     "concurrently": "^9.2.1",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "vitest": "^4.1.10"
   },
   "dependencies": {
     "@radix-ui/react-collapsible": "^1.1.12",
