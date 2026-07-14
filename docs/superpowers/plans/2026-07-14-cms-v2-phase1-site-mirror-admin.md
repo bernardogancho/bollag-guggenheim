@@ -3077,7 +3077,7 @@ Uses the manifest joined section: `files[0]` = roster.json (`rosterSection.items
 import React, { useState } from 'react';
 import { useAdmin, useStoreVersion } from '../lib/context.js';
 import { navigate } from '../lib/router.js';
-import { resolveListField, defaultValueForFields } from '../lib/configPath.js';
+import { resolveListField } from '../lib/configPath.js';
 import { joinWearhouse, splitWearhouse, blankRosterItem, blankBrandEntry } from '../adapters/wearhouse.js';
 import { reorder } from '../lib/paths.js';
 import { pruneEmptyAdditions } from '../lib/prune.js';
@@ -3205,6 +3205,7 @@ export function WearhouseScreen({ page, section, rest }) {
                   roster: candidate.roster ? { ...candidate.roster, slug: nextSlug, pageHref: `/wearhouse/${nextSlug}/` } : candidate.roster,
                   brand: candidate.brand ? { ...candidate.brand, slug: nextSlug } : candidate.brand,
                 } : candidate)));
+                toast('Address renamed.');
               }}>Rename address</button>
             </div>
           </div>
