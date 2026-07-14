@@ -2795,10 +2795,53 @@ export function WearhouseScreen({ page, section, rest }) {
         </div>
 
         <section className="group-card">
+          <h3 className="group-card-title">Name & web address</h3>
+          <div className="field-grid two-col">
+            <label className="field">
+              <span className="field-label">Brand name</span>
+              <input className="input" value={record.name} onChange={event => {
+                const name = event.target.value;
+                updateRecord(slug, {
+                  name,
+                  roster: record.roster ? { ...record.roster, name } : record.roster,
+                  brand: record.brand ? { ...record.brand, name } : record.brand,
+                });
+              }} />
+            </label>
+            <div className="field">
+              <span className="field-label">Web address</span>
+              <div className="field-help">/wearhouse/{record.slug}/ — renaming changes the page's link.</div>
+              <button type="button" className="button button-secondary" onClick={() => {
+                const input = window.prompt('New web address (lowercase, words joined by hyphens):', record.slug);
+                if (input === null) {
+                  return;
+                }
+                const nextSlug = slugify(input);
+                if (!nextSlug) {
+                  toast('That address is not valid.', 'error');
+                  return;
+                }
+                if (nextSlug !== record.slug && records.some(candidate => candidate.slug === nextSlug)) {
+                  toast('That address is already used by another brand.', 'error');
+                  return;
+                }
+                writeRecords(records.map(candidate => (candidate.slug === record.slug ? {
+                  ...candidate,
+                  slug: nextSlug,
+                  roster: candidate.roster ? { ...candidate.roster, slug: nextSlug, pageHref: `/wearhouse/${nextSlug}/` } : candidate.roster,
+                  brand: candidate.brand ? { ...candidate.brand, slug: nextSlug } : candidate.brand,
+                } : candidate)));
+                navigate('page', page.id, section.id, nextSlug);
+              }}>Rename address</button>
+            </div>
+          </div>
+        </section>
+
+        <section className="group-card">
           <h3 className="group-card-title">Card on the Wearhouse page</h3>
           {record.roster ? (
             <div className="field-grid">
-              {rosterItemFields.map(field => (
+              {rosterItemFields.filter(field => !['name', 'slug'].includes(field.name)).map(field => (
                 <FieldRenderer key={field.name} field={field} value={record.roster[field.name]}
                   onChange={next => updateRecord(slug, { roster: { ...record.roster, [field.name]: next } })}
                   pathPrefix={`__wearhouse.${slug}.roster.${field.name}`} routeBase={[page.id, section.id]} />
@@ -2845,6 +2888,10 @@ export function WearhouseScreen({ page, section, rest }) {
       return;
     }
     const nextSlug = slugify(name);
+    if (!nextSlug) {
+      toast('Use letters or numbers in the brand name.', 'error');
+      return;
+    }
     if (records.some(record => record.slug === nextSlug)) {
       toast('A brand with that name already exists.', 'error');
       return;
@@ -2940,7 +2987,14 @@ import { allSections } from '../manifest.js';
 import { navigate } from '../lib/router.js';
 import { validateValue } from '../lib/validate.js';
 import { useToast } from './Toasts.jsx';
-import { loadContentFile } from '../lib/content.js';
+
+const timeAgo = iso => {
+  const minutes = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes} min ago`;
+  const hours = Math.round(minutes / 60);
+  return hours < 24 ? `${hours} h ago` : `${Math.round(hours / 24)} d ago`;
+};
 
 function sectionIsDirty(store, section) {
   if (section.joined) {
@@ -2980,7 +3034,10 @@ export function ChangesTray() {
     }
   }, [open]);
 
-  // Validate only what changed: for each dirty file, only its dirty top-level keys.
+  // Validate only what changed: for each dirty file, only its dirty top-level
+  // keys. Issue crumbs use manifest page/section labels (editor language),
+  // never config.yml's internal labels. (Inline in-form flags are deliberately
+  // de-scoped for Phase 1 — the tray list is the single validation surface.)
   const issues = useMemo(() => {
     const found = [];
     for (const filePath of dirtyPaths) {
@@ -2988,8 +3045,14 @@ export function ChangesTray() {
       if (!entry) {
         continue;
       }
-      const dirtyFields = entry.fields.filter(field => store.isKeyDirty(filePath, field.name));
-      found.push(...validateValue(dirtyFields, store.getDraft(filePath), entry.label || filePath));
+      for (const field of entry.fields) {
+        if (!store.isKeyDirty(filePath, field.name)) {
+          continue;
+        }
+        const owner = allSections().find(section => !section.joined && section.file === filePath && section.keys.includes(field.name));
+        const crumb = owner ? `${owner.pageLabel} — ${owner.label}` : entry.label || filePath;
+        found.push(...validateValue([field], store.getDraft(filePath), crumb));
+      }
     }
     return found;
   }, [store.getVersion()]);
@@ -3032,11 +3095,12 @@ export function ChangesTray() {
     }
     setRevertPending(true);
     try {
-      const result = await api.revert(latest.sha);
-      for (const path of result.revertedFiles || []) {
-        store.loadFile(path, await loadContentFile(path));
-      }
-      toast('Last publish undone. The website updates in about a minute.', 'success');
+      await api.revert(latest.sha);
+      // Do NOT reload content from /cms-data here: the currently deployed
+      // build still serves the just-undone content until the rollback deploy
+      // finishes (~1–2 min). Reloading now would silently re-arm the undone
+      // changes as a clean baseline. The editor reloads the admin instead.
+      toast('Last publish undone. Reload the admin in about a minute to see the restored content.', 'success');
       setOpen(false);
     } catch (error) {
       toast(error.message || 'Could not undo the last publish.', 'error');
@@ -3087,6 +3151,9 @@ export function ChangesTray() {
               ) : null}
             </div>
             <div className="tray-foot">
+              {deploys?.length ? (
+                <div className="field-help">Last published {timeAgo(deploys[0].date)} · {deploys[0].message}</div>
+              ) : null}
               <button type="button" className="button button-primary" disabled={!rows.length || issues.length > 0 || publishPending} onClick={() => setConfirming(true)}>
                 {publishPending ? 'Publishing…' : `Publish ${rows.length ? `${rows.length} change${rows.length === 1 ? '' : 's'}` : ''}`}
               </button>
@@ -3154,7 +3221,7 @@ git commit -m "feat(cms-v2): changes tray with validation-gated publish, undo, u
 - [ ] **Step 1: Extract the upload hook in `MediaPicker.jsx`.** Add this export and rewrite the picker's `handleUpload` to use it (behavior unchanged):
 
 ```jsx
-export function useMediaUpload(onUploaded) {
+export function useMediaUpload(onUploaded, successMessage = 'Uploaded. Use it in a section and publish to show it on the website.') {
   const { api, setMediaIndex } = useAdmin();
   const toast = useToast();
   const [uploading, setUploading] = useState(false);
@@ -3168,7 +3235,7 @@ export function useMediaUpload(onUploaded) {
         ...(current || { files: [] }),
         files: [{ path: result.publicPath, name: file.name, size: file.size }, ...(current?.files || [])],
       }));
-      toast('Uploaded. It appears on the website after your next publish.', 'success');
+      toast(successMessage, 'success');
       onUploaded(result.publicPath);
     } catch (error) {
       toast(error.message || 'Could not upload the file.', 'error');
@@ -3180,6 +3247,8 @@ export function useMediaUpload(onUploaded) {
   return { uploading, upload };
 }
 ```
+
+(The message is a parameter because context differs: from a field, the image shows after the section is published; from the Media screen, the file is simply added to the library — `MediaScreen` passes `'Uploaded to the library.'`. Note: the index records name/size only; image dimensions are deliberately omitted — spec §4.4 says "when known".)
 
 In the picker: `const { uploading, upload } = useMediaUpload(path => onSelect(path));` and
 
@@ -3247,22 +3316,24 @@ export function MediaScreen() {
   const toast = useToast();
   const [query, setQuery] = useState('');
   const fileInput = useRef(null);
-  const { uploading, upload } = useMediaUpload(() => {});
+  const { uploading, upload } = useMediaUpload(() => {}, 'Uploaded to the library.');
 
-  // Where is each media file used? Scan every draft once.
+  // Where is each media file used? Serialize per top-level key so hits credit
+  // the section that actually contains the image (files are shared by
+  // several sections, e.g. company.json powers four of them).
   const usedIn = useMemo(() => {
-    const serialized = store.allPaths().map(filePath => ({ filePath, text: JSON.stringify(store.getDraft(filePath) || {}) }));
+    const keyTexts = [];
+    for (const filePath of store.allPaths()) {
+      const draft = store.getDraft(filePath) || {};
+      for (const [key, value] of Object.entries(draft)) {
+        const section = sectionsForFile(filePath).find(candidate => !candidate.joined && candidate.keys.includes(key))
+          || sectionsForFile(filePath)[0];
+        keyTexts.push({ label: section ? `${section.pageLabel} — ${section.label}` : filePath, text: JSON.stringify(value) });
+      }
+    }
     const map = new Map();
     for (const media of mediaIndex?.files || []) {
-      const hits = [];
-      for (const { filePath, text } of serialized) {
-        if (text.includes(media.path)) {
-          const section = sectionsForFile(filePath)[0];
-          if (section) {
-            hits.push(`${section.pageLabel} — ${section.label}`);
-          }
-        }
-      }
+      const hits = keyTexts.filter(entry => entry.text.includes(media.path)).map(entry => entry.label);
       map.set(media.path, [...new Set(hits)]);
     }
     return map;
@@ -3632,9 +3703,9 @@ if (window.location.hostname === 'localhost') {
 2. Homepage → sections in page order with summaries; open "Hero banner" → flat form, no accordions; edit Title → topbar flips to "Saved — not published yet"; Changes button shows (1).
 3. Section "Discard changes" restores the value and the badge returns to "All changes published".
 4. Brands → All brands → card grid of ~11 brands with logos; open one → full-screen editor with breadcrumb; its Gallery renders as a "Manage items" block → opens a nested card grid; add, duplicate, reorder (↑/↓), delete an item — all work and are announced by toasts.
-5. The Wearhouse → Wearhouse brands → joined grid (~16 cards, segments as subtitles); any mis-synced brand shows a "Missing …" badge; open a brand → two group cards ("Card on the Wearhouse page" / "Brand detail page"); add a test brand via the name box → both halves created → delete it.
+5. The Wearhouse → Wearhouse brands → joined grid (~16 cards, segments as subtitles); any mis-synced brand shows a "Missing …" badge; open a brand → three group cards ("Name & web address" / "Card on the Wearhouse page" / "Brand detail page"); "Rename address" prompts, rejects a duplicate, and renames both halves + navigates to the new address; add a test brand via the name box → both halves created → delete it.
 6. Stores → Stores → groups grid → open a group → its Stores render as a managed list → open a store → edit → breadcrumbs navigate back correctly.
-7. Image field: open Homepage → Introduction → Image → "Replace" opens the media picker; search works; picking swaps the preview. "Edit file path manually" reveals the raw input.
+7. Image field: open Homepage → Introduction → Image → "Replace" opens the media picker; search works; picking swaps the preview. "Edit file path manually" reveals the raw input. Remove the image, then drag an image file from the desktop onto the empty dropzone — on the static server the upload must fail with a plain error TOAST (no crash, `/api` is absent locally).
 8. Media screen: grid renders with sizes and "used in" hints; search filters; "Copy path" toasts.
 9. Search box: type "closed" → brand hit navigates to the brand; type "hero" → section hits.
 10. Changes tray: make 2 edits in different pages → tray lists both rows with page names; per-row Discard works; clear a required Title and confirm the tray shows a plain-language issue and the Publish button is disabled; restore it → publish enabled. (Actual publish fails on the static server — clicking it must show an error TOAST, not break the UI.)
