@@ -2357,6 +2357,7 @@ import { useAdmin, useStoreVersion } from '../lib/context.js';
 import { navigate } from '../lib/router.js';
 import { useToast } from '../shell/Toasts.jsx';
 import { FieldRenderer } from '../fields/FieldRenderer.jsx';
+import { pruneEmptyAdditions } from '../lib/prune.js';
 import { ItemListScreen } from './ItemListScreen.jsx';
 import { ItemEditScreen } from './ItemEditScreen.jsx';
 import { WearhouseScreen } from './WearhouseScreen.jsx';
@@ -2430,7 +2431,7 @@ export function SectionScreen({ page, section, rest }) {
             key={field.name}
             field={field}
             value={draft[field.name]}
-            onChange={next => store.update(section.file, draftCopy => { draftCopy[field.name] = next; })}
+            onChange={next => store.update(section.file, draftCopy => { draftCopy[field.name] = pruneEmptyAdditions(next, store.getRemote(section.file)?.[field.name]); })}
             pathPrefix={field.name}
             routeBase={[page.id, section.id]}
           />
@@ -2440,6 +2441,8 @@ export function SectionScreen({ page, section, rest }) {
   );
 }
 ```
+
+Note: `../lib/prune.js` (imported above) is created in Chunk 5 Task 15, which also ships the deferred fix that adds this `pruneEmptyAdditions` call. Until Task 15 lands, treat this Task 12 code block as its post-Task-15 final form (documented here so this task's file doesn't need a second edit) rather than something to implement standalone at this point.
 
 - [ ] **Step 8: Temporary stubs so the build compiles** (replaced in Chunk 5): create `src/admin/screens/ItemListScreen.jsx`, `src/admin/screens/ItemEditScreen.jsx`, `src/admin/screens/WearhouseScreen.jsx`, each as:
 
@@ -2752,13 +2755,119 @@ git add src/admin/lib/configPath.js src/admin/lib/__tests__/configPath.test.js
 git commit -m "feat(cms-v2): config-path resolution and blank-item defaults"
 ```
 
-### Task 15: ItemListScreen + ItemEditScreen (replace stubs)
+### Task 15: ItemListScreen + ItemEditScreen (replace stubs) + prune-on-write (TDD)
 
 **Files:**
 - Modify: `src/admin/screens/ItemListScreen.jsx` (replace entirely)
 - Modify: `src/admin/screens/ItemEditScreen.jsx` (replace entirely)
+- Create: `src/admin/lib/prune.js`
+- Test: `src/admin/lib/__tests__/prune.test.js`
 
-- [ ] **Step 1: Replace `src/admin/screens/ItemListScreen.jsx`**
+**Why `prune.js` is needed:** `config.yml` defines optional keys that many real records omit — verified live examples: `brands[i].logoImage`, `brands[i].detail.gallery[i].source`, `detailGallery[i].source` in `src/_data/cms/brandsPage/brands.json`; `rosterCard.detailImage` in `src/_data/cms/wearhousePage/brands.json`. `FieldRenderer`'s spread-based `onChange` composition (see Task 12) writes such a key with `''` the moment a user's cursor touches that field — and because `store.isKeyDirty`/`isDirty` compare with `JSON.stringify`, `''` is never equal to "key absent". A section touched this way stays permanently dirty even after the user clears the field back to nothing. `pruneEmptyAdditions` drops exactly those touched-into-existence `''` keys (object keys only — array slots are never dropped, so indices never shift) before the value reaches the store.
+
+- [ ] **Step 1: Write failing `prune.js` tests**
+
+```js
+import { describe, it, expect } from 'vitest';
+import { pruneEmptyAdditions } from '../prune.js';
+
+describe('pruneEmptyAdditions', () => {
+  it('drops a top-level "" key that is absent on remote', () => {
+    const next = { title: 'Hello', subtitle: '' };
+    const remote = { title: 'Hello' };
+    expect(pruneEmptyAdditions(next, remote)).toEqual({ title: 'Hello' });
+  });
+
+  it('keeps "" when the remote already has that key (a real clearing)', () => {
+    const next = { title: 'Hello', subtitle: '' };
+    const remote = { title: 'Hello', subtitle: 'Old subtitle' };
+    expect(pruneEmptyAdditions(next, remote)).toEqual({ title: 'Hello', subtitle: '' });
+  });
+
+  it('drops nested empty additions, mirroring brands.json logoImage', () => {
+    const next = { name: 'Closed', slug: 'closed', logoImage: '', card: { eyebrow: 'x' } };
+    const remote = { name: 'Closed', slug: 'closed', card: { eyebrow: 'x' } };
+    expect(pruneEmptyAdditions(next, remote)).toEqual({ name: 'Closed', slug: 'closed', card: { eyebrow: 'x' } });
+  });
+
+  it('drops "" keys touched into existence on a new array item, but keeps the array slot', () => {
+    const next = [{ image: '/a.jpg', note: 'A' }, { image: '', note: '' }];
+    const remote = [{ image: '/a.jpg', note: 'A' }];
+    // The new item's slot is kept (array length unchanged) but its
+    // touched-into-existence '' keys are pruned, leaving an empty object.
+    expect(pruneEmptyAdditions(next, remote)).toEqual([{ image: '/a.jpg', note: 'A' }, {}]);
+  });
+
+  it('keeps a real value alongside a pruned "" key on a new array item', () => {
+    const next = [{ image: '/a.jpg', note: 'A' }, { image: '/b.jpg', note: '' }];
+    const remote = [{ image: '/a.jpg', note: 'A' }];
+    expect(pruneEmptyAdditions(next, remote)).toEqual([{ image: '/a.jpg', note: 'A' }, { image: '/b.jpg' }]);
+  });
+
+  it('keeps an array slot that is itself "" (a scalar list entry)', () => {
+    const next = ['a', '', 'c'];
+    const remote = ['a', 'b', 'c'];
+    expect(pruneEmptyAdditions(next, remote)).toEqual(['a', '', 'c']);
+  });
+
+  it('preserves key order of kept keys', () => {
+    const next = { a: '1', b: '', c: '3' };
+    const remote = { a: '0', c: '2' };
+    const result = pruneEmptyAdditions(next, remote);
+    expect(Object.keys(result)).toEqual(['a', 'c']);
+    expect(result).toEqual({ a: '1', c: '3' });
+  });
+
+  it('drops a top-level "" when remote is entirely undefined', () => {
+    expect(pruneEmptyAdditions('', undefined)).toBeUndefined();
+  });
+});
+```
+
+- [ ] **Step 2: Run to verify failure**, then implement `src/admin/lib/prune.js`
+
+```js
+// Drops keys an editor "touched into existence" but left empty, so a draft
+// that is semantically identical to the published content compares clean
+// under the store's JSON.stringify dirty check. Rules:
+// - a scalar '' whose counterpart is absent in remote → dropped (object keys only)
+// - array SLOTS are never dropped (indices must not shift); pruning recurses
+//   into array items' object keys instead
+// - everything else is kept verbatim; key order of kept keys is preserved
+const SKIP = Symbol('skip');
+
+function pruneValue(next, remote) {
+  if (next === '' && remote === undefined) {
+    return SKIP;
+  }
+  if (Array.isArray(next)) {
+    return next.map((item, index) => {
+      const pruned = pruneValue(item, Array.isArray(remote) ? remote[index] : undefined);
+      return pruned === SKIP ? item : pruned;
+    });
+  }
+  if (next && typeof next === 'object') {
+    const result = {};
+    for (const [key, value] of Object.entries(next)) {
+      const pruned = pruneValue(value, remote && typeof remote === 'object' && !Array.isArray(remote) ? remote[key] : undefined);
+      if (pruned !== SKIP) {
+        result[key] = pruned;
+      }
+    }
+    return result;
+  }
+  return next;
+}
+
+export function pruneEmptyAdditions(next, remote) {
+  const pruned = pruneValue(next, remote);
+  return pruned === SKIP ? undefined : pruned;
+}
+```
+
+- [ ] **Step 3: Run tests** — `npm test` → PASS (this also makes the Task 12 `SectionScreen.jsx` code block's `pruneEmptyAdditions` import resolve).
+
+- [ ] **Step 4: Replace `src/admin/screens/ItemListScreen.jsx`**
 
 ```jsx
 import React from 'react';
@@ -2854,7 +2963,7 @@ export function ItemListScreen({ page, section, listPath }) {
 }
 ```
 
-- [ ] **Step 2: Replace `src/admin/screens/ItemEditScreen.jsx`**
+- [ ] **Step 5: Replace `src/admin/screens/ItemEditScreen.jsx`**
 
 ```jsx
 import React from 'react';
@@ -2862,6 +2971,7 @@ import { useAdmin, useStoreVersion } from '../lib/context.js';
 import { navigate } from '../lib/router.js';
 import { getAtPath, setAtPath } from '../lib/paths.js';
 import { resolveListField } from '../lib/configPath.js';
+import { pruneEmptyAdditions } from '../lib/prune.js';
 import { itemTitle } from '../lib/summarize.js';
 import { FieldRenderer } from '../fields/FieldRenderer.jsx';
 import { Breadcrumbs } from './SectionScreen.jsx';
@@ -2919,7 +3029,11 @@ export function ItemEditScreen({ page, section, listPath, index }) {
             key={child.name}
             field={child}
             value={item[child.name]}
-            onChange={next => store.update(section.file, draftCopy => setAtPath(draftCopy, `${listPath}.${index}.${child.name}`, next))}
+            onChange={next => {
+              const childPath = `${listPath}.${index}.${child.name}`;
+              const pruned = pruneEmptyAdditions(next, getAtPath(store.getRemote(section.file), childPath));
+              store.update(section.file, draftCopy => setAtPath(draftCopy, childPath, pruned));
+            }}
             pathPrefix={`${listPath}.${index}.${child.name}`}
             routeBase={[page.id, section.id]}
           />
@@ -2932,14 +3046,23 @@ export function ItemEditScreen({ page, section, listPath, index }) {
 
 Nested galleries work automatically: a `list` field inside an item renders as a Managed-items block whose route is `list/<listPath>.<index>.<childName>`.
 
-- [ ] **Step 3: Verify** — `npm test` PASS; `npm run build` green.
+Note: `WearhouseScreen.jsx` (Task 16) deliberately does **not** call `pruneEmptyAdditions` — its `__wearhouse.<slug>.roster.<field>` / `__wearhouse.<slug>.brand.<field>` paths are synthetic (joined-record) paths, not real file paths, so there is no single `getRemote(...)?.[path]` counterpart to prune against; that's out of scope for this fix.
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 6: Verify** — `npm test` PASS (expect 8 new `prune.test.js` cases plus the existing suite); `npm run build` green.
+
+- [ ] **Step 7: Commit**
 
 ```bash
-git add src/admin/screens/ItemListScreen.jsx src/admin/screens/ItemEditScreen.jsx
-git commit -m "feat(cms-v2): master-detail item lists and item editor"
+git add src/admin/screens/ItemListScreen.jsx src/admin/screens/ItemEditScreen.jsx src/admin/screens/SectionScreen.jsx src/admin/lib/prune.js src/admin/lib/__tests__/prune.test.js
+git commit -m "feat(cms-v2): master-detail item lists and item editor
+
+Includes prune.js: drops draft keys an editor touched into existence
+but left empty (vs. absent in remote), so touching an optional field
+back to blank doesn't leave a section permanently dirty. Wired at the
+SectionScreen and ItemEditScreen field onChange boundaries."
 ```
+
+(`src/admin/screens/SectionScreen.jsx` is included here because its Task 12 code block already reflects the post-prune final form — see the note after that block — so the diff for this fix lands in this commit rather than amending Task 12's.)
 
 ### Task 16: Wearhouse joined editor (replace stub)
 
