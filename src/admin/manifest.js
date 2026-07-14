@@ -56,7 +56,7 @@ export const PAGES = [
     sections: [
       { id: 'hero', label: 'Hero banner', file: `${CMS}/stores.json`, keys: ['hero', 'heroStats'] },
       { id: 'network', label: 'Network introduction', file: `${CMS}/stores.json`, keys: ['networkSection'] },
-      { id: 'store-list', label: 'Stores', hint: 'Store groups and their stores', file: `${CMS}/stores.json`, keys: ['groups'] },
+      { id: 'store-list', label: 'Store list', hint: 'Store groups and their stores', file: `${CMS}/stores.json`, keys: ['groups'] },
       { id: 'online', label: 'Online shop', file: `${CMS}/stores.json`, keys: ['online'] },
     ],
   },

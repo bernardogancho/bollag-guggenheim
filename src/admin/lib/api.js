@@ -17,11 +17,16 @@ export function createApi(getToken, fetcher = (...args) => fetch(...args)) {
     try {
       payload = raw ? JSON.parse(raw) : {};
     } catch {
-      payload = { error: raw };
+      payload = {};
     }
 
     if (!response.ok) {
-      throw new Error(payload.error || payload.message || `The server returned an error (${response.status}).`);
+      // HTML error pages must never leak into toasts — sanitize any raw non-JSON body.
+      const message = payload.error || payload.message
+        || (raw && raw.trim().startsWith('<')
+          ? `The server returned an error (${response.status}).`
+          : (raw || `The server returned an error (${response.status}).`).slice(0, 200));
+      throw new Error(message);
     }
     return payload;
   }

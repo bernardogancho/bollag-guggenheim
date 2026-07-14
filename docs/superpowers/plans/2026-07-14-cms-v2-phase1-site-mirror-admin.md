@@ -1041,6 +1041,14 @@ describe('createApi', () => {
     const api = createApi(() => 'tok', fetcher);
     await expect(api.me()).rejects.toThrow(/500/);
   });
+
+  it('sanitizes an HTML error page instead of leaking it into the message', async () => {
+    const html = '<!DOCTYPE html><html><body><h1>502 Bad Gateway</h1></body></html>';
+    const fetcher = vi.fn(async () => ({ ok: false, status: 502, text: async () => html }));
+    const api = createApi(() => 'tok', fetcher);
+    await expect(api.me()).rejects.toThrow(/502/);
+    await expect(api.me()).rejects.not.toThrow(/<!DOCTYPE/);
+  });
 });
 ```
 
@@ -1068,11 +1076,16 @@ export function createApi(getToken, fetcher = (...args) => fetch(...args)) {
     try {
       payload = raw ? JSON.parse(raw) : {};
     } catch {
-      payload = { error: raw };
+      payload = {};
     }
 
     if (!response.ok) {
-      throw new Error(payload.error || payload.message || `The server returned an error (${response.status}).`);
+      // HTML error pages must never leak into toasts — sanitize any raw non-JSON body.
+      const message = payload.error || payload.message
+        || (raw && raw.trim().startsWith('<')
+          ? `The server returned an error (${response.status}).`
+          : (raw || `The server returned an error (${response.status}).`).slice(0, 200));
+      throw new Error(message);
     }
     return payload;
   }
@@ -4398,6 +4411,11 @@ Expected: both green.
 git commit -m "chore(cms-v2): delete the legacy admin monolith"
 ```
 
+**Post-walkthrough fixes (applied after the first pass of Task 22):** the browser walkthrough surfaced three issues, fixed in one follow-up commit before sign-off:
+- **Dev labels leaking into the UI.** `config.yml` field-level labels ending in ` Div` (the ones that actually render as `FieldRenderer` group-card titles / list labels / breadcrumbs — as opposed to the sibling `files:`-level `label:`, which the app never reads) were renamed to editor-facing text, e.g. `Brand Entries Div` → `Brands`, `Brand Card Div` → `Card on the Brands page`, `Roster Card Div` → `Card details`. `wearhouse_page`'s `Roster Section Div` was deliberately left as-is — it is technically field-level but `WearhouseScreen` bypasses it (hardcodes "Section heading" and reads only the child eyebrow/title fields), so it never renders anywhere.
+- **"Stores / Stores / Stores" breadcrumb stutter.** `manifest.js`'s `store-list` section label changed `Stores` → `Store list`; `config.yml`'s nested stores-within-a-group list label changed `Stores` → `Stores in this group`. (So Step 6 below now reads: Stores → Store list → Store Groups grid → open a group → its "Stores in this group" list.) The Agenda page has the same months → events shape but was already fine: `months` section label is `Events by month`, distinct from the field labels `Months`/`Events`, so no stutter and no change was needed there.
+- **Raw HTML error bodies leaking into toasts.** `lib/api.js`'s `request()` no longer surfaces a non-JSON response body verbatim; if it looks like an HTML page (`raw.trim().startsWith('<')`) the error message is replaced with a plain `The server returned an error (<status>).`, otherwise the raw text is kept (truncated to 200 chars) so short plain-text errors (e.g. `boom`) still surface. See the updated Task 6 code block and tests above.
+
 ### Task 21: Full verification sweep
 
 - [ ] **Step 1: Run the complete check battery**
@@ -4441,7 +4459,7 @@ if (window.location.hostname === 'localhost') {
 3. Section "Discard changes" restores the value and the badge returns to "All changes published".
 4. Brands → All brands → card grid of ~11 brands with logos; open one → full-screen editor with breadcrumb; its Gallery renders as a "Manage items" block → opens a nested card grid; add, duplicate, reorder (↑/↓), delete an item — all work and are announced by toasts.
 5. The Wearhouse → Wearhouse brands → joined grid (~16 cards, segments as subtitles); any mis-synced brand shows a "Missing …" badge; open a brand → three group cards ("Name & web address" / "Card on the Wearhouse page" / "Brand detail page"); "Rename address" prompts, rejects a duplicate, and renames both halves + navigates to the new address; add a test brand via the name box → both halves created → delete it.
-6. Stores → Stores → groups grid → open a group → its Stores render as a managed list → open a store → edit → breadcrumbs navigate back correctly.
+6. Stores → Store list → Store Groups grid → open a group → its "Stores in this group" list renders as a managed list → open a store → edit → breadcrumbs navigate back correctly.
 7. Image field: open Homepage → Introduction → Image → "Replace" opens the media picker; search works; picking swaps the preview. "Edit file path manually" reveals the raw input. Remove the image, then drag an image file from the desktop onto the empty dropzone — on the static server the upload must fail with a plain error TOAST (no crash, `/api` is absent locally).
 8. Media screen: grid renders with sizes and "used in" hints; search filters; "Copy path" toasts.
 9. Search box: type "closed" → brand hit navigates to the brand; type "hero" → section hits.

@@ -30,4 +30,12 @@ describe('createApi', () => {
     const api = createApi(() => 'tok', fetcher);
     await expect(api.me()).rejects.toThrow(/500/);
   });
+
+  it('sanitizes an HTML error page instead of leaking it into the message', async () => {
+    const html = '<!DOCTYPE html><html><body><h1>502 Bad Gateway</h1></body></html>';
+    const fetcher = vi.fn(async () => ({ ok: false, status: 502, text: async () => html }));
+    const api = createApi(() => 'tok', fetcher);
+    await expect(api.me()).rejects.toThrow(/502/);
+    await expect(api.me()).rejects.not.toThrow(/<!DOCTYPE/);
+  });
 });

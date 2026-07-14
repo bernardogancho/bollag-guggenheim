@@ -438,7 +438,7 @@ collections:
               - { label: Label, name: label, widget: string }
               - { label: Title, name: title, widget: string }
               - { label: Intro, name: intro, widget: text }
-              - label: Stores
+              - label: Stores in this group
                 name: stores
                 widget: list
                 summary: "{{fields.name}}"
@@ -522,7 +522,7 @@ collections:
         file: src/_data/cms/brandsPage/hero.json
         format: json
         fields:
-          - label: Hero Div
+          - label: Hero
             name: hero
             widget: object
             fields:
@@ -537,7 +537,7 @@ collections:
         file: src/_data/cms/brandsPage/portfolio.json
         format: json
         fields:
-          - label: Portfolio Grid Div
+          - label: Portfolio Section
             name: portfolioSection
             widget: object
             fields:
@@ -548,7 +548,7 @@ collections:
         file: src/_data/cms/brandsPage/detail.json
         format: json
         fields:
-          - label: Brand Detail Page Div
+          - label: Brand Detail Page
             name: detailPage
             widget: object
             fields:
@@ -564,7 +564,7 @@ collections:
         file: src/_data/cms/brandsPage/brands.json
         format: json
         fields:
-          - label: Brand Entries Div
+          - label: Brands
             name: brands
             widget: list
             summary: "{{fields.name}}"
@@ -572,7 +572,7 @@ collections:
               - { label: Name, name: name, widget: string }
               - { label: Slug, name: slug, widget: string, description: "The brand's web-address piece: lowercase, words joined by hyphens (e.g. 'cuoieria-fiorentina'). Changing it changes the page's URL." }
               - { label: Logo Image, name: logoImage, widget: image, required: false }
-              - label: Brand Card Div
+              - label: Card on the Brands page
                 name: card
                 widget: object
                 fields:
@@ -580,7 +580,7 @@ collections:
                   - { label: Hero Title, name: heroTitle, widget: string }
                   - { label: Summary, name: summary, widget: text }
                   - { label: Hero Image, name: heroImage, widget: image, required: false }
-              - label: Brand Detail Div
+              - label: Detail page
                 name: detail
                 widget: object
                 fields:
@@ -618,7 +618,7 @@ collections:
         file: src/_data/cms/wearhousePage/hero.json
         format: json
         fields:
-          - label: Hero Div
+          - label: Hero
             name: hero
             widget: object
             fields:
@@ -633,7 +633,7 @@ collections:
         file: src/_data/cms/wearhousePage/overview.json
         format: json
         fields:
-          - label: Overview Div
+          - label: Overview
             name: overview
             widget: object
             fields:
@@ -671,7 +671,7 @@ collections:
         file: src/_data/cms/wearhousePage/showroom.json
         format: json
         fields:
-          - label: Showroom Intro Div
+          - label: Showroom Section
             name: showroomSection
             widget: object
             fields:
@@ -690,7 +690,7 @@ collections:
         file: src/_data/cms/wearhousePage/cta.json
         format: json
         fields:
-          - label: CTA Div
+          - label: CTA
             name: cta
             widget: object
             fields:
@@ -703,7 +703,7 @@ collections:
         file: src/_data/cms/wearhousePage/detail.json
         format: json
         fields:
-          - label: Brand Detail Page Div
+          - label: Brand Detail Page
             name: detailPage
             widget: object
             fields:
@@ -720,7 +720,7 @@ collections:
         file: src/_data/cms/wearhousePage/contact.json
         format: json
         fields:
-          - label: Contact Block Div
+          - label: Contact Block
             name: contact
             widget: object
             fields:
@@ -737,14 +737,14 @@ collections:
         file: src/_data/cms/wearhousePage/brands.json
         format: json
         fields:
-          - label: Brand Entries Div
+          - label: Brands
             name: brands
             widget: list
             summary: "{{fields.name}}"
             fields:
               - { label: Name, name: name, widget: string }
               - { label: Slug, name: slug, widget: string, description: "The brand's web-address piece: lowercase, words joined by hyphens (e.g. 'cuoieria-fiorentina'). Changing it changes the page's URL." }
-              - label: Roster Card Div
+              - label: Card details
                 name: rosterCard
                 widget: object
                 fields:
@@ -754,7 +754,7 @@ collections:
                   - { label: Hover Image, name: hoverImage, widget: image, required: false }
                   - { label: Detail Image, name: detailImage, widget: image, required: false }
                   - { label: Logo Lines, name: logoLines, widget: list, required: false, field: { label: Line, name: line, widget: string } }
-              - label: Brand Detail Div
+              - label: Detail page text
                 name: detail
                 widget: object
                 fields:
