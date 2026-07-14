@@ -1,0 +1,3590 @@
+# CMS v2 Phase 1 — Site-Mirror Admin Implementation Plan
+
+> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Rewrite the `/admin` CMS front end into a site-mirror admin: navigation by website page, de-nested master-detail editors, media library, changes tray with validation, toasts/guards/search, and admin bundle cache-busting — with zero backend, auth, or content-model changes.
+
+**Architecture:** The 2,292-line `src/admin/app.jsx` monolith is replaced by ~20 focused modules under `src/admin/`. A new `manifest.js` maps the website's pages → sections onto the existing `config.yml` field definitions and the 22 JSON files in `src/_data/cms/` (unchanged). Drafts stay in localStorage; publishing still POSTs whole files to `/api/publish`. A tiny hash router; no new runtime deps except `vitest` (dev).
+
+**Tech Stack:** React 19 (already a dep), esbuild bundling (existing scripts), Eleventy 3 (site + new media-index emitter), Supabase JS (existing auth), `yaml` (existing dep), vitest (new devDep, logic tests only).
+
+**Spec:** `docs/superpowers/specs/2026-07-14-cms-v2-site-mirror-admin-design.md`
+
+**Ground rules for every task:**
+- Work on branch `cms-v2` (created in Task 0). NEVER push to `main` during this plan; the live CMS commits content to `main` continuously.
+- Backend (`api/**`) and auth are untouchable. Content JSON shape is untouchable (except the Task 8 legacy deletion).
+- After each task: `npm run build` must pass (Eleventy + esbuild + Tailwind) and `npm test` must pass.
+- Commit at the end of every task with the given message.
+
+**Current-state facts you need (verified):**
+- Entry today: `src/admin/app.jsx` (self-mounts React on `#admin-root`), bundled by `npm run build:admin` → `_site/admin/app.js` (+`app.css` from its `import './admin.css'`).
+- `src/admin/index.html` is processed by Eleventy (njk template engine for `.html`) → `_site/admin/index.html`.
+- `src/admin/config.yml` (Decap-style) holds all field definitions: 8 collections, 22 `file:` entries. Served at `/admin/config.yml` (passthrough). The admin fetches and parses it with `yaml` at runtime.
+- Content served to admin at `/cms-data/**` (passthrough of `src/_data/cms`).
+- API: `/api/me` (session→role), `/api/admin/users` (People CRUD), `/api/publish`, `/api/upload`, `/api/revert`, `/api/deploys`. All take `Authorization: Bearer <supabase access token>`.
+- Existing draft mechanism: localStorage keys `bg-cms-draft:<file-path>`; publish sends `{message, files:[{path, content}]}`.
+- Top-level keys per JSON file (exact, verified):
+  - `site.json`: `nav,footer` · `company.json`: `hero,intro,history,distribution` · `contact.json`: `hero,officeSection,office,wearhousePartner,form,cta` · `stores.json`: `hero,heroStats,networkSection,groups,online` · `agenda.json`: `hero,calendarSection,cta,months`
+  - `home/`: `hero.json→hero`, `intro.json→intro`, `brandsWall.json→brandsWall`, `wearhouseWall.json→wearhouseWall`, `selectionSection.json→selection`
+  - `brandsPage/`: `hero.json→hero`, `portfolio.json→portfolioSection`, `detail.json→detailPage`, `brands.json→brands`
+  - `wearhousePage/`: `hero.json→hero`, `overview.json→overview`, `roster.json→rosterSection`, `showroom.json→showroomSection`, `cta.json→cta`, `detail.json→detailPage`, `contact.json→contact`, `brands.json→brands`
+- Legacy dead data (verified unreferenced anywhere): `src/_data/cms/home/selectionCards/` (20 files), `src/_data/cms/wearhousePage/showroomGalleryItems/` (15 files).
+- `src/admin/admin.css` defines the design system (Google-style tokens). Existing classes to reuse: `.admin-shell .sidebar .workspace .card .button .button-primary/-secondary/-ghost/-danger .icon-button .input .textarea .select .field .field-label .field-help .badge .badge-*/ .empty-state .status-* .spinner .hidden-input .asset-dropzone .asset-card .asset-card-actions .asset-path-toggle .drag-handle .publish-modal* .access-* .file-row .collection-* .sidebar-nav-item .workspace-header .workspace-title .workspace-note`.
+
+---
+
+## Chunk 1: Foundations — tooling and core logic
+
+### Task 0: Branch + vitest tooling
+
+**Files:**
+- Modify: `package.json` (add devDep + test script)
+- Create: `vitest.config.js`
+- Create: `src/admin/lib/__tests__/setup.js`
+
+- [ ] **Step 1: Create the working branch**
+
+```bash
+cd /Users/bernardo/Desktop/bg
+git checkout main && git pull --rebase origin main
+git checkout -b cms-v2
+```
+
+- [ ] **Step 2: Install vitest and add scripts**
+
+```bash
+npm install -D vitest
+```
+
+In `package.json` `"scripts"`, add:
+
+```json
+"test": "vitest run",
+"test:watch": "vitest"
+```
+
+- [ ] **Step 3: Create vitest config and localStorage stub**
+
+`vitest.config.js`:
+
+```js
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    environment: 'node',
+    include: ['src/admin/**/__tests__/**/*.test.js'],
+    setupFiles: ['src/admin/lib/__tests__/setup.js'],
+    passWithNoTests: true,
+  },
+});
+```
+
+`src/admin/lib/__tests__/setup.js` (localStorage stub so store tests run in node):
+
+```js
+if (typeof globalThis.localStorage === 'undefined') {
+  const map = new Map();
+  globalThis.localStorage = {
+    getItem: key => (map.has(key) ? map.get(key) : null),
+    setItem: (key, value) => map.set(key, String(value)),
+    removeItem: key => map.delete(key),
+    clear: () => map.clear(),
+  };
+}
+```
+
+- [ ] **Step 4: Verify**
+
+Run: `npm test`
+Expected: "No test files found" with exit code 0 (`passWithNoTests: true` is already in the config from Step 3).
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add package.json package-lock.json vitest.config.js src/admin/lib/__tests__/setup.js
+git commit -m "chore(cms-v2): add vitest tooling and cms-v2 branch scaffolding"
+```
+
+### Task 1: `lib/paths.js` — JSON path utilities
+
+**Files:**
+- Create: `src/admin/lib/paths.js`
+- Test: `src/admin/lib/__tests__/paths.test.js`
+
+- [ ] **Step 1: Write failing tests**
+
+```js
+import { describe, it, expect } from 'vitest';
+import { deepClone, getAtPath, setAtPath, reorder } from '../paths.js';
+
+describe('paths', () => {
+  it('deepClone produces an independent copy', () => {
+    const a = { x: { y: [1, 2] } };
+    const b = deepClone(a);
+    b.x.y.push(3);
+    expect(a.x.y).toEqual([1, 2]);
+  });
+
+  it('getAtPath resolves dotted paths with numeric indexes', () => {
+    const obj = { groups: [{ stores: [{ name: 'Zurich' }] }] };
+    expect(getAtPath(obj, 'groups.0.stores.0.name')).toBe('Zurich');
+    expect(getAtPath(obj, 'groups.9.stores')).toBeUndefined();
+    expect(getAtPath(obj, '')).toBe(obj);
+  });
+
+  it('setAtPath mutates the target at a dotted path', () => {
+    const obj = { a: [{ b: 1 }] };
+    setAtPath(obj, 'a.0.b', 2);
+    expect(obj.a[0].b).toBe(2);
+  });
+
+  it('setAtPath creates missing intermediate objects', () => {
+    const obj = {};
+    setAtPath(obj, 'a.b', 5);
+    expect(obj.a.b).toBe(5);
+  });
+
+  it('reorder moves an item and returns a new array', () => {
+    const list = ['a', 'b', 'c'];
+    expect(reorder(list, 0, 2)).toEqual(['b', 'c', 'a']);
+    expect(list).toEqual(['a', 'b', 'c']);
+  });
+});
+```
+
+- [ ] **Step 2: Run to verify failure**
+
+Run: `npm test`
+Expected: FAIL — cannot resolve `../paths.js`.
+
+- [ ] **Step 3: Implement `src/admin/lib/paths.js`**
+
+```js
+export function deepClone(value) {
+  return typeof structuredClone === 'function' ? structuredClone(value) : JSON.parse(JSON.stringify(value));
+}
+
+export function getAtPath(obj, path) {
+  if (!path) {
+    return obj;
+  }
+  let current = obj;
+  for (const key of String(path).split('.')) {
+    if (current === null || current === undefined) {
+      return undefined;
+    }
+    current = current[key];
+  }
+  return current;
+}
+
+export function setAtPath(obj, path, value) {
+  const keys = String(path).split('.');
+  const last = keys.pop();
+  let current = obj;
+  for (const key of keys) {
+    if (current[key] === null || current[key] === undefined || typeof current[key] !== 'object') {
+      current[key] = /^\d+$/.test(key) ? [] : {};
+    }
+    current = current[key];
+  }
+  current[last] = value;
+}
+
+export function reorder(list, fromIndex, toIndex) {
+  const next = list.slice();
+  const [moved] = next.splice(fromIndex, 1);
+  next.splice(toIndex, 0, moved);
+  return next;
+}
+```
+
+- [ ] **Step 4: Run tests**
+
+Run: `npm test` — Expected: PASS (5 tests).
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/admin/lib/paths.js src/admin/lib/__tests__/paths.test.js
+git commit -m "feat(cms-v2): add JSON path utilities"
+```
+
+### Task 2: `manifest.js` — the site-mirror map (single most load-bearing file)
+
+**Files:**
+- Create: `src/admin/manifest.js`
+- Test: `src/admin/__tests__/manifest.test.js`
+
+A **section** is `{ id, label, hint, file, keys }` where `file` is the repo path of the JSON file and `keys` is the array of top-level keys the section edits. Sections appear in the order they appear on the real page. The special Wearhouse joined section carries `joined: true` and `files: [rosterFile, brandsFile]` instead of `file`/`keys`.
+
+- [ ] **Step 1: Write failing tests** (`src/admin/__tests__/manifest.test.js`)
+
+```js
+import { describe, it, expect } from 'vitest';
+import fs from 'node:fs';
+import { parse as parseYAML } from 'yaml';
+import { PAGES, allSections, findSection, sectionsForFile, ALL_FILES } from '../manifest.js';
+
+const config = parseYAML(fs.readFileSync('src/admin/config.yml', 'utf8'));
+const configFiles = config.collections.flatMap(c => c.files.map(f => f.file));
+
+describe('manifest integrity', () => {
+  // Note: several sections share one file (e.g. company.json powers 4 sections),
+  // so coverage is asserted on UNIQUE files, and sections sharing a file must
+  // edit disjoint top-level keys.
+  it('covers every config.yml file, with disjoint keys per shared file', () => {
+    const covered = [];
+    for (const section of allSections()) {
+      if (section.joined) {
+        covered.push(...section.files);
+      } else {
+        covered.push(section.file);
+      }
+    }
+    expect([...new Set(covered)].sort()).toEqual([...new Set(configFiles)].sort());
+
+    const keysByFile = new Map();
+    for (const section of allSections()) {
+      if (section.joined) {
+        continue;
+      }
+      const seen = keysByFile.get(section.file) || new Set();
+      for (const key of section.keys) {
+        expect(seen.has(key), `${section.file} key "${key}" is claimed by two sections`).toBe(false);
+        seen.add(key);
+      }
+      keysByFile.set(section.file, seen);
+    }
+  });
+
+  it('every section key exists in the actual JSON data', () => {
+    for (const section of allSections()) {
+      if (section.joined) {
+        continue;
+      }
+      const data = JSON.parse(fs.readFileSync(section.file, 'utf8'));
+      for (const key of section.keys) {
+        expect(data, `${section.file} missing key ${key}`).toHaveProperty(key);
+      }
+    }
+  });
+
+  it('every section id is unique within its page and every page id unique', () => {
+    const pageIds = PAGES.map(p => p.id);
+    expect(new Set(pageIds).size).toBe(pageIds.length);
+    for (const page of PAGES) {
+      const ids = page.sections.map(s => s.id);
+      expect(new Set(ids).size).toBe(ids.length);
+    }
+  });
+
+  it('lookup helpers work', () => {
+    expect(findSection('homepage', 'hero').label).toBe('Hero banner');
+    expect(sectionsForFile('src/_data/cms/site.json').length).toBe(2);
+    expect(ALL_FILES).toContain('src/_data/cms/agenda.json');
+  });
+});
+```
+
+- [ ] **Step 2: Run to verify failure** — `npm test` → FAIL (no manifest.js).
+
+- [ ] **Step 3: Implement `src/admin/manifest.js`** (complete file)
+
+```js
+// The site-mirror map: what editors see. Pages appear in website-nav order;
+// each page's sections appear in on-page order with editor-facing names.
+// `file` + `keys` address the existing JSON content; field definitions still
+// come from config.yml. The Wearhouse brand roster spans two files and is
+// handled by the wearhouse adapter (see adapters/wearhouse.js).
+
+const CMS = 'src/_data/cms';
+
+export const PAGES = [
+  {
+    id: 'homepage', label: 'Homepage', url: '/',
+    sections: [
+      { id: 'hero', label: 'Hero banner', hint: 'Opening video, title and subline', file: `${CMS}/home/hero.json`, keys: ['hero'] },
+      { id: 'intro', label: 'Introduction', hint: 'Eyebrow, title, summary and image', file: `${CMS}/home/intro.json`, keys: ['intro'] },
+      { id: 'bollag-portfolio', label: 'Bollag portfolio', hint: 'Brand logo wall', file: `${CMS}/home/brandsWall.json`, keys: ['brandsWall'] },
+      { id: 'wearhouse-portfolio', label: 'Wearhouse portfolio', hint: 'Wearhouse brand wall', file: `${CMS}/home/wearhouseWall.json`, keys: ['wearhouseWall'] },
+      { id: 'editorial-selection', label: 'Editorial selection', hint: 'Curated image mosaic', file: `${CMS}/home/selectionSection.json`, keys: ['selection'] },
+    ],
+  },
+  {
+    id: 'company', label: 'Company', url: '/company/',
+    sections: [
+      { id: 'hero', label: 'Hero banner', file: `${CMS}/company.json`, keys: ['hero'] },
+      { id: 'intro', label: 'Introduction', file: `${CMS}/company.json`, keys: ['intro'] },
+      { id: 'history', label: 'History', file: `${CMS}/company.json`, keys: ['history'] },
+      { id: 'distribution', label: 'Distribution', file: `${CMS}/company.json`, keys: ['distribution'] },
+    ],
+  },
+  {
+    id: 'brands', label: 'Brands', url: '/brands/',
+    sections: [
+      { id: 'hero', label: 'Hero banner', file: `${CMS}/brandsPage/hero.json`, keys: ['hero'] },
+      { id: 'portfolio-heading', label: 'Portfolio heading', file: `${CMS}/brandsPage/portfolio.json`, keys: ['portfolioSection'] },
+      { id: 'all-brands', label: 'All brands', hint: 'Every Bollag brand and its page', file: `${CMS}/brandsPage/brands.json`, keys: ['brands'] },
+      { id: 'page-settings', label: 'Brand page settings', hint: 'Shared texts on brand detail pages', file: `${CMS}/brandsPage/detail.json`, keys: ['detailPage'] },
+    ],
+  },
+  {
+    id: 'wearhouse', label: 'The Wearhouse', url: '/wearhouse/',
+    sections: [
+      { id: 'hero', label: 'Hero banner', file: `${CMS}/wearhousePage/hero.json`, keys: ['hero'] },
+      { id: 'overview', label: 'Overview', file: `${CMS}/wearhousePage/overview.json`, keys: ['overview'] },
+      {
+        id: 'wearhouse-brands', label: 'Wearhouse brands', hint: 'Roster cards and brand detail pages',
+        joined: true,
+        files: [`${CMS}/wearhousePage/roster.json`, `${CMS}/wearhousePage/brands.json`],
+      },
+      { id: 'showroom', label: 'Showroom', file: `${CMS}/wearhousePage/showroom.json`, keys: ['showroomSection'] },
+      { id: 'cta', label: 'Call to action', file: `${CMS}/wearhousePage/cta.json`, keys: ['cta'] },
+      { id: 'page-settings', label: 'Brand page settings', file: `${CMS}/wearhousePage/detail.json`, keys: ['detailPage'] },
+      { id: 'contact', label: 'Contact block', file: `${CMS}/wearhousePage/contact.json`, keys: ['contact'] },
+    ],
+  },
+  {
+    id: 'stores', label: 'Stores', url: '/stores/',
+    sections: [
+      { id: 'hero', label: 'Hero banner', file: `${CMS}/stores.json`, keys: ['hero', 'heroStats'] },
+      { id: 'network', label: 'Network introduction', file: `${CMS}/stores.json`, keys: ['networkSection'] },
+      { id: 'store-list', label: 'Stores', hint: 'Store groups and their stores', file: `${CMS}/stores.json`, keys: ['groups'] },
+      { id: 'online', label: 'Online shop', file: `${CMS}/stores.json`, keys: ['online'] },
+    ],
+  },
+  {
+    id: 'agenda', label: 'Agenda', url: '/agenda/',
+    sections: [
+      { id: 'hero', label: 'Hero banner', file: `${CMS}/agenda.json`, keys: ['hero'] },
+      { id: 'calendar', label: 'Calendar introduction', file: `${CMS}/agenda.json`, keys: ['calendarSection'] },
+      { id: 'months', label: 'Events by month', file: `${CMS}/agenda.json`, keys: ['months'] },
+      { id: 'cta', label: 'Call to action', file: `${CMS}/agenda.json`, keys: ['cta'] },
+    ],
+  },
+  {
+    id: 'contact', label: 'Contact', url: '/contact/',
+    sections: [
+      { id: 'hero', label: 'Hero banner', file: `${CMS}/contact.json`, keys: ['hero'] },
+      { id: 'offices-intro', label: 'Offices introduction', file: `${CMS}/contact.json`, keys: ['officeSection'] },
+      { id: 'bollag-office', label: 'Bollag office', file: `${CMS}/contact.json`, keys: ['office'] },
+      { id: 'wearhouse-partner', label: 'Wearhouse contact', file: `${CMS}/contact.json`, keys: ['wearhousePartner'] },
+      { id: 'form', label: 'Contact form texts', file: `${CMS}/contact.json`, keys: ['form'] },
+      { id: 'cta', label: 'Call to action', file: `${CMS}/contact.json`, keys: ['cta'] },
+    ],
+  },
+  {
+    id: 'site', label: 'Header & Footer', url: '/',
+    sections: [
+      { id: 'navigation', label: 'Navigation menu', file: `${CMS}/site.json`, keys: ['nav'] },
+      { id: 'footer', label: 'Footer', file: `${CMS}/site.json`, keys: ['footer'] },
+    ],
+  },
+];
+
+export function allSections() {
+  return PAGES.flatMap(page => page.sections.map(section => ({ ...section, pageId: page.id, pageLabel: page.label })));
+}
+
+export function findPage(pageId) {
+  return PAGES.find(page => page.id === pageId) || null;
+}
+
+export function findSection(pageId, sectionId) {
+  return findPage(pageId)?.sections.find(section => section.id === sectionId) || null;
+}
+
+export function sectionsForFile(filePath) {
+  return allSections().filter(section => (section.joined ? section.files.includes(filePath) : section.file === filePath));
+}
+
+export const ALL_FILES = [...new Set(allSections().flatMap(section => (section.joined ? section.files : [section.file])))];
+```
+
+- [ ] **Step 4: Run tests** — `npm test` → PASS. (If the coverage test fails, first check the manifest against the "top-level keys per JSON file" table in the plan header — a typo in a `file` path or `keys` entry is the usual cause.)
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/admin/manifest.js src/admin/__tests__/manifest.test.js
+git commit -m "feat(cms-v2): add site-mirror manifest with integrity tests"
+```
+
+### Task 3: `lib/store.js` — drafts, dirty state, autosave
+
+**Files:**
+- Create: `src/admin/lib/store.js`
+- Test: `src/admin/lib/__tests__/store.test.js`
+
+- [ ] **Step 1: Write failing tests**
+
+```js
+import { describe, it, expect, beforeEach } from 'vitest';
+import { createStore, DRAFT_PREFIX } from '../store.js';
+
+const FILE = 'src/_data/cms/company.json';
+const remote = () => ({ hero: { title: 'Old' }, intro: { text: 'Hi' } });
+
+describe('store', () => {
+  beforeEach(() => localStorage.clear());
+
+  it('loads remote as draft when no local draft exists', () => {
+    const store = createStore();
+    store.loadFile(FILE, remote());
+    expect(store.getDraft(FILE)).toEqual(remote());
+    expect(store.isDirty(FILE)).toBe(false);
+  });
+
+  it('restores a persisted local draft over remote', () => {
+    localStorage.setItem(DRAFT_PREFIX + FILE, JSON.stringify({ hero: { title: 'Draft' }, intro: { text: 'Hi' } }));
+    const store = createStore();
+    store.loadFile(FILE, remote());
+    expect(store.getDraft(FILE).hero.title).toBe('Draft');
+    expect(store.isDirty(FILE)).toBe(true);
+  });
+
+  it('update mutates a clone, persists, and marks dirty (per top-level key too)', () => {
+    const store = createStore();
+    store.loadFile(FILE, remote());
+    store.update(FILE, draft => { draft.hero.title = 'New'; });
+    expect(store.isDirty(FILE)).toBe(true);
+    expect(store.isKeyDirty(FILE, 'hero')).toBe(true);
+    expect(store.isKeyDirty(FILE, 'intro')).toBe(false);
+    expect(JSON.parse(localStorage.getItem(DRAFT_PREFIX + FILE)).hero.title).toBe('New');
+  });
+
+  it('reverting an edit back to remote clears dirty and localStorage', () => {
+    const store = createStore();
+    store.loadFile(FILE, remote());
+    store.update(FILE, draft => { draft.hero.title = 'New'; });
+    store.update(FILE, draft => { draft.hero.title = 'Old'; });
+    expect(store.isDirty(FILE)).toBe(false);
+    expect(localStorage.getItem(DRAFT_PREFIX + FILE)).toBeNull();
+  });
+
+  it('discardKeys restores only the given keys', () => {
+    const store = createStore();
+    store.loadFile(FILE, remote());
+    store.update(FILE, draft => { draft.hero.title = 'New'; draft.intro.text = 'Changed'; });
+    store.discardKeys(FILE, ['hero']);
+    expect(store.getDraft(FILE).hero.title).toBe('Old');
+    expect(store.getDraft(FILE).intro.text).toBe('Changed');
+    expect(store.isDirty(FILE)).toBe(true);
+  });
+
+  it('markPublished snapshots draft as new remote and clears storage', () => {
+    const store = createStore();
+    store.loadFile(FILE, remote());
+    store.update(FILE, draft => { draft.hero.title = 'New'; });
+    store.markPublished([FILE]);
+    expect(store.isDirty(FILE)).toBe(false);
+    expect(store.getRemote(FILE).hero.title).toBe('New');
+    expect(localStorage.getItem(DRAFT_PREFIX + FILE)).toBeNull();
+  });
+
+  it('notifies subscribers on change', () => {
+    const store = createStore();
+    let calls = 0;
+    store.subscribe(() => { calls += 1; });
+    store.loadFile(FILE, remote());
+    store.update(FILE, draft => { draft.hero.title = 'New'; });
+    expect(calls).toBe(2);
+  });
+});
+```
+
+- [ ] **Step 2: Run to verify failure** — `npm test` → FAIL.
+
+- [ ] **Step 3: Implement `src/admin/lib/store.js`**
+
+```js
+import { deepClone } from './paths.js';
+
+export const DRAFT_PREFIX = 'bg-cms-draft:';
+
+// One store instance holds every content file: { remote, draft }.
+// Drafts persist to localStorage while they differ from remote; UI subscribes
+// via subscribe/getVersion (React: useSyncExternalStore).
+export function createStore() {
+  const files = new Map();
+  const listeners = new Set();
+  let version = 0;
+
+  const emit = () => {
+    version += 1;
+    for (const listener of listeners) {
+      listener();
+    }
+  };
+
+  const persist = filePath => {
+    const entry = files.get(filePath);
+    if (JSON.stringify(entry.draft) !== JSON.stringify(entry.remote)) {
+      localStorage.setItem(DRAFT_PREFIX + filePath, JSON.stringify(entry.draft));
+    } else {
+      localStorage.removeItem(DRAFT_PREFIX + filePath);
+    }
+  };
+
+  const store = {
+    subscribe(listener) {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+    getVersion: () => version,
+
+    loadFile(filePath, remote) {
+      let draft = null;
+      const raw = localStorage.getItem(DRAFT_PREFIX + filePath);
+      if (raw) {
+        try {
+          draft = JSON.parse(raw);
+        } catch {
+          draft = null;
+        }
+      }
+      files.set(filePath, { remote: deepClone(remote), draft: draft || deepClone(remote) });
+      emit();
+    },
+
+    has: filePath => files.has(filePath),
+    allPaths: () => [...files.keys()],
+    getDraft: filePath => files.get(filePath)?.draft,
+    getRemote: filePath => files.get(filePath)?.remote,
+
+    update(filePath, mutate) {
+      const entry = files.get(filePath);
+      if (!entry) {
+        return;
+      }
+      const next = deepClone(entry.draft);
+      mutate(next);
+      entry.draft = next;
+      persist(filePath);
+      emit();
+    },
+
+    isDirty(filePath) {
+      const entry = files.get(filePath);
+      return Boolean(entry) && JSON.stringify(entry.draft) !== JSON.stringify(entry.remote);
+    },
+
+    isKeyDirty(filePath, key) {
+      const entry = files.get(filePath);
+      return Boolean(entry) && JSON.stringify(entry.draft?.[key]) !== JSON.stringify(entry.remote?.[key]);
+    },
+
+    dirtyPaths() {
+      return [...files.keys()].filter(filePath => store.isDirty(filePath));
+    },
+
+    discardFile(filePath) {
+      const entry = files.get(filePath);
+      if (!entry) {
+        return;
+      }
+      entry.draft = deepClone(entry.remote);
+      localStorage.removeItem(DRAFT_PREFIX + filePath);
+      emit();
+    },
+
+    discardKeys(filePath, keys) {
+      store.update(filePath, draft => {
+        const entry = files.get(filePath);
+        for (const key of keys) {
+          draft[key] = deepClone(entry.remote[key]);
+        }
+      });
+    },
+
+    markPublished(filePaths) {
+      for (const filePath of filePaths) {
+        const entry = files.get(filePath);
+        if (entry) {
+          entry.remote = deepClone(entry.draft);
+          localStorage.removeItem(DRAFT_PREFIX + filePath);
+        }
+      }
+      emit();
+    },
+  };
+
+  return store;
+}
+```
+
+- [ ] **Step 4: Run tests** — `npm test` → PASS.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/admin/lib/store.js src/admin/lib/__tests__/store.test.js
+git commit -m "feat(cms-v2): add drafts store with autosave and key-level dirty tracking"
+```
+
+### Task 4: `lib/validate.js` — publish validation
+
+Validates **dirty files only** (never blocks on pre-existing content). Two rule classes: required fields (Decap semantics: required unless `required: false`) and link/path shape checks.
+
+**Files:**
+- Create: `src/admin/lib/validate.js`
+- Test: `src/admin/lib/__tests__/validate.test.js`
+
+- [ ] **Step 1: Write failing tests**
+
+```js
+import { describe, it, expect } from 'vitest';
+import { validateValue } from '../validate.js';
+
+const fields = [
+  { label: 'Title', name: 'title', widget: 'string' },
+  { label: 'Note', name: 'note', widget: 'string', required: false },
+  { label: 'Link', name: 'href', widget: 'string' },
+  { label: 'Image', name: 'image', widget: 'image' },
+  {
+    label: 'Items', name: 'items', widget: 'list',
+    fields: [{ label: 'Name', name: 'name', widget: 'string' }],
+  },
+];
+
+describe('validateValue', () => {
+  it('passes a fully valid object', () => {
+    const value = { title: 'Hi', note: '', href: '/brands/', image: '/assets/media/a.jpg', items: [{ name: 'X' }] };
+    expect(validateValue(fields, value, 'Section')).toEqual([]);
+  });
+
+  it('flags required empty strings but not optional ones', () => {
+    const issues = validateValue(fields, { title: '', note: '', href: '/x', image: '/assets/a.jpg', items: [] }, 'Section');
+    expect(issues).toHaveLength(1);
+    expect(issues[0].label).toContain('Title');
+  });
+
+  it('flags malformed links (href-ish names must be URL, mailto, tel or site path)', () => {
+    const issues = validateValue(fields, { title: 'T', href: 'www.example.com', image: '/assets/a.jpg', items: [] }, 'Section');
+    expect(issues.some(issue => issue.label.includes('Link'))).toBe(true);
+  });
+
+  it('flags image paths that are neither /-rooted nor http', () => {
+    const issues = validateValue(fields, { title: 'T', href: '/ok', image: 'foo.jpg', items: [] }, 'Section');
+    expect(issues.some(issue => issue.label.includes('Image'))).toBe(true);
+  });
+
+  it('recurses into list items with item position in the label', () => {
+    const issues = validateValue(fields, { title: 'T', href: '/ok', image: '/assets/a.jpg', items: [{ name: '' }] }, 'Section');
+    expect(issues).toHaveLength(1);
+    expect(issues[0].label).toContain('Items');
+    expect(issues[0].label).toContain('#1');
+  });
+});
+```
+
+- [ ] **Step 2: Run to verify failure** — `npm test` → FAIL.
+
+- [ ] **Step 3: Implement `src/admin/lib/validate.js`**
+
+```js
+// Publish validation. Called with the config.yml field definitions and the
+// draft value they describe. Returns [{ label, message }] — plain language,
+// no dev words. Only dirty files are ever validated (callers enforce this).
+
+const LINK_NAME = /(href|Href)$|^url$/;
+const LINK_SHAPE = /^(https?:\/\/|mailto:|tel:|\/)/;
+
+function isEmpty(value) {
+  return value === undefined || value === null || String(value).trim() === '';
+}
+
+export function validateValue(fields, value, crumb) {
+  const issues = [];
+  for (const field of fields || []) {
+    const fieldValue = value?.[field.name];
+    const label = `${crumb} → ${field.label || field.name}`;
+    const widget = field.widget || 'string';
+
+    if (widget === 'object') {
+      issues.push(...validateValue(field.fields || [], fieldValue || {}, label));
+      continue;
+    }
+
+    if (widget === 'list') {
+      const items = Array.isArray(fieldValue) ? fieldValue : [];
+      items.forEach((item, index) => {
+        if (field.fields) {
+          issues.push(...validateValue(field.fields, item || {}, `${label} #${index + 1}`));
+        } else if (field.field && field.field.required !== false && isEmpty(item)) {
+          issues.push({ label: `${label} #${index + 1}`, message: 'This entry is empty.' });
+        }
+      });
+      continue;
+    }
+
+    const required = field.required !== false;
+    if (required && ['string', 'text', 'image', 'file', 'select'].includes(widget) && isEmpty(fieldValue)) {
+      issues.push({ label, message: 'This field is empty and the website expects it.' });
+      continue;
+    }
+
+    if (!isEmpty(fieldValue) && widget === 'string' && LINK_NAME.test(field.name) && !LINK_SHAPE.test(String(fieldValue))) {
+      issues.push({ label, message: 'Links must start with https://, mailto:, tel: or / for a page on this site.' });
+    }
+
+    if (!isEmpty(fieldValue) && (widget === 'image' || widget === 'file') && !LINK_SHAPE.test(String(fieldValue))) {
+      issues.push({ label, message: 'This should be an uploaded file path (starting with /) or a full https:// link.' });
+    }
+  }
+  return issues;
+}
+```
+
+- [ ] **Step 4: Run tests** — `npm test` → PASS.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/admin/lib/validate.js src/admin/lib/__tests__/validate.test.js
+git commit -m "feat(cms-v2): add plain-language publish validation"
+```
+
+**End of Chunk 1.**
+
+---
+
+## Chunk 2: Foundations — adapters, loaders, build tooling, cleanup
+
+### Task 5: `adapters/wearhouse.js` — slug join/split
+
+Roster items live in `wearhousePage/roster.json` at `rosterSection.items[]` (fields: `name, slug, segment, pageHref, logoSrc, hoverImage`). Brand entries live in `wearhousePage/brands.json` at `brands[]`. **Canonical brand-entry shape (verified against all 16 real records):** `{ name, slug, rosterCard{…}, detail{ summary, intro, focus, atmosphere, categories } }` — `focus`, `atmosphere` and `categories` are nested INSIDE `detail`. Beware: `config.yml` currently declares them top-level on the list item, which contradicts every real record; the site templates read the nested values (`src/_data/wearhouse.js` spreads `...detail` last, so nested wins). Step 3b below fixes `config.yml` to match the data. The two lists must stay in sync by `slug`.
+
+**Files:**
+- Create: `src/admin/adapters/wearhouse.js`
+- Test: `src/admin/adapters/__tests__/wearhouse.test.js`
+
+- [ ] **Step 1: Write failing tests**
+
+```js
+import { describe, it, expect } from 'vitest';
+import { joinWearhouse, splitWearhouse, blankRosterItem, blankBrandEntry } from '../wearhouse.js';
+
+const roster = [
+  { name: 'Circolo 1901', slug: 'circolo-1901', segment: 'Menswear' },
+  { name: 'Only Roster', slug: 'only-roster', segment: 'X' },
+];
+const brands = [
+  { name: 'Circolo 1901', slug: 'circolo-1901', detail: { summary: 'S' } },
+  { name: 'Only Brand', slug: 'only-brand', detail: { summary: 'B' } },
+];
+
+describe('wearhouse adapter', () => {
+  it('joins by slug in roster order, appending brand-only records', () => {
+    const { records } = joinWearhouse(roster, brands);
+    expect(records.map(record => record.slug)).toEqual(['circolo-1901', 'only-roster', 'only-brand']);
+    expect(records[0].roster.segment).toBe('Menswear');
+    expect(records[0].brand.detail.summary).toBe('S');
+  });
+
+  it('marks incomplete records', () => {
+    const { records } = joinWearhouse(roster, brands);
+    expect(records[0].missing).toBeNull();
+    expect(records[1].missing).toBe('brand');
+    expect(records[2].missing).toBe('roster');
+  });
+
+  it('splits back into the two arrays, skipping missing halves', () => {
+    const { records } = joinWearhouse(roster, brands);
+    const { rosterItems, brandEntries } = splitWearhouse(records);
+    expect(rosterItems.map(item => item.slug)).toEqual(['circolo-1901', 'only-roster']);
+    expect(brandEntries.map(entry => entry.slug)).toEqual(['circolo-1901', 'only-brand']);
+  });
+
+  it('round-trips without data loss', () => {
+    const { records } = joinWearhouse(roster, brands);
+    const { rosterItems, brandEntries } = splitWearhouse(records);
+    expect(rosterItems[0]).toEqual(roster[0]);
+    expect(brandEntries[0]).toEqual(brands[0]);
+  });
+
+  it('blank factories carry the slug and name over', () => {
+    expect(blankRosterItem({ slug: 's', name: 'N' }).slug).toBe('s');
+    expect(blankBrandEntry({ slug: 's', name: 'N' }).name).toBe('N');
+  });
+});
+```
+
+- [ ] **Step 2: Run to verify failure** — `npm test` → FAIL.
+
+- [ ] **Step 3: Implement `src/admin/adapters/wearhouse.js`**
+
+```js
+// The Wearhouse brand data is split across two parallel lists synced by slug:
+// roster.json → rosterSection.items[] (card on the Wearhouse page) and
+// brands.json → brands[] (detail page). This adapter joins them into one
+// record per slug for editing, and splits them back for publishing.
+
+export function joinWearhouse(rosterItems, brandEntries) {
+  const bySlug = new Map((brandEntries || []).map(entry => [entry.slug, entry]));
+  const seen = new Set();
+  const records = [];
+
+  for (const item of rosterItems || []) {
+    const brand = bySlug.get(item.slug) || null;
+    seen.add(item.slug);
+    records.push({
+      slug: item.slug,
+      name: item.name || brand?.name || item.slug,
+      roster: item,
+      brand,
+      missing: brand ? null : 'brand',
+    });
+  }
+
+  for (const entry of brandEntries || []) {
+    if (!seen.has(entry.slug)) {
+      records.push({ slug: entry.slug, name: entry.name || entry.slug, roster: null, brand: entry, missing: 'roster' });
+    }
+  }
+
+  return { records };
+}
+
+export function splitWearhouse(records) {
+  return {
+    rosterItems: records.filter(record => record.roster).map(record => record.roster),
+    brandEntries: records.filter(record => record.brand).map(record => record.brand),
+  };
+}
+
+export function blankRosterItem({ slug = '', name = '' } = {}) {
+  return { name, slug, segment: '', pageHref: slug ? `/wearhouse/${slug}/` : '', logoSrc: '', hoverImage: '' };
+}
+
+export function blankBrandEntry({ slug = '', name = '' } = {}) {
+  // Matches the canonical shape of every existing record in brands.json:
+  // focus/atmosphere/categories live inside `detail`.
+  return {
+    name,
+    slug,
+    rosterCard: { segment: '', websiteHref: '', logoSrc: '', hoverImage: '', detailImage: '', logoLines: [] },
+    detail: { summary: '', intro: '', focus: '', atmosphere: '', categories: [] },
+  };
+}
+```
+
+- [ ] **Step 3b: Align `config.yml` with the canonical data shape.** In `src/admin/config.yml`, inside the `wearhouse_page` collection → `wearhouse_page_brands` file entry → `brands` list fields, MOVE the three field definitions for `focus`, `atmosphere`, and `categories` from the list-item level INTO the `detail` object's `fields` array (after `intro`), keeping their definitions identical:
+
+```yaml
+              - label: Brand Detail Div
+                name: detail
+                widget: object
+                fields:
+                  - { label: Summary, name: summary, widget: text }
+                  - { label: Intro, name: intro, widget: text }
+                  - { label: Focus, name: focus, widget: text }
+                  - { label: Atmosphere, name: atmosphere, widget: string }
+                  - { label: Categories, name: categories, widget: list, field: { label: Category, name: category, widget: string } }
+```
+
+(Delete the three now-duplicated top-level entries.) This makes the editor read/write the values the website actually renders. No data migration needed — the data is already in this shape.
+
+- [ ] **Step 4: Run tests** — `npm test` → PASS.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/admin/adapters/wearhouse.js src/admin/adapters/__tests__/wearhouse.test.js src/admin/config.yml
+git commit -m "feat(cms-v2): wearhouse slug adapter; align config.yml with real brand-entry shape"
+```
+
+### Task 6: `lib/api.js` + `lib/content.js` — server and content access
+
+**Files:**
+- Create: `src/admin/lib/api.js`
+- Create: `src/admin/lib/content.js`
+- Test: `src/admin/lib/__tests__/api.test.js`
+
+- [ ] **Step 1: Write failing tests** (error surfacing is the risky part)
+
+```js
+import { describe, it, expect, vi } from 'vitest';
+import { createApi } from '../api.js';
+
+function mockFetch(status, body) {
+  return vi.fn(async () => ({ ok: status < 400, status, text: async () => JSON.stringify(body) }));
+}
+
+describe('createApi', () => {
+  it('sends bearer token and parses JSON', async () => {
+    const fetcher = mockFetch(200, { ok: true, user: { role: 'admin' } });
+    const api = createApi(() => 'tok', fetcher);
+    const result = await api.me();
+    expect(result.user.role).toBe('admin');
+    expect(fetcher.mock.calls[0][1].headers.Authorization).toBe('Bearer tok');
+  });
+
+  it('throws the server error message on failure', async () => {
+    const api = createApi(() => 'tok', mockFetch(403, { error: 'No access.' }));
+    await expect(api.me()).rejects.toThrow('No access.');
+  });
+
+  it('surfaces a non-JSON error body as the message', async () => {
+    const fetcher = vi.fn(async () => ({ ok: false, status: 500, text: async () => 'boom' }));
+    const api = createApi(() => 'tok', fetcher);
+    await expect(api.me()).rejects.toThrow('boom');
+  });
+
+  it('falls back to a status message when the error body is empty', async () => {
+    const fetcher = vi.fn(async () => ({ ok: false, status: 500, text: async () => '' }));
+    const api = createApi(() => 'tok', fetcher);
+    await expect(api.me()).rejects.toThrow(/500/);
+  });
+});
+```
+
+- [ ] **Step 2: Run to verify failure** — `npm test` → FAIL.
+
+- [ ] **Step 3: Implement `src/admin/lib/api.js`**
+
+```js
+// All server calls in one place. Every endpoint already exists — this file
+// only wraps them with auth and error handling. Backend must not change.
+export function createApi(getToken, fetcher = (...args) => fetch(...args)) {
+  async function request(method, url, body) {
+    const response = await fetcher(url, {
+      method,
+      headers: {
+        Authorization: `Bearer ${getToken() || ''}`,
+        ...(body ? { 'Content-Type': 'application/json' } : {}),
+      },
+      ...(body ? { body: JSON.stringify(body) } : {}),
+    });
+
+    const raw = await response.text();
+    let payload = {};
+    try {
+      payload = raw ? JSON.parse(raw) : {};
+    } catch {
+      payload = { error: raw };
+    }
+
+    if (!response.ok) {
+      throw new Error(payload.error || payload.message || `The server returned an error (${response.status}).`);
+    }
+    return payload;
+  }
+
+  return {
+    me: () => request('GET', '/api/me'),
+    listUsers: () => request('GET', '/api/admin/users'),
+    addUser: user => request('POST', '/api/admin/users', user),
+    updateUser: patch => request('PATCH', '/api/admin/users', patch),
+    removeUser: id => request('DELETE', '/api/admin/users', { id }),
+    publish: (files, message) => request('POST', '/api/publish', { message, files }),
+    upload: payload => request('POST', '/api/upload', payload),
+    deploys: (limit = 6) => request('GET', `/api/deploys?limit=${limit}`),
+    revert: sha => request('POST', '/api/revert', { sha }),
+  };
+}
+```
+
+- [ ] **Step 4: Implement `src/admin/lib/content.js`** (no unit tests — thin fetch wrappers exercised in the walkthrough)
+
+```js
+import { parse as parseYAML } from 'yaml';
+
+// Loads the field definitions (config.yml) and content files the admin edits.
+
+export async function loadFieldConfig() {
+  const response = await fetch('/admin/config.yml');
+  if (!response.ok) {
+    throw new Error(`Could not load the editor configuration (${response.status}).`);
+  }
+  const config = parseYAML(await response.text());
+  const byFile = new Map();
+  for (const collection of config.collections || []) {
+    for (const entry of collection.files || []) {
+      byFile.set(entry.file, entry);
+    }
+  }
+  return byFile; // file path -> { name, label, file, fields }
+}
+
+export async function loadContentFile(filePath) {
+  const relative = filePath.replace(/^src\/_data\/cms\//, '');
+  const response = await fetch(`/cms-data/${relative}`);
+  if (!response.ok) {
+    throw new Error(`Could not load ${relative} (${response.status}).`);
+  }
+  return response.json();
+}
+
+export async function loadMediaIndex() {
+  try {
+    const response = await fetch('/admin/media-index.json');
+    if (!response.ok) {
+      return null;
+    }
+    return await response.json();
+  } catch {
+    return null; // media library degrades; picker still allows upload + manual path
+  }
+}
+```
+
+- [ ] **Step 5: Run tests** — `npm test` → PASS. Then commit:
+
+```bash
+git add src/admin/lib/api.js src/admin/lib/content.js src/admin/lib/__tests__/api.test.js
+git commit -m "feat(cms-v2): add api client and content loaders"
+```
+
+### Task 7: Media index emitter + admin cache-busting
+
+**Files:**
+- Create: `src/media-index.11ty.js`
+- Create: `src/_data/buildHash.js`
+- Modify: `src/admin/index.html`
+- Modify: `package.json` (entry rename)
+- Create: `src/admin/main.jsx` (placeholder bootstrap)
+
+- [ ] **Step 1: Create `src/media-index.11ty.js`**
+
+```js
+const fs = require('fs');
+const path = require('path');
+
+// Emits /admin/media-index.json at build time: every file under
+// src/assets/media, for the admin's media library. Video files (mp4/webm)
+// are included DELIBERATELY — hero sections use video, picked via the
+// same picker with kind="file".
+module.exports = class MediaIndex {
+  data() {
+    return { permalink: '/admin/media-index.json', eleventyExcludeFromCollections: true };
+  }
+
+  render() {
+    const root = path.join('src', 'assets', 'media');
+    const files = [];
+    const walk = dir => {
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          walk(full);
+        } else if (/\.(avif|gif|jpe?g|png|svg|webp|mp4|webm)$/i.test(entry.name)) {
+          files.push({
+            path: `/${path.relative('src', full).split(path.sep).join('/')}`,
+            name: entry.name,
+            size: fs.statSync(full).size,
+          });
+        }
+      }
+    };
+    walk(root);
+    files.sort((a, b) => a.path.localeCompare(b.path));
+    return JSON.stringify({ generatedAt: new Date().toISOString(), files });
+  }
+};
+```
+
+- [ ] **Step 2: Create `src/_data/buildHash.js`**
+
+```js
+// Changes every build; used to cache-bust the admin bundle URL so deploys
+// are visible without a hard refresh.
+module.exports = () => Date.now().toString(36);
+```
+
+- [ ] **Step 3: Update `src/admin/index.html`** (full new content)
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bollag-Guggenheim CMS</title>
+    <link rel="stylesheet" href="/admin/app.css?v={{ buildHash }}">
+  </head>
+  <body>
+    <div id="admin-root"></div>
+    <script type="module" src="/admin/app.js?v={{ buildHash }}"></script>
+  </body>
+</html>
+```
+
+- [ ] **Step 4: Create placeholder `src/admin/main.jsx` and switch the build entry**
+
+`src/admin/main.jsx` (placeholder until Chunk 2 — keeps the old app working):
+
+```js
+import './app.jsx';
+```
+
+In `package.json`, change both admin scripts to the new entry:
+
+```json
+"dev:admin": "esbuild src/admin/main.jsx --bundle --format=esm --platform=browser --target=es2020 --outfile=_site/admin/app.js --watch",
+"build:admin": "esbuild src/admin/main.jsx --bundle --format=esm --platform=browser --target=es2020 --outfile=_site/admin/app.js",
+```
+
+- [ ] **Step 5: Verify build output**
+
+```bash
+npm run build
+node -e "const i=require('./_site/admin/media-index.json'); console.log('media files:', i.files.length); if(!i.files.length) process.exit(1)"
+grep -o 'app.js?v=[a-z0-9]*' _site/admin/index.html
+```
+
+Expected: media file count > 400; a versioned `app.js?v=…` reference.
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add src/media-index.11ty.js src/_data/buildHash.js src/admin/index.html src/admin/main.jsx package.json
+git commit -m "feat(cms-v2): media index emitter, admin cache-busting, main.jsx entry"
+```
+
+### Task 8: Legacy content cleanup
+
+**Files:**
+- Delete: `src/_data/cms/home/selectionCards/` (20 files), `src/_data/cms/wearhousePage/showroomGalleryItems/` (15 files)
+
+- [ ] **Step 1: Re-verify nothing references them** (must print "clean")
+
+```bash
+grep -rl "selectionCards\|showroomGalleryItems" src --include='*.js' --include='*.njk' --include='*.yml' --include='*.json' | grep -v "src/_data/cms/home/selectionCards\|src/_data/cms/wearhousePage/showroomGalleryItems" || echo clean
+```
+
+- [ ] **Step 2: Delete and verify the site builds identically**
+
+```bash
+npm run build:site && find _site -name '*.html' | sort > /tmp/pages-before.txt
+git rm -r -q src/_data/cms/home/selectionCards src/_data/cms/wearhousePage/showroomGalleryItems
+npm run build:site && find _site -name '*.html' | sort > /tmp/pages-after.txt
+diff /tmp/pages-before.txt /tmp/pages-after.txt && echo "identical page set"
+```
+
+Expected: Eleventy build green both times; `diff` prints nothing and "identical page set" is echoed.
+
+- [ ] **Step 3: Run all tests** — `npm test` → PASS (manifest integrity unaffected — legacy files were never in config.yml).
+
+- [ ] **Step 4: Commit**
+
+```bash
+git commit -m "chore(cms-v2): delete unused legacy selectionCards and showroomGalleryItems data"
+```
+
+**End of Chunk 2.** At this point: all logic modules exist and are tested; the old admin still runs unchanged via the `main.jsx` placeholder; media index and cache-busting are live in the build.
+
+---
+
+## Chunk 3: Shell and auth bootstrap
+
+All components use existing `admin.css` classes plus the new classes added in Task 11. React 19; no new runtime deps.
+
+### Task 9: Real `main.jsx` bootstrap + context + Login/Boot screens
+
+**Files:**
+- Modify: `src/admin/main.jsx` (replace the placeholder entirely)
+- Create: `src/admin/lib/context.js`
+- Create: `src/admin/screens/LoginScreen.jsx`
+
+From this task on, the old `src/admin/app.jsx` is dead code (deleted in Task 19). It stays in the tree as reference for extraction.
+
+- [ ] **Step 1: Create `src/admin/lib/context.js`**
+
+```js
+import { createContext, useContext, useSyncExternalStore } from 'react';
+
+export const AdminContext = createContext(null);
+export const useAdmin = () => useContext(AdminContext);
+
+// Re-render subscriber for the drafts store.
+export function useStoreVersion(store) {
+  return useSyncExternalStore(store.subscribe, store.getVersion, store.getVersion);
+}
+```
+
+- [ ] **Step 2: Create `src/admin/screens/LoginScreen.jsx`**
+
+```jsx
+import React from 'react';
+
+export function LoginScreen({ email, password, onEmail, onPassword, onSubmit, pending, note, tone }) {
+  return (
+    <div className="auth-shell">
+      <section className="card auth-card">
+        <div className="auth-kicker">Admin access</div>
+        <h1 className="auth-title">Bollag CMS</h1>
+        <p className="auth-copy">Sign in with your email and password to edit the website.</p>
+
+        <form className="auth-form" onSubmit={onSubmit}>
+          <label className="field">
+            <span className="field-label">Email address</span>
+            <input className="input" type="email" autoComplete="email" value={email} onChange={event => onEmail(event.target.value)} placeholder="you@company.com" required />
+          </label>
+          <label className="field">
+            <span className="field-label">Password</span>
+            <input className="input" type="password" autoComplete="current-password" value={password} onChange={event => onPassword(event.target.value)} placeholder="Your password" required />
+          </label>
+          <button className="button button-primary" type="submit" disabled={pending}>
+            {pending ? 'Signing in…' : 'Sign in'}
+          </button>
+        </form>
+
+        <div className={`status-line ${note ? `status-${tone || 'neutral'}` : ''}`}>
+          {note || 'Forgot your password? Ask an admin to reset it for you.'}
+        </div>
+      </section>
+    </div>
+  );
+}
+```
+
+- [ ] **Step 3: Replace `src/admin/main.jsx`** (complete file)
+
+```jsx
+import React, { useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { createClient } from '@supabase/supabase-js';
+import './admin.css';
+import { AdminContext } from './lib/context.js';
+import { createApi } from './lib/api.js';
+import { createStore } from './lib/store.js';
+import { loadFieldConfig, loadContentFile, loadMediaIndex } from './lib/content.js';
+import { ALL_FILES } from './manifest.js';
+import { LoginScreen } from './screens/LoginScreen.jsx';
+import { Shell } from './shell/Shell.jsx';
+
+const SUPABASE_URL = 'https://zttbkscbtvgeteawycsi.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_wJ-U3kVqV3ej7RJywW8iAA_hUbFQ3Z-';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+});
+
+let accessToken = '';
+const api = createApi(() => accessToken);
+const store = createStore();
+
+function BootScreen() {
+  return (
+    <div className="auth-shell">
+      <section className="card auth-card">
+        <div className="auth-kicker">Bollag CMS</div>
+        <h1 className="auth-title">Loading…</h1>
+        <p className="auth-copy">Preparing the editor and loading the current website content.</p>
+      </section>
+    </div>
+  );
+}
+
+function AdminRoot() {
+  const [mode, setMode] = useState('boot');
+  const [user, setUser] = useState(null);
+  const [fieldConfig, setFieldConfig] = useState(null);
+  const [mediaIndex, setMediaIndex] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginPending, setLoginPending] = useState(false);
+  const [note, setNote] = useState({ text: '', tone: '' });
+
+  async function enterApp(session) {
+    accessToken = session.access_token;
+    const { user: me } = await api.me(); // throws if the account has no CMS role
+    const [config, media] = await Promise.all([loadFieldConfig(), loadMediaIndex()]);
+    await Promise.all(ALL_FILES.map(async filePath => store.loadFile(filePath, await loadContentFile(filePath))));
+    setFieldConfig(config);
+    setMediaIndex(media);
+    setUser(me);
+    setMode('app');
+  }
+
+  async function tryEnter(session) {
+    try {
+      await enterApp(session);
+    } catch (error) {
+      await supabase.auth.signOut();
+      accessToken = '';
+      setUser(null);
+      setMode('login');
+      setNote({ text: error.message || 'That account does not have CMS access.', tone: 'error' });
+    }
+  }
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) {
+        void tryEnter(data.session);
+      } else {
+        setMode('login');
+      }
+    });
+
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        accessToken = '';
+        setUser(null);
+        setNote({ text: '', tone: '' });
+        setMode('login');
+      }
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  const onSubmitLogin = async event => {
+    event.preventDefault();
+    setLoginPending(true);
+    setNote({ text: 'Signing in…', tone: '' });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password });
+      if (error) {
+        throw error;
+      }
+      setPassword('');
+      await tryEnter(data.session);
+    } catch (error) {
+      setNote({ text: error.message || 'Could not sign in. Check your email and password.', tone: 'error' });
+    } finally {
+      setLoginPending(false);
+    }
+  };
+
+  if (mode === 'boot') {
+    return <BootScreen />;
+  }
+  if (mode === 'login') {
+    return (
+      <LoginScreen
+        email={email} password={password} onEmail={setEmail} onPassword={setPassword}
+        onSubmit={onSubmitLogin} pending={loginPending} note={note.text} tone={note.tone}
+      />
+    );
+  }
+  return (
+    <AdminContext.Provider value={{ user, api, store, fieldConfig, mediaIndex, setMediaIndex, signOut: () => supabase.auth.signOut() }}>
+      <Shell />
+    </AdminContext.Provider>
+  );
+}
+
+const mount = document.getElementById('admin-root');
+if (mount) {
+  createRoot(mount).render(<AdminRoot />);
+}
+```
+
+- [ ] **Step 4: Create a minimal `src/admin/shell/Shell.jsx` so the build compiles** (replaced in Task 10)
+
+```jsx
+import React from 'react';
+
+export function Shell() {
+  return <div className="admin-shell" />;
+}
+```
+
+- [ ] **Step 5: Verify** — `npm run build` green; `npm test` green.
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add src/admin/main.jsx src/admin/lib/context.js src/admin/screens/LoginScreen.jsx src/admin/shell/Shell.jsx
+git commit -m "feat(cms-v2): real bootstrap with auth, context, and login screen"
+```
+
+### Task 10: Router, toasts, and the full Shell (sidebar + topbar)
+
+**Files:**
+- Create: `src/admin/lib/router.js`
+- Create: `src/admin/shell/Toasts.jsx`
+- Modify: `src/admin/shell/Shell.jsx` (replace entirely)
+
+- [ ] **Step 1: Create `src/admin/lib/router.js`**
+
+```js
+import { useEffect, useState } from 'react';
+
+// Hash routes (all parts URI-encoded):
+//   #/page/<pageId>
+//   #/page/<pageId>/<sectionId>
+//   #/page/<pageId>/<sectionId>/list/<listPath>            (managed item list)
+//   #/page/<pageId>/<sectionId>/list/<listPath>/<index>    (item editor)
+//   #/page/wearhouse/wearhouse-brands/<slug>                (joined item editor)
+//   #/media   #/people
+export function parseRoute() {
+  return window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
+}
+
+export function navigate(...parts) {
+  window.location.hash = '/' + parts.map(encodeURIComponent).join('/');
+}
+
+export function useRoute() {
+  const [route, setRoute] = useState(parseRoute);
+  useEffect(() => {
+    const onChange = () => setRoute(parseRoute());
+    window.addEventListener('hashchange', onChange);
+    return () => window.removeEventListener('hashchange', onChange);
+  }, []);
+  return route;
+}
+```
+
+- [ ] **Step 2: Create `src/admin/shell/Toasts.jsx`**
+
+```jsx
+import React, { createContext, useCallback, useContext, useRef, useState } from 'react';
+
+const ToastContext = createContext(() => {});
+export const useToast = () => useContext(ToastContext);
+
+export function ToastProvider({ children }) {
+  const [toasts, setToasts] = useState([]);
+  const nextId = useRef(1);
+
+  const push = useCallback((message, tone = 'neutral') => {
+    const id = nextId.current++;
+    setToasts(current => [...current, { id, message, tone }]);
+    setTimeout(() => setToasts(current => current.filter(toast => toast.id !== id)), 4200);
+  }, []);
+
+  return (
+    <ToastContext.Provider value={push}>
+      {children}
+      <div className="toast-stack" role="status" aria-live="polite">
+        {toasts.map(toast => (
+          <div key={toast.id} className={`toast toast-${toast.tone}`}>{toast.message}</div>
+        ))}
+      </div>
+    </ToastContext.Provider>
+  );
+}
+```
+
+- [ ] **Step 3: Replace `src/admin/shell/Shell.jsx`** (complete file)
+
+```jsx
+import React from 'react';
+import { PAGES, findPage, findSection } from '../manifest.js';
+import { useAdmin, useStoreVersion } from '../lib/context.js';
+import { useRoute, navigate } from '../lib/router.js';
+import { ToastProvider } from './Toasts.jsx';
+import { Topbar } from './Topbar.jsx';
+import { PageScreen } from '../screens/PageScreen.jsx';
+import { SectionScreen } from '../screens/SectionScreen.jsx';
+
+function sectionDirty(store, section) {
+  if (section.joined) {
+    return section.files.some(filePath => store.isDirty(filePath));
+  }
+  return section.keys.some(key => store.isKeyDirty(section.file, key));
+}
+
+function pageDirty(store, page) {
+  return page.sections.some(section => sectionDirty(store, section));
+}
+
+function Sidebar({ route }) {
+  const { user, store } = useAdmin();
+  useStoreVersion(store);
+  const activePage = route[0] === 'page' ? route[1] : route[0];
+
+  return (
+    <aside className="sidebar">
+      <div className="sidebar-top">
+        <div>
+          <div className="sidebar-kicker">Bollag CMS</div>
+          <h1 className="sidebar-title">Website</h1>
+          <div className="sidebar-user">{user?.email}</div>
+        </div>
+      </div>
+
+      <nav className="sidebar-nav">
+        {PAGES.map(page => (
+          <button
+            key={page.id} type="button"
+            className={`sidebar-nav-item ${activePage === page.id ? 'is-active' : ''}`}
+            onClick={() => navigate('page', page.id)}
+          >
+            <span className="sidebar-nav-label">{page.label}</span>
+            <span className={`dirty-dot ${pageDirty(store, page) ? 'is-dirty' : ''}`} />
+          </button>
+        ))}
+        <div className="sidebar-divider" />
+        <button type="button" className={`sidebar-nav-item ${activePage === 'media' ? 'is-active' : ''}`} onClick={() => navigate('media')}>
+          <span className="sidebar-nav-label">Media</span>
+        </button>
+        {user?.role === 'admin' ? (
+          <button type="button" className={`sidebar-nav-item ${activePage === 'people' ? 'is-active' : ''}`} onClick={() => navigate('people')}>
+            <span className="sidebar-nav-label">People</span>
+          </button>
+        ) : null}
+      </nav>
+    </aside>
+  );
+}
+
+function NotFound() {
+  return (
+    <div className="empty-state">
+      <div className="empty-state-title">Nothing here</div>
+      <div className="empty-state-description">This link points at a section that no longer exists. Pick a page from the left.</div>
+    </div>
+  );
+}
+
+function Content({ route }) {
+  if (route.length === 0) {
+    navigate('page', 'homepage');
+    return null;
+  }
+  if (route[0] === 'media') {
+    return <div className="empty-state"><div className="empty-state-title">Media library</div><div className="empty-state-description">Arrives in a later task.</div></div>;
+  }
+  if (route[0] === 'people') {
+    return <div className="empty-state"><div className="empty-state-title">People</div><div className="empty-state-description">Arrives in a later task.</div></div>;
+  }
+  if (route[0] === 'page') {
+    const page = findPage(route[1]);
+    if (!page) {
+      return <NotFound />;
+    }
+    if (route.length === 2) {
+      return <PageScreen page={page} />;
+    }
+    const section = findSection(route[1], route[2]);
+    if (!section) {
+      return <NotFound />;
+    }
+    return <SectionScreen page={page} section={section} rest={route.slice(3)} />;
+  }
+  return <NotFound />;
+}
+
+export function Shell() {
+  const route = useRoute();
+  return (
+    <ToastProvider>
+      <div className="admin-shell">
+        <Sidebar route={route} />
+        <main className="workspace">
+          <Topbar />
+          <div className="workspace-body">
+            <Content route={route} />
+          </div>
+        </main>
+      </div>
+    </ToastProvider>
+  );
+}
+```
+
+- [ ] **Step 4: Create `src/admin/shell/Topbar.jsx`** (saved chip + sign out; search and changes tray attach here in later tasks)
+
+```jsx
+import React from 'react';
+import { useAdmin, useStoreVersion } from '../lib/context.js';
+
+export function Topbar() {
+  const { store, signOut } = useAdmin();
+  useStoreVersion(store);
+  const dirtyCount = store.dirtyPaths().length;
+
+  return (
+    <header className="topbar">
+      <div className="topbar-left" id="topbar-search-slot" />
+      <div className="topbar-right">
+        <span className={`badge ${dirtyCount ? 'badge-warning' : 'badge-neutral'}`}>
+          {dirtyCount ? `Saved — not published yet` : 'All changes published'}
+        </span>
+        <div id="topbar-tray-slot" />
+        <button type="button" className="button button-ghost" onClick={signOut}>Sign out</button>
+      </div>
+    </header>
+  );
+}
+```
+
+- [ ] **Step 5: Verify** — `npm run build` green. Local check: `npm run dev:static`, open `http://localhost:8080/admin/` → login screen renders (auth gate; full walkthrough happens in Task 21 with the temporary localhost bypass).
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add src/admin/lib/router.js src/admin/shell/Toasts.jsx src/admin/shell/Shell.jsx src/admin/shell/Topbar.jsx
+git commit -m "feat(cms-v2): hash router, toasts, sidebar/topbar shell"
+```
+
+### Task 11: CSS additions (complete block)
+
+**Files:**
+- Modify: `src/admin/admin.css` (append the block below at the end of the file, verbatim)
+
+- [ ] **Step 1: Append to `src/admin/admin.css`**
+
+```css
+/* ===== CMS v2 additions ===== */
+
+.workspace-body { padding: 16px 20px 40px; min-width: 0; }
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 20px; border-bottom: 1px solid var(--line); background: var(--panel);
+  position: sticky; top: 0; z-index: 20;
+}
+.topbar-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+
+.sidebar-divider { height: 1px; background: var(--line); margin: 10px 0; }
+
+.breadcrumbs { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); margin-bottom: 10px; flex-wrap: wrap; }
+.breadcrumbs a { color: var(--accent); text-decoration: none; cursor: pointer; }
+.breadcrumbs a:hover { text-decoration: underline; }
+.breadcrumbs-sep { color: var(--line-strong); }
+
+.screen-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
+.screen-title { margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
+.screen-subtitle { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.screen-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.section-rows { display: grid; gap: 8px; }
+.section-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  width: 100%; text-align: left; padding: 14px 16px; cursor: pointer;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel);
+  box-shadow: var(--shadow-1); transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.section-row:hover { border-color: var(--accent); box-shadow: var(--shadow-2); }
+.section-row-main { min-width: 0; }
+.section-row-title { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+.section-row-summary { color: var(--muted); font-size: 13px; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60ch; }
+.section-row-meta { display: flex; align-items: center; gap: 10px; color: var(--muted); flex: none; }
+
+.group-card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); padding: 16px; box-shadow: var(--shadow-1); }
+.group-card + .group-card { margin-top: 12px; }
+.group-card-title { margin: 0 0 12px; font-size: 15px; font-weight: 600; }
+.field-grid { display: grid; gap: 14px; }
+@media (min-width: 1100px) { .field-grid.two-col { grid-template-columns: 1fr 1fr; } .field-grid.two-col > .field-span { grid-column: 1 / -1; } }
+
+.inline-list { display: grid; gap: 6px; }
+.inline-list-row { display: flex; align-items: center; gap: 6px; }
+.inline-list-row .input { flex: 1; }
+.inline-list-actions { display: flex; gap: 2px; flex: none; }
+
+.item-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
+.item-card {
+  display: flex; flex-direction: column; gap: 0; text-align: left; cursor: pointer; overflow: hidden;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel);
+  box-shadow: var(--shadow-1); transition: border-color 120ms ease, box-shadow 120ms ease; padding: 0;
+}
+.item-card:hover { border-color: var(--accent); box-shadow: var(--shadow-2); }
+.item-card-thumb { height: 120px; background: var(--panel-soft); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.item-card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.item-card-thumb-empty { color: var(--line-strong); font-size: 12px; }
+.item-card-body { padding: 10px 12px; }
+.item-card-title { font-weight: 600; font-size: 14px; }
+.item-card-subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.item-card-flags { padding: 0 12px 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+
+.managed-list { display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel-soft); padding: 12px 14px; }
+.managed-list-thumbs { display: flex; }
+.managed-list-thumbs img { width: 34px; height: 34px; object-fit: cover; border-radius: 6px; border: 2px solid var(--panel); margin-left: -8px; }
+.managed-list-thumbs img:first-child { margin-left: 0; }
+
+.toast-stack { position: fixed; right: 18px; bottom: 18px; display: grid; gap: 8px; z-index: 120; }
+.toast { padding: 11px 16px; border-radius: var(--radius-sm); background: #202124; color: #fff; font-size: 13px; box-shadow: var(--shadow-2); animation: toast-in 160ms ease; max-width: 380px; }
+.toast-success { background: #188038; }
+.toast-error { background: var(--danger); }
+@keyframes toast-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.tray-backdrop { position: fixed; inset: 0; background: rgba(32, 33, 36, 0.4); z-index: 90; }
+.tray-panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 92vw); background: var(--panel); z-index: 100; box-shadow: var(--shadow-3); display: flex; flex-direction: column; }
+.tray-head { padding: 16px 18px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.tray-title { margin: 0; font-size: 17px; font-weight: 600; }
+.tray-body { flex: 1; overflow-y: auto; padding: 14px 18px; display: grid; gap: 10px; align-content: start; }
+.tray-foot { padding: 14px 18px; border-top: 1px solid var(--line); display: grid; gap: 10px; }
+.tray-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 10px 12px; }
+.tray-row-title { font-weight: 600; font-size: 13px; }
+.tray-row-sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+.picker-backdrop { position: fixed; inset: 0; background: rgba(32, 33, 36, 0.45); z-index: 110; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.picker-modal { width: min(920px, 100%); max-height: 84vh; background: var(--panel); border-radius: var(--radius); box-shadow: var(--shadow-3); display: flex; flex-direction: column; overflow: hidden; }
+.picker-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.picker-head .input { flex: 1; }
+.picker-grid { flex: 1; overflow-y: auto; padding: 14px 16px; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); align-content: start; }
+.picker-cell { border: 2px solid transparent; border-radius: var(--radius-sm); overflow: hidden; cursor: pointer; background: var(--panel-soft); padding: 0; text-align: left; }
+.picker-cell:hover { border-color: var(--accent); }
+.picker-cell img { width: 100%; height: 96px; object-fit: cover; display: block; }
+.picker-cell-name { font-size: 11px; color: var(--muted); padding: 6px 8px; word-break: break-all; }
+.picker-foot { padding: 12px 16px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+
+.media-toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; }
+.media-toolbar .input { max-width: 360px; }
+
+.skeleton { background: linear-gradient(90deg, var(--panel-soft) 25%, #e8eaed 37%, var(--panel-soft) 63%); background-size: 400% 100%; animation: skeleton 1.2s ease infinite; border-radius: var(--radius-sm); min-height: 48px; }
+@keyframes skeleton { from { background-position: 100% 50%; } to { background-position: 0 50%; } }
+
+.search-wrap { position: relative; max-width: 420px; flex: 1; }
+.search-pop { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-2); z-index: 60; max-height: 340px; overflow-y: auto; }
+.search-hit { display: block; width: 100%; text-align: left; padding: 10px 12px; cursor: pointer; border: 0; background: transparent; }
+.search-hit:hover { background: var(--accent-soft); }
+.search-hit-title { font-weight: 600; font-size: 13px; }
+.search-hit-sub { color: var(--muted); font-size: 12px; }
+
+.issue-list { border: 1px solid rgba(217, 48, 37, 0.4); background: rgba(217, 48, 37, 0.05); border-radius: var(--radius); padding: 12px 14px; display: grid; gap: 6px; }
+.issue-row { font-size: 13px; }
+.issue-row strong { color: var(--danger); }
+```
+
+- [ ] **Step 2: Verify** — `npm run build` green (CSS bundles through the esbuild import).
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add src/admin/admin.css
+git commit -m "feat(cms-v2): design-system additions for shell, cards, tray, picker, toasts"
+```
+
+**End of Chunk 3.**
+
+---
+
+## Chunk 4: Section editing and media fields
+
+### Task 12: Summaries + PageScreen + SectionScreen + basic fields
+
+**Files:**
+- Create: `src/admin/lib/summarize.js`
+- Test: `src/admin/lib/__tests__/summarize.test.js`
+- Create: `src/admin/screens/PageScreen.jsx`
+- Create: `src/admin/screens/SectionScreen.jsx`
+- Create: `src/admin/fields/FieldRenderer.jsx`
+- Create: `src/admin/fields/basics.jsx`
+- Create: `src/admin/fields/InlineListField.jsx`
+
+- [ ] **Step 1: Write failing summarize tests**
+
+```js
+import { describe, it, expect } from 'vitest';
+import { summarize, itemTitle, itemImage } from '../summarize.js';
+
+describe('summarize', () => {
+  it('previews scalars and counts arrays', () => {
+    expect(summarize({ title: 'Hello', items: [1, 2, 3] })).toBe('Title: Hello · Items: 3 items');
+  });
+  it('handles empty values', () => {
+    expect(summarize({})).toBe('Empty');
+    expect(summarize('Plain')).toBe('Plain');
+  });
+  it('itemTitle prefers name-like keys then first non-empty string', () => {
+    expect(itemTitle({ name: 'Closed' })).toBe('Closed');
+    expect(itemTitle({ brand: 'Duno' })).toBe('Duno');
+    expect(itemTitle({ month: 'July' })).toBe('July');
+    expect(itemTitle({ dateLabel: '12–14 July' })).toBe('12–14 July');
+    expect(itemTitle({ note: '' , other: 42 })).toBe('Untitled');
+  });
+  it('itemImage returns the first image-looking string value', () => {
+    expect(itemImage({ logoImage: '/assets/media/a.svg', name: 'X' })).toBe('/assets/media/a.svg');
+    expect(itemImage({ card: { heroImage: '/assets/media/b.jpg' } })).toBe('/assets/media/b.jpg');
+    expect(itemImage({ name: 'X' })).toBeNull();
+  });
+});
+```
+
+- [ ] **Step 2: Run to verify failure**, then implement `src/admin/lib/summarize.js`
+
+```js
+const TITLE_KEYS = ['name', 'brand', 'title', 'label', 'month', 'dateLabel'];
+const IMAGE_SHAPE = /\.(avif|gif|jpe?g|png|svg|webp)$/i;
+
+function labelize(key) {
+  const spaced = key.replace(/([a-z])([A-Z])/g, '$1 $2');
+  return spaced.charAt(0).toUpperCase() + spaced.slice(1);
+}
+
+export function summarize(value) {
+  if (value === null || value === undefined || value === '') {
+    return 'Empty';
+  }
+  if (typeof value !== 'object') {
+    return String(value);
+  }
+  if (Array.isArray(value)) {
+    return `${value.length} item${value.length === 1 ? '' : 's'}`;
+  }
+  const parts = [];
+  for (const [key, entryValue] of Object.entries(value)) {
+    if (entryValue === null || entryValue === undefined || entryValue === '') {
+      continue;
+    }
+    parts.push(`${labelize(key)}: ${Array.isArray(entryValue) ? `${entryValue.length} items` : typeof entryValue === 'object' ? '…' : String(entryValue)}`);
+    if (parts.length === 2) {
+      break;
+    }
+  }
+  return parts.join(' · ') || 'Empty';
+}
+
+export function itemTitle(item) {
+  if (!item || typeof item !== 'object') {
+    return String(item ?? 'Untitled') || 'Untitled';
+  }
+  for (const key of TITLE_KEYS) {
+    if (typeof item[key] === 'string' && item[key].trim()) {
+      return item[key];
+    }
+  }
+  for (const value of Object.values(item)) {
+    if (typeof value === 'string' && value.trim() && !IMAGE_SHAPE.test(value)) {
+      return value;
+    }
+  }
+  return 'Untitled';
+}
+
+export function itemImage(item) {
+  if (!item || typeof item !== 'object') {
+    return null;
+  }
+  for (const value of Object.values(item)) {
+    if (typeof value === 'string' && IMAGE_SHAPE.test(value)) {
+      return value;
+    }
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      const nested = itemImage(value);
+      if (nested) {
+        return nested;
+      }
+    }
+  }
+  return null;
+}
+```
+
+Run `npm test` → PASS.
+
+- [ ] **Step 3: Create `src/admin/fields/basics.jsx`**
+
+```jsx
+import React from 'react';
+
+export function FieldShell({ field, children }) {
+  return (
+    <div className="field">
+      <span className="field-label">{field.label || field.name}</span>
+      {field.description ? <div className="field-help">{field.description}</div> : null}
+      {children}
+    </div>
+  );
+}
+
+export function TextField({ field, value, onChange }) {
+  return (
+    <FieldShell field={field}>
+      <input className="input" type={field.widget === 'number' ? 'number' : 'text'} value={value ?? ''} onChange={event => onChange(field.widget === 'number' ? Number(event.target.value) : event.target.value)} />
+    </FieldShell>
+  );
+}
+
+export function TextareaField({ field, value, onChange }) {
+  return (
+    <FieldShell field={field}>
+      <textarea className="textarea" rows={4} value={value || ''} onChange={event => onChange(event.target.value)} />
+    </FieldShell>
+  );
+}
+
+export function SelectField({ field, value, onChange }) {
+  const options = (field.options || []).map(option => (typeof option === 'object' && option !== null ? option : { label: String(option), value: option }));
+  return (
+    <FieldShell field={field}>
+      <select className="select" value={value ?? options[0]?.value ?? ''} onChange={event => onChange(event.target.value)}>
+        {options.map(option => (
+          <option key={String(option.value)} value={option.value}>{option.label ?? option.value}</option>
+        ))}
+      </select>
+    </FieldShell>
+  );
+}
+
+export function BooleanField({ field, value, onChange }) {
+  return (
+    <label className="field field-check">
+      <input type="checkbox" checked={Boolean(value)} onChange={event => onChange(event.target.checked)} />
+      <span>
+        <span className="field-label">{field.label || field.name}</span>
+        {field.description ? <span className="field-help">{field.description}</span> : null}
+      </span>
+    </label>
+  );
+}
+```
+
+- [ ] **Step 4: Create `src/admin/fields/InlineListField.jsx`** (scalar lists: address lines, stats, categories)
+
+```jsx
+import React from 'react';
+import { reorder } from '../lib/paths.js';
+import { FieldShell } from './basics.jsx';
+
+export function InlineListField({ field, value, onChange }) {
+  const items = Array.isArray(value) ? value : [];
+  const setItem = (index, next) => {
+    const copy = items.slice();
+    copy[index] = next;
+    onChange(copy);
+  };
+
+  return (
+    <FieldShell field={field}>
+      <div className="inline-list">
+        {items.map((item, index) => (
+          <div className="inline-list-row" key={index}>
+            <input className="input" value={item ?? ''} onChange={event => setItem(index, event.target.value)} />
+            <div className="inline-list-actions">
+              <button type="button" className="icon-button" title="Move up" disabled={index === 0} onClick={() => onChange(reorder(items, index, index - 1))}>↑</button>
+              <button type="button" className="icon-button" title="Move down" disabled={index === items.length - 1} onClick={() => onChange(reorder(items, index, index + 1))}>↓</button>
+              <button type="button" className="icon-button" title="Remove" onClick={() => onChange(items.filter((_, i) => i !== index))}>✕</button>
+            </div>
+          </div>
+        ))}
+        <button type="button" className="button button-secondary" onClick={() => onChange([...items, ''])}>Add line</button>
+      </div>
+    </FieldShell>
+  );
+}
+```
+
+- [ ] **Step 5: Create `src/admin/fields/FieldRenderer.jsx`** (dispatch; object-lists render a ManagedList link — never accordions)
+
+```jsx
+import React from 'react';
+import { navigate } from '../lib/router.js';
+import { itemImage, itemTitle } from '../lib/summarize.js';
+import { TextField, TextareaField, SelectField, BooleanField } from './basics.jsx';
+import { InlineListField } from './InlineListField.jsx';
+import { ImageField } from './ImageField.jsx';
+
+// pathPrefix: dot path of this field from the FILE ROOT (e.g. 'groups' or 'brands.2.detail.gallery').
+// routeBase: [pageId, sectionId] used to build managed-list routes.
+export function FieldRenderer({ field, value, onChange, pathPrefix, routeBase }) {
+  const widget = field.widget || 'string';
+
+  if (widget === 'object') {
+    return (
+      <section className="group-card">
+        <h3 className="group-card-title">{field.label || field.name}</h3>
+        {field.description ? <div className="field-help">{field.description}</div> : null}
+        <div className="field-grid">
+          {(field.fields || []).map(child => (
+            <FieldRenderer
+              key={child.name}
+              field={child}
+              value={value?.[child.name]}
+              onChange={next => onChange({ ...(value || {}), [child.name]: next })}
+              pathPrefix={`${pathPrefix}.${child.name}`}
+              routeBase={routeBase}
+            />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (widget === 'list' && field.fields) {
+    const items = Array.isArray(value) ? value : [];
+    const thumbs = items.map(itemImage).filter(Boolean).slice(0, 5);
+    return (
+      <div className="field">
+        <span className="field-label">{field.label || field.name}</span>
+        {field.description ? <div className="field-help">{field.description}</div> : null}
+        <div className="managed-list">
+          <div>
+            <div className="managed-list-thumbs">
+              {thumbs.map(src => <img key={src} src={src} alt="" />)}
+            </div>
+            <div className="field-help" style={{ marginTop: thumbs.length ? 6 : 0 }}>
+              {items.length ? `${items.length} item${items.length === 1 ? '' : 's'} — ${items.slice(0, 3).map(itemTitle).join(', ')}${items.length > 3 ? '…' : ''}` : 'No items yet.'}
+            </div>
+          </div>
+          <button type="button" className="button button-secondary" onClick={() => navigate('page', routeBase[0], routeBase[1], 'list', pathPrefix)}>
+            Manage items
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (widget === 'list') {
+    return <InlineListField field={field} value={value} onChange={onChange} />;
+  }
+
+  if (widget === 'image' || widget === 'file') {
+    return <ImageField field={field} value={value} onChange={onChange} kind={widget} />;
+  }
+  if (widget === 'select') {
+    return <SelectField field={field} value={value} onChange={onChange} />;
+  }
+  if (widget === 'text') {
+    return <TextareaField field={field} value={value} onChange={onChange} />;
+  }
+  if (widget === 'boolean') {
+    return <BooleanField field={field} value={value} onChange={onChange} />;
+  }
+  return <TextField field={field} value={value} onChange={onChange} />;
+}
+```
+
+- [ ] **Step 6: Create `src/admin/screens/PageScreen.jsx`**
+
+```jsx
+import React from 'react';
+import { useAdmin, useStoreVersion } from '../lib/context.js';
+import { navigate } from '../lib/router.js';
+import { summarize } from '../lib/summarize.js';
+
+export function PageScreen({ page }) {
+  const { store } = useAdmin();
+  useStoreVersion(store);
+
+  return (
+    <div>
+      <div className="screen-header">
+        <div>
+          <h2 className="screen-title">{page.label}</h2>
+          <p className="screen-subtitle">The sections below appear on the page in this order.</p>
+        </div>
+        <div className="screen-actions">
+          <a className="button button-secondary" href={page.url} target="_blank" rel="noreferrer">View page ↗</a>
+        </div>
+      </div>
+
+      <div className="section-rows">
+        {page.sections.map(section => {
+          const dirty = section.joined
+            ? section.files.some(filePath => store.isDirty(filePath))
+            : section.keys.some(key => store.isKeyDirty(section.file, key));
+          const preview = section.joined
+            ? `${(store.getDraft(section.files[0])?.rosterSection?.items || []).length} brands`
+            : summarize(store.getDraft(section.file)?.[section.keys[0]]);
+          return (
+            <button key={section.id} type="button" className="section-row" onClick={() => navigate('page', page.id, section.id)}>
+              <span className="section-row-main">
+                <span className="section-row-title">
+                  {section.label}
+                  <span className={`dirty-dot ${dirty ? 'is-dirty' : ''}`} />
+                </span>
+                <span className="section-row-summary">{section.hint || preview}</span>
+              </span>
+              <span className="section-row-meta">›</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+```
+
+- [ ] **Step 7: Create `src/admin/screens/SectionScreen.jsx`**
+
+```jsx
+import React from 'react';
+import { useAdmin, useStoreVersion } from '../lib/context.js';
+import { navigate } from '../lib/router.js';
+import { useToast } from '../shell/Toasts.jsx';
+import { FieldRenderer } from '../fields/FieldRenderer.jsx';
+import { ItemListScreen } from './ItemListScreen.jsx';
+import { ItemEditScreen } from './ItemEditScreen.jsx';
+import { WearhouseScreen } from './WearhouseScreen.jsx';
+
+export function Breadcrumbs({ parts }) {
+  return (
+    <nav className="breadcrumbs">
+      {parts.map((part, index) => (
+        <React.Fragment key={index}>
+          {index > 0 ? <span className="breadcrumbs-sep">/</span> : null}
+          {part.to ? <a onClick={() => navigate(...part.to)}>{part.label}</a> : <span>{part.label}</span>}
+        </React.Fragment>
+      ))}
+    </nav>
+  );
+}
+
+export function SectionScreen({ page, section, rest }) {
+  const { store, fieldConfig } = useAdmin();
+  useStoreVersion(store);
+  const toast = useToast();
+
+  if (section.joined) {
+    return <WearhouseScreen page={page} section={section} rest={rest} />;
+  }
+
+  // Managed-list subroutes: [.., 'list', <listPath>] and [.., 'list', <listPath>, <index>]
+  if (rest[0] === 'list' && rest.length >= 2) {
+    const listPath = rest[1];
+    if (rest.length >= 3) {
+      return <ItemEditScreen page={page} section={section} listPath={listPath} index={Number(rest[2])} />;
+    }
+    return <ItemListScreen page={page} section={section} listPath={listPath} />;
+  }
+
+  const entry = fieldConfig.get(section.file);
+  const draft = store.getDraft(section.file);
+  if (!entry || !draft) {
+    return <div className="skeleton" style={{ minHeight: 220 }} />;
+  }
+  const fields = entry.fields.filter(field => section.keys.includes(field.name));
+  const dirty = section.keys.some(key => store.isKeyDirty(section.file, key));
+
+  return (
+    <div>
+      <Breadcrumbs parts={[{ label: page.label, to: ['page', page.id] }, { label: section.label }]} />
+      <div className="screen-header">
+        <div>
+          <h2 className="screen-title">{section.label}</h2>
+          <p className="screen-subtitle">{section.hint || `Part of the ${page.label} page.`}</p>
+        </div>
+        <div className="screen-actions">
+          <a className="button button-ghost" href={page.url} target="_blank" rel="noreferrer">View page ↗</a>
+          <button
+            type="button" className="button button-secondary" disabled={!dirty}
+            onClick={() => {
+              if (window.confirm('Discard your unpublished edits to this section and restore the published version?')) {
+                store.discardKeys(section.file, section.keys);
+                toast('Section restored to the published version.');
+              }
+            }}
+          >
+            Discard changes
+          </button>
+        </div>
+      </div>
+
+      <div className="field-grid">
+        {fields.map(field => (
+          <FieldRenderer
+            key={field.name}
+            field={field}
+            value={draft[field.name]}
+            onChange={next => store.update(section.file, draftCopy => { draftCopy[field.name] = next; })}
+            pathPrefix={field.name}
+            routeBase={[page.id, section.id]}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+- [ ] **Step 8: Temporary stubs so the build compiles** (replaced in Chunk 3): create `src/admin/screens/ItemListScreen.jsx`, `src/admin/screens/ItemEditScreen.jsx`, `src/admin/screens/WearhouseScreen.jsx`, each as:
+
+```jsx
+import React from 'react';
+export function ItemListScreen() { return null; }
+```
+
+(one export per file, matching the names above), and `src/admin/fields/ImageField.jsx` as:
+
+```jsx
+import React from 'react';
+import { FieldShell, TextField } from './basics.jsx';
+export function ImageField({ field, value, onChange }) {
+  return <TextField field={field} value={value} onChange={onChange} />;
+}
+```
+
+- [ ] **Step 9: Verify** — `npm test` PASS; `npm run build` green.
+
+- [ ] **Step 10: Commit**
+
+```bash
+git add src/admin/lib/summarize.js src/admin/lib/__tests__/summarize.test.js src/admin/screens src/admin/fields
+git commit -m "feat(cms-v2): page and section screens with flat field rendering"
+```
+
+### Task 13: ImageField + MediaPicker (real implementations)
+
+**Files:**
+- Modify: `src/admin/fields/ImageField.jsx` (replace stub entirely)
+- Create: `src/admin/fields/MediaPicker.jsx`
+
+- [ ] **Step 1: Create `src/admin/fields/MediaPicker.jsx`**
+
+```jsx
+import React, { useMemo, useRef, useState } from 'react';
+import { useAdmin } from '../lib/context.js';
+import { useToast } from '../shell/Toasts.jsx';
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Could not read the file.'));
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.readAsDataURL(file);
+  });
+}
+
+const IMAGE_SHAPE = /\.(avif|gif|jpe?g|png|svg|webp)$/i;
+
+export function MediaPicker({ kind, onSelect, onClose }) {
+  const { api, mediaIndex, setMediaIndex } = useAdmin();
+  const toast = useToast();
+  const [query, setQuery] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const fileInput = useRef(null);
+
+  const files = useMemo(() => {
+    const all = mediaIndex?.files || [];
+    const typed = kind === 'image' ? all.filter(file => IMAGE_SHAPE.test(file.path)) : all;
+    const needle = query.trim().toLowerCase();
+    return needle ? typed.filter(file => file.path.toLowerCase().includes(needle)) : typed;
+  }, [mediaIndex, kind, query]);
+
+  const handleUpload = async event => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+    setUploading(true);
+    try {
+      const data = await readFileAsDataUrl(file);
+      const result = await api.upload({ name: file.name, type: file.type, data });
+      setMediaIndex(current => ({
+        ...(current || { files: [] }),
+        files: [{ path: result.publicPath, name: file.name, size: file.size }, ...(current?.files || [])],
+      }));
+      toast('Uploaded. It appears on the website after your next publish.', 'success');
+      onSelect(result.publicPath);
+    } catch (error) {
+      toast(error.message || 'Could not upload the file.', 'error');
+    } finally {
+      setUploading(false);
+      event.target.value = '';
+    }
+  };
+
+  return (
+    <div className="picker-backdrop" onClick={onClose}>
+      <div className="picker-modal" onClick={event => event.stopPropagation()}>
+        <div className="picker-head">
+          <input className="input" placeholder="Search files by name" value={query} onChange={event => setQuery(event.target.value)} autoFocus />
+          <button type="button" className="button button-primary" disabled={uploading} onClick={() => fileInput.current?.click()}>
+            {uploading ? 'Uploading…' : 'Upload new'}
+          </button>
+          <input ref={fileInput} type="file" className="hidden-input" accept={kind === 'image' ? 'image/*' : '*'} onChange={handleUpload} />
+        </div>
+        <div className="picker-grid">
+          {files.length ? files.map(file => (
+            <button key={file.path} type="button" className="picker-cell" onClick={() => onSelect(file.path)}>
+              {IMAGE_SHAPE.test(file.path) ? <img src={file.path} alt="" loading="lazy" /> : <div className="item-card-thumb"><span className="item-card-thumb-empty">{file.path.split('.').pop().toUpperCase()}</span></div>}
+              <div className="picker-cell-name">{file.name || file.path.split('/').pop()}</div>
+            </button>
+          )) : (
+            <div className="empty-state">
+              <div className="empty-state-title">{mediaIndex ? 'No matching files' : 'Media list unavailable'}</div>
+              <div className="empty-state-description">{mediaIndex ? 'Try another search, or upload a new file.' : 'You can still upload a new file.'}</div>
+            </div>
+          )}
+        </div>
+        <div className="picker-foot">
+          <span className="field-help">{files.length} file{files.length === 1 ? '' : 's'}</span>
+          <button type="button" className="button button-ghost" onClick={onClose}>Cancel</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+- [ ] **Step 2: Replace `src/admin/fields/ImageField.jsx`**
+
+```jsx
+import React, { useState } from 'react';
+import { FieldShell } from './basics.jsx';
+import { MediaPicker } from './MediaPicker.jsx';
+
+const IMAGE_SHAPE = /\.(avif|gif|jpe?g|png|svg|webp)$/i;
+
+export function ImageField({ field, value, onChange, kind = 'image' }) {
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [showPath, setShowPath] = useState(false);
+  const current = String(value || '');
+  const hasPreview = current && IMAGE_SHAPE.test(current);
+
+  return (
+    <FieldShell field={field}>
+      {current ? (
+        <div className="asset-card">
+          {hasPreview ? <img className="asset-card-image" src={current} alt="" /> : <a className="asset-card-file" href={current} target="_blank" rel="noreferrer">{current}</a>}
+          <div className="asset-card-actions">
+            <button type="button" className="button button-secondary" onClick={() => setPickerOpen(true)}>Replace</button>
+            <button type="button" className="button button-ghost" onClick={() => onChange('')}>Remove</button>
+          </div>
+        </div>
+      ) : (
+        <button type="button" className="asset-dropzone" onClick={() => setPickerOpen(true)}>
+          <span className="asset-dropzone-title">{kind === 'image' ? 'Choose an image' : 'Choose a file'}</span>
+          <span className="asset-dropzone-hint">Pick from the media library or upload new</span>
+        </button>
+      )}
+
+      <button type="button" className="asset-path-toggle" onClick={() => setShowPath(open => !open)}>
+        {showPath ? 'Hide file path' : 'Edit file path manually'}
+      </button>
+      {showPath ? <input className="input" value={current} onChange={event => onChange(event.target.value)} placeholder="/assets/media/example.jpg" /> : null}
+
+      {pickerOpen ? (
+        <MediaPicker kind={kind} onClose={() => setPickerOpen(false)} onSelect={path => { onChange(path); setPickerOpen(false); }} />
+      ) : null}
+    </FieldShell>
+  );
+}
+```
+
+- [ ] **Step 3: Verify** — `npm test` PASS; `npm run build` green.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/admin/fields/ImageField.jsx src/admin/fields/MediaPicker.jsx
+git commit -m "feat(cms-v2): media picker and picker-first image field"
+```
+
+**End of Chunk 4.** The admin now boots, authenticates, navigates by page, and edits flat sections with picker-based media — managed lists, wearhouse, tray, media screen, people and search arrive in Chunk 5.
+
+---
+
+## Chunk 5: Managed item lists and the Wearhouse joined editor
+
+### Task 14: Config-path helpers + defaults (pure logic, TDD)
+
+**Files:**
+- Create: `src/admin/lib/configPath.js`
+- Test: `src/admin/lib/__tests__/configPath.test.js`
+
+- [ ] **Step 1: Write failing tests**
+
+```js
+import { describe, it, expect } from 'vitest';
+import { resolveListField, defaultValueForFields } from '../configPath.js';
+
+const entryFields = [
+  {
+    name: 'groups', label: 'Store Groups', widget: 'list',
+    fields: [
+      { name: 'title', label: 'Title', widget: 'string' },
+      {
+        name: 'stores', label: 'Stores', widget: 'list',
+        fields: [
+          { name: 'name', label: 'Name', widget: 'string' },
+          { name: 'image', label: 'Image', widget: 'image' },
+        ],
+      },
+    ],
+  },
+];
+
+describe('resolveListField', () => {
+  it('resolves a root list', () => {
+    expect(resolveListField(entryFields, 'groups').label).toBe('Store Groups');
+  });
+  it('resolves a nested list across a numeric index', () => {
+    expect(resolveListField(entryFields, 'groups.2.stores').label).toBe('Stores');
+  });
+  it('returns null for non-list or unknown paths', () => {
+    expect(resolveListField(entryFields, 'groups.2.title')).toBeNull();
+    expect(resolveListField(entryFields, 'nope')).toBeNull();
+  });
+});
+
+describe('defaultValueForFields', () => {
+  it('builds a blank item from field defs', () => {
+    const fields = [
+      { name: 'name', widget: 'string' },
+      { name: 'image', widget: 'image' },
+      { name: 'tags', widget: 'list', field: { name: 'tag', widget: 'string' } },
+      { name: 'card', widget: 'object', fields: [{ name: 'title', widget: 'string' }] },
+      { name: 'size', widget: 'select', options: ['standard', 'wide'] },
+      { name: 'active', widget: 'boolean' },
+    ];
+    expect(defaultValueForFields(fields)).toEqual({
+      name: '', image: '', tags: [], card: { title: '' }, size: 'standard', active: false,
+    });
+  });
+});
+```
+
+- [ ] **Step 2: Run to verify failure**, then implement `src/admin/lib/configPath.js`
+
+```js
+// Walks config.yml field definitions along a dot path with numeric indexes
+// (e.g. 'groups.0.stores') and returns the list field definition at the end,
+// or null if the path does not land on a list-of-objects field.
+export function resolveListField(fields, listPath) {
+  let currentFields = fields;
+  let currentField = null;
+  for (const segment of String(listPath).split('.')) {
+    if (/^\d+$/.test(segment)) {
+      if (!currentField || currentField.widget !== 'list' || !currentField.fields) {
+        return null;
+      }
+      currentFields = currentField.fields;
+      currentField = null;
+      continue;
+    }
+    currentField = (currentFields || []).find(field => field.name === segment) || null;
+    if (!currentField) {
+      return null;
+    }
+    currentFields = currentField.fields || null;
+  }
+  return currentField && currentField.widget === 'list' && currentField.fields ? currentField : null;
+}
+
+export function defaultValueForFields(fields) {
+  const value = {};
+  for (const field of fields || []) {
+    value[field.name] = defaultValueForField(field);
+  }
+  return value;
+}
+
+export function defaultValueForField(field) {
+  const widget = field.widget || 'string';
+  if (widget === 'object') {
+    return defaultValueForFields(field.fields);
+  }
+  if (widget === 'list') {
+    return [];
+  }
+  if (widget === 'select') {
+    const first = Array.isArray(field.options) && field.options.length ? field.options[0] : '';
+    return typeof first === 'object' && first !== null ? first.value ?? '' : first;
+  }
+  if (widget === 'boolean') {
+    return false;
+  }
+  if (widget === 'number') {
+    return 0;
+  }
+  return '';
+}
+```
+
+- [ ] **Step 3: Run tests** — `npm test` → PASS. Commit:
+
+```bash
+git add src/admin/lib/configPath.js src/admin/lib/__tests__/configPath.test.js
+git commit -m "feat(cms-v2): config-path resolution and blank-item defaults"
+```
+
+### Task 15: ItemListScreen + ItemEditScreen (replace stubs)
+
+**Files:**
+- Modify: `src/admin/screens/ItemListScreen.jsx` (replace entirely)
+- Modify: `src/admin/screens/ItemEditScreen.jsx` (replace entirely)
+
+- [ ] **Step 1: Replace `src/admin/screens/ItemListScreen.jsx`**
+
+```jsx
+import React from 'react';
+import { useAdmin, useStoreVersion } from '../lib/context.js';
+import { navigate } from '../lib/router.js';
+import { getAtPath, setAtPath, reorder, deepClone } from '../lib/paths.js';
+import { resolveListField, defaultValueForFields } from '../lib/configPath.js';
+import { itemTitle, itemImage } from '../lib/summarize.js';
+import { useToast } from '../shell/Toasts.jsx';
+import { Breadcrumbs } from './SectionScreen.jsx';
+
+export function ItemListScreen({ page, section, listPath }) {
+  const { store, fieldConfig } = useAdmin();
+  useStoreVersion(store);
+  const toast = useToast();
+
+  const entry = fieldConfig.get(section.file);
+  const listField = entry ? resolveListField(entry.fields, listPath) : null;
+  const draft = store.getDraft(section.file);
+  if (!listField || !draft) {
+    return (
+      <div className="empty-state">
+        <div className="empty-state-title">Nothing here</div>
+        <div className="empty-state-description">This list no longer exists. Go back to the section.</div>
+      </div>
+    );
+  }
+
+  const items = getAtPath(draft, listPath) || [];
+  const setItems = next => store.update(section.file, draftCopy => setAtPath(draftCopy, listPath, next));
+
+  const addItem = () => {
+    const blank = defaultValueForFields(listField.fields);
+    setItems([...items, blank]);
+    navigate('page', page.id, section.id, 'list', listPath, String(items.length));
+  };
+
+  return (
+    <div>
+      <Breadcrumbs parts={[
+        { label: page.label, to: ['page', page.id] },
+        { label: section.label, to: ['page', page.id, section.id] },
+        { label: listField.label || listField.name },
+      ]} />
+      <div className="screen-header">
+        <div>
+          <h2 className="screen-title">{listField.label || listField.name}</h2>
+          <p className="screen-subtitle">{items.length} item{items.length === 1 ? '' : 's'}. Click one to edit it.</p>
+        </div>
+        <div className="screen-actions">
+          <button type="button" className="button button-primary" onClick={addItem}>Add item</button>
+        </div>
+      </div>
+
+      {items.length ? (
+        <div className="item-grid">
+          {items.map((item, index) => {
+            const thumb = itemImage(item);
+            return (
+              <div key={index} className="item-card" role="button" tabIndex={0}
+                onClick={() => navigate('page', page.id, section.id, 'list', listPath, String(index))}
+                onKeyDown={event => { if (event.key === 'Enter') navigate('page', page.id, section.id, 'list', listPath, String(index)); }}>
+                <div className="item-card-thumb">
+                  {thumb ? <img src={thumb} alt="" loading="lazy" /> : <span className="item-card-thumb-empty">No image</span>}
+                </div>
+                <div className="item-card-body">
+                  <div className="item-card-title">{itemTitle(item)}</div>
+                  <div className="item-card-subtitle">Item {index + 1} of {items.length}</div>
+                </div>
+                <div className="item-card-flags" onClick={event => event.stopPropagation()}>
+                  <button type="button" className="icon-button" title="Move up" disabled={index === 0} onClick={() => setItems(reorder(items, index, index - 1))}>↑</button>
+                  <button type="button" className="icon-button" title="Move down" disabled={index === items.length - 1} onClick={() => setItems(reorder(items, index, index + 1))}>↓</button>
+                  <button type="button" className="icon-button" title="Duplicate" onClick={() => { const copy = items.slice(); copy.splice(index + 1, 0, deepClone(items[index])); setItems(copy); toast('Item duplicated.'); }}>⧉</button>
+                  <button type="button" className="icon-button" title="Delete" onClick={() => {
+                    if (window.confirm(`Delete “${itemTitle(item)}”? This is removed from the website on your next publish.`)) {
+                      setItems(items.filter((_, i) => i !== index));
+                      toast('Item deleted.');
+                    }
+                  }}>✕</button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="empty-state">
+          <div className="empty-state-title">No items yet</div>
+          <div className="empty-state-description">Use “Add item” to create the first one.</div>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+- [ ] **Step 2: Replace `src/admin/screens/ItemEditScreen.jsx`**
+
+```jsx
+import React from 'react';
+import { useAdmin, useStoreVersion } from '../lib/context.js';
+import { navigate } from '../lib/router.js';
+import { getAtPath, setAtPath } from '../lib/paths.js';
+import { resolveListField } from '../lib/configPath.js';
+import { itemTitle } from '../lib/summarize.js';
+import { FieldRenderer } from '../fields/FieldRenderer.jsx';
+import { Breadcrumbs } from './SectionScreen.jsx';
+import { useToast } from '../shell/Toasts.jsx';
+
+export function ItemEditScreen({ page, section, listPath, index }) {
+  const { store, fieldConfig } = useAdmin();
+  useStoreVersion(store);
+  const toast = useToast();
+
+  const entry = fieldConfig.get(section.file);
+  const listField = entry ? resolveListField(entry.fields, listPath) : null;
+  const draft = store.getDraft(section.file);
+  const items = listField && draft ? getAtPath(draft, listPath) || [] : [];
+  const item = items[index];
+
+  if (!listField || !item) {
+    return (
+      <div className="empty-state">
+        <div className="empty-state-title">Item not found</div>
+        <div className="empty-state-description">It may have been deleted. Go back to the list.</div>
+      </div>
+    );
+  }
+
+  const listRoute = ['page', page.id, section.id, 'list', listPath];
+
+  return (
+    <div>
+      <Breadcrumbs parts={[
+        { label: page.label, to: ['page', page.id] },
+        { label: section.label, to: ['page', page.id, section.id] },
+        { label: listField.label || listField.name, to: listRoute },
+        { label: itemTitle(item) },
+      ]} />
+      <div className="screen-header">
+        <div>
+          <h2 className="screen-title">{itemTitle(item)}</h2>
+          <p className="screen-subtitle">Item {Number(index) + 1} of {items.length} in {listField.label || listField.name}.</p>
+        </div>
+        <div className="screen-actions">
+          <button type="button" className="button button-danger" onClick={() => {
+            if (window.confirm(`Delete “${itemTitle(item)}”? This is removed from the website on your next publish.`)) {
+              store.update(section.file, draftCopy => setAtPath(draftCopy, listPath, items.filter((_, i) => i !== Number(index))));
+              toast('Item deleted.');
+              navigate(...listRoute);
+            }
+          }}>Delete item</button>
+        </div>
+      </div>
+
+      <div className="field-grid">
+        {listField.fields.map(child => (
+          <FieldRenderer
+            key={child.name}
+            field={child}
+            value={item[child.name]}
+            onChange={next => store.update(section.file, draftCopy => setAtPath(draftCopy, `${listPath}.${index}.${child.name}`, next))}
+            pathPrefix={`${listPath}.${index}.${child.name}`}
+            routeBase={[page.id, section.id]}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+Nested galleries work automatically: a `list` field inside an item renders as a Managed-items block whose route is `list/<listPath>.<index>.<childName>`.
+
+- [ ] **Step 3: Verify** — `npm test` PASS; `npm run build` green.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/admin/screens/ItemListScreen.jsx src/admin/screens/ItemEditScreen.jsx
+git commit -m "feat(cms-v2): master-detail item lists and item editor"
+```
+
+### Task 16: Wearhouse joined editor (replace stub)
+
+**Files:**
+- Modify: `src/admin/screens/WearhouseScreen.jsx` (replace entirely)
+
+Uses the manifest joined section: `files[0]` = roster.json (`rosterSection.items`), `files[1]` = brands.json (`brands`). Field definitions come from config.yml for both files; roster item fields are at the `rosterSection` object's `items` list; brand entry fields are the `brands` list.
+
+- [ ] **Step 1: Replace `src/admin/screens/WearhouseScreen.jsx`** (complete file)
+
+```jsx
+import React, { useState } from 'react';
+import { useAdmin, useStoreVersion } from '../lib/context.js';
+import { navigate } from '../lib/router.js';
+import { resolveListField, defaultValueForFields } from '../lib/configPath.js';
+import { joinWearhouse, splitWearhouse, blankRosterItem, blankBrandEntry } from '../adapters/wearhouse.js';
+import { reorder } from '../lib/paths.js';
+import { FieldRenderer } from '../fields/FieldRenderer.jsx';
+import { Breadcrumbs } from './SectionScreen.jsx';
+import { useToast } from '../shell/Toasts.jsx';
+
+const slugify = value => String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+export function WearhouseScreen({ page, section, rest }) {
+  const { store, fieldConfig } = useAdmin();
+  useStoreVersion(store);
+  const toast = useToast();
+  const [newName, setNewName] = useState('');
+
+  const [rosterFile, brandsFile] = section.files;
+  const rosterDraft = store.getDraft(rosterFile);
+  const brandsDraft = store.getDraft(brandsFile);
+  const rosterEntry = fieldConfig.get(rosterFile);
+  const brandsEntry = fieldConfig.get(brandsFile);
+  if (!rosterDraft || !brandsDraft || !rosterEntry || !brandsEntry) {
+    return <div className="skeleton" style={{ minHeight: 220 }} />;
+  }
+
+  const rosterItemFields = resolveListField(rosterEntry.fields, 'rosterSection.items')?.fields || [];
+  const brandEntryFields = resolveListField(brandsEntry.fields, 'brands')?.fields || [];
+  const { records } = joinWearhouse(rosterDraft.rosterSection.items || [], brandsDraft.brands || []);
+
+  const writeRecords = nextRecords => {
+    const { rosterItems, brandEntries } = splitWearhouse(nextRecords);
+    store.update(rosterFile, draft => { draft.rosterSection.items = rosterItems; });
+    store.update(brandsFile, draft => { draft.brands = brandEntries; });
+  };
+
+  const updateRecord = (slug, patch) => {
+    writeRecords(records.map(record => (record.slug === slug ? { ...record, ...patch } : record)));
+  };
+
+  // ---------- item mode ----------
+  const slug = rest[0];
+  if (slug) {
+    const record = records.find(candidate => candidate.slug === slug);
+    if (!record) {
+      return (
+        <div className="empty-state">
+          <div className="empty-state-title">Brand not found</div>
+          <div className="empty-state-description">It may have been deleted or renamed.</div>
+        </div>
+      );
+    }
+    return (
+      <div>
+        <Breadcrumbs parts={[
+          { label: page.label, to: ['page', page.id] },
+          { label: section.label, to: ['page', page.id, section.id] },
+          { label: record.name },
+        ]} />
+        <div className="screen-header">
+          <div>
+            <h2 className="screen-title">{record.name}</h2>
+            <p className="screen-subtitle">One brand — its card on the Wearhouse page and its own detail page, kept in sync.</p>
+          </div>
+          <div className="screen-actions">
+            {record.brand ? <a className="button button-ghost" href={`/wearhouse/${record.slug}/`} target="_blank" rel="noreferrer">View page ↗</a> : null}
+            <button type="button" className="button button-danger" onClick={() => {
+              if (window.confirm(`Delete “${record.name}” from the Wearhouse (card and detail page)?`)) {
+                writeRecords(records.filter(candidate => candidate.slug !== slug));
+                toast('Brand deleted.');
+                navigate('page', page.id, section.id);
+              }
+            }}>Delete brand</button>
+          </div>
+        </div>
+
+        <section className="group-card">
+          <h3 className="group-card-title">Card on the Wearhouse page</h3>
+          {record.roster ? (
+            <div className="field-grid">
+              {rosterItemFields.map(field => (
+                <FieldRenderer key={field.name} field={field} value={record.roster[field.name]}
+                  onChange={next => updateRecord(slug, { roster: { ...record.roster, [field.name]: next } })}
+                  pathPrefix={`__wearhouse.${slug}.roster.${field.name}`} routeBase={[page.id, section.id]} />
+              ))}
+            </div>
+          ) : (
+            <div className="empty-state">
+              <div className="empty-state-title">No card yet</div>
+              <div className="empty-state-description">This brand has a detail page but no card on the Wearhouse page.</div>
+              <button type="button" className="button button-secondary" onClick={() => updateRecord(slug, { roster: blankRosterItem(record), missing: null })}>Create the card</button>
+            </div>
+          )}
+        </section>
+
+        <section className="group-card">
+          <h3 className="group-card-title">Brand detail page</h3>
+          {record.brand ? (
+            <div className="field-grid">
+              {brandEntryFields.filter(field => !['name', 'slug'].includes(field.name)).map(field => (
+                <FieldRenderer key={field.name} field={field} value={record.brand[field.name]}
+                  onChange={next => updateRecord(slug, { brand: { ...record.brand, [field.name]: next } })}
+                  pathPrefix={`__wearhouse.${slug}.brand.${field.name}`} routeBase={[page.id, section.id]} />
+              ))}
+            </div>
+          ) : (
+            <div className="empty-state">
+              <div className="empty-state-title">No detail page yet</div>
+              <div className="empty-state-description">This brand has a card but no detail page of its own.</div>
+              <button type="button" className="button button-secondary" onClick={() => updateRecord(slug, { brand: blankBrandEntry(record), missing: null })}>Create the detail page</button>
+            </div>
+          )}
+        </section>
+      </div>
+    );
+  }
+
+  // ---------- list mode ----------
+  const headingFields = (rosterEntry.fields.find(field => field.name === 'rosterSection')?.fields || [])
+    .filter(field => field.name !== 'items');
+
+  const addBrand = () => {
+    const name = newName.trim();
+    if (!name) {
+      return;
+    }
+    const nextSlug = slugify(name);
+    if (records.some(record => record.slug === nextSlug)) {
+      toast('A brand with that name already exists.', 'error');
+      return;
+    }
+    writeRecords([...records, { slug: nextSlug, name, roster: blankRosterItem({ slug: nextSlug, name }), brand: blankBrandEntry({ slug: nextSlug, name }), missing: null }]);
+    setNewName('');
+    navigate('page', page.id, section.id, nextSlug);
+  };
+
+  return (
+    <div>
+      <Breadcrumbs parts={[{ label: page.label, to: ['page', page.id] }, { label: section.label }]} />
+      <div className="screen-header">
+        <div>
+          <h2 className="screen-title">{section.label}</h2>
+          <p className="screen-subtitle">Each brand has a card on the Wearhouse page and its own detail page — edited together here.</p>
+        </div>
+        <div className="screen-actions">
+          <input className="input" placeholder="New brand name" value={newName} onChange={event => setNewName(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') addBrand(); }} />
+          <button type="button" className="button button-primary" onClick={addBrand} disabled={!newName.trim()}>Add brand</button>
+        </div>
+      </div>
+
+      <section className="group-card">
+        <h3 className="group-card-title">Section heading</h3>
+        <div className="field-grid two-col">
+          {headingFields.map(field => (
+            <FieldRenderer key={field.name} field={field} value={rosterDraft.rosterSection[field.name]}
+              onChange={next => store.update(rosterFile, draft => { draft.rosterSection[field.name] = next; })}
+              pathPrefix={`rosterSection.${field.name}`} routeBase={[page.id, section.id]} />
+          ))}
+        </div>
+      </section>
+
+      <div className="item-grid" style={{ marginTop: 12 }}>
+        {records.map((record, index) => {
+          const thumb = record.roster?.hoverImage || record.roster?.logoSrc || record.brand?.rosterCard?.detailImage || null;
+          return (
+            <div key={record.slug} className="item-card" role="button" tabIndex={0}
+              onClick={() => navigate('page', page.id, section.id, record.slug)}
+              onKeyDown={event => { if (event.key === 'Enter') navigate('page', page.id, section.id, record.slug); }}>
+              <div className="item-card-thumb">
+                {thumb ? <img src={thumb} alt="" loading="lazy" /> : <span className="item-card-thumb-empty">No image</span>}
+              </div>
+              <div className="item-card-body">
+                <div className="item-card-title">{record.name}</div>
+                <div className="item-card-subtitle">{record.roster?.segment || record.brand?.rosterCard?.segment || '—'}</div>
+              </div>
+              <div className="item-card-flags" onClick={event => event.stopPropagation()}>
+                {record.missing === 'brand' ? <span className="badge badge-warning">Missing detail page</span> : null}
+                {record.missing === 'roster' ? <span className="badge badge-warning">Missing card</span> : null}
+                <button type="button" className="icon-button" title="Move up" disabled={index === 0} onClick={() => writeRecords(reorder(records, index, index - 1))}>↑</button>
+                <button type="button" className="icon-button" title="Move down" disabled={index === records.length - 1} onClick={() => writeRecords(reorder(records, index, index + 1))}>↓</button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+```
+
+Note on `headingFields`: it is the `rosterSection` object's child fields minus `items` — the eyebrow/title texts shown above the brand grid.
+
+- [ ] **Step 2: Verify** — `npm test` PASS; `npm run build` green.
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add src/admin/screens/WearhouseScreen.jsx
+git commit -m "feat(cms-v2): wearhouse joined brand editor with sync warnings"
+```
+
+**End of Chunk 5.**
+
+---
+
+## Chunk 6: Changes tray, publish, media screen, people, search
+
+### Task 17: Changes tray + publish dialog + validation + unload guard
+
+**Files:**
+- Create: `src/admin/shell/ChangesTray.jsx`
+- Modify: `src/admin/shell/Topbar.jsx` (mount the tray)
+
+- [ ] **Step 1: Create `src/admin/shell/ChangesTray.jsx`** (complete file)
+
+```jsx
+import React, { useEffect, useMemo, useState } from 'react';
+import { useAdmin, useStoreVersion } from '../lib/context.js';
+import { allSections } from '../manifest.js';
+import { navigate } from '../lib/router.js';
+import { validateValue } from '../lib/validate.js';
+import { useToast } from './Toasts.jsx';
+import { loadContentFile } from '../lib/content.js';
+
+function sectionIsDirty(store, section) {
+  if (section.joined) {
+    return section.files.some(filePath => store.isDirty(filePath));
+  }
+  return section.keys.some(key => store.isKeyDirty(section.file, key));
+}
+
+export function ChangesTray() {
+  const { store, fieldConfig, api } = useAdmin();
+  useStoreVersion(store);
+  const toast = useToast();
+  const [open, setOpen] = useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const [publishPending, setPublishPending] = useState(false);
+  const [deploys, setDeploys] = useState(null);
+  const [revertPending, setRevertPending] = useState(false);
+
+  const dirtyPaths = store.dirtyPaths();
+  const rows = useMemo(() => allSections().filter(section => sectionIsDirty(store, section)), [store.getVersion(), dirtyPaths.length]);
+
+  // Warn when leaving mid-publish or with unpublished changes.
+  useEffect(() => {
+    const handler = event => {
+      if (publishPending || store.dirtyPaths().length) {
+        event.preventDefault();
+        event.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [publishPending]);
+
+  useEffect(() => {
+    if (open) {
+      api.deploys(3).then(payload => setDeploys(payload.deploys || [])).catch(() => setDeploys([]));
+    }
+  }, [open]);
+
+  // Validate only what changed: for each dirty file, only its dirty top-level keys.
+  const issues = useMemo(() => {
+    const found = [];
+    for (const filePath of dirtyPaths) {
+      const entry = fieldConfig.get(filePath);
+      if (!entry) {
+        continue;
+      }
+      const dirtyFields = entry.fields.filter(field => store.isKeyDirty(filePath, field.name));
+      found.push(...validateValue(dirtyFields, store.getDraft(filePath), entry.label || filePath));
+    }
+    return found;
+  }, [store.getVersion()]);
+
+  const discardRow = section => {
+    if (!window.confirm(`Discard unpublished changes to “${section.label}”?`)) {
+      return;
+    }
+    if (section.joined) {
+      section.files.forEach(filePath => store.discardFile(filePath));
+    } else {
+      store.discardKeys(section.file, section.keys);
+    }
+    toast('Changes discarded.');
+  };
+
+  const publish = async () => {
+    setPublishPending(true);
+    try {
+      const paths = store.dirtyPaths();
+      await api.publish(
+        paths.map(path => ({ path, content: `${JSON.stringify(store.getDraft(path), null, 2)}\n` })),
+        `Update CMS content (${paths.length} file${paths.length === 1 ? '' : 's'})`,
+      );
+      store.markPublished(paths);
+      setConfirming(false);
+      setOpen(false);
+      toast('Published. The website updates in about a minute.', 'success');
+    } catch (error) {
+      toast(error.message || 'Could not publish.', 'error');
+    } finally {
+      setPublishPending(false);
+    }
+  };
+
+  const revertLatest = async () => {
+    const latest = deploys?.[0];
+    if (!latest || !window.confirm(`Undo the last publish (${latest.message})? This creates a new rollback publish.`)) {
+      return;
+    }
+    setRevertPending(true);
+    try {
+      const result = await api.revert(latest.sha);
+      for (const path of result.revertedFiles || []) {
+        store.loadFile(path, await loadContentFile(path));
+      }
+      toast('Last publish undone. The website updates in about a minute.', 'success');
+      setOpen(false);
+    } catch (error) {
+      toast(error.message || 'Could not undo the last publish.', 'error');
+    } finally {
+      setRevertPending(false);
+    }
+  };
+
+  return (
+    <>
+      <button type="button" className={`button ${rows.length ? 'button-primary' : 'button-secondary'}`} onClick={() => setOpen(true)}>
+        Changes{rows.length ? ` (${rows.length})` : ''}
+      </button>
+
+      {open ? (
+        <>
+          <div className="tray-backdrop" onClick={() => setOpen(false)} />
+          <aside className="tray-panel">
+            <div className="tray-head">
+              <h3 className="tray-title">Unpublished changes</h3>
+              <button type="button" className="button button-ghost" onClick={() => setOpen(false)}>Close</button>
+            </div>
+            <div className="tray-body">
+              {rows.length ? rows.map(section => (
+                <div key={`${section.pageId}:${section.id}`} className="tray-row">
+                  <div>
+                    <div className="tray-row-title">{section.pageLabel} — {section.label}</div>
+                    <div className="tray-row-sub">Saved for you; not yet on the website.</div>
+                  </div>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button type="button" className="button button-ghost" onClick={() => { setOpen(false); navigate('page', section.pageId, section.id); }}>Open</button>
+                    <button type="button" className="button button-ghost" onClick={() => discardRow(section)}>Discard</button>
+                  </div>
+                </div>
+              )) : (
+                <div className="empty-state">
+                  <div className="empty-state-title">Everything is published</div>
+                  <div className="empty-state-description">Edits you make are listed here before they go live.</div>
+                </div>
+              )}
+              {issues.length ? (
+                <div className="issue-list">
+                  <strong>Fix these before publishing:</strong>
+                  {issues.map((issue, index) => (
+                    <div key={index} className="issue-row"><strong>{issue.label}:</strong> {issue.message}</div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+            <div className="tray-foot">
+              <button type="button" className="button button-primary" disabled={!rows.length || issues.length > 0 || publishPending} onClick={() => setConfirming(true)}>
+                {publishPending ? 'Publishing…' : `Publish ${rows.length ? `${rows.length} change${rows.length === 1 ? '' : 's'}` : ''}`}
+              </button>
+              {deploys?.length ? (
+                <button type="button" className="button button-ghost" disabled={revertPending} onClick={revertLatest}>
+                  {revertPending ? 'Undoing…' : 'Undo last publish'}
+                </button>
+              ) : null}
+            </div>
+          </aside>
+        </>
+      ) : null}
+
+      {confirming ? (
+        <div className="publish-modal" role="presentation" onClick={() => setConfirming(false)}>
+          <div className="publish-modal-card" role="dialog" aria-modal="true" onClick={event => event.stopPropagation()}>
+            <div className="publish-modal-head">
+              <div>
+                <div className="publish-modal-kicker">Confirm publish</div>
+                <h3 className="publish-modal-title">Put these changes on the website?</h3>
+                <p className="publish-modal-copy">The website rebuilds and shows them in about a minute.</p>
+              </div>
+              <div className="publish-modal-counts">
+                <div className="publish-modal-count">{rows.length} section{rows.length === 1 ? '' : 's'}</div>
+              </div>
+            </div>
+            <div className="publish-modal-summary">
+              {rows.map(section => (
+                <span key={`${section.pageId}:${section.id}`} className="publish-modal-chip">{section.pageLabel} — {section.label}</span>
+              ))}
+            </div>
+            <div className="publish-modal-actions">
+              <button type="button" className="button button-ghost" onClick={() => setConfirming(false)} disabled={publishPending}>Cancel</button>
+              <button type="button" className="button button-primary" onClick={publish} disabled={publishPending}>
+                {publishPending ? 'Publishing…' : 'Publish to the website'}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </>
+  );
+}
+```
+
+- [ ] **Step 2: Mount in `src/admin/shell/Topbar.jsx`** — replace `<div id="topbar-tray-slot" />` with `<ChangesTray />` and add `import { ChangesTray } from './ChangesTray.jsx';`.
+
+- [ ] **Step 3: Verify** — `npm test` PASS; `npm run build` green.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/admin/shell/ChangesTray.jsx src/admin/shell/Topbar.jsx
+git commit -m "feat(cms-v2): changes tray with validation-gated publish, undo, unload guard"
+```
+
+### Task 18: Media screen
+
+**Files:**
+- Modify: `src/admin/fields/MediaPicker.jsx` (extract `useMediaUpload` hook)
+- Create: `src/admin/screens/MediaScreen.jsx`
+- Modify: `src/admin/shell/Shell.jsx` (route `media` to the real screen)
+
+- [ ] **Step 1: Extract the upload hook in `MediaPicker.jsx`.** Add this export and rewrite the picker's `handleUpload` to use it (behavior unchanged):
+
+```jsx
+export function useMediaUpload(onUploaded) {
+  const { api, setMediaIndex } = useAdmin();
+  const toast = useToast();
+  const [uploading, setUploading] = useState(false);
+
+  const upload = async file => {
+    setUploading(true);
+    try {
+      const data = await readFileAsDataUrl(file);
+      const result = await api.upload({ name: file.name, type: file.type, data });
+      setMediaIndex(current => ({
+        ...(current || { files: [] }),
+        files: [{ path: result.publicPath, name: file.name, size: file.size }, ...(current?.files || [])],
+      }));
+      toast('Uploaded. It appears on the website after your next publish.', 'success');
+      onUploaded(result.publicPath);
+    } catch (error) {
+      toast(error.message || 'Could not upload the file.', 'error');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return { uploading, upload };
+}
+```
+
+In the picker: `const { uploading, upload } = useMediaUpload(path => onSelect(path));` and
+
+```jsx
+const handleUpload = event => {
+  const file = event.target.files?.[0];
+  if (file) {
+    upload(file);
+  }
+  event.target.value = '';
+};
+```
+
+Remove the now-unused local upload state/logic.
+
+- [ ] **Step 2: Create `src/admin/screens/MediaScreen.jsx`**
+
+```jsx
+import React, { useMemo, useRef, useState } from 'react';
+import { useAdmin, useStoreVersion } from '../lib/context.js';
+import { sectionsForFile } from '../manifest.js';
+import { useMediaUpload } from '../fields/MediaPicker.jsx';
+import { useToast } from '../shell/Toasts.jsx';
+
+const IMAGE_SHAPE = /\.(avif|gif|jpe?g|png|svg|webp)$/i;
+const formatSize = bytes => (bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`);
+
+export function MediaScreen() {
+  const { store, mediaIndex } = useAdmin();
+  useStoreVersion(store);
+  const toast = useToast();
+  const [query, setQuery] = useState('');
+  const fileInput = useRef(null);
+  const { uploading, upload } = useMediaUpload(() => {});
+
+  // Where is each media file used? Scan every draft once.
+  const usedIn = useMemo(() => {
+    const serialized = store.allPaths().map(filePath => ({ filePath, text: JSON.stringify(store.getDraft(filePath) || {}) }));
+    const map = new Map();
+    for (const media of mediaIndex?.files || []) {
+      const hits = [];
+      for (const { filePath, text } of serialized) {
+        if (text.includes(media.path)) {
+          const section = sectionsForFile(filePath)[0];
+          if (section) {
+            hits.push(`${section.pageLabel} — ${section.label}`);
+          }
+        }
+      }
+      map.set(media.path, [...new Set(hits)]);
+    }
+    return map;
+  }, [mediaIndex, store.getVersion()]);
+
+  const files = useMemo(() => {
+    const all = mediaIndex?.files || [];
+    const needle = query.trim().toLowerCase();
+    return needle ? all.filter(file => file.path.toLowerCase().includes(needle)) : all;
+  }, [mediaIndex, query]);
+
+  return (
+    <div>
+      <div className="screen-header">
+        <div>
+          <h2 className="screen-title">Media</h2>
+          <p className="screen-subtitle">Every image and video available to the website.</p>
+        </div>
+        <div className="screen-actions">
+          <button type="button" className="button button-primary" disabled={uploading} onClick={() => fileInput.current?.click()}>
+            {uploading ? 'Uploading…' : 'Upload'}
+          </button>
+          <input ref={fileInput} type="file" className="hidden-input" onChange={event => { const file = event.target.files?.[0]; if (file) upload(file); event.target.value = ''; }} />
+        </div>
+      </div>
+
+      <div className="media-toolbar">
+        <input className="input" placeholder="Search files by name" value={query} onChange={event => setQuery(event.target.value)} />
+        <span className="field-help">{files.length} file{files.length === 1 ? '' : 's'}</span>
+      </div>
+
+      {mediaIndex ? (
+        <div className="item-grid">
+          {files.map(file => {
+            const uses = usedIn.get(file.path) || [];
+            return (
+              <div key={file.path} className="item-card">
+                <div className="item-card-thumb">
+                  {IMAGE_SHAPE.test(file.path) ? <img src={file.path} alt="" loading="lazy" /> : <span className="item-card-thumb-empty">{file.path.split('.').pop().toUpperCase()}</span>}
+                </div>
+                <div className="item-card-body">
+                  <div className="item-card-title" style={{ wordBreak: 'break-all', fontSize: 12 }}>{file.name || file.path.split('/').pop()}</div>
+                  <div className="item-card-subtitle">{formatSize(file.size)} · {uses.length ? uses.slice(0, 2).join(', ') + (uses.length > 2 ? '…' : '') : 'Not used'}</div>
+                </div>
+                <div className="item-card-flags">
+                  <button type="button" className="button button-ghost" onClick={() => { navigator.clipboard.writeText(file.path); toast('Path copied.'); }}>Copy path</button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="empty-state">
+          <div className="empty-state-title">Media list unavailable</div>
+          <div className="empty-state-description">The library index could not be loaded. You can still upload files, and image fields still work.</div>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+- [ ] **Step 3: Route it.** In `Shell.jsx`, import `MediaScreen` and replace the `media` placeholder branch with `return <MediaScreen />;`.
+
+- [ ] **Step 4: Verify** — `npm test` PASS; `npm run build` green.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/admin/fields/MediaPicker.jsx src/admin/screens/MediaScreen.jsx src/admin/shell/Shell.jsx
+git commit -m "feat(cms-v2): media library screen with where-used and upload"
+```
+
+### Task 19: People screen + topbar search
+
+**Files:**
+- Create: `src/admin/screens/PeopleScreen.jsx`
+- Create: `src/admin/shell/Search.jsx`
+- Modify: `src/admin/shell/Shell.jsx` (route `people`), `src/admin/shell/Topbar.jsx` (mount search)
+
+- [ ] **Step 1: Create `src/admin/screens/PeopleScreen.jsx`** (same behavior as the current admin's People panel, against the unchanged `/api/admin/users`)
+
+```jsx
+import React, { useEffect, useState } from 'react';
+import { useAdmin } from '../lib/context.js';
+import { useToast } from '../shell/Toasts.jsx';
+
+export function PeopleScreen() {
+  const { api, user: me } = useAdmin();
+  const toast = useToast();
+  const [people, setPeople] = useState(null);
+  const [error, setError] = useState('');
+  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'editor' });
+  const [saving, setSaving] = useState(false);
+  const [pendingId, setPendingId] = useState('');
+
+  const reload = () => {
+    setError('');
+    api.listUsers().then(payload => setPeople(payload.users || [])).catch(err => { setPeople([]); setError(err.message); });
+  };
+  useEffect(reload, []);
+
+  const submit = async event => {
+    event.preventDefault();
+    setSaving(true);
+    try {
+      await api.addUser(form);
+      toast(`${form.email} can sign in now.`, 'success');
+      setForm({ name: '', email: '', password: '', role: 'editor' });
+      reload();
+    } catch (err) {
+      toast(err.message, 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const act = async (id, action) => {
+    setPendingId(id);
+    try {
+      await action();
+      reload();
+    } catch (err) {
+      toast(err.message, 'error');
+    } finally {
+      setPendingId('');
+    }
+  };
+
+  return (
+    <div>
+      <div className="screen-header">
+        <div>
+          <h2 className="screen-title">People</h2>
+          <p className="screen-subtitle">Who can edit the website. Admins can also manage people.</p>
+        </div>
+      </div>
+
+      <section className="group-card">
+        <h3 className="group-card-title">Add a person</h3>
+        <form className="field-grid two-col" onSubmit={submit}>
+          <label className="field"><span className="field-label">Name</span>
+            <input className="input" value={form.name} onChange={event => setForm({ ...form, name: event.target.value })} placeholder="Full name" /></label>
+          <label className="field"><span className="field-label">Email</span>
+            <input className="input" type="email" required value={form.email} onChange={event => setForm({ ...form, email: event.target.value })} placeholder="person@company.com" autoComplete="off" /></label>
+          <label className="field"><span className="field-label">Password</span>
+            <input className="input" type="text" required minLength={6} value={form.password} onChange={event => setForm({ ...form, password: event.target.value })} placeholder="At least 6 characters" autoComplete="off" /></label>
+          <label className="field"><span className="field-label">Role</span>
+            <select className="select" value={form.role} onChange={event => setForm({ ...form, role: event.target.value })}>
+              <option value="editor">Editor — can edit the website</option>
+              <option value="admin">Admin — can also manage people</option>
+            </select></label>
+          <div className="field-span">
+            <button className="button button-primary" type="submit" disabled={saving || !form.email || form.password.length < 6}>
+              {saving ? 'Saving…' : 'Add person'}
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section className="group-card">
+        <h3 className="group-card-title">Current people</h3>
+        {people === null ? <div className="skeleton" /> : error ? (
+          <div className="empty-state"><div className="empty-state-title">Could not load people</div><div className="empty-state-description">{error}</div></div>
+        ) : (
+          <div className="section-rows">
+            {people.map(person => {
+              const isSelf = person.id === me.id;
+              const busy = pendingId === person.id;
+              return (
+                <div key={person.id} className="tray-row">
+                  <div>
+                    <div className="tray-row-title">{person.email} {isSelf ? '· you' : ''} <span className={`badge ${person.role === 'admin' ? 'badge-warning' : 'badge-neutral'}`}>{person.role === 'admin' ? 'Admin' : 'Editor'}</span></div>
+                    <div className="tray-row-sub">{person.name || 'No name'} · {person.lastSignInAt ? `Last sign in ${new Date(person.lastSignInAt).toLocaleString()}` : 'Never signed in'}</div>
+                  </div>
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                    <button type="button" className="button button-ghost" disabled={busy} onClick={() => {
+                      const next = window.prompt(`New password for ${person.email} (at least 6 characters):`);
+                      if (next === null) return;
+                      if (next.length < 6) { toast('Password must be at least 6 characters.', 'error'); return; }
+                      act(person.id, () => api.updateUser({ id: person.id, password: next }).then(() => toast('Password updated.', 'success')));
+                    }}>Reset password</button>
+                    <button type="button" className="button button-ghost" disabled={busy || isSelf} onClick={() => act(person.id, () => api.updateUser({ id: person.id, role: person.role === 'admin' ? 'editor' : 'admin' }))}>
+                      {person.role === 'admin' ? 'Make editor' : 'Make admin'}
+                    </button>
+                    {!isSelf ? (
+                      <button type="button" className="button button-danger" disabled={busy} onClick={() => {
+                        if (window.confirm(`Remove ${person.email}? They lose access immediately.`)) {
+                          act(person.id, () => api.removeUser(person.id));
+                        }
+                      }}>Remove</button>
+                    ) : null}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
+```
+
+- [ ] **Step 2: Create `src/admin/shell/Search.jsx`**
+
+```jsx
+import React, { useMemo, useState } from 'react';
+import { PAGES, allSections } from '../manifest.js';
+import { useAdmin, useStoreVersion } from '../lib/context.js';
+import { navigate } from '../lib/router.js';
+import { itemTitle } from '../lib/summarize.js';
+
+const CMS = 'src/_data/cms';
+
+export function Search() {
+  const { store } = useAdmin();
+  useStoreVersion(store);
+  const [query, setQuery] = useState('');
+
+  const hits = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    if (needle.length < 2) {
+      return [];
+    }
+    const results = [];
+    for (const page of PAGES) {
+      if (page.label.toLowerCase().includes(needle)) {
+        results.push({ title: page.label, sub: 'Page', to: ['page', page.id] });
+      }
+    }
+    for (const section of allSections()) {
+      if (section.label.toLowerCase().includes(needle)) {
+        results.push({ title: section.label, sub: section.pageLabel, to: ['page', section.pageId, section.id] });
+      }
+    }
+    const bgBrands = store.getDraft(`${CMS}/brandsPage/brands.json`)?.brands || [];
+    bgBrands.forEach((brand, index) => {
+      if (itemTitle(brand).toLowerCase().includes(needle)) {
+        results.push({ title: itemTitle(brand), sub: 'Bollag brand', to: ['page', 'brands', 'all-brands', 'list', 'brands', String(index)] });
+      }
+    });
+    const rosterItems = store.getDraft(`${CMS}/wearhousePage/roster.json`)?.rosterSection?.items || [];
+    for (const item of rosterItems) {
+      if ((item.name || '').toLowerCase().includes(needle)) {
+        results.push({ title: item.name, sub: 'Wearhouse brand', to: ['page', 'wearhouse', 'wearhouse-brands', item.slug] });
+      }
+    }
+    const groups = store.getDraft(`${CMS}/stores.json`)?.groups || [];
+    groups.forEach((group, groupIndex) => {
+      (group.stores || []).forEach((storeItem, storeIndex) => {
+        if ((storeItem.name || '').toLowerCase().includes(needle)) {
+          results.push({ title: storeItem.name, sub: `Store — ${group.title || ''}`, to: ['page', 'stores', 'store-list', 'list', `groups.${groupIndex}.stores`, String(storeIndex)] });
+        }
+      });
+    });
+    return results.slice(0, 12);
+  }, [query, store.getVersion()]);
+
+  return (
+    <div className="search-wrap">
+      <input
+        className="input" placeholder="Search pages, sections, brands, stores…"
+        value={query} onChange={event => setQuery(event.target.value)}
+        onKeyDown={event => { if (event.key === 'Escape') setQuery(''); }}
+      />
+      {hits.length ? (
+        <div className="search-pop">
+          {hits.map((hit, index) => (
+            <button key={index} type="button" className="search-hit" onMouseDown={() => { navigate(...hit.to); setQuery(''); }}>
+              <div className="search-hit-title">{hit.title}</div>
+              <div className="search-hit-sub">{hit.sub}</div>
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+```
+
+- [ ] **Step 3: Wire both.** In `Shell.jsx`: import `PeopleScreen`, replace the `people` placeholder branch with `return <PeopleScreen />;` (keep it admin-only: if `user?.role !== 'admin'`, render the NotFound state instead). In `Topbar.jsx`: import `Search` and replace `<div className="topbar-left" id="topbar-search-slot" />` with `<div className="topbar-left"><Search /></div>`.
+
+- [ ] **Step 4: Verify** — `npm test` PASS; `npm run build` green.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/admin/screens/PeopleScreen.jsx src/admin/shell/Search.jsx src/admin/shell/Shell.jsx src/admin/shell/Topbar.jsx
+git commit -m "feat(cms-v2): people screen and global search"
+```
+
+**End of Chunk 6.**
+
+---
+
+## Chunk 7: Cutover, verification, walkthrough, handoff
+
+### Task 20: Delete the old monolith
+
+**Files:**
+- Delete: `src/admin/app.jsx`
+
+- [ ] **Step 1: Confirm nothing imports it** (must print "clean")
+
+```bash
+grep -rn "app.jsx\|from './app'" src/admin --include='*.jsx' --include='*.js' | grep -v "main.jsx was" || echo clean
+grep -rn "app.jsx" package.json || echo "package.json clean"
+```
+
+If `main.jsx` still contains the Task 7 placeholder import, that means Chunk 3 was skipped — stop and fix.
+
+- [ ] **Step 2: Delete and verify**
+
+```bash
+git rm -q src/admin/app.jsx
+npm run build && npm test
+```
+
+Expected: both green.
+
+- [ ] **Step 3: Commit**
+
+```bash
+git commit -m "chore(cms-v2): delete the legacy admin monolith"
+```
+
+### Task 21: Full verification sweep
+
+- [ ] **Step 1: Run the complete check battery**
+
+```bash
+npm test                                    # all logic suites green
+npm run build                               # eleventy + css + admin bundle green
+test -f _site/admin/media-index.json && echo "media index ok"
+grep -o 'app.js?v=[a-z0-9]*' _site/admin/index.html   # cache-busted bundle reference
+grep -rn "TEMP-LOCAL" src && echo "FAIL: bypass committed" || echo "no bypass in source"
+grep -c "console.log" src/admin --include='*.jsx' -r || true   # expect 0 or intentional only
+```
+
+- [ ] **Step 2: Bundle sanity** — `ls -la _site/admin/app.js` (expect roughly 1.5–2.5 MB, in line with the old bundle; a 10 KB file means the entry broke).
+
+- [ ] **Step 3: Commit anything outstanding** — working tree must be clean: `git status --short` → empty.
+
+### Task 22: Guided localhost walkthrough (manual, with temporary bypass)
+
+- [ ] **Step 1: Apply the TEMPORARY localhost bypass.** In `src/admin/main.jsx`, at the very top of the `useEffect` in `AdminRoot` (before `supabase.auth.getSession()`), insert:
+
+```jsx
+// TEMP-LOCAL-PREVIEW-BYPASS — never commit. Loads the workspace with a fake
+// admin so screens can be walked through without Supabase on localhost.
+if (window.location.hostname === 'localhost') {
+  Promise.all([loadFieldConfig(), loadMediaIndex()]).then(async ([config, media]) => {
+    await Promise.all(ALL_FILES.map(async filePath => store.loadFile(filePath, await loadContentFile(filePath))));
+    setFieldConfig(config);
+    setMediaIndex(media);
+    setUser({ id: 'preview', email: 'preview@local', name: 'Preview', role: 'admin' });
+    setMode('app');
+  });
+  return;
+}
+```
+
+- [ ] **Step 2: Run and walk through** — `npm run dev:static`, open `http://localhost:8080/admin/`, and verify every line:
+
+1. Sidebar lists: Homepage, Company, Brands, The Wearhouse, Stores, Agenda, Contact, Header & Footer, Media, People.
+2. Homepage → sections in page order with summaries; open "Hero banner" → flat form, no accordions; edit Title → topbar flips to "Saved — not published yet"; Changes button shows (1).
+3. Section "Discard changes" restores the value and the badge returns to "All changes published".
+4. Brands → All brands → card grid of ~11 brands with logos; open one → full-screen editor with breadcrumb; its Gallery renders as a "Manage items" block → opens a nested card grid; add, duplicate, reorder (↑/↓), delete an item — all work and are announced by toasts.
+5. The Wearhouse → Wearhouse brands → joined grid (~16 cards, segments as subtitles); any mis-synced brand shows a "Missing …" badge; open a brand → two group cards ("Card on the Wearhouse page" / "Brand detail page"); add a test brand via the name box → both halves created → delete it.
+6. Stores → Stores → groups grid → open a group → its Stores render as a managed list → open a store → edit → breadcrumbs navigate back correctly.
+7. Image field: open Homepage → Introduction → Image → "Replace" opens the media picker; search works; picking swaps the preview. "Edit file path manually" reveals the raw input.
+8. Media screen: grid renders with sizes and "used in" hints; search filters; "Copy path" toasts.
+9. Search box: type "closed" → brand hit navigates to the brand; type "hero" → section hits.
+10. Changes tray: make 2 edits in different pages → tray lists both rows with page names; per-row Discard works; clear a required Title and confirm the tray shows a plain-language issue and the Publish button is disabled; restore it → publish enabled. (Actual publish fails on the static server — clicking it must show an error TOAST, not break the UI.)
+11. People: shows the "Could not load people" empty state (no API on the static server) — graceful, no crash.
+12. Reload the page mid-edit → drafts persist (localStorage), tray still lists them.
+
+- [ ] **Step 3: REMOVE the bypass** — restore `main.jsx` exactly:
+
+```bash
+git checkout src/admin/main.jsx
+npm run build:admin
+grep -c "TEMP-LOCAL\|preview@local" _site/admin/app.js   # must print 0
+```
+
+- [ ] **Step 4: Final state check** — `git status --short` → clean; `git log --oneline main..cms-v2` shows all task commits.
+
+### Task 23: Handoff (no deploy — owner decides)
+
+- [ ] **Step 1: Do NOT merge or push.** Deployment is the owner's call because the live CMS is in active use and editors' localStorage drafts keyed to old file paths are unaffected (paths unchanged) but their muscle memory is not.
+
+- [ ] **Step 2: Report back with:**
+- The branch name (`cms-v2`) and commit list.
+- Deploy steps for the owner: `git checkout main && git pull --rebase origin main && git merge cms-v2 && npm run build && git push origin main`, then hard-refresh `https://bg-murex-three.vercel.app/admin/` (the cache-busted bundle makes later deploys instant), sign in, and run a real publish round-trip on one harmless field.
+- Rollback: Vercel dashboard → Deployments → promote the previous deployment; or `git revert -m 1 <merge-commit>` and push.
+
+**End of Chunk 7.**
