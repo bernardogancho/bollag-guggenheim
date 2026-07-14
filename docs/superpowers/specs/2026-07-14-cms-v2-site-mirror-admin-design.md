@@ -87,8 +87,13 @@ Split view: form on the left, the **real page** (same-origin iframe of the live 
   start; coverage grows over time). A ~100-line vanilla `preview-bridge.js` is included by the
   base template **only when the page runs inside the admin preview** (same-origin iframe +
   `?cms-preview=1`); it listens for `postMessage` events: `highlight`, `patch`, `patch-all`.
+- **Handshake:** on load the bridge posts `ready` to the admin; the admin waits for it (with a
+  timeout) before sending `patch-all`. No `ready` within the timeout → degrade to plain view.
 - **Degradation:** if the bridge fails or a binding is missing, the pane silently behaves as a
   plain page view. Preview must never block editing.
+- **Fresh-upload edge:** a newly uploaded image referenced in a draft will 404 in the preview
+  iframe until the site rebuild (~1–2 min) completes; the pane shows a subtle "image
+  processing" placeholder for image patches whose URL does not yet resolve.
 
 ### 4.4 Media Library
 
@@ -158,17 +163,25 @@ Unchanged: `/api/me`, `/api/admin/users`, `/api/publish`, `/api/upload`, `/api/r
 ## 7. Phasing
 
 - **Phase 1 — structure & polish:** shell, site-mirror nav, de-nested editors (master-detail),
-  media library, changes tray, validation, guards, toasts, search, cache-busting. Ships alone.
+  media library, changes tray, validation, guards, toasts, search, cache-busting. Includes a
+  content-hygiene step: delete the unused legacy JSON under `src/_data/cms/home/selectionCards/`
+  and `src/_data/cms/wearhousePage/showroomGalleryItems/` (data now embedded in
+  `selectionSection.json` / `showroom.json`; verify no data file requires them before removal)
+  so the media where-used scan and binding check don't index dead data. Ships alone.
 - **Phase 2 — preview:** template annotations + bridge; Homepage first, then remaining pages;
   binding check in CI.
 
-Each phase ends with a local walkthrough and a production smoke test after deploy.
+Each phase gets **its own implementation plan** (they are independently shippable), and each
+ends with a local walkthrough and a production smoke test after deploy.
 
 ## 8. Testing / verification
 
 - Build-time: esbuild bundle, Eleventy build, binding check green.
-- Manual walkthrough per screen on localhost (auth bypassed only via the established
-  localhost-only preview pattern, never committed).
+- Manual walkthrough per screen on localhost. Auth bypass for local walkthroughs = a temporary
+  edit to the bootstrap in `main.jsx` that, when `window.location.hostname === 'localhost'`,
+  loads the workspace with a fake admin user instead of calling Supabase. It is applied only
+  during a walkthrough and reverted before commit (verified by grepping the bundle); it never
+  ships.
 - Publish round-trip on production after each phase (edit → publish → verify commit + site).
 - Cross-check: every `config.yml` file entry is reachable from the new navigation (script).
 
