@@ -763,3 +763,60 @@ collections:
                   - { label: Focus, name: focus, widget: text }
                   - { label: Atmosphere, name: atmosphere, widget: string }
                   - { label: Categories, name: categories, widget: list, field: { label: Category, name: category, widget: string } }
+
+  - name: legal_page
+    label: Legal Notice
+    delete: false
+    editor:
+      preview: false
+    files:
+      - label: Legal Notice Content
+        name: legal_notice
+        file: src/_data/cms/legalNotice.json
+        format: json
+        fields:
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Summary, name: summary, widget: text }
+          - label: Company Details
+            name: legal
+            widget: object
+            fields:
+              - { label: Card Title, name: title, widget: string }
+              - label: Bollag-Guggenheim
+                name: bollag
+                widget: object
+                fields:
+                  - { label: Name, name: name, widget: string }
+                  - { label: Address, name: addressLines, widget: list, field: { label: Line, name: line, widget: string } }
+                  - { label: Responsibility Note, name: responsibility, widget: string }
+              - label: The Wearhouse
+                name: wearhouse
+                widget: object
+                fields:
+                  - { label: Name, name: name, widget: string }
+                  - { label: Address, name: addressLines, widget: list, field: { label: Line, name: line, widget: string } }
+          - label: Liability & Copyright
+            name: liability
+            widget: object
+            fields:
+              - { label: Card Title, name: title, widget: string }
+              - { label: Paragraphs, name: paragraphs, widget: list, field: { label: Paragraph, name: paragraph, widget: text } }
+          - label: Privacy Policy
+            name: privacy
+            widget: object
+            fields:
+              - { label: Card Title, name: title, widget: string }
+              - { label: Paragraphs, name: paragraphs, widget: list, field: { label: Paragraph, name: paragraph, widget: text } }
+              - { label: Last Updated, name: lastUpdated, widget: string, description: "Shown as 'Last updated: …' at the end of the privacy section." }
+              - label: Privacy Document (PDF)
+                name: document
+                widget: object
+                fields:
+                  - { label: Title, name: label, widget: string }
+                  - { label: Details Line, name: note, widget: string }
+                  - { label: File, name: href, widget: file, description: "The official privacy policy PDF." }

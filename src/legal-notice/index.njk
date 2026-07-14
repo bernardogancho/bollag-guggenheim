@@ -7,12 +7,12 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
 <section class="relative isolate overflow-hidden bg-ink text-bone">
   <div class="relative mx-auto flex min-h-[54svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[64rem]">
-      <p class="type-eyebrow-hero mb-4 text-bone/54" data-reveal>Legal Notice</p>
+      <p class="type-eyebrow-hero mb-4 text-bone/54" data-reveal>{{ cms.legalNotice.hero.eyebrow }}</p>
       <h1 class="type-hero-title max-w-[12ch]" data-reveal>
-        Legal Notice & Privacy Policy.
+        {{ cms.legalNotice.hero.title | safe }}
       </h1>
       <p class="type-body-lg mt-6 max-w-[42rem] text-bone/82" data-reveal>
-        Company information, website responsibility, and privacy information for the Bollag-Guggenheim website.
+        {{ cms.legalNotice.hero.summary }}
       </p>
     </div>
   </div>
@@ -30,26 +30,24 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
 
       <div class="space-y-10">
         <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
-          <p class="type-label mb-4 text-black/38">Legal Notice</p>
+          <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.legal.title }}</p>
           <div class="type-body type-body-stack text-black/72">
             <p>
-              <strong>Bollag-Guggenheim AG</strong><br>
-              Thurgauerstrasse 113<br>
-              CH-8152 Glattpark<br>
-              Switzerland
+              <strong>{{ cms.legalNotice.legal.bollag.name }}</strong><br>
+              {% for line in cms.legalNotice.legal.bollag.addressLines %}{{ line }}{% if not loop.last %}<br>
+              {% endif %}{% endfor %}
             </p>
             <p>
               Phone: <a href="{{ cms.site.footer.bgContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.bgContact.phoneLabel }}</a><br>
               Email: <a href="{{ cms.site.footer.bgContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.bgContact.emailLabel }}</a>
             </p>
             <p>
-              Responsible for the website content: Bollag-Guggenheim AG.
+              {{ cms.legalNotice.legal.bollag.responsibility }}
             </p>
             <p>
-              <strong>The Wearhouse Fashion Trade GmbH</strong><br>
-              Seestrasse 78<br>
-              8703 Erlenbach<br>
-              Switzerland
+              <strong>{{ cms.legalNotice.legal.wearhouse.name }}</strong><br>
+              {% for line in cms.legalNotice.legal.wearhouse.addressLines %}{{ line }}{% if not loop.last %}<br>
+              {% endif %}{% endfor %}
             </p>
             <p>
               Phone: <a href="{{ cms.site.footer.wearhouseContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.wearhouseContact.phoneLabel }}</a><br>
@@ -59,53 +57,33 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
         </section>
 
         <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
-          <p class="type-label mb-4 text-black/38">Liability & Copyright</p>
+          <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.liability.title | safe }}</p>
           <div class="type-body type-body-stack text-black/72">
+            {%- for paragraph in cms.legalNotice.liability.paragraphs %}
             <p>
-              We prepare the content of this website with care. However, we cannot guarantee that all information is complete, current, or free from errors at all times.
+              {{ paragraph }}
             </p>
-            <p>
-              This website may link to external websites. Bollag-Guggenheim AG is not responsible for the content or data processing practices of external websites.
-            </p>
-            <p>
-              All website content, images, logos, texts, and design elements are protected by copyright or trademark rights unless otherwise stated. Use requires prior permission from the respective rights holder.
-            </p>
+            {%- endfor %}
           </div>
         </section>
 
         <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
-          <p class="type-label mb-4 text-black/38">Privacy Policy</p>
+          <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.privacy.title }}</p>
           <div class="type-body type-body-stack text-black/72">
             <p>
               The controller for data processing on this website is Bollag-Guggenheim AG, Thurgauerstrasse 113, CH-8152 Glattpark, Switzerland. Privacy enquiries can be sent to <a href="{{ cms.site.footer.bgContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.bgContact.emailLabel }}</a>.
             </p>
+            {%- for paragraph in cms.legalNotice.privacy.paragraphs %}
             <p>
-              We process personal data only as needed to operate this website, answer enquiries, maintain security, fulfil business communication, and comply with legal obligations. Depending on the case, this may include contact details, message content, technical access data, and correspondence history.
+              {{ paragraph }}
             </p>
+            {%- endfor %}
             <p>
-              When you use the contact form, the information you submit is sent to our team by email and used to process your enquiry. Required fields are used only to respond to the message and manage related communication.
-            </p>
-            <p>
-              When you visit the website, technical data such as IP address, browser information, requested pages, timestamps, and server log data may be processed by us or by our hosting providers for delivery, troubleshooting, and security.
-            </p>
-            <p>
-              This website does not intentionally use analytics cookies on the public pages. Links to external services, such as Google Maps, open third-party websites that process data under their own privacy policies.
-            </p>
-            <p>
-              The website administration area uses Supabase authentication and internal CMS tools for authorised editors. These services are not required for ordinary public website visitors.
-            </p>
-            <p>
-              We retain personal data only for as long as necessary for the relevant purpose, contractual or business communication, security, or legal retention requirements.
-            </p>
-            <p>
-              Subject to applicable law, you may request access, correction, deletion, restriction, or objection to the processing of your personal data. You may also contact the competent data protection authority where applicable.
-            </p>
-            <p>
-              Last updated: 7 June 2026.
+              Last updated: {{ cms.legalNotice.privacy.lastUpdated }}.
             </p>
 
             <a
-              href="/assets/documents/datenschutzerklaerung-bollag-guggenheim.pdf"
+              href="{{ cms.legalNotice.privacy.document.href }}"
               target="_blank"
               rel="noopener"
               download
@@ -119,8 +97,8 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
                   </svg>
                 </span>
                 <span class="block">
-                  <span class="type-body block font-semibold text-black">Datenschutzerklärung — full privacy policy</span>
-                  <span class="type-label block text-black/45">PDF · German · Updated 2 July 2026</span>
+                  <span class="type-body block font-semibold text-black">{{ cms.legalNotice.privacy.document.label }}</span>
+                  <span class="type-label block text-black/45">{{ cms.legalNotice.privacy.document.note }}</span>
                 </span>
               </span>
               <span class="type-label flex flex-none items-center gap-2 text-black/55 transition duration-300 group-hover:text-black">

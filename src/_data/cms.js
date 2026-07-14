@@ -5,6 +5,7 @@ module.exports = {
   contact: require("./cms/contact.json"),
   stores: require("./cms/stores.json"),
   agenda: require("./cms/agenda.json"),
+  legalNotice: require("./cms/legalNotice.json"),
   brandsPage: require("./cms/brandsPage"),
   wearhousePage: require("./cms/wearhousePage"),
   selection: require("./cms/home").selection

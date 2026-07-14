@@ -4059,6 +4059,314 @@ git commit -m "feat(cms-v2): people screen and global search"
 
 ---
 
+### Task 19b: Legal Notice CMS page (added by owner request)
+
+Makes the previously-hardcoded `/legal-notice/` page editable: extracts its text into
+`src/_data/cms/legalNotice.json`, wires that file into the global `cms` data object,
+rewrites the template to render from `cms.legalNotice.*`, and adds the corresponding
+`config.yml` collection and `manifest.js` page entry.
+
+**Files:**
+- Create: `src/_data/cms/legalNotice.json`
+- Modify: `src/_data/cms.js` (register the new file on the `cms` data object — required for `cms.legalNotice.*` to resolve in templates; not part of the original ask but load-bearing)
+- Modify: `src/legal-notice/index.njk` (render from `cms.legalNotice.*` instead of hardcoded text)
+- Modify: `src/admin/config.yml` (new `legal_page` collection)
+- Modify: `src/admin/manifest.js` (new `legal` page entry, before `site`)
+
+**Design note — the email-link paragraph:** the Privacy Policy's first paragraph ("The
+controller for data processing on this website is Bollag-Guggenheim AG... Privacy
+enquiries can be sent to `{{ cms.site.footer.bgContact.emailLabel }}`") contains an
+inline mailto link built from `cms.site.footer.bgContact`. Rather than encoding HTML
+markup inside a CMS text field, that one paragraph stays **hardcoded in the template**,
+above the `paragraphs` loop. `legalNotice.json`'s `privacy.paragraphs` array holds the
+remaining 7 plain-text paragraphs (i.e. everything except that first link-bearing
+paragraph and the "Last updated" line, which has its own `lastUpdated` field).
+
+- [ ] **Step 1: Create `src/_data/cms/legalNotice.json`** — current page text transcribed verbatim.
+
+```json
+{
+  "hero": {
+    "eyebrow": "Legal Notice",
+    "title": "Legal Notice & Privacy Policy.",
+    "summary": "Company information, website responsibility, and privacy information for the Bollag-Guggenheim website."
+  },
+  "legal": {
+    "title": "Legal Notice",
+    "bollag": {
+      "name": "Bollag-Guggenheim AG",
+      "addressLines": ["Thurgauerstrasse 113", "CH-8152 Glattpark", "Switzerland"],
+      "responsibility": "Responsible for the website content: Bollag-Guggenheim AG."
+    },
+    "wearhouse": {
+      "name": "The Wearhouse Fashion Trade GmbH",
+      "addressLines": ["Seestrasse 78", "8703 Erlenbach", "Switzerland"]
+    }
+  },
+  "liability": {
+    "title": "Liability & Copyright",
+    "paragraphs": [
+      "We prepare the content of this website with care. However, we cannot guarantee that all information is complete, current, or free from errors at all times.",
+      "This website may link to external websites. Bollag-Guggenheim AG is not responsible for the content or data processing practices of external websites.",
+      "All website content, images, logos, texts, and design elements are protected by copyright or trademark rights unless otherwise stated. Use requires prior permission from the respective rights holder."
+    ]
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "paragraphs": [
+      "We process personal data only as needed to operate this website, answer enquiries, maintain security, fulfil business communication, and comply with legal obligations. Depending on the case, this may include contact details, message content, technical access data, and correspondence history.",
+      "When you use the contact form, the information you submit is sent to our team by email and used to process your enquiry. Required fields are used only to respond to the message and manage related communication.",
+      "When you visit the website, technical data such as IP address, browser information, requested pages, timestamps, and server log data may be processed by us or by our hosting providers for delivery, troubleshooting, and security.",
+      "This website does not intentionally use analytics cookies on the public pages. Links to external services, such as Google Maps, open third-party websites that process data under their own privacy policies.",
+      "The website administration area uses Supabase authentication and internal CMS tools for authorised editors. These services are not required for ordinary public website visitors.",
+      "We retain personal data only for as long as necessary for the relevant purpose, contractual or business communication, security, or legal retention requirements.",
+      "Subject to applicable law, you may request access, correction, deletion, restriction, or objection to the processing of your personal data. You may also contact the competent data protection authority where applicable."
+    ],
+    "lastUpdated": "7 June 2026",
+    "document": {
+      "label": "Datenschutzerklärung — full privacy policy",
+      "note": "PDF · German · Updated 2 July 2026",
+      "href": "/assets/documents/datenschutzerklaerung-bollag-guggenheim.pdf"
+    }
+  }
+}
+```
+
+- [ ] **Step 2: Register the file on the `cms` data object** — `src/_data/cms.js` only exposes the JSON files it explicitly `require`s as `cms.<key>`; without this, `cms.legalNotice` is `undefined` in templates.
+
+```js
+module.exports = {
+  site: require("./cms/site.json"),
+  home: require("./cms/home"),
+  company: require("./cms/company.json"),
+  contact: require("./cms/contact.json"),
+  stores: require("./cms/stores.json"),
+  agenda: require("./cms/agenda.json"),
+  legalNotice: require("./cms/legalNotice.json"),
+  brandsPage: require("./cms/brandsPage"),
+  wearhousePage: require("./cms/wearhousePage"),
+  selection: require("./cms/home").selection
+};
+```
+
+- [ ] **Step 3: Rewrite `src/legal-notice/index.njk`** to render from `cms.legalNotice.*`, preserving the exact design. Address lines and paragraph lists render via `{% for %}` loops with leading-whitespace trim (`{%- for ... %}` / `{%- endfor %}`) so the built HTML has no extra blank lines. The two fields containing a literal `&` (`hero.title`, `liability.title`) are rendered with the `| safe` filter so Nunjucks doesn't entity-escape them to `&amp;` — that keeps the built HTML byte-identical to the original hardcoded markup (both render identically in a browser regardless, since `&amp;` and a bare `&` between tags display the same glyph; `| safe` was chosen purely to make the before/after diff empty). The two contact blocks keep pulling phone/email from `cms.site.footer.bgContact` / `wearhouseContact`, unchanged. The privacy section's first, link-bearing paragraph stays hardcoded above the `paragraphs` loop (see design note above).
+
+```njk
+---
+layout: layouts/base.njk
+title: Legal Notice & Privacy Policy | Bollag-Guggenheim
+---
+{% include "components/site-header.njk" %}
+
+<section class="relative isolate overflow-hidden bg-ink text-bone">
+  <div class="relative mx-auto flex min-h-[54svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
+    <div class="max-w-[64rem]">
+      <p class="type-eyebrow-hero mb-4 text-bone/54" data-reveal>{{ cms.legalNotice.hero.eyebrow }}</p>
+      <h1 class="type-hero-title max-w-[12ch]" data-reveal>
+        {{ cms.legalNotice.hero.title | safe }}
+      </h1>
+      <p class="type-body-lg mt-6 max-w-[42rem] text-bone/82" data-reveal>
+        {{ cms.legalNotice.hero.summary }}
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="bg-[#FAF8F6] text-ink">
+  <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
+    <div class="grid gap-12 border-t border-black/10 pt-8 lg:grid-cols-[minmax(0,0.34fr)_minmax(0,0.66fr)] lg:gap-16">
+      <aside class="lg:sticky lg:top-28 lg:self-start">
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal>Information</p>
+        <h2 class="type-section-title max-w-[11ch] text-black" data-reveal>
+          Legal details.
+        </h2>
+      </aside>
+
+      <div class="space-y-10">
+        <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
+          <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.legal.title }}</p>
+          <div class="type-body type-body-stack text-black/72">
+            <p>
+              <strong>{{ cms.legalNotice.legal.bollag.name }}</strong><br>
+              {% for line in cms.legalNotice.legal.bollag.addressLines %}{{ line }}{% if not loop.last %}<br>
+              {% endif %}{% endfor %}
+            </p>
+            <p>
+              Phone: <a href="{{ cms.site.footer.bgContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.bgContact.phoneLabel }}</a><br>
+              Email: <a href="{{ cms.site.footer.bgContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.bgContact.emailLabel }}</a>
+            </p>
+            <p>
+              {{ cms.legalNotice.legal.bollag.responsibility }}
+            </p>
+            <p>
+              <strong>{{ cms.legalNotice.legal.wearhouse.name }}</strong><br>
+              {% for line in cms.legalNotice.legal.wearhouse.addressLines %}{{ line }}{% if not loop.last %}<br>
+              {% endif %}{% endfor %}
+            </p>
+            <p>
+              Phone: <a href="{{ cms.site.footer.wearhouseContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.wearhouseContact.phoneLabel }}</a><br>
+              Email: <a href="{{ cms.site.footer.wearhouseContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.wearhouseContact.emailLabel }}</a>
+            </p>
+          </div>
+        </section>
+
+        <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
+          <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.liability.title | safe }}</p>
+          <div class="type-body type-body-stack text-black/72">
+            {%- for paragraph in cms.legalNotice.liability.paragraphs %}
+            <p>
+              {{ paragraph }}
+            </p>
+            {%- endfor %}
+          </div>
+        </section>
+
+        <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
+          <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.privacy.title }}</p>
+          <div class="type-body type-body-stack text-black/72">
+            <p>
+              The controller for data processing on this website is Bollag-Guggenheim AG, Thurgauerstrasse 113, CH-8152 Glattpark, Switzerland. Privacy enquiries can be sent to <a href="{{ cms.site.footer.bgContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.bgContact.emailLabel }}</a>.
+            </p>
+            {%- for paragraph in cms.legalNotice.privacy.paragraphs %}
+            <p>
+              {{ paragraph }}
+            </p>
+            {%- endfor %}
+            <p>
+              Last updated: {{ cms.legalNotice.privacy.lastUpdated }}.
+            </p>
+
+            <a
+              href="{{ cms.legalNotice.privacy.document.href }}"
+              target="_blank"
+              rel="noopener"
+              download
+              class="group mt-2 flex items-center justify-between gap-6 border border-black/15 bg-white/70 p-5 no-underline transition duration-300 hover:border-black/45 hover:bg-white"
+            >
+              <span class="flex items-center gap-4">
+                <span class="flex h-11 w-11 flex-none items-center justify-center border border-black/15 text-black/70">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <path d="M14 2v6h6" />
+                  </svg>
+                </span>
+                <span class="block">
+                  <span class="type-body block font-semibold text-black">{{ cms.legalNotice.privacy.document.label }}</span>
+                  <span class="type-label block text-black/45">{{ cms.legalNotice.privacy.document.note }}</span>
+                </span>
+              </span>
+              <span class="type-label flex flex-none items-center gap-2 text-black/55 transition duration-300 group-hover:text-black">
+                Download
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 3v13" />
+                  <path d="m7 12 5 5 5-5" />
+                  <path d="M5 21h14" />
+                </svg>
+              </span>
+            </a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "components/site-footer.njk" %}
+```
+
+- [ ] **Step 4: Add the `legal_page` collection to `src/admin/config.yml`** (appended at the end of `collections`):
+
+```yaml
+  - name: legal_page
+    label: Legal Notice
+    delete: false
+    editor:
+      preview: false
+    files:
+      - label: Legal Notice Content
+        name: legal_notice
+        file: src/_data/cms/legalNotice.json
+        format: json
+        fields:
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Summary, name: summary, widget: text }
+          - label: Company Details
+            name: legal
+            widget: object
+            fields:
+              - { label: Card Title, name: title, widget: string }
+              - label: Bollag-Guggenheim
+                name: bollag
+                widget: object
+                fields:
+                  - { label: Name, name: name, widget: string }
+                  - { label: Address, name: addressLines, widget: list, field: { label: Line, name: line, widget: string } }
+                  - { label: Responsibility Note, name: responsibility, widget: string }
+              - label: The Wearhouse
+                name: wearhouse
+                widget: object
+                fields:
+                  - { label: Name, name: name, widget: string }
+                  - { label: Address, name: addressLines, widget: list, field: { label: Line, name: line, widget: string } }
+          - label: Liability & Copyright
+            name: liability
+            widget: object
+            fields:
+              - { label: Card Title, name: title, widget: string }
+              - { label: Paragraphs, name: paragraphs, widget: list, field: { label: Paragraph, name: paragraph, widget: text } }
+          - label: Privacy Policy
+            name: privacy
+            widget: object
+            fields:
+              - { label: Card Title, name: title, widget: string }
+              - { label: Paragraphs, name: paragraphs, widget: list, field: { label: Paragraph, name: paragraph, widget: text } }
+              - { label: Last Updated, name: lastUpdated, widget: string, description: "Shown as 'Last updated: …' at the end of the privacy section." }
+              - label: Privacy Document (PDF)
+                name: document
+                widget: object
+                fields:
+                  - { label: Title, name: label, widget: string }
+                  - { label: Details Line, name: note, widget: string }
+                  - { label: File, name: href, widget: file, description: "The official privacy policy PDF." }
+```
+
+- [ ] **Step 5: Add the `legal` page entry to `src/admin/manifest.js`**, inserted before the final `site` entry:
+
+```js
+  {
+    id: 'legal', label: 'Legal Notice', url: '/legal-notice/',
+    sections: [
+      { id: 'hero', label: 'Hero banner', file: `${CMS}/legalNotice.json`, keys: ['hero'] },
+      { id: 'company-details', label: 'Company details', file: `${CMS}/legalNotice.json`, keys: ['legal'] },
+      { id: 'liability', label: 'Liability & copyright', file: `${CMS}/legalNotice.json`, keys: ['liability'] },
+      { id: 'privacy', label: 'Privacy policy', hint: 'Privacy text and the downloadable PDF', file: `${CMS}/legalNotice.json`, keys: ['privacy'] },
+    ],
+  },
+```
+
+- [ ] **Step 6: Verify.**
+  - `npm test` — 57/57 tests pass (manifest integrity suite covers the new `legalNotice.json` file and its section keys).
+  - `npm run build` — green.
+  - Built `_site/legal-notice/index.html` diffed byte-for-byte against a pre-change build: **empty diff**.
+  - `_site/cms-data/legalNotice.json` present (existing `src/_data/cms` → `cms-data` passthrough copy already covers it).
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add src/_data/cms/legalNotice.json src/_data/cms.js src/legal-notice/index.njk src/admin/config.yml src/admin/manifest.js docs/superpowers/plans/2026-07-14-cms-v2-phase1-site-mirror-admin.md
+git commit -m "feat(cms-v2): make the Legal Notice page editable in the CMS"
+```
+
+**Note:** `src/admin/main.jsx` had an uncommitted, temporary localhost-preview bypass in the
+working tree at the time of this task. It was left untouched and was not staged.
+
+---
+
 ## Chunk 7: Cutover, verification, walkthrough, handoff
 
 ### Task 20: Delete the old monolith

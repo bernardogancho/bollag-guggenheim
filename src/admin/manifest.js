@@ -81,6 +81,15 @@ export const PAGES = [
     ],
   },
   {
+    id: 'legal', label: 'Legal Notice', url: '/legal-notice/',
+    sections: [
+      { id: 'hero', label: 'Hero banner', file: `${CMS}/legalNotice.json`, keys: ['hero'] },
+      { id: 'company-details', label: 'Company details', file: `${CMS}/legalNotice.json`, keys: ['legal'] },
+      { id: 'liability', label: 'Liability & copyright', file: `${CMS}/legalNotice.json`, keys: ['liability'] },
+      { id: 'privacy', label: 'Privacy policy', hint: 'Privacy text and the downloadable PDF', file: `${CMS}/legalNotice.json`, keys: ['privacy'] },
+    ],
+  },
+  {
     id: 'site', label: 'Header & Footer', url: '/',
     sections: [
       { id: 'navigation', label: 'Navigation menu', file: `${CMS}/site.json`, keys: ['nav'] },
