@@ -1322,11 +1322,18 @@ function AdminRoot() {
     });
 
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      // Keep the bearer token fresh: Supabase rotates it (~hourly) and emits
+      // TOKEN_REFRESHED; without this, publishes in long sessions would 401.
+      if (session) {
+        accessToken = session.access_token;
+      }
       if (event === 'SIGNED_OUT') {
         accessToken = '';
         setUser(null);
-        setNote({ text: '', tone: '' });
         setMode('login');
+        // Note: do NOT clear the auth note here — tryEnter() sets an
+        // explanatory error right before signing a rejected account out, and
+        // this callback can fire after it.
       }
     });
     return () => sub.subscription.unsubscribe();
@@ -1398,6 +1405,9 @@ git commit -m "feat(cms-v2): real bootstrap with auth, context, and login screen
 **Files:**
 - Create: `src/admin/lib/router.js`
 - Create: `src/admin/shell/Toasts.jsx`
+- Create: `src/admin/shell/Topbar.jsx`
+- Create: `src/admin/screens/PageScreen.jsx` (stub — real version in Task 12)
+- Create: `src/admin/screens/SectionScreen.jsx` (stub — real version in Task 12)
 - Modify: `src/admin/shell/Shell.jsx` (replace entirely)
 
 - [ ] **Step 1: Create `src/admin/lib/router.js`**
@@ -1462,10 +1472,26 @@ export function ToastProvider({ children }) {
 }
 ```
 
-- [ ] **Step 3: Replace `src/admin/shell/Shell.jsx`** (complete file)
+- [ ] **Step 3: Create screen stubs so this chunk compiles** (real implementations land in Task 12):
+
+`src/admin/screens/PageScreen.jsx`:
 
 ```jsx
 import React from 'react';
+export function PageScreen() { return null; }
+```
+
+`src/admin/screens/SectionScreen.jsx`:
+
+```jsx
+import React from 'react';
+export function SectionScreen() { return null; }
+```
+
+- [ ] **Step 3b: Replace `src/admin/shell/Shell.jsx`** (complete file)
+
+```jsx
+import React, { useEffect } from 'react';
 import { PAGES, findPage, findSection } from '../manifest.js';
 import { useAdmin, useStoreVersion } from '../lib/context.js';
 import { useRoute, navigate } from '../lib/router.js';
@@ -1535,8 +1561,13 @@ function NotFound() {
 }
 
 function Content({ route }) {
+  useEffect(() => {
+    if (route.length === 0) {
+      navigate('page', 'homepage');
+    }
+  }, [route]);
+
   if (route.length === 0) {
-    navigate('page', 'homepage');
     return null;
   }
   if (route[0] === 'media') {
@@ -1611,7 +1642,7 @@ export function Topbar() {
 - [ ] **Step 6: Commit**
 
 ```bash
-git add src/admin/lib/router.js src/admin/shell/Toasts.jsx src/admin/shell/Shell.jsx src/admin/shell/Topbar.jsx
+git add src/admin/lib/router.js src/admin/shell/Toasts.jsx src/admin/shell/Shell.jsx src/admin/shell/Topbar.jsx src/admin/screens/PageScreen.jsx src/admin/screens/SectionScreen.jsx
 git commit -m "feat(cms-v2): hash router, toasts, sidebar/topbar shell"
 ```
 
@@ -1638,8 +1669,8 @@ git commit -m "feat(cms-v2): hash router, toasts, sidebar/topbar shell"
 .sidebar-divider { height: 1px; background: var(--line); margin: 10px 0; }
 
 .breadcrumbs { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); margin-bottom: 10px; flex-wrap: wrap; }
-.breadcrumbs a { color: var(--accent); text-decoration: none; cursor: pointer; }
-.breadcrumbs a:hover { text-decoration: underline; }
+.breadcrumbs-link { appearance: none; border: 0; background: transparent; padding: 0; font: inherit; font-size: 13px; color: var(--accent); cursor: pointer; }
+.breadcrumbs-link:hover { text-decoration: underline; }
 .breadcrumbs-sep { color: var(--line-strong); }
 
 .screen-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
@@ -1879,9 +1910,13 @@ export function FieldShell({ field, children }) {
 }
 
 export function TextField({ field, value, onChange }) {
+  const isNumber = field.widget === 'number';
   return (
     <FieldShell field={field}>
-      <input className="input" type={field.widget === 'number' ? 'number' : 'text'} value={value ?? ''} onChange={event => onChange(field.widget === 'number' ? Number(event.target.value) : event.target.value)} />
+      <input
+        className="input" type={isNumber ? 'number' : 'text'} value={value ?? ''}
+        onChange={event => onChange(isNumber ? (event.target.value === '' ? '' : Number(event.target.value)) : event.target.value)}
+      />
     </FieldShell>
   );
 }
@@ -1896,9 +1931,12 @@ export function TextareaField({ field, value, onChange }) {
 
 export function SelectField({ field, value, onChange }) {
   const options = (field.options || []).map(option => (typeof option === 'object' && option !== null ? option : { label: String(option), value: option }));
+  // An unset value renders an explicit "Choose…" placeholder instead of
+  // silently displaying the first option (which would differ from the draft).
   return (
     <FieldShell field={field}>
-      <select className="select" value={value ?? options[0]?.value ?? ''} onChange={event => onChange(event.target.value)}>
+      <select className="select" value={value ?? ''} onChange={event => onChange(event.target.value)}>
+        {value === undefined || value === null || value === '' ? <option value="" disabled hidden>Choose…</option> : null}
         {options.map(option => (
           <option key={String(option.value)} value={option.value}>{option.label ?? option.value}</option>
         ))}
@@ -2035,7 +2073,7 @@ export function FieldRenderer({ field, value, onChange, pathPrefix, routeBase })
 }
 ```
 
-- [ ] **Step 6: Create `src/admin/screens/PageScreen.jsx`**
+- [ ] **Step 6: Replace the Task 10 stub `src/admin/screens/PageScreen.jsx`** (complete file)
 
 ```jsx
 import React from 'react';
@@ -2086,7 +2124,7 @@ export function PageScreen({ page }) {
 }
 ```
 
-- [ ] **Step 7: Create `src/admin/screens/SectionScreen.jsx`**
+- [ ] **Step 7: Replace the Task 10 stub `src/admin/screens/SectionScreen.jsx`** (complete file)
 
 ```jsx
 import React from 'react';
@@ -2104,7 +2142,7 @@ export function Breadcrumbs({ parts }) {
       {parts.map((part, index) => (
         <React.Fragment key={index}>
           {index > 0 ? <span className="breadcrumbs-sep">/</span> : null}
-          {part.to ? <a onClick={() => navigate(...part.to)}>{part.label}</a> : <span>{part.label}</span>}
+          {part.to ? <button type="button" className="breadcrumbs-link" onClick={() => navigate(...part.to)}>{part.label}</button> : <span>{part.label}</span>}
         </React.Fragment>
       ))}
     </nav>
@@ -2178,7 +2216,7 @@ export function SectionScreen({ page, section, rest }) {
 }
 ```
 
-- [ ] **Step 8: Temporary stubs so the build compiles** (replaced in Chunk 3): create `src/admin/screens/ItemListScreen.jsx`, `src/admin/screens/ItemEditScreen.jsx`, `src/admin/screens/WearhouseScreen.jsx`, each as:
+- [ ] **Step 8: Temporary stubs so the build compiles** (replaced in Chunk 5): create `src/admin/screens/ItemListScreen.jsx`, `src/admin/screens/ItemEditScreen.jsx`, `src/admin/screens/WearhouseScreen.jsx`, each as:
 
 ```jsx
 import React from 'react';
@@ -3109,6 +3147,7 @@ git commit -m "feat(cms-v2): changes tray with validation-gated publish, undo, u
 
 **Files:**
 - Modify: `src/admin/fields/MediaPicker.jsx` (extract `useMediaUpload` hook)
+- Modify: `src/admin/fields/ImageField.jsx` (drag-and-drop upload on the dropzone)
 - Create: `src/admin/screens/MediaScreen.jsx`
 - Modify: `src/admin/shell/Shell.jsx` (route `media` to the real screen)
 
@@ -3155,6 +3194,40 @@ const handleUpload = event => {
 ```
 
 Remove the now-unused local upload state/logic.
+
+- [ ] **Step 1b: Restore drag-and-drop upload on the ImageField dropzone** (spec §4.2 carries the drag-drop uploader over). In `src/admin/fields/ImageField.jsx`, import and use the hook, and add drop handling to the empty-state dropzone:
+
+```jsx
+import { MediaPicker, useMediaUpload } from './MediaPicker.jsx';
+// inside the component:
+const [dragOver, setDragOver] = useState(false);
+const { uploading, upload } = useMediaUpload(path => onChange(path));
+```
+
+Replace the empty-state dropzone button with:
+
+```jsx
+<button
+  type="button"
+  className={`asset-dropzone ${dragOver ? 'is-dragover' : ''}`}
+  onClick={() => setPickerOpen(true)}
+  onDragOver={event => { event.preventDefault(); setDragOver(true); }}
+  onDragLeave={() => setDragOver(false)}
+  onDrop={event => {
+    event.preventDefault();
+    setDragOver(false);
+    const file = event.dataTransfer.files?.[0];
+    if (file) {
+      upload(file);
+    }
+  }}
+>
+  <span className="asset-dropzone-title">{uploading ? 'Uploading…' : kind === 'image' ? 'Choose an image' : 'Choose a file'}</span>
+  <span className="asset-dropzone-hint">Drop a file here, pick from the library, or upload new</span>
+</button>
+```
+
+(`.asset-dropzone.is-dragover` already exists in `admin.css`.)
 
 - [ ] **Step 2: Create `src/admin/screens/MediaScreen.jsx`**
 
@@ -3259,8 +3332,8 @@ export function MediaScreen() {
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/admin/fields/MediaPicker.jsx src/admin/screens/MediaScreen.jsx src/admin/shell/Shell.jsx
-git commit -m "feat(cms-v2): media library screen with where-used and upload"
+git add src/admin/fields/MediaPicker.jsx src/admin/fields/ImageField.jsx src/admin/screens/MediaScreen.jsx src/admin/shell/Shell.jsx
+git commit -m "feat(cms-v2): media library screen, drag-drop uploads, where-used"
 ```
 
 ### Task 19: People screen + topbar search
