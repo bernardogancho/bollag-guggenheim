@@ -4,7 +4,7 @@
       "name": "CALIBAN",
       "slug": "caliban",
       "rosterCard": {
-        "segment": "Women & Men",
+        "segment": "Women",
         "websiteHref": "https://www.wearhouse.ch/caliban",
         "logoSrc": "/assets/media/wearhouse/logos/caliban.clean.png",
         "hoverImage": "/assets/media/wearhouse/brands/caliban-matrix.jpg",
@@ -18,10 +18,7 @@
         "intro": "The label is closely associated with premium shirtmaking and a clean, sophisticated interpretation of essentials. Across its official presentation and market positioning, CALIBAN reads as a brand built on precision, elevated materials, and a more polished take on everyday dressing.",
         "focus": "For Wearhouse, CALIBAN sharpens the portfolio in the dressier end of womenswear. It contributes product that is articulate and composed, especially where blouses and shirts need to feel premium without becoming overly formal.",
         "atmosphere": "Refined Italian shirting.",
-        "categories": [
-          "Premium blouses",
-          "Womenswear"
-        ]
+        "categories": []
       }
     },
     {
