@@ -289,6 +289,101 @@
       }
     },
     {
+      "name": "Cuoieria Fiorentina",
+      "slug": "cuoieria-fiorentina",
+      "logoImage": "/assets/media/brands/cuoieria-fiorentina.png",
+      "card": {
+        "eyebrow": "Leather Goods",
+        "heroTitle": "Placeholder title for Cuoieria Fiorentina.",
+        "summary": "Placeholder copy for Cuoieria Fiorentina, ready to be replaced with the final brand description.",
+        "heroImage": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg"
+      },
+      "detail": {
+        "intro": "Placeholder intro copy for Cuoieria Fiorentina. This section can describe the brand story, product world, materials, and its role inside the Bollag-Guggenheim portfolio once final copy is available.",
+        "focus": "Placeholder focus copy for Cuoieria Fiorentina. Use this area to explain the commercial angle, the customer profile, and the specific leather-goods categories represented by the brand.",
+        "atmosphere": "Italian leather goods, placeholder copy.",
+        "categories": [
+          "Leather Goods",
+          "Accessories",
+          "Made in Italy"
+        ],
+        "tone": "Placeholder tone copy for a refined accessories brand built around craft, everyday utility, and a polished Italian product language.",
+        "detailHeroImage": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial selection"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-2.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial selection"
+          }
+        ],
+        "detailGallery": [
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 1"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-2.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 2"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-3.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 3"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-4.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 4"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-5.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 5"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-6.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 6"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-7.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 7"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-8.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 8"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-9.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 9"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-10.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 10"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-11.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 11"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-12.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 12"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-13.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 13"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-14.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 14"
+          },
+          {
+            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-15.jpg",
+            "note": "Cuoieria Fiorentina placeholder editorial image 15"
+          }
+        ]
+      }
+    },
+    {
       "name": "Drykorn",
       "slug": "drykorn",
       "card": {
@@ -965,10 +1060,10 @@
       "detail": {
         "intro": "Rich & Royal positions itself as a modern German lifestyle brand, built around premium dressing that feels current, feminine, and responsive to trend without becoming disposable.",
         "focus": "The brand's language is carried by fabric feel, color, and considered detailing. It also places visible importance on sustainability through materials, packaging, supplier selection, and production standards.",
-        "atmosphere": "",
+        "atmosphere": "Women",
         "categories": [],
         "tone": "A premium fashion voice that combines femininity, confidence, and material attention.",
-        "detailHeroImage": "/assets/media/uploads/1782910165936-rich-royal_banner.jpg",
+        "detailHeroImage": "/assets/media/uploads/1784125535029-rich-royal_picture-brand_portrait.jpg",
         "gallery": [
           {
             "image": "/assets/media/uploads/1782910136661-rich-royal_banner.jpg",
@@ -1297,101 +1392,6 @@
             "image": "/assets/media/feed/0039-italy-wall-17908695666323832.jpg",
             "note": "SPRING/ SUMMER Collection 2026  The first pieces of our new collection have just been released! Discover the new pieces on our website.  #0039italy",
             "source": "https://www.instagram.com/p/DUJDIVij-4A/"
-          }
-        ]
-      }
-    },
-    {
-      "name": "Cuoieria Fiorentina",
-      "slug": "cuoieria-fiorentina",
-      "logoImage": "/assets/media/brands/cuoieria-fiorentina.png",
-      "card": {
-        "eyebrow": "Leather Goods",
-        "heroTitle": "Placeholder title for Cuoieria Fiorentina.",
-        "summary": "Placeholder copy for Cuoieria Fiorentina, ready to be replaced with the final brand description.",
-        "heroImage": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg"
-      },
-      "detail": {
-        "intro": "Placeholder intro copy for Cuoieria Fiorentina. This section can describe the brand story, product world, materials, and its role inside the Bollag-Guggenheim portfolio once final copy is available.",
-        "focus": "Placeholder focus copy for Cuoieria Fiorentina. Use this area to explain the commercial angle, the customer profile, and the specific leather-goods categories represented by the brand.",
-        "atmosphere": "Italian leather goods, placeholder copy.",
-        "categories": [
-          "Leather Goods",
-          "Accessories",
-          "Made in Italy"
-        ],
-        "tone": "Placeholder tone copy for a refined accessories brand built around craft, everyday utility, and a polished Italian product language.",
-        "detailHeroImage": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg",
-        "gallery": [
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial selection"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-2.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial selection"
-          }
-        ],
-        "detailGallery": [
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 1"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-2.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 2"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-3.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 3"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-4.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 4"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-5.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 5"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-6.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 6"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-7.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 7"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-8.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 8"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-9.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 9"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-10.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 10"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-11.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 11"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-12.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 12"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-13.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 13"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-14.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 14"
-          },
-          {
-            "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-15.jpg",
-            "note": "Cuoieria Fiorentina placeholder editorial image 15"
           }
         ]
       }
