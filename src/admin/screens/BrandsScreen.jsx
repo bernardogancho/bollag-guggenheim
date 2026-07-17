@@ -74,6 +74,17 @@ export function BrandsScreen({ page, section, rest }) {
       }
       return { ...fieldDef, ...overrides };
     };
+    // The brand page (src/brands/brand.njk) reuses detailGallery[1].image as
+    // the portrait shown beside the intro text — the site itself doubles up
+    // this one photo, so the CMS surfaces it here too instead of making the
+    // editor discover it's secretly "item 2 of Visual journal". Reuses the
+    // Visual journal's own `image` field def (same widget, same picker) so
+    // it stays in sync with config.yml; only label/description differ.
+    const galleryImageField = findField('detail', 'detailGallery')?.fields?.find(f => f.name === 'image') || null;
+    const portraitField = withOverrides(galleryImageField, {
+      label: 'Portrait beside the intro',
+      description: "The photo shown next to this text on the brand's page. It is also the 2nd photo in the Visual journal below — changing one changes the other.",
+    });
     const groups = [
       {
         title: 'Page top',
@@ -90,6 +101,7 @@ export function BrandsScreen({ page, section, rest }) {
         title: 'Introduction',
         help: 'The text block after the page top.',
         fields: [
+          { custom: 'portrait' },
           { source: 'detail', name: 'intro', overrides: { label: 'First paragraph' } },
           { source: 'detail', name: 'focus', overrides: { label: 'Second paragraph', description: 'Leave empty to show only the first.' } },
           { source: 'detail', name: 'atmosphere', overrides: { label: 'Style tag', description: 'Short phrase shown in the small info row, e.g. "Relaxed tailoring".' } },
@@ -177,7 +189,22 @@ export function BrandsScreen({ page, section, rest }) {
             <h3 className="group-card-title">{group.title}</h3>
             {group.help ? <div className="field-help">{group.help}</div> : null}
             <div className="field-grid">
-              {group.fields.map(({ source, name, overrides }) => {
+              {group.fields.map(({ source, name, overrides, custom }) => {
+                if (custom === 'portrait') {
+                  if (!portraitField) {
+                    return null;
+                  }
+                  // If detailGallery has fewer than 2 items, the portrait doesn't
+                  // render on the site either — the field just shows empty here.
+                  // Writing to it creates index 1 without touching index 0
+                  // (setAtPath grows the array in place; see lib/paths.js).
+                  return (
+                    <FieldRenderer key="detail.detailGallery.1.image" field={portraitField}
+                      value={item.detail?.detailGallery?.[1]?.image}
+                      onChange={next => updateField('detail.detailGallery.1.image', next)}
+                      pathPrefix={`brands.${idx}.detail.detailGallery.1.image`} routeBase={[page.id, section.id]} />
+                  );
+                }
                 const fieldDef = withOverrides(findField(source, name), overrides);
                 if (!fieldDef) {
                   return null;
