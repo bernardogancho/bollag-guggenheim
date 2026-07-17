@@ -7,6 +7,7 @@ import { pruneEmptyAdditions } from '../lib/prune.js';
 import { ItemListScreen } from './ItemListScreen.jsx';
 import { ItemEditScreen } from './ItemEditScreen.jsx';
 import { WearhouseScreen } from './WearhouseScreen.jsx';
+import { BrandsScreen } from './BrandsScreen.jsx';
 
 export function Breadcrumbs({ parts }) {
   return (
@@ -28,6 +29,10 @@ export function SectionScreen({ page, section, rest }) {
 
   if (section.joined) {
     return <WearhouseScreen page={page} section={section} rest={rest} />;
+  }
+
+  if (section.custom === 'brands') {
+    return <BrandsScreen page={page} section={section} rest={rest} />;
   }
 
   // Managed-list subroutes: [.., 'list', <listPath>] and [.., 'list', <listPath>, <index>]

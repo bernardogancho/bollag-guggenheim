@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 //   #/page/<pageId>/<sectionId>/list/<listPath>            (managed item list)
 //   #/page/<pageId>/<sectionId>/list/<listPath>/<index>    (item editor)
 //   #/page/wearhouse/wearhouse-brands/<recordIndex>         (joined item editor)
+//   #/page/brands/all-brands/<index>                        (BG brand item editor)
 //   #/media   #/people
 export function parseRoute() {
   // A malformed hash (e.g. a stray "%" makes decodeURIComponent throw) must

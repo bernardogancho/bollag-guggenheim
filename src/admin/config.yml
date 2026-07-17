@@ -579,7 +579,7 @@ collections:
                   - { label: Eyebrow, name: eyebrow, widget: string }
                   - { label: Hero Title, name: heroTitle, widget: string }
                   - { label: Summary, name: summary, widget: text }
-                  - { label: Hero Image, name: heroImage, widget: image, required: false }
+                  - { label: Photo, name: heroImage, widget: image, required: false, description: "Shown on the brand's card in the brands overview and on the homepage wall." }
               - label: Detail page
                 name: detail
                 widget: object
@@ -589,19 +589,12 @@ collections:
                   - { label: Atmosphere, name: atmosphere, widget: string }
                   - { label: Categories, name: categories, widget: list, field: { label: Category, name: category, widget: string } }
                   - { label: Tone, name: tone, widget: text }
-                  - { label: Detail Hero Image, name: detailHeroImage, widget: image, required: false }
-                  - label: Gallery
-                    name: gallery
-                    widget: list
-                    summary: "{{fields.note}}"
-                    fields:
-                      - { label: Image, name: image, widget: image }
-                      - { label: Note, name: note, widget: string }
-                      - { label: Source, name: source, widget: string, required: false }
-                  - label: Detail Gallery
+                  - { label: Detail Hero Image, name: detailHeroImage, widget: image, required: false, description: "The big banner at the top of the brand's own page." }
+                  - label: Visual journal
                     name: detailGallery
                     widget: list
                     summary: "{{fields.note}}"
+                    description: "The image mosaic on the brand's page. The 2nd image also appears as the portrait beside the intro text."
                     fields:
                       - { label: Image, name: image, widget: image }
                       - { label: Note, name: note, widget: string }

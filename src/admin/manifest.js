@@ -31,7 +31,7 @@ export const PAGES = [
     sections: [
       { id: 'hero', label: 'Hero banner', file: `${CMS}/brandsPage/hero.json`, keys: ['hero'] },
       { id: 'portfolio-heading', label: 'Portfolio heading', file: `${CMS}/brandsPage/portfolio.json`, keys: ['portfolioSection'] },
-      { id: 'all-brands', label: 'All brands', hint: 'Every Bollag brand and its page', file: `${CMS}/brandsPage/brands.json`, keys: ['brands'] },
+      { id: 'all-brands', label: 'All brands', hint: 'Every Bollag brand and its page', file: `${CMS}/brandsPage/brands.json`, keys: ['brands'], custom: 'brands' },
       { id: 'page-settings', label: 'Brand page settings', hint: 'Shared texts on brand detail pages', file: `${CMS}/brandsPage/detail.json`, keys: ['detailPage'] },
     ],
   },

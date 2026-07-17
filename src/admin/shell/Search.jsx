@@ -28,9 +28,11 @@ export function Search() {
       }
     }
     const bgBrands = store.getDraft(`${CMS}/brandsPage/brands.json`)?.brands || [];
+    // BG brands are index-addressed via BrandsScreen (Wearhouse-style single-
+    // file editor), not the generic managed-list route.
     bgBrands.forEach((brand, index) => {
       if (itemTitle(brand).toLowerCase().includes(needle)) {
-        results.push({ title: itemTitle(brand), sub: 'Bollag brand', to: ['page', 'brands', 'all-brands', 'list', 'brands', String(index)] });
+        results.push({ title: itemTitle(brand), sub: 'Bollag brand', to: ['page', 'brands', 'all-brands', String(index)] });
       }
     });
     const rosterItems = store.getDraft(`${CMS}/wearhousePage/roster.json`)?.rosterSection?.items || [];
