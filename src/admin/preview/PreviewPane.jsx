@@ -132,29 +132,17 @@ export function PreviewPane({ page, section, previewUrl, previewTargets, isManag
   }, [open, effectiveUrl, targetPageId, targetSectionId, syncPreview]);
 
   // Re-patch (but deliberately do NOT re-highlight/re-scroll) on every store
-  // mutation — this is what makes typing show up live. rAF-coalesced so a
-  // burst of keystrokes in one frame collapses into a single patch pass
-  // instead of one per keystroke.
+  // mutation — this is what makes typing show up live. React already commits
+  // this effect once per keystroke (one per render), so we patch synchronously
+  // here rather than deferring to requestAnimationFrame: rAF is throttled (and
+  // in a background/offscreen tab may not fire at all), which would silently
+  // stall the live preview. patchAll only rewrites the bound nodes' text/src,
+  // which is cheap enough to run inline per keystroke.
   useEffect(() => {
     if (!open) {
-      return undefined;
+      return;
     }
-    if (patchFrameRef.current) {
-      cancelAnimationFrame(patchFrameRef.current);
-    }
-    try {
-      patchFrameRef.current = requestAnimationFrame(() => {
-        patchFrameRef.current = null;
-        applyPatch();
-      });
-    } catch {
-      applyPatch();
-    }
-    return () => {
-      if (patchFrameRef.current) {
-        cancelAnimationFrame(patchFrameRef.current);
-      }
-    };
+    applyPatch();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- storeVersion is the trigger; applyPatch is stable per store.
   }, [storeVersion, open, applyPatch]);
 
