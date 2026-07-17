@@ -37,13 +37,10 @@ collections:
             name: footer
             widget: object
             fields:
-              - { label: Group Label, name: groupLabel, widget: string }
               - label: Wearhouse Wordmark
                 name: wearhouseWordmark
                 widget: object
                 fields:
-                  - { label: Prefix, name: prefix, widget: string }
-                  - { label: Name, name: name, widget: string }
                   - label: Suffix Lines
                     name: suffix
                     widget: list
@@ -86,7 +83,7 @@ collections:
                 fields:
                   - { label: Title, name: title, widget: string }
                   - label: Links
-                    name: links
+                    name: items
                     widget: list
                     summary: "{{fields.label}} -> {{fields.href}}"
                     fields:
@@ -98,7 +95,7 @@ collections:
                 fields:
                   - { label: Title, name: title, widget: string }
                   - label: Items
-                    name: items
+                    name: links
                     widget: list
                     summary: "{{fields.label}} -> {{fields.href}}"
                     fields:
@@ -337,13 +334,6 @@ collections:
               - { label: Email Label, name: emailLabel, widget: string }
               - { label: Email Link, name: emailHref, widget: string }
               - { label: Route Map Link, name: routeMapHref, widget: string }
-              - { label: Parking Note, name: parkingNote, widget: string }
-              - label: Coordinates
-                name: coords
-                widget: object
-                fields:
-                  - { label: Latitude, name: lat, widget: string }
-                  - { label: Longitude, name: lng, widget: string }
               - { label: Google Maps Link, name: googleMapsHref, widget: string }
           - label: Wearhouse Partner
             name: wearhousePartner
@@ -434,7 +424,6 @@ collections:
             widget: list
             summary: "{{fields.title}}"
             fields:
-              - { label: ID, name: id, widget: string }
               - { label: Label, name: label, widget: string }
               - { label: Title, name: title, widget: string }
               - { label: Intro, name: intro, widget: text }
@@ -449,14 +438,6 @@ collections:
                   - { label: Phone Label, name: phoneLabel, widget: string }
                   - { label: Phone Link, name: phoneHref, widget: string }
                   - { label: Hours, name: hours, widget: list, field: { label: Line, name: line, widget: string } }
-          - label: Online Shop
-            name: online
-            widget: object
-            fields:
-              - { label: Label, name: label, widget: string }
-              - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
-              - { label: Link, name: href, widget: string }
 
   - name: agenda_page
     label: Agenda Page
@@ -579,7 +560,7 @@ collections:
                   - { label: Eyebrow, name: eyebrow, widget: string }
                   - { label: Hero Title, name: heroTitle, widget: string }
                   - { label: Summary, name: summary, widget: text }
-                  - { label: Photo, name: heroImage, widget: image, required: false, description: "Shown on the brand's card in the brands overview and on the homepage wall. Best size: portrait, around 1200×1500 px." }
+                  - { label: Photo, name: heroImage, widget: image, required: false, description: "Shown on the brand's card in the brands overview. Best size: portrait, around 1200×1500 px. (The homepage brand wall uses its own separate images, edited under Homepage.)" }
               - label: Detail page
                 name: detail
                 widget: object
@@ -616,7 +597,6 @@ collections:
             widget: object
             fields:
               - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Title, name: title, widget: string }
               - { label: Summary, name: summary, widget: text }
               - { label: Hero Image, name: image, widget: image, description: "Best size: a wide photo around 2560×1440 px." }
               - { label: Hero Image Alt Text, name: imageAlt, widget: string }
@@ -708,23 +688,6 @@ collections:
               - { label: CTA Button Link, name: ctaButtonHref, widget: string }
               - { label: Represented Label, name: representedLabel, widget: string }
               - { label: Market Label, name: marketLabel, widget: string }
-      - label: Contact Block Div
-        name: wearhouse_page_contact
-        file: src/_data/cms/wearhousePage/contact.json
-        format: json
-        fields:
-          - label: Contact Block
-            name: contact
-            widget: object
-            fields:
-              - { label: Name, name: name, widget: string }
-              - { label: Address, name: address, widget: list, field: { label: Line, name: line, widget: string } }
-              - { label: Phone Label, name: phoneLabel, widget: string }
-              - { label: Phone Link, name: phoneHref, widget: string }
-              - { label: Email Label, name: emailLabel, widget: string }
-              - { label: Email Link, name: emailHref, widget: string }
-              - { label: Maps Link, name: mapsHref, widget: string }
-              - { label: Website Link, name: websiteHref, widget: string }
       - label: Brand Entries Div
         name: wearhouse_page_brands
         file: src/_data/cms/wearhousePage/brands.json

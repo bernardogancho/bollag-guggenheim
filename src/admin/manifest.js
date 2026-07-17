@@ -48,7 +48,6 @@ export const PAGES = [
       { id: 'showroom', label: 'Showroom', file: `${CMS}/wearhousePage/showroom.json`, keys: ['showroomSection'] },
       { id: 'cta', label: 'Call to action', file: `${CMS}/wearhousePage/cta.json`, keys: ['cta'] },
       { id: 'page-settings', label: 'Brand page settings', file: `${CMS}/wearhousePage/detail.json`, keys: ['detailPage'] },
-      { id: 'contact', label: 'Contact block', file: `${CMS}/wearhousePage/contact.json`, keys: ['contact'] },
     ],
   },
   {
@@ -57,7 +56,6 @@ export const PAGES = [
       { id: 'hero', label: 'Hero banner', file: `${CMS}/stores.json`, keys: ['hero', 'heroStats'] },
       { id: 'network', label: 'Network introduction', file: `${CMS}/stores.json`, keys: ['networkSection'] },
       { id: 'store-list', label: 'Store list', hint: 'Store groups and their stores', file: `${CMS}/stores.json`, keys: ['groups'] },
-      { id: 'online', label: 'Online shop', file: `${CMS}/stores.json`, keys: ['online'] },
     ],
   },
   {
