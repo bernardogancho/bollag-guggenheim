@@ -64,6 +64,7 @@ function SectionEditor({ page, section, rest }) {
   }
   const fields = entry.fields.filter(field => section.keys.includes(field.name));
   const dirty = section.keys.some(key => store.isKeyDirty(section.file, key));
+  const hidePaths = section.hideFields ? new Set(section.hideFields) : undefined;
 
   return (
     <div>
@@ -98,6 +99,7 @@ function SectionEditor({ page, section, rest }) {
             onChange={next => store.update(section.file, draftCopy => { draftCopy[field.name] = pruneEmptyAdditions(next, store.getRemote(section.file)?.[field.name]); })}
             pathPrefix={field.name}
             routeBase={[page.id, section.id]}
+            hidePaths={hidePaths}
           />
         ))}
       </div>

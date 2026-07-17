@@ -14,7 +14,7 @@ export const PAGES = [
       { id: 'intro', label: 'Introduction', hint: 'Small label, title, summary and image', file: `${CMS}/home/intro.json`, keys: ['intro'] },
       { id: 'bollag-portfolio', label: 'Bollag portfolio', hint: 'Brand logo wall', file: `${CMS}/home/brandsWall.json`, keys: ['brandsWall'] },
       { id: 'wearhouse-portfolio', label: 'Wearhouse portfolio', hint: 'Wearhouse brand wall', file: `${CMS}/home/wearhouseWall.json`, keys: ['wearhouseWall'] },
-      { id: 'editorial-selection', label: 'Editorial selection', hint: 'Curated image mosaic — shared with the Company page; editing this changes both pages', file: `${CMS}/home/selectionSection.json`, keys: ['selection'] },
+      { id: 'editorial-selection', label: 'Editorial selection', hint: 'Curated image mosaic — shared with the Company page; editing this changes both pages', file: `${CMS}/home/selectionSection.json`, keys: ['selection'], hideFields: ['selection.eyebrow'] },
     ],
   },
   {

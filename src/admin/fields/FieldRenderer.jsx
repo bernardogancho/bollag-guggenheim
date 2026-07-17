@@ -7,16 +7,22 @@ import { ImageField } from './ImageField.jsx';
 
 // pathPrefix: dot path of this field from the FILE ROOT (e.g. 'groups' or 'brands.2.detail.gallery').
 // routeBase: [pageId, sectionId] used to build managed-list routes.
-export function FieldRenderer({ field, value, onChange, pathPrefix, routeBase }) {
+export function FieldRenderer({ field, value, onChange, pathPrefix, routeBase, hidePaths }) {
   const widget = field.widget || 'string';
 
   if (widget === 'object') {
+    // hidePaths lets a section suppress a field that its shared config includes
+    // but that does nothing for this particular section (e.g. the Editorial
+    // Selection eyebrow, which the homepage hides but the Company page shows).
+    const children = (field.fields || []).filter(
+      child => !hidePaths?.has(`${pathPrefix}.${child.name}`),
+    );
     return (
       <section className="group-card">
         <h3 className="group-card-title">{field.label || field.name}</h3>
         {field.description ? <div className="field-help">{field.description}</div> : null}
         <div className="field-grid">
-          {(field.fields || []).map(child => (
+          {children.map(child => (
             <FieldRenderer
               key={child.name}
               field={child}
@@ -24,6 +30,7 @@ export function FieldRenderer({ field, value, onChange, pathPrefix, routeBase })
               onChange={next => onChange({ ...(value || {}), [child.name]: next })}
               pathPrefix={`${pathPrefix}.${child.name}`}
               routeBase={routeBase}
+              hidePaths={hidePaths}
             />
           ))}
         </div>

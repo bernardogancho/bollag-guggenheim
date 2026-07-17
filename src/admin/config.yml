@@ -202,7 +202,7 @@ collections:
             name: selection
             widget: object
             fields:
-              - { label: Small label above the title, name: eyebrow, widget: string, description: "Note: this is hidden on the homepage. It only appears where this same content is reused on the Company page." }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "The small grey label above the heading on the Company page (not shown on the homepage)." }
               - { label: Section heading, name: title, widget: string, description: "This section also appears on the Company page." }
               - label: Items
                 name: items
