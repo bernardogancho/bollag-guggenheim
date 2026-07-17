@@ -5,11 +5,10 @@ import { resolveListField } from '../lib/configPath.js';
 import { joinWearhouse, splitWearhouse, blankRosterItem, blankBrandEntry } from '../adapters/wearhouse.js';
 import { reorder } from '../lib/paths.js';
 import { pruneEmptyAdditions } from '../lib/prune.js';
+import { slugify } from '../lib/slugify.js';
 import { FieldRenderer } from '../fields/FieldRenderer.jsx';
 import { Breadcrumbs } from './SectionScreen.jsx';
 import { useToast } from '../shell/Toasts.jsx';
-
-const slugify = value => String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
 export function WearhouseScreen({ page, section, rest }) {
   const { store, fieldConfig } = useAdmin();

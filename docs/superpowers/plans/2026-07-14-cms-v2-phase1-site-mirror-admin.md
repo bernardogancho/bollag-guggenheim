@@ -4396,8 +4396,10 @@ confuse (`card.heroImage`, `detail.detailHeroImage`, `detail.detailGallery`).
 
 **Files:**
 - Create: `src/admin/screens/BrandsScreen.jsx`
+- Create: `src/admin/lib/slugify.js` (the slug helper both brand editors share)
 - Modify: `src/admin/manifest.js` (tag the `all-brands` section `custom: 'brands'`; `file`/`keys` unchanged so the manifest-integrity tests keep passing)
-- Modify: `src/admin/screens/SectionScreen.jsx` (dispatch `section.custom === 'brands'` to `BrandsScreen`, before the `joined` and managed-list branches)
+- Modify: `src/admin/screens/SectionScreen.jsx` (dispatch generic `'list'` subroutes first, then `section.custom === 'brands'` to `BrandsScreen` — order is load-bearing, see Step 3)
+- Modify: `src/admin/screens/WearhouseScreen.jsx` (import the shared `slugify` instead of a local copy)
 - Modify: `src/admin/config.yml` (`brands_page_brands` → `brands` item fields: delete the dead `gallery` list field; relabel `card.heroImage`, `detail.detailHeroImage`, `detail.detailGallery`)
 - Modify: `src/admin/shell/Search.jsx` (BG brand hits route to the new index-identity path)
 - Modify: `src/admin/lib/router.js` (route-table comment)
@@ -4452,7 +4454,20 @@ confuse (`card.heroImage`, `detail.detailHeroImage`, `detail.detailGallery`).
                       - { label: Source, name: source, widget: string, required: false }
 ```
 
-- [ ] **Step 2: Create `src/admin/screens/BrandsScreen.jsx`**, mirroring `WearhouseScreen`'s list/item split for the single-file case (identity by index, not slug — no join across files):
+- [ ] **Step 2: Extract the shared slug helper, then create `src/admin/screens/BrandsScreen.jsx`.**
+  `WearhouseScreen` had a module-local `slugify`; rather than duplicating it, it moves to
+  `src/admin/lib/slugify.js` and both brand editors import it (`WearhouseScreen.jsx` drops its
+  local copy):
+
+```js
+// Turns a display name into a URL slug: lowercase, runs of anything that is
+// not a letter or digit collapse to single hyphens, no leading/trailing
+// hyphens. Shared by the Wearhouse and BG brand editors.
+export const slugify = value => String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+```
+
+  `BrandsScreen` mirrors `WearhouseScreen`'s list/item split for the single-file case
+  (identity by index, not slug — no join across files):
 
 ```jsx
 import React, { useState } from 'react';
@@ -4461,12 +4476,11 @@ import { navigate } from '../lib/router.js';
 import { resolveListField, defaultValueForFields } from '../lib/configPath.js';
 import { getAtPath, setAtPath, reorder } from '../lib/paths.js';
 import { pruneEmptyAdditions } from '../lib/prune.js';
+import { slugify } from '../lib/slugify.js';
 import { itemImage } from '../lib/summarize.js';
 import { FieldRenderer } from '../fields/FieldRenderer.jsx';
 import { Breadcrumbs } from './SectionScreen.jsx';
 import { useToast } from '../shell/Toasts.jsx';
-
-const slugify = value => String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
 // Mirrors WearhouseScreen's UX for the single-file BG brand list: a list of
 // index-identity cards ('brands.<index>') plus an item editor with a
@@ -4668,9 +4682,18 @@ export function BrandsScreen({ page, section, rest }) {
 ```
 
 - [ ] **Step 3: Dispatch from `SectionScreen.jsx`.** Tag the section `custom: 'brands'` in
-  `manifest.js` (keep `file`/`keys` unchanged — the manifest-integrity tests key off those),
-  and route it before the `joined` and generic managed-list branches — the generic
-  managed-list route for this one section becomes unreachable, which is intended:
+  `manifest.js` (keep `file`/`keys` unchanged — the manifest-integrity tests key off those).
+  Dispatch order is load-bearing: the generic `'list'` subroute branch must come FIRST, then
+  the custom brands branch, then the joined branch. `BrandsScreen`'s nested list fields (the
+  Visual journal at `brands.<idx>.detail.detailGallery`, plus `card`/`detail` sub-lists)
+  reuse the generic `ItemListScreen`/`ItemEditScreen` via FieldRenderer's "Manage items"
+  route `.../all-brands/list/<listPath>` — if the custom branch ran first, `BrandsScreen`
+  would see `rest[0] === 'list'`, fail the integer-index parse, and dead-end on "Brand not
+  found". The ordering is safe: Wearhouse routes never carry a `'list'` segment and brands
+  item routes never start with `'list'`. Only `BrandsScreen`'s TOP-LEVEL list/item duties
+  replace the old generic `.../list/brands/<index>` route — that path form for the top-level
+  `brands` list is no longer emitted anywhere (Search and BrandsScreen both use
+  `.../all-brands/<index>`), which is intended:
 
 ```js
 // manifest.js — 'all-brands' section
@@ -4681,15 +4704,26 @@ export function BrandsScreen({ page, section, rest }) {
 // SectionScreen.jsx
 import { BrandsScreen } from './BrandsScreen.jsx';
 ...
-  if (section.joined) {
-    return <WearhouseScreen page={page} section={section} rest={rest} />;
+  // Managed-list subroutes: [.., 'list', <listPath>] and [.., 'list', <listPath>, <index>].
+  // Checked BEFORE the custom brands dispatch: BrandsScreen's nested lists
+  // (e.g. the Visual journal at 'brands.<idx>.detail.detailGallery') reuse the
+  // generic list screens. Safe ordering — wearhouse routes never carry a
+  // 'list' segment and brands item routes never start with 'list'.
+  if (rest[0] === 'list' && rest.length >= 2) {
+    const listPath = rest[1];
+    if (rest.length >= 3) {
+      return <ItemEditScreen page={page} section={section} listPath={listPath} index={Number(rest[2])} />;
+    }
+    return <ItemListScreen page={page} section={section} listPath={listPath} />;
   }
 
   if (section.custom === 'brands') {
     return <BrandsScreen page={page} section={section} rest={rest} />;
   }
 
-  // Managed-list subroutes: [.., 'list', <listPath>] and [.., 'list', <listPath>, <index>]
+  if (section.joined) {
+    return <WearhouseScreen page={page} section={section} rest={rest} />;
+  }
 ```
 
 - [ ] **Step 4: Point brand-hit search results and the route comment at the new address.**
@@ -4717,12 +4751,23 @@ bgBrands.forEach((brand, index) => {
   - `npm test` — 58/58 pass (manifest integrity is unaffected: `file`/`keys` on `all-brands` are unchanged, only the additive `custom` key was added).
   - `npm run build` — green (`build:css`, `build:site`, `build:admin`).
   - Node sanity check: parsed `config.yml`, confirmed `brands_page_brands` → `brands` → `detail`'s child fields no longer include `gallery` but still include `detailGallery`.
+  - Route traces: `#/page/brands/all-brands/list/brands.0.detail.detailGallery` hits the
+    generic `'list'` branch first → `ItemListScreen` resolves the list field via
+    `resolveListField(entry.fields, 'brands.0.detail.detailGallery')` and renders the
+    gallery grid; `#/page/brands/all-brands/0` skips the `'list'` branch (`rest[0]` is
+    `'0'`) → `BrandsScreen` item mode.
 
 - [ ] **Step 6: Commit**
+
+Landed as two commits (the dispatch-order fix and the shared `slugify` came out of review
+of the first commit):
 
 ```bash
 git add src/admin/screens/BrandsScreen.jsx src/admin/manifest.js src/admin/screens/SectionScreen.jsx src/admin/config.yml src/admin/shell/Search.jsx src/admin/lib/router.js docs/superpowers/plans/2026-07-14-cms-v2-phase1-site-mirror-admin.md
 git commit -m "feat(cms-v2): wearhouse-style brand editor; retire dead gallery field"
+
+git add src/admin/lib/slugify.js src/admin/screens/SectionScreen.jsx src/admin/screens/BrandsScreen.jsx src/admin/screens/WearhouseScreen.jsx docs/superpowers/plans/2026-07-14-cms-v2-phase1-site-mirror-admin.md
+git commit -m "fix(cms-v2): restore nested gallery routes under the brands screen; shared slugify"
 ```
 
 ---

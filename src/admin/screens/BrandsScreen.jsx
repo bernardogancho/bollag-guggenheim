@@ -4,12 +4,11 @@ import { navigate } from '../lib/router.js';
 import { resolveListField, defaultValueForFields } from '../lib/configPath.js';
 import { getAtPath, setAtPath, reorder } from '../lib/paths.js';
 import { pruneEmptyAdditions } from '../lib/prune.js';
+import { slugify } from '../lib/slugify.js';
 import { itemImage } from '../lib/summarize.js';
 import { FieldRenderer } from '../fields/FieldRenderer.jsx';
 import { Breadcrumbs } from './SectionScreen.jsx';
 import { useToast } from '../shell/Toasts.jsx';
-
-const slugify = value => String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
 // Mirrors WearhouseScreen's UX for the single-file BG brand list: a list of
 // index-identity cards ('brands.<index>') plus an item editor with a

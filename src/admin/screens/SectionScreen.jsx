@@ -27,21 +27,25 @@ export function SectionScreen({ page, section, rest }) {
   useStoreVersion(store);
   const toast = useToast();
 
-  if (section.joined) {
-    return <WearhouseScreen page={page} section={section} rest={rest} />;
-  }
-
-  if (section.custom === 'brands') {
-    return <BrandsScreen page={page} section={section} rest={rest} />;
-  }
-
-  // Managed-list subroutes: [.., 'list', <listPath>] and [.., 'list', <listPath>, <index>]
+  // Managed-list subroutes: [.., 'list', <listPath>] and [.., 'list', <listPath>, <index>].
+  // Checked BEFORE the custom brands dispatch: BrandsScreen's nested lists
+  // (e.g. the Visual journal at 'brands.<idx>.detail.detailGallery') reuse the
+  // generic list screens. Safe ordering — wearhouse routes never carry a
+  // 'list' segment and brands item routes never start with 'list'.
   if (rest[0] === 'list' && rest.length >= 2) {
     const listPath = rest[1];
     if (rest.length >= 3) {
       return <ItemEditScreen page={page} section={section} listPath={listPath} index={Number(rest[2])} />;
     }
     return <ItemListScreen page={page} section={section} listPath={listPath} />;
+  }
+
+  if (section.custom === 'brands') {
+    return <BrandsScreen page={page} section={section} rest={rest} />;
+  }
+
+  if (section.joined) {
+    return <WearhouseScreen page={page} section={section} rest={rest} />;
   }
 
   const entry = fieldConfig.get(section.file);
