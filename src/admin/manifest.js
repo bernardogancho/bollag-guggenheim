@@ -14,7 +14,7 @@ export const PAGES = [
       { id: 'intro', label: 'Introduction', hint: 'Small label, title, summary and image', file: `${CMS}/home/intro.json`, keys: ['intro'] },
       { id: 'bollag-portfolio', label: 'Bollag portfolio', hint: 'Brand logo wall', file: `${CMS}/home/brandsWall.json`, keys: ['brandsWall'] },
       { id: 'wearhouse-portfolio', label: 'Wearhouse portfolio', hint: 'Wearhouse brand wall', file: `${CMS}/home/wearhouseWall.json`, keys: ['wearhouseWall'] },
-      { id: 'editorial-selection', label: 'Editorial selection', hint: 'Curated image mosaic', file: `${CMS}/home/selectionSection.json`, keys: ['selection'] },
+      { id: 'editorial-selection', label: 'Editorial selection', hint: 'Curated image mosaic — shared with the Company page; editing this changes both pages', file: `${CMS}/home/selectionSection.json`, keys: ['selection'] },
     ],
   },
   {
@@ -24,6 +24,7 @@ export const PAGES = [
       { id: 'intro', label: 'Introduction', file: `${CMS}/company.json`, keys: ['intro'] },
       { id: 'history', label: 'History', file: `${CMS}/company.json`, keys: ['history'] },
       { id: 'distribution', label: 'Distribution', file: `${CMS}/company.json`, keys: ['distribution'] },
+      { id: 'editorial-selection', label: 'Editorial selection', hint: 'Shared with the homepage — editing this changes both pages', file: `${CMS}/home/selectionSection.json`, keys: ['selection'] },
     ],
   },
   {
