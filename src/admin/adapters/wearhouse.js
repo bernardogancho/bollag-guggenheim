@@ -63,7 +63,7 @@ export function splitWearhouse(records) {
 }
 
 export function blankRosterItem({ slug = '', name = '' } = {}) {
-  return { name, slug, segment: '', pageHref: slug ? `/wearhouse/${slug}/` : '', logoSrc: '', hoverImage: '' };
+  return { name, slug, cardLabel: 'Women & Men', segment: '', pageHref: slug ? `/wearhouse/${slug}/` : '', logoSrc: '', hoverImage: '' };
 }
 
 export function blankBrandEntry({ slug = '', name = '' } = {}) {

@@ -4,6 +4,7 @@
       "name": "Closed",
       "slug": "closed",
       "card": {
+        "cardLabel": "Women & Men",
         "eyebrow": "Modern Essentials",
         "heroTitle": "Made with Love",
         "summary": "European denim and wardrobe foundations shaped through French vision, Italian making, and German precision.",
@@ -173,6 +174,7 @@
       "name": "Codello",
       "slug": "codello",
       "card": {
+        "cardLabel": "Women & Men",
         "eyebrow": "Accessory Color",
         "heroTitle": "Accessories that makes people happy.",
         "summary": "Scarves and accessories driven by print, color, craft, and a long-standing signature in silk.",
@@ -293,6 +295,7 @@
       "slug": "cuoieria-fiorentina",
       "logoImage": "/assets/media/brands/cuoieria-fiorentina.png",
       "card": {
+        "cardLabel": "Women & Men",
         "eyebrow": "Leather Goods",
         "heroTitle": "Placeholder title for Cuoieria Fiorentina.",
         "summary": "Placeholder copy for Cuoieria Fiorentina, ready to be replaced with the final brand description.",
@@ -388,6 +391,7 @@
       "slug": " daniele-fiesoli",
       "logoImage": "/assets/media/uploads/1784126994502-dk_logotype_pos.jpg",
       "card": {
+        "cardLabel": "Women & Men",
         "heroTitle": "Timeless Italian Knitwear, Crafted for Modern Living",
         "summary": "Timeless Italian Knitwear, Crafted for Modern Living\n",
         "heroImage": "/assets/media/uploads/1784126471550-daniele-fiesoli_women_picture-brand_portrait.jpg",
@@ -408,6 +412,7 @@
       "name": "Drykorn",
       "slug": "drykorn",
       "card": {
+        "cardLabel": "Women & Men",
         "eyebrow": "Contemporary Tailoring",
         "heroTitle": "For Beautiful People",
         "summary": "Sharper silhouettes and modern tailoring for independent dressers with a metropolitan point of view.",
@@ -577,6 +582,7 @@
       "name": "G-Lab",
       "slug": "g-lab",
       "card": {
+        "cardLabel": "Women & Men",
         "eyebrow": "Performance Outerwear",
         "heroTitle": "Always in Your Element",
         "summary": "Technical outerwear that bridges functional protection with a cleaner contemporary fashion sensibility.",
@@ -631,6 +637,7 @@
       "name": "GUESS",
       "slug": "guess",
       "card": {
+        "cardLabel": "Women & Men",
         "eyebrow": "Global Lifestyle",
         "heroTitle": "The Essence of Sexyness",
         "summary": "A globally recognised lifestyle label combining denim heritage, accessories, and a more overt sense of fashion image-making.",
@@ -790,6 +797,7 @@
       "name": "iBlues",
       "slug": "iblues",
       "card": {
+        "cardLabel": "Women & Men",
         "eyebrow": "Modern Femininity",
         "heroTitle": "Glamour for Fashionable Women",
         "summary": "Italian womenswear with bold shapes, expressive color, and an effortless version of glamour.",
@@ -929,6 +937,7 @@
       "name": "More & More",
       "slug": "more-and-more",
       "card": {
+        "cardLabel": "Women & Men",
         "eyebrow": "Everyday Elegance",
         "heroTitle": "More Inspiration",
         "summary": "German womenswear built around feminine dressing, practical coordination, and strong day-to-day value.",
@@ -1074,6 +1083,7 @@
       "name": "Rich & Royal",
       "slug": "rich-royal",
       "card": {
+        "cardLabel": "Women & Men",
         "eyebrow": "Premium Lifestyle",
         "heroTitle": "Live rich - act royal",
         "summary": "Contemporary premium fashion with expressive color, tactile fabrics, and a strong feminine self-image.",
@@ -1189,6 +1199,7 @@
       "name": "YAYA",
       "slug": "yaya",
       "card": {
+        "cardLabel": "Women & Men",
         "eyebrow": "Soft Modernity",
         "heroTitle": "It's A State of Mind",
         "summary": "A lifestyle brand built around soft fabrics, toned-down color, and accessible design with long-term wearability.",
@@ -1343,6 +1354,7 @@
       "name": "0039 Italy",
       "slug": "0039-italy",
       "card": {
+        "cardLabel": "Women & Men",
         "eyebrow": "Blouse Expertise",
         "heroTitle": "True to itself and to its Roots",
         "summary": "A German label with an Italian sensibility, built around blouses as the enduring center of its identity.",

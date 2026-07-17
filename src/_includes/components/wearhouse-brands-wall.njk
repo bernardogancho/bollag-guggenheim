@@ -32,7 +32,7 @@
               <span class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/16 bg-white/10 text-sm text-white/72 transition duration-300 group-hover:bg-white group-hover:text-black">→</span>
             </div>
             <div class="max-w-[28rem]">
-              <p class="type-label mb-3 text-white/80">Women &amp; Men</p>
+              {% if brand.cardLabel %}<p class="type-label mb-3 text-white/80">{{ brand.cardLabel }}</p>{% endif %}
               <div class="mb-4 flex max-w-full items-center">
                 {% if logoImage %}
                   <img src="{{ logoImage }}" alt="{{ brand.name }}" class="block brightness-0 invert drop-shadow-[0_8px_22px_rgba(0,0,0,0.38)] {{ logoClass }}">

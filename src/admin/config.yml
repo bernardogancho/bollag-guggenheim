@@ -563,6 +563,7 @@ collections:
                 name: card
                 widget: object
                 fields:
+                  - { label: Card label, name: cardLabel, widget: string, required: false, description: "The small line above the logo on this brand's card in the Brands overview." }
                   - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
                   - { label: Hero Title, name: heroTitle, widget: string }
                   - { label: Summary, name: summary, widget: text }
@@ -641,6 +642,7 @@ collections:
                 fields:
                   - { label: Name, name: name, widget: string }
                   - { label: Slug, name: slug, widget: string, description: "The brand's web-address piece: lowercase, words joined by hyphens (e.g. 'cuoieria-fiorentina'). Changing it changes the page's URL." }
+                  - { label: Card label, name: cardLabel, widget: string, required: false, description: "The small line above the logo on this brand's card on the Wearhouse page." }
                   - { label: Segment, name: segment, widget: string }
                   - { label: Page Link, name: pageHref, widget: string }
                   - { label: Logo Image, name: logoSrc, widget: image, required: false, description: "Use an SVG or a transparent PNG at least 400 px wide." }

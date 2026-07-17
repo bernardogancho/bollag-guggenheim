@@ -118,6 +118,7 @@ export function BrandsScreen({ page, section, rest }) {
         title: 'Card in the brand overviews',
         help: "The brand's tile in the Brands overview and on the homepage wall. The logo and name appear on top of this photo.",
         fields: [
+          { source: 'card', name: 'cardLabel', overrides: { label: 'Card label' } },
           { source: 'card', name: 'heroImage' },
         ],
       },
@@ -241,7 +242,7 @@ export function BrandsScreen({ page, section, rest }) {
       name,
       slug: nextSlug,
       logoImage: '',
-      card: defaultValueForFields(cardField?.fields || []),
+      card: { ...defaultValueForFields(cardField?.fields || []), cardLabel: 'Women & Men' },
       detail: defaultValueForFields(detailField?.fields || []),
     };
     const newIndex = items.length;

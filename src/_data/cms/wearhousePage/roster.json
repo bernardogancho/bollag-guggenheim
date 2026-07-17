@@ -6,6 +6,7 @@
       {
         "name": "CALIBAN",
         "slug": "caliban",
+        "cardLabel": "Women & Men",
         "segment": "Women",
         "pageHref": "/wearhouse/caliban/",
         "logoSrc": "/assets/media/wearhouse/logos/caliban.clean.png",
@@ -14,6 +15,7 @@
       {
         "name": "CIRCOLO 1901",
         "slug": "circolo-1901",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/circolo-1901/",
         "logoSrc": "/assets/media/wearhouse/logos/circolo-1901.clean.png",
@@ -22,6 +24,7 @@
       {
         "name": "DANIELE FIESOLI",
         "slug": "daniele-fiesoli",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/daniele-fiesoli/",
         "logoSrc": "/assets/media/wearhouse/logos/daniele-fiesoli.clean.png",
@@ -30,6 +33,7 @@
       {
         "name": "DEA KUDIBAL",
         "slug": "dea-kudibal",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/dea-kudibal/",
         "logoSrc": "/assets/media/wearhouse/logos/dea-kudibal.svg",
@@ -38,6 +42,7 @@
       {
         "name": "DUNO",
         "slug": "duno",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/duno/",
         "logoSrc": "/assets/media/wearhouse/logos/duno.clean.png",
@@ -46,6 +51,7 @@
       {
         "name": "edelle",
         "slug": "edelle",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/edelle/",
         "logoSrc": "/assets/media/wearhouse/logos/edelle.svg",
@@ -54,6 +60,7 @@
       {
         "name": "FFC",
         "slug": "ffc",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/ffc/",
         "logoSrc": "/assets/media/wearhouse/logos/ffc.clean.png",
@@ -62,6 +69,7 @@
       {
         "name": "IBELIV",
         "slug": "ibeliv",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/ibeliv/",
         "logoSrc": "/assets/media/wearhouse/logos/ibeliv.clean.png",
@@ -70,6 +78,7 @@
       {
         "name": "MASON`S",
         "slug": "masons",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/masons/",
         "logoSrc": "/assets/media/wearhouse/logos/masons.clean.png",
@@ -78,6 +87,7 @@
       {
         "name": "SASSENBACH",
         "slug": "sassenbach",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/sassenbach/",
         "logoSrc": "/assets/media/wearhouse/logos/sassenbach.svg",
@@ -86,6 +96,7 @@
       {
         "name": "SAVE THE DUCK",
         "slug": "save-the-duck",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/save-the-duck/",
         "logoSrc": "/assets/media/wearhouse/logos/save-the-duck.clean.png",
@@ -94,6 +105,7 @@
       {
         "name": "TANTÄ",
         "slug": "tanta",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/tanta/",
         "logoSrc": "/assets/media/wearhouse/logos/tanta.png",
@@ -102,6 +114,7 @@
       {
         "name": "TINTORIA MATTEI",
         "slug": "tintoria-mattei",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/tintoria-mattei/",
         "logoSrc": "/assets/media/wearhouse/logos/tintoria-mattei.clean.png",
@@ -110,6 +123,7 @@
       {
         "name": "VELVET",
         "slug": "velvet",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/velvet/",
         "logoSrc": "/assets/media/wearhouse/logos/velvet.svg",
@@ -118,6 +132,7 @@
       {
         "name": "VIA MASINI",
         "slug": "via-masini",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/via-masini/",
         "logoSrc": null,
