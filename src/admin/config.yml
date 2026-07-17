@@ -588,7 +588,6 @@ collections:
                   - { label: Focus, name: focus, widget: text }
                   - { label: Atmosphere, name: atmosphere, widget: string }
                   - { label: Categories, name: categories, widget: list, field: { label: Category, name: category, widget: string } }
-                  - { label: Tone, name: tone, widget: text }
                   - { label: Detail Hero Image, name: detailHeroImage, widget: image, required: false, description: "The big banner at the top of the brand's own page." }
                   - label: Visual journal
                     name: detailGallery

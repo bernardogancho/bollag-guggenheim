@@ -11,9 +11,12 @@ import { Breadcrumbs } from './SectionScreen.jsx';
 import { useToast } from '../shell/Toasts.jsx';
 
 // Mirrors WearhouseScreen's UX for the single-file BG brand list: a list of
-// index-identity cards ('brands.<index>') plus an item editor with a
-// name/address identity block, a "Card on the Brands page" group and a
-// "Brand detail page" group.
+// index-identity cards ('brands.<index>') plus an item editor whose groups
+// cascade in the exact order the real brand page (src/brands/brand.njk)
+// renders them: Brand (identity) → Page top (hero) → Introduction (overview
+// text) → Visual journal (gallery) → Card in the brand overviews (grid/wall
+// tile). Card and detail fields are interleaved per placement, not grouped
+// by their config file location.
 export function BrandsScreen({ page, section, rest }) {
   const { store, fieldConfig } = useAdmin();
   useStoreVersion(store);
@@ -53,6 +56,60 @@ export function BrandsScreen({ page, section, rest }) {
       store.update(section.file, draftCopy => setAtPath(draftCopy, fullPath, pruned));
     };
 
+    // Explicit field paths → groups, cascading in the exact order the real
+    // brand page (src/brands/brand.njk) renders them. Each entry resolves
+    // its field definition from config (card/detail object children) so
+    // widget types and `required` stay in sync with config.yml; only
+    // label/description are overridden per placement via a shallow copy.
+    const findField = (source, name) => {
+      const fields = source === 'card' ? cardField?.fields : detailField?.fields;
+      return (fields || []).find(f => f.name === name) || null;
+    };
+    const withOverrides = (fieldDef, overrides) => {
+      if (!fieldDef) {
+        return null;
+      }
+      if (!overrides) {
+        return fieldDef;
+      }
+      return { ...fieldDef, ...overrides };
+    };
+    const groups = [
+      {
+        title: 'Page top',
+        help: "The opening of the brand's own page, in the order visitors see it.",
+        fields: [
+          { source: 'detail', name: 'detailHeroImage', overrides: { label: 'Background image', description: 'Full-screen photo behind the text. A dark gradient is used if empty.' } },
+          { source: 'card', name: 'eyebrow', overrides: { label: 'Small line above the logo' } },
+          { source: 'card', name: 'heroTitle', overrides: { label: 'Big headline', description: 'If left empty, the description below is shown as the headline.' } },
+          { source: 'card', name: 'summary', overrides: { label: 'Description', description: 'The paragraph under the headline.' } },
+        ],
+      },
+      {
+        title: 'Introduction',
+        help: 'The text block after the page top.',
+        fields: [
+          { source: 'detail', name: 'intro', overrides: { label: 'First paragraph' } },
+          { source: 'detail', name: 'focus', overrides: { label: 'Second paragraph' } },
+          { source: 'detail', name: 'atmosphere', overrides: { label: 'Style tag', description: 'Short phrase shown in the small info row, e.g. "Relaxed tailoring".' } },
+          { source: 'detail', name: 'categories', overrides: { label: 'Categories', description: 'Only the first two are shown on the page.' } },
+        ],
+      },
+      {
+        title: 'Visual journal',
+        fields: [
+          { source: 'detail', name: 'detailGallery' },
+        ],
+      },
+      {
+        title: 'Card in the brand overviews',
+        help: "The brand's tile in the Brands overview and on the homepage wall. The logo and name appear on top of this photo.",
+        fields: [
+          { source: 'card', name: 'heroImage' },
+        ],
+      },
+    ];
+
     return (
       <div>
         <Breadcrumbs parts={[
@@ -78,7 +135,8 @@ export function BrandsScreen({ page, section, rest }) {
         </div>
 
         <section className="group-card">
-          <h3 className="group-card-title">Name & web address</h3>
+          <h3 className="group-card-title">Brand</h3>
+          <div className="field-help">The basics. The logo appears at the top of the brand's page and on its cards.</div>
           <div className="field-grid two-col">
             <label className="field">
               <span className="field-label">Brand name</span>
@@ -113,29 +171,25 @@ export function BrandsScreen({ page, section, rest }) {
           </div>
         </section>
 
-        <section className="group-card">
-          <h3 className="group-card-title">Card on the Brands page</h3>
-          <div className="field-help">What visitors see in the brands overview grid and the homepage wall.</div>
-          <div className="field-grid">
-            {(cardField?.fields || []).map(field => (
-              <FieldRenderer key={field.name} field={field} value={item.card?.[field.name]}
-                onChange={next => updateField(`card.${field.name}`, next)}
-                pathPrefix={`brands.${idx}.card.${field.name}`} routeBase={[page.id, section.id]} />
-            ))}
-          </div>
-        </section>
-
-        <section className="group-card">
-          <h3 className="group-card-title">Brand detail page</h3>
-          <div className="field-help">The brand's own page at /brands/{item.slug}/.</div>
-          <div className="field-grid">
-            {(detailField?.fields || []).map(field => (
-              <FieldRenderer key={field.name} field={field} value={item.detail?.[field.name]}
-                onChange={next => updateField(`detail.${field.name}`, next)}
-                pathPrefix={`brands.${idx}.detail.${field.name}`} routeBase={[page.id, section.id]} />
-            ))}
-          </div>
-        </section>
+        {groups.map(group => (
+          <section className="group-card" key={group.title}>
+            <h3 className="group-card-title">{group.title}</h3>
+            {group.help ? <div className="field-help">{group.help}</div> : null}
+            <div className="field-grid">
+              {group.fields.map(({ source, name, overrides }) => {
+                const fieldDef = withOverrides(findField(source, name), overrides);
+                if (!fieldDef) {
+                  return null;
+                }
+                return (
+                  <FieldRenderer key={`${source}.${name}`} field={fieldDef} value={item[source]?.[name]}
+                    onChange={next => updateField(`${source}.${name}`, next)}
+                    pathPrefix={`brands.${idx}.${source}.${name}`} routeBase={[page.id, section.id]} />
+                );
+              })}
+            </div>
+          </section>
+        ))}
       </div>
     );
   }
