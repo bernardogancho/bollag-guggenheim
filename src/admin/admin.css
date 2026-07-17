@@ -1699,6 +1699,7 @@ button:disabled {
 }
 .preview-pane-head-copy { min-width: 0; }
 .preview-pane-label { margin: 0; font-size: 11.5px; line-height: 1.5; color: var(--muted); }
+.preview-pane-subnote { margin: 2px 0 0; font-size: 11px; line-height: 1.5; color: var(--muted); opacity: 0.8; }
 .preview-pane-link { display: inline-block; margin-top: 4px; font-size: 11.5px; font-weight: 600; color: var(--accent); }
 .preview-pane-link:hover { text-decoration: underline; }
 .preview-pane-toggle { flex: none; padding: 6px 10px; font-size: 12px; }

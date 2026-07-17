@@ -1,23 +1,32 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { readPreviewOpen, writePreviewOpen, locateAndHighlight, noTargetMessage } from './previewLogic.js';
+import { useAdmin, useStoreVersion } from '../lib/context.js';
+import {
+  readPreviewOpen, writePreviewOpen, locateAndHighlight, noTargetMessage,
+  patchAll, ensureBrokenImageStyle,
+} from './previewLogic.js';
 
-// Level 2 preview: the real, PUBLISHED page rendered beside the edit form,
-// scrolled to and outlining the section being edited. /admin/ and the site
-// are the same origin, so the admin can reach into the iframe directly via
-// iframe.contentDocument — no bridge script or postMessage required. The
-// highlight <style> is injected by the admin into the iframe document at
-// runtime, so it can never reach a real visitor.
+// Level 3 preview: the real, PUBLISHED page rendered beside the edit form,
+// with unsaved edits patched directly into it as you type (see Commit 3 of
+// docs/superpowers/plans/2026-07-14-cms-v2-phase1-site-mirror-admin.md,
+// "Task 21"). /admin/ and the site are the same origin, so the admin can
+// reach into the iframe directly via iframe.contentDocument — no bridge
+// script, postMessage, or code added to the site itself. Both the highlight
+// <style> and the live-patch writes happen entirely from here, into the
+// admin's own iframe document at runtime.
 //
-// This pane only ever shows the published site. It never blocks editing:
-// every iframe DOM access is wrapped in try/catch, and a missing marker, a
-// failed load, or an unreachable contentDocument all just degrade to a
-// "Preview unavailable" note rather than an error.
-export function PreviewPane({ page, section, previewUrl, previewTargets }) {
+// This pane never blocks editing: every iframe DOM access is wrapped in
+// try/catch, and a missing marker, a failed load, or an unreachable
+// contentDocument all just degrade to a "Preview unavailable" note (or,
+// for live patching, silently skip that pass) rather than an error.
+export function PreviewPane({ page, section, previewUrl, previewTargets, isManagedList }) {
+  const { store } = useAdmin();
+  const storeVersion = useStoreVersion(store);
   const [open, setOpen] = useState(() => readPreviewOpen(true));
   const [status, setStatus] = useState('loading'); // 'loading' | 'ready' | 'unavailable'
   const iframeRef = useRef(null);
   const loadedUrlRef = useRef(null);
   const retryFrameRef = useRef(null);
+  const patchFrameRef = useRef(null);
 
   // The item editors (BrandsScreen / WearhouseScreen, item mode) point the
   // pane at the specific brand's OWN page instead of the /brands/ or
@@ -34,6 +43,29 @@ export function PreviewPane({ page, section, previewUrl, previewTargets }) {
       return next;
     });
   };
+
+  // The live-patch pass: writes every [data-cms-bind] node's CURRENT draft
+  // value into the iframe DOM. Independent of the highlight pass below (it
+  // must run on every keystroke, not just on load/section-change) and never
+  // touches scroll position, so typing never yanks the preview around.
+  const applyPatch = useCallback(() => {
+    const iframe = iframeRef.current;
+    if (!iframe) {
+      return;
+    }
+    try {
+      const doc = iframe.contentDocument;
+      if (!doc) {
+        return;
+      }
+      ensureBrokenImageStyle(doc);
+      patchAll(doc, store.getDraft);
+    } catch {
+      // Cross-origin, a not-yet-navigated frame, or any other timing issue —
+      // live patching is a nicety layered on top of the plain published
+      // page; a failure here must never block editing.
+    }
+  }, [store]);
 
   const applyHighlight = useCallback(() => {
     const iframe = iframeRef.current;
@@ -56,23 +88,32 @@ export function PreviewPane({ page, section, previewUrl, previewTargets }) {
   // (fonts, images, or reveal-triggered layout shifts land a frame late), so
   // every call is followed by exactly one retry on the next animation frame.
   // Cheap, and it's the difference between a flaky "Preview unavailable" and
-  // a reliably found target.
-  const applyHighlightWithRetry = useCallback(() => {
+  // a reliably found target. The patch pass rides along on both the
+  // immediate call and the retry, since a freshly-loaded document needs its
+  // unsaved edits applied too.
+  const syncPreview = useCallback(() => {
     applyHighlight();
+    applyPatch();
     if (retryFrameRef.current) {
       cancelAnimationFrame(retryFrameRef.current);
     }
     try {
-      retryFrameRef.current = requestAnimationFrame(() => applyHighlight());
+      retryFrameRef.current = requestAnimationFrame(() => {
+        applyHighlight();
+        applyPatch();
+      });
     } catch {
       // requestAnimationFrame unavailable (e.g. some test environments) —
-      // the immediate call above already ran, so just skip the retry.
+      // the immediate calls above already ran, so just skip the retry.
     }
-  }, [applyHighlight]);
+  }, [applyHighlight, applyPatch]);
 
   useEffect(() => () => {
     if (retryFrameRef.current) {
       cancelAnimationFrame(retryFrameRef.current);
+    }
+    if (patchFrameRef.current) {
+      cancelAnimationFrame(patchFrameRef.current);
     }
   }, []);
 
@@ -84,15 +125,42 @@ export function PreviewPane({ page, section, previewUrl, previewTargets }) {
     // showing the right document, so just relocate + re-highlight instead of
     // waiting for a reload that will never come.
     if (loadedUrlRef.current === effectiveUrl) {
-      applyHighlightWithRetry();
+      syncPreview();
     } else {
       setStatus('loading');
     }
-  }, [open, effectiveUrl, targetPageId, targetSectionId, applyHighlightWithRetry]);
+  }, [open, effectiveUrl, targetPageId, targetSectionId, syncPreview]);
+
+  // Re-patch (but deliberately do NOT re-highlight/re-scroll) on every store
+  // mutation — this is what makes typing show up live. rAF-coalesced so a
+  // burst of keystrokes in one frame collapses into a single patch pass
+  // instead of one per keystroke.
+  useEffect(() => {
+    if (!open) {
+      return undefined;
+    }
+    if (patchFrameRef.current) {
+      cancelAnimationFrame(patchFrameRef.current);
+    }
+    try {
+      patchFrameRef.current = requestAnimationFrame(() => {
+        patchFrameRef.current = null;
+        applyPatch();
+      });
+    } catch {
+      applyPatch();
+    }
+    return () => {
+      if (patchFrameRef.current) {
+        cancelAnimationFrame(patchFrameRef.current);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- storeVersion is the trigger; applyPatch is stable per store.
+  }, [storeVersion, open, applyPatch]);
 
   const handleLoad = () => {
     loadedUrlRef.current = effectiveUrl;
-    applyHighlightWithRetry();
+    syncPreview();
   };
 
   const handleError = () => setStatus('unavailable');
@@ -113,8 +181,13 @@ export function PreviewPane({ page, section, previewUrl, previewTargets }) {
       <div className="preview-pane-head">
         <div className="preview-pane-head-copy">
           <p className="preview-pane-label">
-            Live page — the published version. Your unsaved edits are not shown here.
+            Live preview — your unsaved edits show here. Publish to put them on the real site.
           </p>
+          {isManagedList ? (
+            <p className="preview-pane-subnote">
+              Adding, removing, or reordering items appears after publishing.
+            </p>
+          ) : null}
           <a className="preview-pane-link" href={effectiveUrl} target="_blank" rel="noreferrer">Open in new tab ↗</a>
         </div>
         <button type="button" className="button button-ghost preview-pane-toggle" onClick={toggle}>

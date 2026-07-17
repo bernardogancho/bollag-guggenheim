@@ -9,7 +9,7 @@ import { ItemEditScreen } from './ItemEditScreen.jsx';
 import { WearhouseScreen } from './WearhouseScreen.jsx';
 import { BrandsScreen } from './BrandsScreen.jsx';
 import { PreviewPane } from '../preview/PreviewPane.jsx';
-import { computePreviewUrl } from '../preview/previewLogic.js';
+import { computePreviewUrl, isManagedListRoute } from '../preview/previewLogic.js';
 
 export function Breadcrumbs({ parts }) {
   return (
@@ -109,12 +109,13 @@ export function SectionScreen({ page, section, rest }) {
   const { store } = useAdmin();
   useStoreVersion(store);
   const previewUrl = computePreviewUrl(page, section, rest, store);
+  const isManagedList = isManagedListRoute(section, rest);
   return (
     <div className="section-preview-layout">
       <div className="section-preview-form">
         <SectionEditor page={page} section={section} rest={rest} />
       </div>
-      <PreviewPane page={page} section={section} previewUrl={previewUrl} />
+      <PreviewPane page={page} section={section} previewUrl={previewUrl} isManagedList={isManagedList} />
     </div>
   );
 }

@@ -5646,6 +5646,164 @@ git commit -m "feat(cms-v2): section preview pane (published page, highlights th
 
 ---
 
+### Task 21: Live preview (Phase 2, level 3)
+
+Task 20 shipped Level 2: the published page, scrolled and outlined. Editors still had to publish
+and reload to see whether a text edit or a new image actually looked right. This task upgrades the
+same pane to Level 3 — unsaved edits patched directly into the iframe's DOM as the editor types —
+while fixing three reliability gaps in the Level 2 highlight along the way.
+
+**The same-origin direct-patch approach, unchanged from Task 20.** No script is added to the site.
+The live-patch engine lives entirely in the admin (`previewLogic.js` + `PreviewPane.jsx`) and reaches
+into the same-origin iframe via `iframe.contentDocument`, exactly like the Level 2 highlight already
+did. The only thing that ever crosses into the iframe is admin-injected `<style>` tags (the existing
+highlight style, now also force-revealing `[data-reveal]` content, plus a new broken-image dimming
+style) and direct DOM writes (`textContent` / `img.src`) — never a `<script>`, never `postMessage`,
+never a site-side bundle change.
+
+**Commit 1 — reliability fixes for the Level 2 highlight**, before touching bind attributes at all:
+- **Force-reveal.** The site hides `[data-reveal]` content until an `IntersectionObserver` fires
+  (`body.is-ready [data-reveal]{opacity:0}` in `site.css`). A highlighted or live-patched node could
+  sit invisible in the pane despite being correctly targeted. `HIGHLIGHT_CSS` now also carries
+  `[data-reveal]{opacity:1 !important;transform:none !important;}` — admin-injected, iframe-only, so
+  it never touches the site's own stylesheet.
+- **Retry after layout.** `locateAndHighlight` now runs immediately on load/section-change AND once
+  more on the next animation frame, so a target that hadn't finished laying out yet (fonts, reveal-
+  triggered shifts) still resolves instead of flaking to "Preview unavailable".
+- **Friendlier no-target copy.** `noTargetMessage(pageId, sectionId)` returns a specific reason for
+  the two allowlisted sections (`brands.page-settings`, `wearhouse.page-settings` — text shown on
+  individual brand pages, not the listing) instead of the generic message.
+- **Per-brand preview URL.** `computePreviewUrl(page, section, rest, store)` resolves the item
+  editors' (BrandsScreen / WearhouseScreen, item mode) preview target to that ONE brand's own page
+  (`/brands/<slug>/` or `/wearhouse/<slug>/`) by reading the slug straight out of the draft store —
+  reusing `adapters/wearhouse.js`'s `joinWearhouse` for the joined Wearhouse case. `PreviewPane` takes
+  an optional `previewUrl` override; `SectionScreen` computes and passes it down.
+
+**Commit 2 — the bind scheme, added to the site templates (still invisible attributes only).** A
+bound node carries `data-cms-bind="<pageId>.<sectionId>#<jsonPathFromFileRoot>"` — e.g.
+`homepage.intro#intro.title`, `company.history#history.title`, `brands.all-brands#brands.3.card.eyebrow`.
+The engine resolves `pageId.sectionId` via the EXISTING `findSection()` in `manifest.js` to get the
+section's `file` (or, for a `joined` section, its `files`), then `getAtPath(store.getDraft(file),
+jsonPath)` — the same helper `SectionScreen`/`BrandsScreen`/etc. already use to read/write drafts.
+No second file map was introduced.
+
+Binding rules applied uniformly:
+- **Text:** only bind an element whose entire text content is exactly one `{{ ... }}` scalar
+  (whitespace around it is fine — that's just template indentation). An element mixing literal text
+  with the interpolation (`Fax {{ office.fax }}`), multiple interpolations, an `or`-fallback
+  (`{{ heroTitle or summary }}`), or a filter (`{{ x | replace(...) }}`) is left unbound — the
+  live-patched value could show something the published fallback logic would never actually render.
+- **Images:** `<img src="{{ x }}">` binds on the `<img>` itself (the engine sets `src`). Video
+  `poster`/`<source>` attributes and CSS `background-image` are out of scope (only `<img src>` is
+  patchable per the spec) and left as publish-only.
+- **List items:** where a loop cleanly exposes an index (`loop.index0`, or — for the two paginated
+  brand-detail templates, `pagination.pageNumber`, which is provably the same index as the
+  paginated array since both `src/_data/brands.js` and `wearhousePage.js`'s roster-based `brands`
+  build their arrays via a plain `.map()` over the manifest's own array, preserving order 1:1) fields
+  are bound with that index in the path. Deeply-nested double loops (a store card inside a store
+  group, an event inside an agenda month) are left publish-only beyond their OUTER loop's
+  object-level heading fields (group/month label, title, intro) — correct per-item binding would need
+  two nested loop indices threaded through the path, and those cards aren't the highest-priority
+  surface.
+- **The Wearhouse joined section** (`wearhousePage/roster.json` + `wearhousePage/brands.json`,
+  merged per-record by `src/_data/wearhouse.js` with field-level override precedence) has NO clean
+  single-file-plus-index mapping for its per-brand card/detail fields — the merge picks fields from
+  either file depending on which one defines them, and the joined array's index doesn't reliably
+  match either underlying file's array index. Only its section-level heading fields
+  (`rosterSection.eyebrow`/`title`, unambiguously roster-only) and — on `wearhouse/brand.njk` — the
+  fields provably sourced from ONE file at the page's `pagination.pageNumber` index (`brand.name`/
+  `segment` from the roster; `brand.eyebrow`/`detailPage.*` from the single-file, non-joined
+  `wearhousePage/detail.json`) are bound. `brand.summary`/`intro`/`focus`/`atmosphere`/`categories`
+  (sourced from `brands.json`'s `detail`, matched by slug rather than index) are left publish-only.
+- **Prioritized** heroes, intros, section headings/summaries, CTA button labels, all standalone
+  `<img>` nodes, and the brand detail page (`brands/brand.njk`) — the most-edited surface, and,
+  being backed by a single non-joined file (`brandsPage/brands.json`), fully bindable via
+  `pagination.pageNumber`.
+
+**Byte-identical proof — the headline requirement.** Built `origin/main` and this branch into
+separate temp trees (`git worktree add --detach`, shared `node_modules`, `npm run build`), stripped
+BOTH `data-cms-section` and `data-cms-bind` from the AFTER tree, then `diff -rq`:
+
+```bash
+find after -name '*.html' -print0 | xargs -0 perl -0777 -pi -e \
+  's/ data-cms-(section|bind)="[^"]*"//g'
+diff -rq before after -x admin -x cms-data -x media-index.json
+```
+
+Result: empty, across all 35 rendered site pages AND `assets/styles/site.css`. Two real bugs
+surfaced and were fixed to get there:
+1. **Multi-line tags.** A few `<img>`/`<a>` bindings were placed on their own line inside a
+   multi-line tag. Stripping ` data-cms-bind="..."` (a single leading space) from `\n      data-cms-bind="..."\n` leaves a stray whitespace-only line the ORIGINAL never had. Fixed by appending the
+   attribute to an existing attribute's line instead of giving it its own — including one
+   pre-existing case in `site-header.njk`'s `data-cms-section` (Task 20), which had the identical bug
+   and would have failed this same proof for a joined-file bind path if it had been checked there.
+2. **Tailwind content-scanner leakage.** `tailwind.config.js`'s `content` glob (`src/**/*.{njk,html,md,js}`)
+   reads every `.js` file under `src/admin/`, comments included, for anything that LOOKS like a
+   utility class name — not just literal `className="..."` usage. A code comment mentioning
+   "invisible", a test description mentioning "outline", and the (pre-existing, Task 20) highlight
+   style's own `outline: 3px solid ...` CSS shorthand all independently caused Tailwind to emit an
+   unused `.invisible{...}`/`.outline{...}` rule into the SITE's own `site.css` — zero visual effect
+   (nothing ever applies those classes) but real bytes, and exactly what the proof exists to catch.
+   Fixed by rewording the comments/test description and rewriting the highlight CSS as four longhand
+   `outline-width`/`-style`/`-color`/`-offset` declarations instead of the shorthand (see
+   `previewLogic.js`'s `HIGHLIGHT_CSS` comment) — no `tailwind.config.js` change was needed once the
+   literal source text stopped containing bare utility-matching words.
+
+**Commit 3 — the live-patch engine.** `previewLogic.js` gained:
+- `resolveBind(bindAttr)` → `{pageId, sectionId, jsonPath}` (pure string parsing).
+- `patchNode(el, value)` → sets `src` for an `<img>`, else `textContent`; refuses to write when
+  `value` is `undefined`/`null` (leaves the published DOM as-is rather than blanking it) or when the
+  element already has ELEMENT children (never nukes nested markup, even though Commit 2's rules
+  should mean this never actually happens).
+- `patchAll(doc, getDraft)` → queries every `[data-cms-bind]` node, resolves it via the manifest's
+  `findSection`, tries each of a `joined` section's files in order for the first defined value
+  (still just the manifest's existing `file`/`files` — no second map), and calls `patchNode`. One bad
+  node (unknown section, missing draft, a throw) is skipped and never stops the rest.
+- `isManagedListRoute(section, rest)` → true for BrandsScreen/WearhouseScreen in EITHER list or item
+  mode (item mode still has a "Delete brand" button — a structural change) and for the generic
+  managed-list sub-routes (`rest[0] === 'list'`); false for plain sections.
+
+`PreviewPane.jsx`: `applyPatch()` runs `patchAll` on load, on section/page change (riding along with
+the existing highlight retry), and — via a separate `useEffect` keyed on `useStoreVersion(store)`,
+rAF-coalesced so a burst of keystrokes collapses into one patch per frame — on every store mutation.
+Deliberately does NOT re-run `locateAndHighlight` on store changes, since that scrolls the iframe;
+typing must never yank the preview's scroll position around.
+
+**Honesty label flip.** Level 2's copy ("Live page — the published version. Your unsaved edits are
+not shown here.") is now the opposite of true, since edits ARE shown. Replaced with the exact
+required copy: `Live preview — your unsaved edits show here. Publish to put them on the real site.`
+"Open in new tab ↗" still opens the published page (now the per-brand URL when applicable).
+
+**Structural-change note.** When `isManagedListRoute` is true, a small sub-note appears under the
+header: `Adding, removing, or reordering items appears after publishing.` Text/image edits to
+EXISTING items on those same routes still patch live wherever bound — only add/remove/reorder is
+publish-only.
+
+**Fresh-upload edge case.** A newly-picked image's file may not exist in the already-built page yet
+(it lands on the next publish, not immediately). `patchNode` still sets the `src` — the browser
+shows its native broken-image rendering, no crash risk (a 404 is an async network event, not a
+thrown exception). On top of that, `patchNode` attaches one-time `error`/`load` listeners that toggle
+a `data-cms-preview-broken` attribute, dimmed via a small admin-injected style
+(`ensureBrokenImageStyle`) — a subtle visual hint, never a blocker.
+
+**Non-goals, stated explicitly (mirrors the coverage table in the task report):** structural list
+changes (add/remove/reorder) are never simulated, only announced via the sub-note; background-image
+CSS and video `poster`/`<source>` are publish-only; multi-value/fallback/filtered template
+expressions are publish-only; the Wearhouse joined section's per-record card/detail fields (beyond
+what's provably single-file-and-indexed) are publish-only.
+
+Verify: `npm test` 85/85 → 107/107 (22 new tests: reliability-fix helpers + the full live-patch
+engine) and `npm run build` green before each commit; the byte-identical proof above re-run (still
+empty) before commit 2.
+
+```bash
+git commit -m "fix(cms-v2): reliable preview highlight (force-reveal, retry, per-brand page)"
+git commit -m "feat: bind text/image nodes for live preview (invisible attributes only)"
+git commit -m "feat(cms-v2): live preview — patch text and images in the pane as you type"
+```
+
+---
+
 ## Chunk 7: Cutover, verification, walkthrough, handoff
 
 ### Task 20: Delete the old monolith

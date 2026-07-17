@@ -4,14 +4,21 @@ import {
   HIGHLIGHT_ATTR,
   HIGHLIGHT_STYLE_ID,
   HIGHLIGHT_CSS,
+  BROKEN_IMAGE_ATTR,
+  BROKEN_IMAGE_CSS,
   markerSelector,
   readPreviewOpen,
   writePreviewOpen,
   ensureHighlightStyle,
+  ensureBrokenImageStyle,
   clearHighlight,
   locateAndHighlight,
   noTargetMessage,
   computePreviewUrl,
+  isManagedListRoute,
+  resolveBind,
+  patchNode,
+  patchAll,
 } from '../previewLogic.js';
 
 // Minimal duck-typed DOM stand-ins — the vitest config runs in the `node`
@@ -241,6 +248,204 @@ describe('previewLogic', () => {
     it('returns the page url for a plain (non-item, non-joined) section', () => {
       const section = { id: 'hero', file: 'hero.json' };
       expect(computePreviewUrl(page, section, [], { getDraft: () => undefined })).toBe('/brands/');
+    });
+  });
+
+  describe('isManagedListRoute', () => {
+    it('is true for BrandsScreen in both list and item mode (item mode still has a delete button)', () => {
+      const section = { id: 'all-brands', custom: 'brands', file: 'brands.json' };
+      expect(isManagedListRoute(section, [])).toBe(true);
+      expect(isManagedListRoute(section, ['2'])).toBe(true);
+    });
+
+    it('is true for a joined Wearhouse section in both list and item mode', () => {
+      const section = { id: 'wearhouse-brands', joined: true, files: ['roster.json', 'brands.json'] };
+      expect(isManagedListRoute(section, [])).toBe(true);
+      expect(isManagedListRoute(section, ['0'])).toBe(true);
+    });
+
+    it('is true for a generic managed-list sub-route (rest[0] === "list")', () => {
+      const section = { id: 'store-list', file: 'stores.json' };
+      expect(isManagedListRoute(section, ['list', 'groups'])).toBe(true);
+      expect(isManagedListRoute(section, ['list', 'groups', '0'])).toBe(true);
+    });
+
+    it('is false for a plain section with no list route', () => {
+      const section = { id: 'hero', file: 'hero.json' };
+      expect(isManagedListRoute(section, [])).toBe(false);
+      expect(isManagedListRoute(section, undefined)).toBe(false);
+    });
+  });
+
+  describe('resolveBind', () => {
+    it('splits pageId, sectionId and jsonPath, keeping later dots in jsonPath intact', () => {
+      expect(resolveBind('homepage.intro#intro.title')).toEqual({
+        pageId: 'homepage',
+        sectionId: 'intro',
+        jsonPath: 'intro.title',
+      });
+    });
+
+    it('handles a hyphenated sectionId', () => {
+      expect(resolveBind('brands.all-brands#brands.3.card.eyebrow')).toEqual({
+        pageId: 'brands',
+        sectionId: 'all-brands',
+        jsonPath: 'brands.3.card.eyebrow',
+      });
+    });
+
+    it('returns null for malformed input instead of throwing', () => {
+      expect(resolveBind(null)).toBeNull();
+      expect(resolveBind('')).toBeNull();
+      expect(resolveBind('no-hash-here')).toBeNull();
+      expect(resolveBind('homepage.hero#')).toBeNull();
+      expect(resolveBind('#hero.title')).toBeNull();
+      expect(resolveBind('homepage#hero.title')).toBeNull();
+    });
+  });
+
+  describe('patchNode', () => {
+    it('sets an IMG element\'s src attribute', () => {
+      const attrs = new Map();
+      const el = { tagName: 'IMG', children: [], setAttribute: (name, value) => attrs.set(name, value), addEventListener: () => {} };
+      expect(patchNode(el, '/assets/media/example.jpg')).toBe(true);
+      expect(attrs.get('src')).toBe('/assets/media/example.jpg');
+    });
+
+    it('sets textContent for a non-IMG element', () => {
+      const el = { tagName: 'P', children: [] };
+      expect(patchNode(el, 'New title')).toBe(true);
+      expect(el.textContent).toBe('New title');
+    });
+
+    it('stringifies a numeric value', () => {
+      const el = { tagName: 'SPAN', children: [] };
+      expect(patchNode(el, 42)).toBe(true);
+      expect(el.textContent).toBe('42');
+    });
+
+    it('does not blank the DOM when the draft value is undefined', () => {
+      const el = { tagName: 'P', children: [], textContent: 'Published text' };
+      expect(patchNode(el, undefined)).toBe(false);
+      expect(el.textContent).toBe('Published text');
+    });
+
+    it('refuses to patch an element that already has element children (never nukes markup)', () => {
+      const el = { tagName: 'DIV', children: [{}], textContent: 'original' };
+      expect(patchNode(el, 'replacement')).toBe(false);
+      expect(el.textContent).toBe('original');
+    });
+
+    it('refuses an empty-string image src (would blank the image)', () => {
+      const el = { tagName: 'IMG', children: [], setAttribute: () => { throw new Error('should not be called'); } };
+      expect(patchNode(el, '')).toBe(false);
+    });
+
+    it('degrades to false instead of throwing for a null element', () => {
+      expect(patchNode(null, 'value')).toBe(false);
+    });
+  });
+
+  describe('patchAll', () => {
+    // homepage.intro is a real manifest section (file src/_data/cms/home/intro.json,
+    // key 'intro') — using real pageId/sectionId values here exercises the
+    // actual findSection() lookup, not a fake.
+    function makeBoundElement(bindAttr, overrides = {}) {
+      const attrs = new Map([['data-cms-bind', bindAttr]]);
+      return {
+        tagName: 'P',
+        children: [],
+        getAttribute: name => attrs.get(name),
+        setAttribute: (name, value) => attrs.set(name, value),
+        addEventListener: () => {},
+        ...overrides,
+      };
+    }
+
+    it('patches every bound node it can resolve, using the current draft', () => {
+      const title = makeBoundElement('homepage.intro#intro.title');
+      const summary = makeBoundElement('homepage.intro#intro.summary');
+      const doc = { querySelectorAll: () => [title, summary] };
+      const draft = { intro: { title: 'New headline', summary: 'New summary' } };
+      const getDraft = file => (file === 'src/_data/cms/home/intro.json' ? draft : undefined);
+
+      const result = patchAll(doc, getDraft);
+
+      expect(title.textContent).toBe('New headline');
+      expect(summary.textContent).toBe('New summary');
+      expect(result).toEqual({ patched: 2, skipped: 0 });
+    });
+
+    it('skips a node whose section is unknown, without throwing or stopping the pass', () => {
+      const bad = makeBoundElement('nope.nope#nope');
+      const good = makeBoundElement('homepage.intro#intro.title');
+      const doc = { querySelectorAll: () => [bad, good] };
+      const getDraft = () => ({ intro: { title: 'Still works' } });
+
+      const result = patchAll(doc, getDraft);
+
+      expect(good.textContent).toBe('Still works');
+      expect(result).toEqual({ patched: 1, skipped: 1 });
+    });
+
+    it('leaves the DOM untouched when the draft value is undefined (counts as skipped, not an error)', () => {
+      const el = makeBoundElement('homepage.intro#intro.doesNotExist', { textContent: 'Published' });
+      const doc = { querySelectorAll: () => [el] };
+      const result = patchAll(doc, () => ({ intro: {} }));
+
+      expect(el.textContent).toBe('Published');
+      expect(result).toEqual({ patched: 0, skipped: 1 });
+    });
+
+    it('tries each file of a joined section in order and uses the first defined value', () => {
+      // wearhouse.wearhouse-brands is a real joined manifest section spanning
+      // wearhousePage/roster.json and wearhousePage/brands.json.
+      const el = makeBoundElement('wearhouse.wearhouse-brands#rosterSection.eyebrow');
+      const doc = { querySelectorAll: () => [el] };
+      const getDraft = file => {
+        if (file.endsWith('roster.json')) return { rosterSection: { eyebrow: 'From roster' } };
+        if (file.endsWith('brands.json')) return { brands: [] };
+        return undefined;
+      };
+
+      const result = patchAll(doc, getDraft);
+
+      expect(el.textContent).toBe('From roster');
+      expect(result).toEqual({ patched: 1, skipped: 0 });
+    });
+
+    it('degrades to a no-op instead of throwing for a doc without querySelectorAll', () => {
+      expect(patchAll(null, () => undefined)).toEqual({ patched: 0, skipped: 0 });
+      expect(patchAll({}, () => undefined)).toEqual({ patched: 0, skipped: 0 });
+    });
+
+    it('keeps patching the rest of the nodes even if one throws while resolving', () => {
+      const throwing = { tagName: 'P', children: [], getAttribute: () => { throw new Error('boom'); } };
+      const good = makeBoundElement('homepage.intro#intro.title');
+      const doc = { querySelectorAll: () => [throwing, good] };
+      const result = patchAll(doc, () => ({ intro: { title: 'Survived' } }));
+
+      expect(good.textContent).toBe('Survived');
+      expect(result).toEqual({ patched: 1, skipped: 1 });
+    });
+  });
+
+  describe('BROKEN_IMAGE_CSS / ensureBrokenImageStyle', () => {
+    it('dims elements marked with the broken-image attribute', () => {
+      expect(BROKEN_IMAGE_CSS).toContain(`[${BROKEN_IMAGE_ATTR}]`);
+      expect(BROKEN_IMAGE_CSS).toContain('opacity:0.35');
+    });
+
+    it('appends the style tag once', () => {
+      let appended = 0;
+      const doc = {
+        head: { appendChild: () => { appended += 1; } },
+        createElement: () => ({ id: '', textContent: '' }),
+        getElementById: () => null,
+      };
+      expect(ensureBrokenImageStyle(doc)).toBe(true);
+      expect(appended).toBe(1);
+      expect(ensureBrokenImageStyle({ ...doc, getElementById: id => (id ? {} : null) })).toBe(true);
     });
   });
 });
