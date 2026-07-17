@@ -9,6 +9,7 @@ import { ItemEditScreen } from './ItemEditScreen.jsx';
 import { WearhouseScreen } from './WearhouseScreen.jsx';
 import { BrandsScreen } from './BrandsScreen.jsx';
 import { PreviewPane } from '../preview/PreviewPane.jsx';
+import { computePreviewUrl } from '../preview/previewLogic.js';
 
 export function Breadcrumbs({ parts }) {
   return (
@@ -105,12 +106,15 @@ function SectionEditor({ page, section, rest }) {
 }
 
 export function SectionScreen({ page, section, rest }) {
+  const { store } = useAdmin();
+  useStoreVersion(store);
+  const previewUrl = computePreviewUrl(page, section, rest, store);
   return (
     <div className="section-preview-layout">
       <div className="section-preview-form">
         <SectionEditor page={page} section={section} rest={rest} />
       </div>
-      <PreviewPane page={page} section={section} />
+      <PreviewPane page={page} section={section} previewUrl={previewUrl} />
     </div>
   );
 }

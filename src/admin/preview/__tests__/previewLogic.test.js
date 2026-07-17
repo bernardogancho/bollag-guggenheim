@@ -3,12 +3,15 @@ import {
   STORAGE_KEY,
   HIGHLIGHT_ATTR,
   HIGHLIGHT_STYLE_ID,
+  HIGHLIGHT_CSS,
   markerSelector,
   readPreviewOpen,
   writePreviewOpen,
   ensureHighlightStyle,
   clearHighlight,
   locateAndHighlight,
+  noTargetMessage,
+  computePreviewUrl,
 } from '../previewLogic.js';
 
 // Minimal duck-typed DOM stand-ins — the vitest config runs in the `node`
@@ -167,5 +170,77 @@ describe('previewLogic', () => {
 
   it('STORAGE_KEY is the documented localStorage key', () => {
     expect(STORAGE_KEY).toBe('bg-cms-preview-open');
+  });
+
+  describe('HIGHLIGHT_CSS', () => {
+    it('force-reveals [data-reveal] content inside the iframe, in addition to the highlight outline', () => {
+      // The site hides [data-reveal] until scrolled into view; the preview
+      // pane's injected style must override that so highlighted/patched
+      // content is legible without scrolling to trigger it.
+      expect(HIGHLIGHT_CSS).toContain('[data-reveal]');
+      expect(HIGHLIGHT_CSS).toContain('opacity:1 !important');
+      expect(HIGHLIGHT_CSS).toContain(`[${HIGHLIGHT_ATTR}]`);
+    });
+  });
+
+  describe('noTargetMessage', () => {
+    it('gives the allowlisted brand/wearhouse page-settings sections a specific reason', () => {
+      expect(noTargetMessage('brands', 'page-settings')).toBe(
+        "This section's content appears on the individual brand pages, not here."
+      );
+      expect(noTargetMessage('wearhouse', 'page-settings')).toBe(
+        "This section's content appears on the individual brand pages, not here."
+      );
+    });
+
+    it('falls back to the generic message for everything else', () => {
+      expect(noTargetMessage('homepage', 'hero')).toBe('Preview unavailable.');
+      expect(noTargetMessage('brands', 'all-brands')).toBe('Preview unavailable.');
+    });
+  });
+
+  describe('computePreviewUrl', () => {
+    const page = { id: 'brands', url: '/brands/' };
+
+    it('returns the page url when there is no item route (list mode)', () => {
+      const section = { id: 'all-brands', custom: 'brands', file: 'brands.json' };
+      expect(computePreviewUrl(page, section, [], { getDraft: () => undefined })).toBe('/brands/');
+    });
+
+    it('resolves the brand item route to that brand\'s own page via its slug', () => {
+      const section = { id: 'all-brands', custom: 'brands', file: 'brands.json' };
+      const store = { getDraft: file => (file === 'brands.json' ? { brands: [{ slug: 'closed' }, { slug: 'codello' }] } : undefined) };
+      expect(computePreviewUrl(page, section, ['1'], store)).toBe('/brands/codello/');
+    });
+
+    it('falls back to the page url when the brand index is out of range', () => {
+      const section = { id: 'all-brands', custom: 'brands', file: 'brands.json' };
+      const store = { getDraft: () => ({ brands: [{ slug: 'closed' }] }) };
+      expect(computePreviewUrl(page, section, ['9'], store)).toBe('/brands/');
+    });
+
+    it('resolves a joined wearhouse item route to that brand\'s own page via the joined slug', () => {
+      const wearhousePage = { id: 'wearhouse', url: '/wearhouse/' };
+      const section = { id: 'wearhouse-brands', joined: true, files: ['roster.json', 'brands.json'] };
+      const store = {
+        getDraft: file => {
+          if (file === 'roster.json') return { rosterSection: { items: [{ slug: 'caliban', name: 'Caliban' }] } };
+          if (file === 'brands.json') return { brands: [{ slug: 'caliban', name: 'Caliban' }] };
+          return undefined;
+        },
+      };
+      expect(computePreviewUrl(wearhousePage, section, ['0'], store)).toBe('/wearhouse/caliban/');
+    });
+
+    it('falls back to the page url when the joined files are not loaded yet', () => {
+      const wearhousePage = { id: 'wearhouse', url: '/wearhouse/' };
+      const section = { id: 'wearhouse-brands', joined: true, files: ['roster.json', 'brands.json'] };
+      expect(computePreviewUrl(wearhousePage, section, ['0'], { getDraft: () => undefined })).toBe('/wearhouse/');
+    });
+
+    it('returns the page url for a plain (non-item, non-joined) section', () => {
+      const section = { id: 'hero', file: 'hero.json' };
+      expect(computePreviewUrl(page, section, [], { getDraft: () => undefined })).toBe('/brands/');
+    });
   });
 });
