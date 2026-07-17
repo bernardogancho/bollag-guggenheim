@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import { allSections } from '../manifest.js';
 
 // The preview pane (Task 20) locates the DOM element being edited via an
-// invisible `data-cms-section="<page>.<section>"` attribute placed on that
+// unseen `data-cms-section="<page>.<section>"` attribute placed on that
 // section's root element in the site templates (see
 // docs/superpowers/plans/2026-07-14-cms-v2-phase1-site-mirror-admin.md,
 // "Task 20"). This test guards against silent rot: every manifest section

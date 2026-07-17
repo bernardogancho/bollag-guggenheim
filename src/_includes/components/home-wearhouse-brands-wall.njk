@@ -2,13 +2,13 @@
   <div class="relative mx-auto w-full max-w-[1600px] px-6 pb-28 pt-8 sm:px-10 lg:px-16 lg:pb-36 lg:pt-10">
     <div class="mb-10 border-t border-black/10 pt-8 lg:mb-12">
       <div class="max-w-[42rem]">
-        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/40" data-reveal>
+        <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/40" data-reveal data-cms-bind="homepage.wearhouse-portfolio#wearhouseWall.eyebrow">
           {{ cms.home.wearhouseWall.eyebrow }}
         </p>
-        <h2 class="max-w-[11ch] font-display text-[1.9rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.55rem] lg:text-[3.4rem]" data-reveal>
+        <h2 class="max-w-[11ch] font-display text-[1.9rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.55rem] lg:text-[3.4rem]" data-reveal data-cms-bind="homepage.wearhouse-portfolio#wearhouseWall.title">
           {{ cms.home.wearhouseWall.title }}
         </h2>
-        <p class="mt-5 max-w-[34rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[0.98rem] leading-[1.8] text-black/64 lg:text-[1.04rem]" data-reveal>
+        <p class="mt-5 max-w-[34rem] font-['Inter',_'Helvetica_Neue',_Arial,_sans-serif] text-[0.98rem] leading-[1.8] text-black/64 lg:text-[1.04rem]" data-reveal data-cms-bind="homepage.wearhouse-portfolio#wearhouseWall.summary">
           {{ cms.home.wearhouseWall.summary }}
         </p>
       </div>
@@ -26,16 +26,16 @@
             <img
               src="{{ brand.hoverImage }}"
               alt=""
-              class="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"
+              class="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100 group-focus-visible:opacity-100" data-cms-bind="homepage.wearhouse-portfolio#wearhouseWall.items.{{ loop.index0 }}.hoverImage"
             >
             <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.14),rgba(0,0,0,0.48)_100%)] opacity-0 transition duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"></div>
           {% endif %}
 
           <div class="relative z-10">
-            <p class="mb-6 text-[0.66rem] uppercase tracking-[0.28em] text-black/42 transition duration-500 group-hover:text-white group-focus-visible:text-white">
+            <p class="mb-6 text-[0.66rem] uppercase tracking-[0.28em] text-black/42 transition duration-500 group-hover:text-white group-focus-visible:text-white" data-cms-bind="homepage.wearhouse-portfolio#wearhouseWall.items.{{ loop.index0 }}.segment">
               {{ brand.segment }}
             </p>
-            <h3 class="max-w-[12ch] font-display text-[1.45rem] leading-[0.94] tracking-[-0.04em] text-black transition duration-500 group-hover:text-white group-focus-visible:text-white sm:text-[1.6rem] lg:text-[1.75rem]">
+            <h3 class="max-w-[12ch] font-display text-[1.45rem] leading-[0.94] tracking-[-0.04em] text-black transition duration-500 group-hover:text-white group-focus-visible:text-white sm:text-[1.6rem] lg:text-[1.75rem]" data-cms-bind="homepage.wearhouse-portfolio#wearhouseWall.items.{{ loop.index0 }}.name">
               {{ brand.name }}
             </h3>
           </div>

@@ -6,18 +6,18 @@ title: Wearhouse | Bollag-Guggenheim
 
 <section class="relative isolate overflow-hidden bg-ink text-bone" data-cms-section="wearhouse.hero">
   <div class="absolute inset-0">
-    <img src="{{ wearhouse.hero.image }}" alt="{{ wearhouse.hero.imageAlt }}" class="h-full w-full object-cover object-center">
+    <img src="{{ wearhouse.hero.image }}" alt="{{ wearhouse.hero.imageAlt }}" class="h-full w-full object-cover object-center" data-cms-bind="wearhouse.hero#hero.image">
   </div>
   <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="relative max-w-[62rem]">
       <div class="relative">
-      <p class="type-eyebrow-hero mb-4 text-bone/62 [text-shadow:0_3px_12px_rgba(0,0,0,0.38)]" data-reveal>{{ wearhouse.hero.eyebrow }}</p>
-      <p class="type-body-lg max-w-[42rem] text-bone/86 [text-shadow:0_8px_20px_rgba(0,0,0,0.44)]" data-reveal>
+      <p class="type-eyebrow-hero mb-4 text-bone/62 [text-shadow:0_3px_12px_rgba(0,0,0,0.38)]" data-reveal data-cms-bind="wearhouse.hero#hero.eyebrow">{{ wearhouse.hero.eyebrow }}</p>
+      <p class="type-body-lg max-w-[42rem] text-bone/86 [text-shadow:0_8px_20px_rgba(0,0,0,0.44)]" data-reveal data-cms-bind="wearhouse.hero#hero.summary">
         {{ wearhouse.hero.summary }}
       </p>
       <div class="type-meta mt-8 flex flex-wrap gap-x-8 gap-y-3 text-bone/56 [text-shadow:0_5px_16px_rgba(0,0,0,0.4)]" data-reveal>
         {% for item in wearhouse.hero.stats %}
-          <span>{{ item }}</span>
+          <span data-cms-bind="wearhouse.hero#hero.stats.{{ loop.index0 }}">{{ item }}</span>
         {% endfor %}
       </div>
       </div>
@@ -29,22 +29,22 @@ title: Wearhouse | Bollag-Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="grid gap-10 lg:grid-cols-[minmax(0,0.98fr)_minmax(20rem,0.62fr)] lg:items-center lg:gap-16">
       <div class="max-w-[62rem]">
-        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ wearhouse.overview.eyebrow }}</p>
-        <h2 class="type-display-lead max-w-[14ch] text-black sm:max-w-[16ch] lg:max-w-[15ch]" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal data-cms-bind="wearhouse.overview#overview.eyebrow">{{ wearhouse.overview.eyebrow }}</p>
+        <h2 class="type-display-lead max-w-[14ch] text-black sm:max-w-[16ch] lg:max-w-[15ch]" data-reveal data-cms-bind="wearhouse.overview#overview.title">
           {{ wearhouse.overview.title }}
         </h2>
         <div class="type-body-lg type-body-stack mt-8 text-black/72">
-          <p data-reveal>{{ wearhouse.overview.intro }}</p>
-          <p data-reveal>{{ wearhouse.overview.focus }}</p>
+          <p data-reveal data-cms-bind="wearhouse.overview#overview.intro">{{ wearhouse.overview.intro }}</p>
+          <p data-reveal data-cms-bind="wearhouse.overview#overview.focus">{{ wearhouse.overview.focus }}</p>
         </div>
         <div class="type-meta mt-8 flex flex-wrap gap-x-6 gap-y-3 text-black/44" data-reveal>
           {% for item in wearhouse.overview.pillars %}
-            <span>{{ item }}</span>
+            <span data-cms-bind="wearhouse.overview#overview.pillars.{{ loop.index0 }}">{{ item }}</span>
           {% endfor %}
         </div>
       </div>
       <figure class="group relative aspect-[4/5] overflow-hidden bg-black/4 shadow-[0_24px_70px_rgba(0,0,0,0.08)] lg:justify-self-end lg:w-full lg:max-w-[30rem]" data-reveal>
-        <img src="{{ wearhouse.overview.image }}" alt="{{ wearhouse.overview.imageAlt }}" class="h-full w-full object-cover transition duration-[900ms] group-hover:scale-[1.035] group-hover:opacity-92">
+        <img src="{{ wearhouse.overview.image }}" alt="{{ wearhouse.overview.imageAlt }}" class="h-full w-full object-cover transition duration-[900ms] group-hover:scale-[1.035] group-hover:opacity-92" data-cms-bind="wearhouse.overview#overview.image">
         <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.14)_100%)]"></div>
         <figcaption class="sr-only">Wearhouse showroom portrait image</figcaption>
       </figure>
@@ -56,8 +56,8 @@ title: Wearhouse | Bollag-Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[38rem]">
-        <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ wearhouse.rosterSection.eyebrow }}</p>
-        <h2 class="type-section-title max-w-[12ch] text-black" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal data-cms-bind="wearhouse.wearhouse-brands#rosterSection.eyebrow">{{ wearhouse.rosterSection.eyebrow }}</p>
+        <h2 class="type-section-title max-w-[12ch] text-black" data-reveal data-cms-bind="wearhouse.wearhouse-brands#rosterSection.title">
           {{ wearhouse.rosterSection.title }}
         </h2>
       </div>
@@ -106,12 +106,12 @@ title: Wearhouse | Bollag-Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[34rem]">
-        <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ wearhouse.showroomSection.eyebrow }}</p>
-        <h2 class="type-section-title-md max-w-[10ch] text-black" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal data-cms-bind="wearhouse.showroom#showroomSection.eyebrow">{{ wearhouse.showroomSection.eyebrow }}</p>
+        <h2 class="type-section-title-md max-w-[10ch] text-black" data-reveal data-cms-bind="wearhouse.showroom#showroomSection.title">
           {{ wearhouse.showroomSection.title }}
         </h2>
       </div>
-      <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal>
+      <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal data-cms-bind="wearhouse.showroom#showroomSection.summary">
         {{ wearhouse.showroomSection.summary }}
       </p>
     </div>
@@ -135,10 +135,10 @@ title: Wearhouse | Bollag-Guggenheim
           {% set cardClass = 'aspect-[5/4]' %}
         {% endif %}
         <figure class="brand-editorial-item group relative overflow-hidden bg-white/[0.04] {{ cardClass }}" data-reveal>
-          <img src="{{ frame.image }}" alt="Wearhouse showroom image {{ loop.index }}" class="h-full w-full object-cover transition duration-[900ms] group-hover:scale-[1.035] group-hover:opacity-92">
+          <img src="{{ frame.image }}" alt="Wearhouse showroom image {{ loop.index }}" class="h-full w-full object-cover transition duration-[900ms] group-hover:scale-[1.035] group-hover:opacity-92" data-cms-bind="wearhouse.showroom#showroomSection.items.{{ loop.index0 }}.image">
           <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.36)_100%)]"></div>
           <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.12),transparent_32%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
-          <figcaption class="sr-only">{{ frame.note }}</figcaption>
+          <figcaption class="sr-only" data-cms-bind="wearhouse.showroom#showroomSection.items.{{ loop.index0 }}.note">{{ frame.note }}</figcaption>
         </figure>
       {% endfor %}
     </div>
@@ -150,13 +150,13 @@ title: Wearhouse | Bollag-Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
     <div class="grid gap-8 border-t border-black/10 pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
       <div>
-        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ wearhouse.cta.eyebrow }}</p>
-        <h2 class="type-section-title-sm max-w-[14ch] text-black" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal data-cms-bind="wearhouse.cta#cta.eyebrow">{{ wearhouse.cta.eyebrow }}</p>
+        <h2 class="type-section-title-sm max-w-[14ch] text-black" data-reveal data-cms-bind="wearhouse.cta#cta.title">
           {{ wearhouse.cta.title }}
         </h2>
       </div>
       <a href="{{ wearhouse.cta.buttonHref }}" class="cta-button cta-button--dark" data-reveal>
-        <span>{{ wearhouse.cta.buttonLabel }}</span>
+        <span data-cms-bind="wearhouse.cta#cta.buttonLabel">{{ wearhouse.cta.buttonLabel }}</span>
         <span aria-hidden="true">→</span>
       </a>
     </div>

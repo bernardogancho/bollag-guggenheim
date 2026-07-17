@@ -18,12 +18,20 @@ export const HIGHLIGHT_STYLE_ID = 'bg-cms-preview-style';
 // The site hides [data-reveal] content until it scrolls into view (see
 // src/assets/scripts/site.js's IntersectionObserver + site.css's
 // `body.is-ready [data-reveal]{opacity:0}` rule). Highlighted or live-patched
-// content can therefore sit invisible in the preview pane even though it is
+// content can therefore stay unseen in the preview pane even though it is
 // correctly targeted. This forces it visible INSIDE THE IFRAME ONLY — the
 // rule lives in this admin-injected <style>, appended to the iframe document
 // at runtime by ensureHighlightStyle, so it never touches the site's own
 // stylesheet and never reaches a real visitor.
-export const HIGHLIGHT_CSS = `[${HIGHLIGHT_ATTR}]{outline:3px solid #1a73e8;outline-offset:-3px;}[data-reveal]{opacity:1 !important;transform:none !important;}`;
+// Deliberately written as four longhand outline-width/-style/-color/-offset
+// declarations rather than the single-property shorthand: this literal CSS
+// text lives inside a scanned .js file, and Tailwind's content scanner reads
+// plain source text, comments included. The shorthand's bare property name
+// on its own is also a real Tailwind class name, so writing it unsplit would
+// leak one unused, byte-identical-proof-breaking rule into the SITE's own
+// site.css even though nothing ever applies that class. The longhand
+// property names aren't standalone Tailwind classes, so they're inert here.
+export const HIGHLIGHT_CSS = `[${HIGHLIGHT_ATTR}]{outline-width:3px;outline-style:solid;outline-color:#1a73e8;outline-offset:-3px;}[data-reveal]{opacity:1 !important;transform:none !important;}`;
 
 export function markerSelector(pageId, sectionId) {
   return `[data-cms-section="${pageId}.${sectionId}"]`;

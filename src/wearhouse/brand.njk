@@ -22,17 +22,17 @@ eleventyComputed:
   </div>
   <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[60rem]">
-      <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>{{ brand.eyebrow }}</p>
-      <h1 class="type-hero-title max-w-[10ch] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)]" data-reveal>
+      <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal data-cms-bind="wearhouse.page-settings#detailPage.heroEyebrow">{{ brand.eyebrow }}</p>
+      <h1 class="type-hero-title max-w-[10ch] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)]" data-reveal data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.name">
         {{ brand.name }}
       </h1>
       <p class="type-body-lg mt-6 max-w-[40rem] text-bone/82 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)]" data-reveal>
         {{ brand.summary }}
       </p>
       <div class="type-meta mt-8 flex flex-wrap gap-x-8 gap-y-3 text-bone/56 [text-shadow:0_5px_16px_rgba(0,0,0,0.4)]" data-reveal>
-        <span>{{ brand.segment }}</span>
-        <span>{{ wearhouse.detailPage.representedLabel }}</span>
-        <span>{{ wearhouse.detailPage.marketLabel }}</span>
+        <span data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.segment">{{ brand.segment }}</span>
+        <span data-cms-bind="wearhouse.page-settings#detailPage.representedLabel">{{ wearhouse.detailPage.representedLabel }}</span>
+        <span data-cms-bind="wearhouse.page-settings#detailPage.marketLabel">{{ wearhouse.detailPage.marketLabel }}</span>
       </div>
     </div>
   </div>
@@ -42,7 +42,7 @@ eleventyComputed:
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="grid gap-12 lg:grid-cols-[minmax(0,0.86fr)_minmax(24rem,34rem)] lg:items-center xl:gap-20">
       <div class="max-w-[44rem]">
-        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ wearhouse.detailPage.overviewEyebrow }}</p>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal data-cms-bind="wearhouse.page-settings#detailPage.overviewEyebrow">{{ wearhouse.detailPage.overviewEyebrow }}</p>
         <div class="type-body-lg type-body-stack text-black/72">
           <p data-reveal>{{ brand.intro }}</p>
           <p data-reveal>{{ brand.focus }}</p>
@@ -77,14 +77,14 @@ eleventyComputed:
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
     <div class="flex flex-col gap-8 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div>
-        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ wearhouse.detailPage.ctaEyebrow }}</p>
-        <h2 class="type-section-title-sm max-w-[12ch] text-black" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal data-cms-bind="wearhouse.page-settings#detailPage.ctaEyebrow">{{ wearhouse.detailPage.ctaEyebrow }}</p>
+        <h2 class="type-section-title-sm max-w-[12ch] text-black" data-reveal data-cms-bind="wearhouse.page-settings#detailPage.ctaTitle">
           {{ wearhouse.detailPage.ctaTitle }}
         </h2>
       </div>
       <div class="flex flex-wrap gap-3" data-reveal>
         <a href="{{ wearhouse.detailPage.ctaButtonHref }}" class="cta-button cta-button--dark">
-          <span>{{ wearhouse.detailPage.ctaButtonLabel }}</span>
+          <span data-cms-bind="wearhouse.page-settings#detailPage.ctaButtonLabel">{{ wearhouse.detailPage.ctaButtonLabel }}</span>
           <span aria-hidden="true">→</span>
         </a>
       </div>

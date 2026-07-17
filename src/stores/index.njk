@@ -24,16 +24,16 @@ title: Stores | Bollag-Guggenheim
     <div class="relative max-w-[62rem]">
       <div class="absolute -left-16 bottom-[-3rem] h-[24rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(6,8,10,0.5),rgba(6,8,10,0.3)_42%,rgba(6,8,10,0.12)_68%,transparent_100%)] blur-3xl sm:h-[28rem] sm:w-[40rem]"></div>
       <div class="relative">
-      <p class="type-eyebrow-hero mb-4 text-bone/64 [text-shadow:0_3px_12px_rgba(0,0,0,0.4)]" data-reveal>{{ stores.hero.eyebrow }}</p>
-      <h1 class="type-hero-title max-w-[12ch] [text-shadow:0_12px_32px_rgba(0,0,0,0.58)]" data-reveal>
+      <p class="type-eyebrow-hero mb-4 text-bone/64 [text-shadow:0_3px_12px_rgba(0,0,0,0.4)]" data-reveal data-cms-bind="stores.hero#hero.eyebrow">{{ stores.hero.eyebrow }}</p>
+      <h1 class="type-hero-title max-w-[12ch] [text-shadow:0_12px_32px_rgba(0,0,0,0.58)]" data-reveal data-cms-bind="stores.hero#hero.title">
         {{ stores.hero.title }}
       </h1>
-      <p class="type-body-lg mt-6 max-w-[42rem] text-bone/88 [text-shadow:0_8px_20px_rgba(0,0,0,0.46)]" data-reveal>
+      <p class="type-body-lg mt-6 max-w-[42rem] text-bone/88 [text-shadow:0_8px_20px_rgba(0,0,0,0.46)]" data-reveal data-cms-bind="stores.hero#hero.summary">
         {{ stores.hero.summary }}
       </p>
       <div class="type-meta mt-8 flex flex-wrap gap-x-8 gap-y-3 text-bone/60 [text-shadow:0_5px_16px_rgba(0,0,0,0.42)]" data-reveal>
         {% for item in stores.heroStats %}
-          <span>{{ item }}</span>
+          <span data-cms-bind="stores.hero#heroStats.{{ loop.index0 }}">{{ item }}</span>
         {% endfor %}
       </div>
       </div>
@@ -45,12 +45,12 @@ title: Stores | Bollag-Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between" data-cms-section="stores.network">
       <div class="max-w-[38rem]">
-        <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ stores.networkSection.eyebrow }}</p>
-        <h2 class="type-section-title max-w-[11ch] text-black" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal data-cms-bind="stores.network#networkSection.eyebrow">{{ stores.networkSection.eyebrow }}</p>
+        <h2 class="type-section-title max-w-[11ch] text-black" data-reveal data-cms-bind="stores.network#networkSection.title">
           {{ stores.networkSection.title }}
         </h2>
       </div>
-      <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal>
+      <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal data-cms-bind="stores.network#networkSection.summary">
         {{ stores.networkSection.summary }}
       </p>
     </div>
@@ -59,9 +59,9 @@ title: Stores | Bollag-Guggenheim
       {% for group in stores.groups %}
         <section class="grid gap-10 lg:grid-cols-[minmax(0,0.34fr)_minmax(0,0.66fr)] lg:gap-12">
           <div class="lg:sticky lg:top-28 lg:self-start">
-            <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ group.label }}</p>
-            <h3 class="type-section-title-block text-black" data-reveal>{{ group.title }}</h3>
-            <p class="type-body mt-5 max-w-[22rem] text-black/68" data-reveal>{{ group.intro }}</p>
+            <p class="type-eyebrow mb-4 text-black/40" data-reveal data-cms-bind="stores.store-list#groups.{{ loop.index0 }}.label">{{ group.label }}</p>
+            <h3 class="type-section-title-block text-black" data-reveal data-cms-bind="stores.store-list#groups.{{ loop.index0 }}.title">{{ group.title }}</h3>
+            <p class="type-body mt-5 max-w-[22rem] text-black/68" data-reveal data-cms-bind="stores.store-list#groups.{{ loop.index0 }}.intro">{{ group.intro }}</p>
           </div>
 
           <div class="grid gap-5 xl:grid-cols-2">

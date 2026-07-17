@@ -11,23 +11,23 @@ title: Brands | Bollag-Guggenheim
 <section class="relative isolate overflow-hidden bg-ink text-bone" data-cms-section="brands.hero">
   <div class="absolute inset-0">
     {% if heroBrand.heroImage %}
-      <img src="{{ heroBrand.heroImage }}" alt="{{ heroBrand.name }} editorial look" class="h-full w-full object-cover object-center">
+      <img src="{{ heroBrand.heroImage }}" alt="{{ heroBrand.name }} editorial look" class="h-full w-full object-cover object-center" data-cms-bind="brands.hero#hero.image">
     {% endif %}
     <div class="page-hero-overlay absolute inset-0"></div>
     <div class="absolute inset-x-0 top-[14vh] mx-auto h-44 w-[min(78vw,72rem)] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.07),transparent_70%)] blur-3xl"></div>
   </div>
   <div class="relative mx-auto flex min-h-[82svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[62rem]">
-      <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>{{ cms.brandsPage.hero.eyebrow }}</p>
-      <h1 class="type-hero-title max-w-[11ch] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)] sm:text-[3.5rem]" data-reveal>
+      <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal data-cms-bind="brands.hero#hero.eyebrow">{{ cms.brandsPage.hero.eyebrow }}</p>
+      <h1 class="type-hero-title max-w-[11ch] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)] sm:text-[3.5rem]" data-reveal data-cms-bind="brands.hero#hero.title">
         {{ cms.brandsPage.hero.title }}
       </h1>
-      <p class="type-body-lg mt-6 max-w-[41rem] text-bone/72 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)]" data-reveal>
+      <p class="type-body-lg mt-6 max-w-[41rem] text-bone/72 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)]" data-reveal data-cms-bind="brands.hero#hero.summary">
         {{ cms.brandsPage.hero.summary }}
       </p>
       <div class="type-meta mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-bone/42 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>
         {% for item in cms.brandsPage.hero.stats %}
-          <span>{{ item }}</span>
+          <span data-cms-bind="brands.hero#hero.stats.{{ loop.index0 }}">{{ item }}</span>
         {% endfor %}
       </div>
     </div>
@@ -38,8 +38,8 @@ title: Brands | Bollag-Guggenheim
   <div class="relative mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between" data-cms-section="brands.portfolio-heading">
       <div class="max-w-[38rem]">
-        <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ cms.brandsPage.portfolioSection.eyebrow }}</p>
-        <h2 class="type-section-title max-w-[15ch] text-black" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal data-cms-bind="brands.portfolio-heading#portfolioSection.eyebrow">{{ cms.brandsPage.portfolioSection.eyebrow }}</p>
+        <h2 class="type-section-title max-w-[15ch] text-black" data-reveal data-cms-bind="brands.portfolio-heading#portfolioSection.title">
           {{ cms.brandsPage.portfolioSection.title }}
         </h2>
       </div>
@@ -58,7 +58,7 @@ title: Brands | Bollag-Guggenheim
           {% set imageClass = 'object-[58%_24%]' %}
         {% endif %}
         <a href="{{ brand.href }}" class="group relative block min-h-[24rem] overflow-hidden border border-black/5 bg-[#FAF7F4]" data-reveal>
-          <img src="{{ brand.heroImage }}" alt="{{ brand.name }} image" class="absolute inset-0 h-full w-full object-cover {{ imageClass }} transition duration-[1100ms] group-hover:scale-[1.04] group-hover:opacity-92">
+          <img src="{{ brand.heroImage }}" alt="{{ brand.name }} image" class="absolute inset-0 h-full w-full object-cover {{ imageClass }} transition duration-[1100ms] group-hover:scale-[1.04] group-hover:opacity-92" data-cms-bind="brands.all-brands#brands.{{ loop.index0 }}.card.heroImage">
           <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.22),rgba(0,0,0,0.34)_28%,rgba(0,0,0,0.86)_100%)]"></div>
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_34%),linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0)_30%,rgba(0,0,0,0.24)_100%)] opacity-90"></div>
           <div class="relative flex h-full flex-col justify-between p-6 lg:p-7">
@@ -66,11 +66,11 @@ title: Brands | Bollag-Guggenheim
                             <span class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/16 bg-white/10 text-sm text-white/72 transition duration-300 group-hover:bg-white group-hover:text-black">→</span>
             </div>
             <div class="max-w-[28rem]">
-              {% if brand.cardLabel %}<p class="type-label mb-3 text-white/80">{{ brand.cardLabel }}</p>{% endif %}
+              {% if brand.cardLabel %}<p class="type-label mb-3 text-white/80" data-cms-bind="brands.all-brands#brands.{{ loop.index0 }}.card.cardLabel">{{ brand.cardLabel }}</p>{% endif %}
               <div class="mb-4 flex max-w-full items-center">
                 <img src="{{ logoImage }}" alt="{{ brand.name }}" class="block brightness-0 invert drop-shadow-[0_8px_22px_rgba(0,0,0,0.38)] {{ logoClass }}">
               </div>
-              <p class="text-white {{ bodyClass }}">{{ brand.summary }}</p>
+              <p class="text-white {{ bodyClass }}" data-cms-bind="brands.all-brands#brands.{{ loop.index0 }}.card.summary">{{ brand.summary }}</p>
             </div>
           </div>
         </a>

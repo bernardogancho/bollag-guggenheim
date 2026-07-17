@@ -2,18 +2,18 @@
   <div class="mx-auto w-full max-w-[1600px] px-5 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
     <div class="grid gap-10 lg:grid-cols-[minmax(0,0.98fr)_minmax(20rem,0.62fr)] lg:items-end lg:gap-16">
       <div class="max-w-[62rem]">
-        <p class="type-eyebrow-hero mb-5 text-black/44" data-reveal>
+        <p class="type-eyebrow-hero mb-5 text-black/44" data-reveal data-cms-bind="homepage.intro#intro.eyebrow">
           {{ cms.home.intro.eyebrow }}
         </p>
-        <h1 class="type-display-lead max-w-[20ch] text-black sm:max-w-[18ch] lg:max-w-[17ch]" data-reveal>
+        <h1 class="type-display-lead max-w-[20ch] text-black sm:max-w-[18ch] lg:max-w-[17ch]" data-reveal data-cms-bind="homepage.intro#intro.title">
           {{ cms.home.intro.title }}
         </h1>
-        <p class="type-body-lg mt-7 max-w-[44rem] text-black/68" data-reveal>
+        <p class="type-body-lg mt-7 max-w-[44rem] text-black/68" data-reveal data-cms-bind="homepage.intro#intro.summary">
           {{ cms.home.intro.summary }}
         </p>
         <div class="mt-8 flex justify-start" data-reveal>
           <a href="{{ cms.home.intro.ctaHref }}" class="cta-button cta-button--dark">
-            <span>{{ cms.home.intro.ctaLabel }}</span>
+            <span data-cms-bind="homepage.intro#intro.ctaLabel">{{ cms.home.intro.ctaLabel }}</span>
             <span aria-hidden="true">→</span>
           </a>
         </div>
@@ -23,7 +23,7 @@
         <img
           src="{{ cms.home.intro.image }}"
           alt="{{ cms.home.intro.imageAlt }}"
-          class="h-full w-full object-cover object-[54%_center]"
+          class="h-full w-full object-cover object-[54%_center]" data-cms-bind="homepage.intro#intro.image"
         >
       </figure>
     </div>

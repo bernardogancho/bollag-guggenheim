@@ -2,11 +2,11 @@
   <div class="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 lg:px-16 lg:py-28">
     <div class="mb-12 border-t border-black/10 pt-8 lg:mb-16">
       {% if cms.home.selection.eyebrow and not selectedStoresHideEyebrow %}
-        <p class="type-eyebrow mb-4 text-black/38" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/38" data-reveal data-cms-bind="{{ cmsSection }}#selection.eyebrow">
           {{ cms.home.selection.eyebrow }}
         </p>
       {% endif %}
-      <h2 class="type-section-title-sm max-w-[14ch] text-black lg:text-[3.1rem]" data-reveal>
+      <h2 class="type-section-title-sm max-w-[14ch] text-black lg:text-[3.1rem]" data-reveal data-cms-bind="{{ cmsSection }}#selection.title">
         {{ cms.home.selection.title }}
       </h2>
     </div>
@@ -22,12 +22,12 @@
           {% set cardClass = 'min-h-[24rem] md:min-h-[20rem] xl:col-span-1 xl:row-span-4 xl:min-h-0' %}
         {% endif %}
         <a href="{{ item.href }}" class="group relative block overflow-hidden bg-white/5 {{ cardClass }}" data-reveal>
-          <img src="{{ item.image }}" alt="{{ item.brand }}" class="h-full w-full object-cover transition duration-[900ms] group-hover:scale-[1.045] group-hover:opacity-88">
+          <img src="{{ item.image }}" alt="{{ item.brand }}" class="h-full w-full object-cover transition duration-[900ms] group-hover:scale-[1.045] group-hover:opacity-88" data-cms-bind="{{ cmsSection }}#selection.items.{{ loop.index0 }}.image">
           <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.03),rgba(0,0,0,0.42)_100%)]"></div>
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.14),transparent_34%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
           <div class="absolute inset-x-0 bottom-0 p-4 lg:p-5">
-            <p class="type-label mb-2 text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.28)]">{{ item.brand }}</p>
-            <p class="type-body-sm max-w-[17rem] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.34)] transition duration-500 group-hover:text-white">{{ item.note }}</p>
+            <p class="type-label mb-2 text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.28)]" data-cms-bind="{{ cmsSection }}#selection.items.{{ loop.index0 }}.brand">{{ item.brand }}</p>
+            <p class="type-body-sm max-w-[17rem] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.34)] transition duration-500 group-hover:text-white" data-cms-bind="{{ cmsSection }}#selection.items.{{ loop.index0 }}.note">{{ item.note }}</p>
           </div>
         </a>
       {% endfor %}

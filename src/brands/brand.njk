@@ -33,14 +33,14 @@ eleventyComputed:
   </div>
   <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[60rem]">
-      <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal>{{ brand.eyebrow }}</p>
+      <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.card.eyebrow">{{ brand.eyebrow }}</p>
       <div class="mb-7 max-w-[14rem]" data-reveal>
         <img src="{{ brandLogo }}" alt="{{ brand.name }}" class="{{ brandLogoClass }}">
       </div>
       <h1 class="type-hero-title max-w-[14ch] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)]" data-reveal>
         {{ brand.heroTitle or brand.summary }}
       </h1>
-      <p class="type-body-lg mt-6 max-w-[40rem] text-bone/82 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)]" data-reveal>
+      <p class="type-body-lg mt-6 max-w-[40rem] text-bone/82 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)]" data-reveal data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.card.summary">
         {{ brand.summary }}
       </p>
     </div>
@@ -51,23 +51,23 @@ eleventyComputed:
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="grid gap-12 lg:grid-cols-[minmax(0,0.86fr)_minmax(24rem,34rem)] lg:items-center xl:gap-20">
       <div class="max-w-[44rem]">
-        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ cms.brandsPage.detailPage.overviewEyebrow }}</p>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal data-cms-bind="brands.page-settings#detailPage.overviewEyebrow">{{ cms.brandsPage.detailPage.overviewEyebrow }}</p>
         <div class="type-body-lg type-body-stack text-black/72">
-          <p data-reveal>{{ brand.intro }}</p>
-          {% if brand.focus %}<p data-reveal>{{ brand.focus }}</p>{% endif %}
+          <p data-reveal data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.detail.intro">{{ brand.intro }}</p>
+          {% if brand.focus %}<p data-reveal data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.detail.focus">{{ brand.focus }}</p>{% endif %}
         </div>
         <div class="type-meta mt-8 flex flex-wrap gap-x-6 gap-y-3 text-black/44" data-reveal>
-          <span>{{ brand.atmosphere }}</span>
+          <span data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.detail.atmosphere">{{ brand.atmosphere }}</span>
           {% for item in brand.categories %}
             {% if loop.index0 < 2 %}
-              <span>{{ item }}</span>
+              <span data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.detail.categories.{{ loop.index0 }}">{{ item }}</span>
             {% endif %}
           {% endfor %}
         </div>
       </div>
       {% if brand.detailGallery.length > 1 %}
         <figure class="overview-image relative hidden aspect-[4/5] overflow-hidden shadow-[0_34px_90px_rgba(20,18,16,0.14)] lg:block" data-reveal data-scroll-drift>
-          <img src="{{ brand.detailGallery[1].image }}" alt="{{ brand.name }} editorial portrait" class="overview-image__media h-full w-full object-cover object-center">
+          <img src="{{ brand.detailGallery[1].image }}" alt="{{ brand.name }} editorial portrait" class="overview-image__media h-full w-full object-cover object-center" data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.detail.detailGallery.1.image">
         </figure>
       {% endif %}
     </div>
@@ -79,7 +79,7 @@ eleventyComputed:
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[34rem]">
-        <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ cms.brandsPage.detailPage.visualJournalEyebrow }}</p>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal data-cms-bind="brands.page-settings#detailPage.visualJournalEyebrow">{{ cms.brandsPage.detailPage.visualJournalEyebrow }}</p>
         <h2 class="type-section-title-md max-w-[10ch] text-black" data-reveal>
           {{ cms.brandsPage.detailPage.visualJournalTitleTemplate | replace("%BRAND%", brand.name) }}
         </h2>
@@ -105,10 +105,10 @@ eleventyComputed:
           {% set cardClass = 'aspect-[5/4]' %}
         {% endif %}
         <figure class="brand-editorial-item group relative overflow-hidden bg-white/[0.04] {{ cardClass }}" data-reveal>
-          <img src="{{ frame.image }}" alt="{{ brand.name }} editorial image {{ loop.index }}" class="h-full w-full object-cover transition duration-[900ms] group-hover:scale-[1.035] group-hover:opacity-92">
+          <img src="{{ frame.image }}" alt="{{ brand.name }} editorial image {{ loop.index }}" class="h-full w-full object-cover transition duration-[900ms] group-hover:scale-[1.035] group-hover:opacity-92" data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.detail.detailGallery.{{ loop.index0 }}.image">
           <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.36)_100%)]"></div>
           <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.12),transparent_32%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
-          <figcaption class="sr-only">{{ frame.note }}</figcaption>
+          <figcaption class="sr-only" data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.detail.detailGallery.{{ loop.index0 }}.note">{{ frame.note }}</figcaption>
         </figure>
       {% endfor %}
     </div>
@@ -120,13 +120,13 @@ eleventyComputed:
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
     <div class="flex flex-col gap-8 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div>
-        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ cms.brandsPage.detailPage.ctaEyebrow }}</p>
-        <h2 class="type-section-title-sm max-w-[12ch] text-black" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal data-cms-bind="brands.page-settings#detailPage.ctaEyebrow">{{ cms.brandsPage.detailPage.ctaEyebrow }}</p>
+        <h2 class="type-section-title-sm max-w-[12ch] text-black" data-reveal data-cms-bind="brands.page-settings#detailPage.ctaTitle">
           {{ cms.brandsPage.detailPage.ctaTitle }}
         </h2>
       </div>
       <a href="{{ cms.brandsPage.detailPage.ctaButtonHref }}" class="cta-button cta-button--dark" data-reveal>
-        <span>{{ cms.brandsPage.detailPage.ctaButtonLabel }}</span>
+        <span data-cms-bind="brands.page-settings#detailPage.ctaButtonLabel">{{ cms.brandsPage.detailPage.ctaButtonLabel }}</span>
         <span aria-hidden="true">→</span>
       </a>
     </div>

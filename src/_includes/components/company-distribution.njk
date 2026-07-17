@@ -2,12 +2,12 @@
   <div class="relative mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 border-t border-black/10 pt-8"></div>
     <div class="max-w-[60rem]">
-      <p class="type-eyebrow-hero mb-5 text-black/44" data-reveal>
+      <p class="type-eyebrow-hero mb-5 text-black/44" data-reveal data-cms-bind="company.distribution#distribution.eyebrow">
         {{ cms.company.distribution.eyebrow }}
       </p>
       <h2 class="type-section-title-md text-black lg:text-[3.5rem]" data-reveal>
         {% for line in cms.company.distribution.titleLines %}
-          <span class="block">{{ line }}</span>
+          <span class="block" data-cms-bind="company.distribution#distribution.titleLines.{{ loop.index0 }}">{{ line }}</span>
         {% endfor %}
       </h2>
     </div>
@@ -15,11 +15,11 @@
     <div class="mt-12 overflow-hidden bg-white/30 lg:mt-14" data-reveal>
       <div class="grid min-h-[24rem] gap-4 sm:grid-cols-2 lg:min-h-[30rem]">
         <figure class="group relative overflow-hidden">
-          <img src="{{ cms.company.distribution.images[0].src }}" alt="{{ cms.company.distribution.images[0].alt }}" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.03] group-hover:opacity-92">
+          <img src="{{ cms.company.distribution.images[0].src }}" alt="{{ cms.company.distribution.images[0].alt }}" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.03] group-hover:opacity-92" data-cms-bind="company.distribution#distribution.images.0.src">
           <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.14),transparent_34%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
         </figure>
         <figure class="group relative overflow-hidden">
-          <img src="{{ cms.company.distribution.images[1].src }}" alt="{{ cms.company.distribution.images[1].alt }}" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.03] group-hover:opacity-92">
+          <img src="{{ cms.company.distribution.images[1].src }}" alt="{{ cms.company.distribution.images[1].alt }}" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.03] group-hover:opacity-92" data-cms-bind="company.distribution#distribution.images.1.src">
           <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_18%,rgba(255,255,255,0.14),transparent_34%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
         </figure>
       </div>
@@ -27,19 +27,19 @@
 
     <div class="mt-12 grid gap-10 border-t border-black/10 pt-8 lg:mt-14 lg:grid-cols-2 lg:gap-16">
       <div>
-        <p class="type-eyebrow-hero mb-4 text-black/44" data-reveal>{{ cms.company.distribution.wholesale.eyebrow }}</p>
+        <p class="type-eyebrow-hero mb-4 text-black/44" data-reveal data-cms-bind="company.distribution#distribution.wholesale.eyebrow">{{ cms.company.distribution.wholesale.eyebrow }}</p>
         <div class="type-body-lg type-body-stack-tight max-w-[34rem] text-black/72">
           {% for paragraph in cms.company.distribution.wholesale.paragraphs %}
-            <p data-reveal>{{ paragraph }}</p>
+            <p data-reveal data-cms-bind="company.distribution#distribution.wholesale.paragraphs.{{ loop.index0 }}">{{ paragraph }}</p>
           {% endfor %}
         </div>
       </div>
 
       <div>
-        <p class="type-eyebrow-hero mb-4 text-black/44" data-reveal>{{ cms.company.distribution.retail.eyebrow }}</p>
+        <p class="type-eyebrow-hero mb-4 text-black/44" data-reveal data-cms-bind="company.distribution#distribution.retail.eyebrow">{{ cms.company.distribution.retail.eyebrow }}</p>
         <div class="type-body-lg type-body-stack-tight max-w-[34rem] text-black/72">
           {% for paragraph in cms.company.distribution.retail.paragraphs %}
-            <p data-reveal>{{ paragraph }}</p>
+            <p data-reveal data-cms-bind="company.distribution#distribution.retail.paragraphs.{{ loop.index0 }}">{{ paragraph }}</p>
           {% endfor %}
         </div>
       </div>

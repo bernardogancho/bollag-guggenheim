@@ -11,7 +11,7 @@
       aria-hidden="true"
     >
       <source src="{{ cms.home.hero.video }}" type="video/mp4">
-      <img src="{{ cms.home.hero.poster }}" alt="{{ cms.home.hero.videoAlt }}" class="hero-image absolute inset-0 h-full w-full object-cover object-[{{ cms.home.hero.mobileObjectPosition }}] sm:object-[{{ cms.home.hero.smallObjectPosition }}] md:object-[{{ cms.home.hero.desktopObjectPosition }}]">
+      <img src="{{ cms.home.hero.poster }}" alt="{{ cms.home.hero.videoAlt }}" class="hero-image absolute inset-0 h-full w-full object-cover object-[{{ cms.home.hero.mobileObjectPosition }}] sm:object-[{{ cms.home.hero.smallObjectPosition }}] md:object-[{{ cms.home.hero.desktopObjectPosition }}]" data-cms-bind="homepage.hero#hero.poster">
     </video>
     <div class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(0,0,0,0.34),rgba(0,0,0,0))] sm:h-28 lg:h-32"></div>
     <div class="absolute inset-x-0 bottom-0 h-32 bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.22))] sm:h-40 lg:h-48"></div>
@@ -22,7 +22,7 @@
       <div class="hero-typewriter" data-hero-typewriter data-typewriter-text="{{ cms.home.hero.title }}">
         {{ cms.home.hero.title }}
       </div>
-      <div class="hero-typewriter-subline" data-hero-typewriter-subline>
+      <div class="hero-typewriter-subline" data-hero-typewriter-subline data-cms-bind="homepage.hero#hero.subline">
         {{ cms.home.hero.subline }}
       </div>
     </div>

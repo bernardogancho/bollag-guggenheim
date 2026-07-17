@@ -22,16 +22,16 @@ title: Agenda | Bollag-Guggenheim
   </div>
   <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[64rem]">
-      <p class="type-eyebrow-hero mb-4 text-bone/54" data-reveal>{{ agenda.hero.eyebrow }}</p>
+      <p class="type-eyebrow-hero mb-4 text-bone/54" data-reveal data-cms-bind="agenda.hero#hero.eyebrow">{{ agenda.hero.eyebrow }}</p>
       {% if agenda.hero.quote %}
-      <div class="mb-7 font-display text-[1.45rem] italic leading-none tracking-[-0.03em] text-bone/72 sm:text-[1.8rem]" data-reveal>
+      <div class="mb-7 font-display text-[1.45rem] italic leading-none tracking-[-0.03em] text-bone/72 sm:text-[1.8rem]" data-reveal data-cms-bind="agenda.hero#hero.quote">
         {{ agenda.hero.quote }}
       </div>
       {% endif %}
-      <h1 class="type-hero-title max-w-[12ch]" data-reveal>
+      <h1 class="type-hero-title max-w-[12ch]" data-reveal data-cms-bind="agenda.hero#hero.title">
         {{ agenda.hero.title }}
       </h1>
-      <p class="type-body-lg mt-6 max-w-[42rem] text-bone/82" data-reveal>
+      <p class="type-body-lg mt-6 max-w-[42rem] text-bone/82" data-reveal data-cms-bind="agenda.hero#hero.summary">
         {{ agenda.hero.summary }}
       </p>
     </div>
@@ -42,12 +42,12 @@ title: Agenda | Bollag-Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[38rem]">
-        <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ agenda.calendarSection.eyebrow }}</p>
-        <h2 class="type-section-title max-w-[11ch] text-black" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal data-cms-bind="agenda.calendar#calendarSection.eyebrow">{{ agenda.calendarSection.eyebrow }}</p>
+        <h2 class="type-section-title max-w-[11ch] text-black" data-reveal data-cms-bind="agenda.calendar#calendarSection.title">
           {{ agenda.calendarSection.title }}
         </h2>
       </div>
-      <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal>
+      <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal data-cms-bind="agenda.calendar#calendarSection.summary">
         {{ agenda.calendarSection.summary }}
       </p>
     </div>
@@ -56,7 +56,7 @@ title: Agenda | Bollag-Guggenheim
       {% for month in agenda.months %}
         <section class="grid gap-8 lg:grid-cols-[minmax(0,0.28fr)_minmax(0,0.72fr)] lg:gap-10">
           <div class="lg:sticky lg:top-28 lg:self-start">
-            <h3 class="type-section-title-block text-black lg:text-[3.6rem]" data-reveal>{{ month.month }}</h3>
+            <h3 class="type-section-title-block text-black lg:text-[3.6rem]" data-reveal data-cms-bind="agenda.months#months.{{ loop.index0 }}.month">{{ month.month }}</h3>
           </div>
           <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {% for event in month.events %}
@@ -83,13 +83,13 @@ title: Agenda | Bollag-Guggenheim
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
     <div class="grid gap-8 border-t border-black/10 pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
       <div>
-        <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ agenda.cta.eyebrow }}</p>
-        <h2 class="type-section-title-sm max-w-[14ch] text-black" data-reveal>
+        <p class="type-eyebrow mb-4 text-black/42" data-reveal data-cms-bind="agenda.cta#cta.eyebrow">{{ agenda.cta.eyebrow }}</p>
+        <h2 class="type-section-title-sm max-w-[14ch] text-black" data-reveal data-cms-bind="agenda.cta#cta.title">
           {{ agenda.cta.title }}
         </h2>
       </div>
       <a href="{{ agenda.cta.buttonHref }}" class="cta-button cta-button--dark" data-reveal>
-        <span>{{ agenda.cta.buttonLabel }}</span>
+        <span data-cms-bind="agenda.cta#cta.buttonLabel">{{ agenda.cta.buttonLabel }}</span>
         <span aria-hidden="true">→</span>
       </a>
     </div>

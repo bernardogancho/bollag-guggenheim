@@ -11,7 +11,7 @@
           </div>
 
           <div class="footer-brand-card">
-            <p class="type-label mb-4 text-black/42">{{ footer.bgContact.title }}</p>
+            <p class="type-label mb-4 text-black/42" data-cms-bind="site.footer#footer.bgContact.title">{{ footer.bgContact.title }}</p>
             <div class="type-body-sm type-body-stack-tight text-black/74">
               <p>
                 {{ footer.bgContact.name }}<br>
@@ -20,12 +20,12 @@
                 {% endfor %}
               </p>
               <p>
-                <a href="{{ footer.bgContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ footer.bgContact.phoneLabel }}</a><br>
-                <a href="{{ footer.bgContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ footer.bgContact.emailLabel }}</a>
+                <a href="{{ footer.bgContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black" data-cms-bind="site.footer#footer.bgContact.phoneLabel">{{ footer.bgContact.phoneLabel }}</a><br>
+                <a href="{{ footer.bgContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black" data-cms-bind="site.footer#footer.bgContact.emailLabel">{{ footer.bgContact.emailLabel }}</a>
               </p>
               <p>
                 <a href="{{ footer.bgContact.routeHref }}" target="_blank" rel="noopener" class="nav-link inline-flex items-center gap-3 pb-1 transition duration-300 hover:text-black">
-                  <span>{{ footer.bgContact.routeLabel }}</span>
+                  <span data-cms-bind="site.footer#footer.bgContact.routeLabel">{{ footer.bgContact.routeLabel }}</span>
                   <span aria-hidden="true">→</span>
                 </a>
               </p>
@@ -40,14 +40,14 @@
               <span class="footer-wearhouse-mark__name">Wearhouse</span>
               <span class="footer-wearhouse-mark__sub">
                 {% for line in footer.wearhouseWordmark.suffix %}
-                  <span>{{ line }}</span>
+                  <span data-cms-bind="site.footer#footer.wearhouseWordmark.suffix.{{ loop.index0 }}">{{ line }}</span>
                 {% endfor %}
               </span>
             </a>
           </div>
 
           <div class="footer-brand-card">
-            <p class="type-label mb-4 text-black/42">{{ footer.wearhouseContact.title }}</p>
+            <p class="type-label mb-4 text-black/42" data-cms-bind="site.footer#footer.wearhouseContact.title">{{ footer.wearhouseContact.title }}</p>
             <div class="type-body-sm type-body-stack-tight text-black/74">
               <p>
                 {{ footer.wearhouseContact.name }}<br>
@@ -56,12 +56,12 @@
                 {% endfor %}
               </p>
               <p>
-                <a href="{{ footer.wearhouseContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ footer.wearhouseContact.phoneLabel }}</a><br>
-                <a href="{{ footer.wearhouseContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ footer.wearhouseContact.emailLabel }}</a>
+                <a href="{{ footer.wearhouseContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black" data-cms-bind="site.footer#footer.wearhouseContact.phoneLabel">{{ footer.wearhouseContact.phoneLabel }}</a><br>
+                <a href="{{ footer.wearhouseContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black" data-cms-bind="site.footer#footer.wearhouseContact.emailLabel">{{ footer.wearhouseContact.emailLabel }}</a>
               </p>
               <p>
                 <a href="{{ footer.wearhouseContact.routeHref }}" target="_blank" rel="noopener" class="nav-link inline-flex items-center gap-3 pb-1 transition duration-300 hover:text-black">
-                  <span>{{ footer.wearhouseContact.routeLabel }}</span>
+                  <span data-cms-bind="site.footer#footer.wearhouseContact.routeLabel">{{ footer.wearhouseContact.routeLabel }}</span>
                   <span aria-hidden="true">→</span>
                 </a>
               </p>
@@ -71,21 +71,21 @@
 
         <section class="footer-column">
           <div class="footer-brand-head">
-            <p class="type-label text-black/42">{{ footer.navigation.title }}</p>
+            <p class="type-label text-black/42" data-cms-bind="site.footer#footer.navigation.title">{{ footer.navigation.title }}</p>
           </div>
           <nav aria-label="{{ footer.navigation.title }}" class="footer-brand-card">
             <ul class="space-y-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm font-medium uppercase tracking-[0.18em] text-black/74 lg:text-[0.82rem]">
               {% for item in footer.navigation.items %}
-                <li><a href="{{ item.href }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ item.label }}</a></li>
+                <li><a href="{{ item.href }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black" data-cms-bind="site.footer#footer.navigation.items.{{ loop.index0 }}.label">{{ item.label }}</a></li>
               {% endfor %}
             </ul>
           </nav>
           {% if footer.legal and footer.legal.links %}
             <nav aria-label="{{ footer.legal.title }}" class="footer-brand-card">
-              <p class="type-label mb-4 text-black/42">{{ footer.legal.title }}</p>
+              <p class="type-label mb-4 text-black/42" data-cms-bind="site.footer#footer.legal.title">{{ footer.legal.title }}</p>
               <ul class="space-y-4 font-['Helvetica_Neue',_Arial,_sans-serif] text-sm font-medium uppercase tracking-[0.18em] text-black/74 lg:text-[0.82rem]">
                 {% for item in footer.legal.links %}
-                  <li><a href="{{ item.href }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ item.label }}</a></li>
+                  <li><a href="{{ item.href }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black" data-cms-bind="site.footer#footer.legal.links.{{ loop.index0 }}.label">{{ item.label }}</a></li>
                 {% endfor %}
               </ul>
             </nav>
@@ -94,8 +94,8 @@
       </div>
 
       <div class="type-meta mt-14 flex flex-col gap-3 border-t border-black/10 pt-5 text-black/34 sm:flex-row sm:items-center sm:justify-between">
-        <p>{{ footer.meta.since }}</p>
-        <p>{{ footer.meta.groupName }}</p>
+        <p data-cms-bind="site.footer#footer.meta.since">{{ footer.meta.since }}</p>
+        <p data-cms-bind="site.footer#footer.meta.groupName">{{ footer.meta.groupName }}</p>
       </div>
     </div>
   </div>

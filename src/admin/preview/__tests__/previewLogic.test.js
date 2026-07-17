@@ -173,7 +173,7 @@ describe('previewLogic', () => {
   });
 
   describe('HIGHLIGHT_CSS', () => {
-    it('force-reveals [data-reveal] content inside the iframe, in addition to the highlight outline', () => {
+    it('force-reveals [data-reveal] content inside the iframe, in addition to marking the highlighted element', () => {
       // The site hides [data-reveal] until scrolled into view; the preview
       // pane's injected style must override that so highlighted/patched
       // content is legible without scrolling to trigger it.

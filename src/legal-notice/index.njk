@@ -7,11 +7,11 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
 <section class="relative isolate overflow-hidden bg-ink text-bone" data-cms-section="legal.hero">
   <div class="relative mx-auto flex min-h-[54svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[64rem]">
-      <p class="type-eyebrow-hero mb-4 text-bone/54" data-reveal>{{ cms.legalNotice.hero.eyebrow }}</p>
-      <h1 class="type-hero-title max-w-[12ch]" data-reveal>
+      <p class="type-eyebrow-hero mb-4 text-bone/54" data-reveal data-cms-bind="legal.hero#hero.eyebrow">{{ cms.legalNotice.hero.eyebrow }}</p>
+      <h1 class="type-hero-title max-w-[12ch]" data-reveal data-cms-bind="legal.hero#hero.title">
         {{ cms.legalNotice.hero.title }}
       </h1>
-      <p class="type-body-lg mt-6 max-w-[42rem] text-bone/82" data-reveal>
+      <p class="type-body-lg mt-6 max-w-[42rem] text-bone/82" data-reveal data-cms-bind="legal.hero#hero.summary">
         {{ cms.legalNotice.hero.summary }}
       </p>
     </div>
@@ -30,37 +30,37 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
 
       <div class="space-y-10">
         <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal data-cms-section="legal.company-details">
-          <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.legal.title }}</p>
+          <p class="type-label mb-4 text-black/38" data-cms-bind="legal.company-details#legal.title">{{ cms.legalNotice.legal.title }}</p>
           <div class="type-body type-body-stack text-black/72">
             <p>
-              <strong>{{ cms.legalNotice.legal.bollag.name }}</strong><br>
+              <strong data-cms-bind="legal.company-details#legal.bollag.name">{{ cms.legalNotice.legal.bollag.name }}</strong><br>
               {% for line in cms.legalNotice.legal.bollag.addressLines %}{{ line }}{% if not loop.last %}<br>
               {% endif %}{% endfor %}
             </p>
             <p>
-              Phone: <a href="{{ cms.site.footer.bgContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.bgContact.phoneLabel }}</a><br>
-              Email: <a href="{{ cms.site.footer.bgContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.bgContact.emailLabel }}</a>
+              Phone: <a href="{{ cms.site.footer.bgContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black" data-cms-bind="site.footer#footer.bgContact.phoneLabel">{{ cms.site.footer.bgContact.phoneLabel }}</a><br>
+              Email: <a href="{{ cms.site.footer.bgContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black" data-cms-bind="site.footer#footer.bgContact.emailLabel">{{ cms.site.footer.bgContact.emailLabel }}</a>
             </p>
-            <p>
+            <p data-cms-bind="legal.company-details#legal.bollag.responsibility">
               {{ cms.legalNotice.legal.bollag.responsibility }}
             </p>
             <p>
-              <strong>{{ cms.legalNotice.legal.wearhouse.name }}</strong><br>
+              <strong data-cms-bind="legal.company-details#legal.wearhouse.name">{{ cms.legalNotice.legal.wearhouse.name }}</strong><br>
               {% for line in cms.legalNotice.legal.wearhouse.addressLines %}{{ line }}{% if not loop.last %}<br>
               {% endif %}{% endfor %}
             </p>
             <p>
-              Phone: <a href="{{ cms.site.footer.wearhouseContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.wearhouseContact.phoneLabel }}</a><br>
-              Email: <a href="{{ cms.site.footer.wearhouseContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.wearhouseContact.emailLabel }}</a>
+              Phone: <a href="{{ cms.site.footer.wearhouseContact.phoneHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black" data-cms-bind="site.footer#footer.wearhouseContact.phoneLabel">{{ cms.site.footer.wearhouseContact.phoneLabel }}</a><br>
+              Email: <a href="{{ cms.site.footer.wearhouseContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black" data-cms-bind="site.footer#footer.wearhouseContact.emailLabel">{{ cms.site.footer.wearhouseContact.emailLabel }}</a>
             </p>
           </div>
         </section>
 
         <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal data-cms-section="legal.liability">
-          <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.liability.title }}</p>
+          <p class="type-label mb-4 text-black/38" data-cms-bind="legal.liability#liability.title">{{ cms.legalNotice.liability.title }}</p>
           <div class="type-body type-body-stack text-black/72">
             {%- for paragraph in cms.legalNotice.liability.paragraphs %}
-            <p>
+            <p data-cms-bind="legal.liability#liability.paragraphs.{{ loop.index0 }}">
               {{ paragraph }}
             </p>
             {%- endfor %}
@@ -68,13 +68,13 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
         </section>
 
         <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal data-cms-section="legal.privacy">
-          <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.privacy.title }}</p>
+          <p class="type-label mb-4 text-black/38" data-cms-bind="legal.privacy#privacy.title">{{ cms.legalNotice.privacy.title }}</p>
           <div class="type-body type-body-stack text-black/72">
             <p>
-              The controller for data processing on this website is Bollag-Guggenheim AG, Thurgauerstrasse 113, CH-8152 Glattpark, Switzerland. Privacy enquiries can be sent to <a href="{{ cms.site.footer.bgContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black">{{ cms.site.footer.bgContact.emailLabel }}</a>.
+              The controller for data processing on this website is Bollag-Guggenheim AG, Thurgauerstrasse 113, CH-8152 Glattpark, Switzerland. Privacy enquiries can be sent to <a href="{{ cms.site.footer.bgContact.emailHref }}" class="nav-link inline-flex pb-1 transition duration-300 hover:text-black" data-cms-bind="site.footer#footer.bgContact.emailLabel">{{ cms.site.footer.bgContact.emailLabel }}</a>.
             </p>
             {%- for paragraph in cms.legalNotice.privacy.paragraphs %}
-            <p>
+            <p data-cms-bind="legal.privacy#privacy.paragraphs.{{ loop.index0 }}">
               {{ paragraph }}
             </p>
             {%- endfor %}
@@ -97,8 +97,8 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
                   </svg>
                 </span>
                 <span class="block">
-                  <span class="type-body block font-semibold text-black">{{ cms.legalNotice.privacy.document.label }}</span>
-                  <span class="type-label block text-black/45">{{ cms.legalNotice.privacy.document.note }}</span>
+                  <span class="type-body block font-semibold text-black" data-cms-bind="legal.privacy#privacy.document.label">{{ cms.legalNotice.privacy.document.label }}</span>
+                  <span class="type-label block text-black/45" data-cms-bind="legal.privacy#privacy.document.note">{{ cms.legalNotice.privacy.document.note }}</span>
                 </span>
               </span>
               <span class="type-label flex flex-none items-center gap-2 text-black/55 transition duration-300 group-hover:text-black">

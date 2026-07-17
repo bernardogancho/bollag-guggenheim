@@ -3,17 +3,17 @@
     <div class="mb-12 border-t border-black/10 pt-8"></div>
     <div class="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start lg:gap-16">
       <div>
-        <p class="type-eyebrow-hero mb-5 text-black/44" data-reveal>
+        <p class="type-eyebrow-hero mb-5 text-black/44" data-reveal data-cms-bind="company.intro#intro.eyebrow">
           {{ cms.company.intro.eyebrow }}
         </p>
         <h2 class="type-section-title-md text-black" data-reveal>
           {% for line in cms.company.intro.titleLines %}
-            <span class="block">{{ line }}</span>
+            <span class="block" data-cms-bind="company.intro#intro.titleLines.{{ loop.index0 }}">{{ line }}</span>
           {% endfor %}
         </h2>
         <div class="type-body-lg type-body-stack mt-8 max-w-[36rem] text-black/72">
           {% for paragraph in cms.company.intro.paragraphs %}
-            <p data-reveal>{{ paragraph }}</p>
+            <p data-reveal data-cms-bind="company.intro#intro.paragraphs.{{ loop.index0 }}">{{ paragraph }}</p>
           {% endfor %}
         </div>
       </div>
@@ -21,7 +21,7 @@
       <div class="relative min-h-[34rem] lg:min-h-[44rem]" data-reveal>
         <div class="absolute inset-[1.1rem_0_0_1.1rem] border border-black/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.4),rgba(244,239,232,0.72))]"></div>
         <figure class="group relative h-full overflow-hidden bg-white/30 shadow-[0_28px_80px_rgba(20,18,16,0.1)]">
-          <img src="{{ cms.company.intro.image }}" alt="{{ cms.company.intro.imageAlt }}" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.035] group-hover:opacity-92">
+          <img src="{{ cms.company.intro.image }}" alt="{{ cms.company.intro.imageAlt }}" class="h-full w-full object-cover object-center transition duration-[900ms] group-hover:scale-[1.035] group-hover:opacity-92" data-cms-bind="company.intro#intro.image">
           <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.14),transparent_34%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
         </figure>
       </div>
