@@ -8,6 +8,7 @@ import { ItemListScreen } from './ItemListScreen.jsx';
 import { ItemEditScreen } from './ItemEditScreen.jsx';
 import { WearhouseScreen } from './WearhouseScreen.jsx';
 import { BrandsScreen } from './BrandsScreen.jsx';
+import { PreviewPane } from '../preview/PreviewPane.jsx';
 
 export function Breadcrumbs({ parts }) {
   return (
@@ -22,7 +23,14 @@ export function Breadcrumbs({ parts }) {
   );
 }
 
-export function SectionScreen({ page, section, rest }) {
+// The Section screen's job is really two things bolted together: whichever
+// editor UI this section/route needs (a plain field form, a managed list, or
+// one of the custom brands/wearhouse screens), and — beside it — the Level 2
+// preview pane showing that section highlighted on the real page. This inner
+// component picks the editor UI; SectionScreen wraps it in the two-column
+// layout with PreviewPane so every route through here gets a preview without
+// each sub-screen needing to know about it.
+function SectionEditor({ page, section, rest }) {
   const { store, fieldConfig } = useAdmin();
   useStoreVersion(store);
   const toast = useToast();
@@ -92,6 +100,17 @@ export function SectionScreen({ page, section, rest }) {
           />
         ))}
       </div>
+    </div>
+  );
+}
+
+export function SectionScreen({ page, section, rest }) {
+  return (
+    <div className="section-preview-layout">
+      <div className="section-preview-form">
+        <SectionEditor page={page} section={section} rest={rest} />
+      </div>
+      <PreviewPane page={page} section={section} />
     </div>
   );
 }

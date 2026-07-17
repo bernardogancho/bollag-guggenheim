@@ -1663,3 +1663,71 @@ button:disabled {
 .issue-list { border: 1px solid rgba(217, 48, 37, 0.4); background: rgba(217, 48, 37, 0.05); border-radius: var(--radius); padding: 12px 14px; display: grid; gap: 6px; }
 .issue-row { font-size: 13px; }
 .issue-row strong { color: var(--danger); }
+
+/* ===== Preview pane (Task 20 — Level 2 preview) ===== */
+
+/* Flexbox rather than grid: the form pane must reliably reclaim the space
+   the preview gives up when it collapses to a 44px rail, regardless of how
+   the browser resolves an intrinsic grid-track size for that rail. */
+.section-preview-layout { display: flex; gap: 20px; align-items: flex-start; }
+.section-preview-form { flex: 1 1 0%; min-width: 0; }
+
+.preview-pane {
+  flex: 0 0 46%;
+  max-width: 46%;
+  min-width: 0;
+  position: sticky;
+  top: 16px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 32px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+
+.preview-pane-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-soft);
+}
+.preview-pane-head-copy { min-width: 0; }
+.preview-pane-label { margin: 0; font-size: 11.5px; line-height: 1.5; color: var(--muted); }
+.preview-pane-link { display: inline-block; margin-top: 4px; font-size: 11.5px; font-weight: 600; color: var(--accent); }
+.preview-pane-link:hover { text-decoration: underline; }
+.preview-pane-toggle { flex: none; padding: 6px 10px; font-size: 12px; }
+
+.preview-pane-frame-wrap { position: relative; flex: 1; min-height: 420px; background: var(--panel-soft); }
+.preview-pane-frame { display: block; width: 100%; height: 100%; min-height: 420px; border: 0; background: #fff; }
+.preview-pane-note {
+  position: absolute; top: 10px; left: 10px; right: 10px; z-index: 2;
+  margin: 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.94); color: var(--muted); font-size: 12px; box-shadow: var(--shadow-1);
+}
+
+.preview-pane-collapsed {
+  flex: 0 0 44px;
+  max-width: 44px;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 10px 0;
+}
+.preview-pane-reopen {
+  appearance: none; border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+  background: #fff; color: var(--accent); font-weight: 600; font-size: 12px;
+  padding: 10px 6px; cursor: pointer; writing-mode: vertical-rl; text-orientation: mixed;
+  display: flex; align-items: center; gap: 6px;
+}
+.preview-pane-reopen:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+@media (max-width: 1099.98px) {
+  .section-preview-layout { display: block; }
+  .preview-pane,
+  .preview-pane-collapsed { display: none; }
+}

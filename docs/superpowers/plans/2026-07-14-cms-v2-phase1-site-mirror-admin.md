@@ -5515,6 +5515,137 @@ git commit -m "fix(cms-v2): file the Segment field where it renders; correct car
 
 ---
 
+### Task 20: Preview pane (Phase 2, level 2 — section highlighting)
+
+Phase 1 (Chunks 1–6, and Task 20 below in Chunk 7) shipped the editing surface: a form per
+section, mirroring the site's structure. This task adds the thing editors kept needing next — a
+way to *see* the section they're editing on the real page, without leaving the form. Level 2
+means: show the published page, scroll to the section, outline it. Not a live-editing WYSIWYG
+(that would be Level 3+, and out of scope), and explicitly not a preview of unsaved drafts — the
+owner was firm that the CMS must never look like it's showing edits it isn't.
+
+**The same-origin insight.** `/admin/` and the site are served from the same Eleventy build, same
+origin, same deploy. That means the admin's JS can reach directly into an `<iframe src="/company/">`
+via `iframe.contentDocument.querySelector(...)` — no `postMessage` bridge, no `?cms-preview=1`
+query param, no script injected into the site's own bundle. The only thing that ever crosses into
+the iframe is a `<style>` tag the ADMIN injects into the iframe's document at runtime, from
+`PreviewPane.jsx`, after the iframe has loaded — it lives only in that in-memory document, is
+never part of the site's shipped HTML/CSS/JS, and can never reach a real visitor.
+
+**Commit 1 — invisible section markers.** Every section in `src/admin/manifest.js` needs exactly
+one thing on the site side: `data-cms-section="<pageId>.<sectionId>"` on that section's root DOM
+element. Two categories of template needed different handling:
+
+- Most sections have their own dedicated template file or a standalone `<section>` in a page's
+  `.njk` — one attribute on the root tag.
+- A few pages render two sibling sections (an intro + a list, e.g. `stores.network` /
+  `stores.store-list`, `contact.offices-intro` / `contact.bollag-office`, `brands.portfolio-heading`
+  / `brands.all-brands`) inside one shared wrapper `<section>`. In those cases each sub-section has
+  its own nested `<div>`/`<section>` already in the markup, so the marker goes on that inner
+  element instead of the shared wrapper — no markup added, just an attribute on an element that
+  was already there.
+- `agenda.calendar` / `agenda.months` render as one visually fused block (same background, no
+  seam) inside `src/agenda/index.njk`, but DO have two distinct DOM nodes: an outer `<section>`
+  and, nested inside it, a `<div class="space-y-14 lg:space-y-20">` that holds just the month
+  list. Marked the outer section `agenda.calendar` (the "shared root" the fused block reads as)
+  and the inner div `agenda.months` — both markers exist, one nested inside the other.
+- The shared `selected-stores.njk` include (rendered by both `src/index.njk` as
+  `homepage.editorial-selection` and `src/company/index.njk` as `company.editorial-selection`)
+  can't hardcode either id — it's one file backing two different manifest sections depending on
+  which page includes it. Each page now does `{% set cmsSection = 'homepage.editorial-selection' -%}`
+  (or the company equivalent) immediately before the include; the component renders
+  `{% if cmsSection %} data-cms-section="{{ cmsSection }}"{% endif %}`, so an unrelated future
+  include of this component without setting the variable stays unmarked instead of emitting a
+  broken empty attribute.
+- Two manifest sections have no on-page root to mark at all: `brands.page-settings` and
+  `wearhouse.page-settings` are shared TEXT rendered on individual brand/wearhouse-brand *detail*
+  pages (`brand.njk`), never on `/brands/` or `/wearhouse/` themselves. Allowlisted with a comment
+  in the coverage test rather than marking something that isn't actually there.
+- `src/brands/index.njk` also includes `wearhouse-brands-wall.njk` (a second render of the
+  homepage's Wearhouse portfolio brands, reused as a teaser). That block isn't itself a manifest
+  section of the Brands page — left unmarked.
+
+**Coverage test** (`src/admin/__tests__/preview-sections.test.js`): rather than running a full
+`npm run build` inside the vitest suite, it greps the SOURCE `.njk` templates for the exact
+`data-cms-section="<page>.<section>"` string every manifest section is expected to produce (or
+the `cmsSection = '...'` assignment, for the shared include). Every manifest section must either
+match, or be named in an explicit, commented `NO_PREVIEW_TARGET` allowlist — plus a reverse check
+that every marker found in source actually resolves to a real manifest id, and that every
+allowlist entry is a real manifest id, catching typos in both directions. This is deliberately a
+proxy for a built-HTML check, not the real thing — cheap enough to run on every `npm test`, and it
+fails exactly when a template stops emitting a marker a screen still expects one from.
+
+**Proof of zero visual change.** Cleaned `_site`, built origin/main into one directory and this
+branch into another, then normalized the AFTER tree by stripping every
+`data-cms-section="..."` occurrence (including the whole line, so a multi-line attribute list
+collapses back to its original line count) before diffing:
+
+```bash
+find after_normalized -name '*.html' -exec \
+  perl -0777 -pi -e 's/[ \t]*data-cms-section="[^"]*"[ \t]*\n?//g' {} \;
+diff -rq before after_normalized   # admin/index.html and admin/media-index.json excluded —
+                                    # both stamp a fresh Date.now()/ISO timestamp on every
+                                    # build regardless of any template change (buildHash.js,
+                                    # media-index.11ty.js), and neither is a site page.
+```
+
+Result: empty diff across all 35 rendered site pages. Two `{% set cmsSection = '...' -%}` lines
+use the `-%}` whitespace-control suffix specifically so they don't add a stray blank line to their
+page's output — everything else already matched byte-for-byte once the attribute itself was
+stripped. Confirmed separately that no site CSS/JS (`src/assets/**`, `tailwind.config.js`)
+references `data-cms-section` anywhere.
+
+**Commit 2 — the pane.** `src/admin/preview/previewLogic.js` holds the pure, DOM-shaped logic
+(marker selector, localStorage read/write, highlight inject/clear/locate) so it's unit-testable in
+vitest's `node` environment without jsdom — the fakes in `previewLogic.test.js` duck-type just the
+`querySelector`/`setAttribute`/`scrollIntoView`/`scrollBy` surface the real code calls.
+`src/admin/preview/PreviewPane.jsx` wraps that logic in a component: an `<iframe src={page.url}>`,
+a header with the exact required copy ("Live page — the published version. Your unsaved edits are
+not shown here.") plus "Open in new tab ↗", and a collapse toggle persisted to `localStorage` under
+`bg-cms-preview-open`. `SectionScreen.jsx` was restructured — the section-specific editor (plain
+field form, managed list, or one of the custom Brands/Wearhouse screens) now renders inside a
+`.section-preview-form` column, with `PreviewPane` beside it in `.section-preview-layout`; every
+route through `SectionScreen` gets a preview without each sub-screen needing to know about it.
+CSS uses flexbox, not grid, so the form column reliably reclaims the space the pane gives up when
+collapsed to its 44px rail, regardless of how the browser would resolve an intrinsic grid-track
+size for that rail; hidden entirely below 1100px so it never competes with the form on small
+screens.
+
+Every iframe DOM access (`contentDocument`, `contentWindow`) is wrapped in try/catch — a
+cross-origin frame, a not-yet-navigated frame, or a missing marker all degrade to a "Preview
+unavailable" note rather than throwing into React, and the form itself never depends on the
+preview succeeding. Switching between two sections of the *same* page relocates and re-highlights
+in the already-loaded iframe instead of reloading; switching to a section on a different page lets
+the iframe's `src` change (React `key={page.url}`) trigger a normal reload, and the `onLoad`
+handler re-applies the highlight once it fires.
+
+Manually verified in a real browser (temporary harness importing the real `PreviewPane.jsx`,
+deleted before commit — Supabase admin login wasn't available in this environment) against the
+actual built site, same origin, on `localhost:8080`: hero/intro/history sections locate and
+highlight correctly with the header-offset scroll visible as a gap above the outlined block; the
+`agenda.calendar` / `agenda.months` fused case highlights the correct one of the two nested
+elements and switching between them re-highlights without an iframe reload; a missing marker shows
+"Preview unavailable" without breaking the pane; the collapse toggle persists to `localStorage` and
+survives; the pane disappears entirely below the 1100px breakpoint. No console errors in any of
+these interactions. `[data-reveal]` content did become visible after the offset scroll in every
+case checked (the site's own `IntersectionObserver` fired naturally) — no case was hit here where
+a `[data-reveal]` ancestor stayed un-revealed, so there was nothing to work around.
+
+**Non-goal, stated explicitly:** this pane never shows unpublished drafts. It always renders
+whatever is currently live on the site, refetched fresh in the iframe — editing a field and
+looking at the pane without publishing first will show the *old* value, by design, so the CMS
+never looks like it's previewing something a visitor can't yet see.
+
+Verify: `npm test` 62/62 → 76/76 (14 new preview-pane tests) and `npm run build` green before each
+commit; the normalized byte-diff proof above re-run (and still empty) before commit 1.
+
+```bash
+git commit -m "feat: mark section roots for the CMS preview (invisible attributes only)"
+git commit -m "feat(cms-v2): section preview pane (published page, highlights the edited block)"
+```
+
+---
+
 ## Chunk 7: Cutover, verification, walkthrough, handoff
 
 ### Task 20: Delete the old monolith
