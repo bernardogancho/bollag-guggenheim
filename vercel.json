@@ -1,5 +1,11 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "_site",
-  "cleanUrls": false
+  "cleanUrls": false,
+  "crons": [
+    {
+      "path": "/api/keepalive",
+      "schedule": "0 9 * * *"
+    }
+  ]
 }
