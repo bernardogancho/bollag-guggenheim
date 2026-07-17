@@ -52,7 +52,7 @@ eleventyComputed:
         <p class="type-eyebrow mb-4 text-black/42" data-reveal>{{ cms.brandsPage.detailPage.overviewEyebrow }}</p>
         <div class="type-body-lg type-body-stack text-black/72">
           <p data-reveal>{{ brand.intro }}</p>
-          <p data-reveal>{{ brand.focus }}</p>
+          {% if brand.focus %}<p data-reveal>{{ brand.focus }}</p>{% endif %}
         </div>
         <div class="type-meta mt-8 flex flex-wrap gap-x-6 gap-y-3 text-black/44" data-reveal>
           <span>{{ brand.atmosphere }}</span>

@@ -585,7 +585,7 @@ collections:
                 widget: object
                 fields:
                   - { label: Intro, name: intro, widget: text }
-                  - { label: Focus, name: focus, widget: text }
+                  - { label: Focus, name: focus, widget: text, required: false }
                   - { label: Atmosphere, name: atmosphere, widget: string }
                   - { label: Categories, name: categories, widget: list, field: { label: Category, name: category, widget: string } }
                   - { label: Detail Hero Image, name: detailHeroImage, widget: image, required: false, description: "The big banner at the top of the brand's own page." }

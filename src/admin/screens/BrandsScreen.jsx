@@ -90,7 +90,7 @@ export function BrandsScreen({ page, section, rest }) {
         help: 'The text block after the page top.',
         fields: [
           { source: 'detail', name: 'intro', overrides: { label: 'First paragraph' } },
-          { source: 'detail', name: 'focus', overrides: { label: 'Second paragraph' } },
+          { source: 'detail', name: 'focus', overrides: { label: 'Second paragraph', description: 'Leave empty to show only the first.' } },
           { source: 'detail', name: 'atmosphere', overrides: { label: 'Style tag', description: 'Short phrase shown in the small info row, e.g. "Relaxed tailoring".' } },
           { source: 'detail', name: 'categories', overrides: { label: 'Categories', description: 'Only the first two are shown on the page.' } },
         ],
