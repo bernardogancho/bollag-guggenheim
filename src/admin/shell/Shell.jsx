@@ -20,10 +20,53 @@ function pageDirty(store, page) {
   return page.sections.some(section => sectionDirty(store, section));
 }
 
+// A page's row, plus — only when it's the active page — an indented,
+// clickable sub-list of its sections with the current one highlighted.
+// This is the "where am I" fix: the hierarchy (page → its sections) and the
+// current location are both visible in the same glance, instead of a flat
+// list of page names with no sense of what's inside the open page.
+function PageNavItem({ page, activePage, activeSection, store }) {
+  const isActivePage = activePage === page.id;
+  return (
+    <div className="sidebar-nav-group">
+      <button
+        type="button"
+        className={`sidebar-nav-item ${isActivePage ? 'is-active' : ''}`}
+        onClick={() => navigate('page', page.id)}
+      >
+        <span className="sidebar-nav-label">{page.label}</span>
+        <span className={`dirty-dot ${pageDirty(store, page) ? 'is-dirty' : ''}`} />
+      </button>
+      {isActivePage ? (
+        <ul className="sidebar-subnav">
+          {page.sections.map(section => (
+            <li key={section.id}>
+              <button
+                type="button"
+                className={`sidebar-subnav-item ${activeSection === section.id ? 'is-active' : ''}`}
+                onClick={() => navigate('page', page.id, section.id)}
+              >
+                {section.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
+
 function Sidebar({ route }) {
   const { user, store } = useAdmin();
   useStoreVersion(store);
   const activePage = route[0] === 'page' ? route[1] : route[0];
+  // Route shape is ['page', pageId, sectionId, ...rest] — the section id sits
+  // at index 2 regardless of how deep a sub-route goes (list/item editors),
+  // so this stays correct while editing an item inside a section too.
+  const activeSection = route[0] === 'page' ? route[2] : null;
+
+  const pagesGroup = PAGES.filter(page => page.group === 'pages');
+  const siteGroup = PAGES.filter(page => page.group === 'site');
 
   return (
     <aside className="sidebar">
@@ -36,17 +79,17 @@ function Sidebar({ route }) {
       </div>
 
       <nav className="sidebar-nav">
-        {PAGES.map(page => (
-          <button
-            key={page.id} type="button"
-            className={`sidebar-nav-item ${activePage === page.id ? 'is-active' : ''}`}
-            onClick={() => navigate('page', page.id)}
-          >
-            <span className="sidebar-nav-label">{page.label}</span>
-            <span className={`dirty-dot ${pageDirty(store, page) ? 'is-dirty' : ''}`} />
-          </button>
+        <div className="sidebar-group-heading">Pages</div>
+        {pagesGroup.map(page => (
+          <PageNavItem key={page.id} page={page} activePage={activePage} activeSection={activeSection} store={store} />
         ))}
-        <div className="sidebar-divider" />
+
+        <div className="sidebar-group-heading">Site-wide</div>
+        {siteGroup.map(page => (
+          <PageNavItem key={page.id} page={page} activePage={activePage} activeSection={activeSection} store={store} />
+        ))}
+
+        <div className="sidebar-group-heading">Library</div>
         <button type="button" className={`sidebar-nav-item ${activePage === 'media' ? 'is-active' : ''}`} onClick={() => navigate('media')}>
           <span className="sidebar-nav-label">Media</span>
         </button>

@@ -5059,6 +5059,366 @@ git commit -m "feat(cms-v2): image size guidance, picker dimensions, brand hero 
 
 ---
 
+### Task 19e: Mirror the site structure (Company editorial, brand portrait, grouped sidebar)
+
+Three editor-only changes landed on `cms-clarity` (branched from `main` at `64f8de9`), all in
+service of the owner's core principle: "all the pages on the CMS should have the most possible
+similar structure on CMS as they are on the website." Editor-only — no `.njk` template, no
+`src/_data/**` content, and no `main.jsx` change in any of the three commits.
+
+**19e-1: Company's missing Editorial section.** `src/company/index.njk` includes
+`components/selected-stores.njk` as its LAST content section (after distribution, before the
+footer), and that component renders from `cms.home.selection`
+(`src/_data/cms/home/selectionSection.json`, key `selection`) — the same data the Homepage's
+"Editorial selection" section already edited. The CMS only surfaced it under Homepage, so an
+editor looking at Company had no way to find the block they see live on `/company/`. Added the
+same section to Company, positioned last (matching page order: hero, intro, history,
+distribution, editorial-selection), and cross-referenced the sharing in both sections' hints.
+
+```jsx
+// manifest.js — homepage.sections, editorial-selection hint updated
+{ id: 'editorial-selection', label: 'Editorial selection', hint: 'Curated image mosaic — shared with the Company page; editing this changes both pages', file: `${CMS}/home/selectionSection.json`, keys: ['selection'] },
+```
+
+```jsx
+// manifest.js — company.sections, new last entry
+{ id: 'distribution', label: 'Distribution', file: `${CMS}/company.json`, keys: ['distribution'] },
+{ id: 'editorial-selection', label: 'Editorial selection', hint: 'Shared with the homepage — editing this changes both pages', file: `${CMS}/home/selectionSection.json`, keys: ['selection'] },
+```
+
+Two sections now deliberately back the same file and the same key. `ALL_FILES` stays deduped
+(it already builds off a `Set`) and `sectionsForFile('src/_data/cms/home/selectionSection.json')`
+now returns both sections; every caller that does `sectionsForFile(file)[0]` as a fallback
+(`ChangesTray.jsx`'s issue crumbs, `MediaScreen.jsx`'s "used in" labels) picks whichever section
+`allSections()` reaches first — Homepage's, since it's earlier in `PAGES` — which is a harmless,
+acceptable fallback, not a crash.
+
+The manifest integrity test previously asserted **disjoint** keys per file shared by two
+sections — a rule that was really guarding against two *different* sections silently racing to
+edit the same JSON key, but is too strict now that two sections legitimately mirror the exact
+same key on purpose. Relaxed it to allow an identical full mirror (same file, same key set)
+while still failing on any partial or conflicting overlap, and added an explicit regression test
+for the new dual-owner file:
+
+```js
+// manifest.test.js
+it('covers every config.yml file, with no two sections claiming conflicting keys on a shared file', () => {
+  const covered = [];
+  for (const section of allSections()) {
+    if (section.joined) {
+      covered.push(...section.files);
+    } else {
+      covered.push(section.file);
+    }
+  }
+  expect([...new Set(covered)].sort()).toEqual([...new Set(configFiles)].sort());
+
+  const claimsByFile = new Map();
+  for (const section of allSections()) {
+    if (section.joined) {
+      continue;
+    }
+    const signature = [...section.keys].sort().join(',');
+    const claims = claimsByFile.get(section.file) || [];
+    for (const key of section.keys) {
+      const conflict = claims.find(claim => claim.keys.includes(key) && claim.signature !== signature);
+      expect(conflict, `${section.file} key "${key}" is claimed by two sections with different key sets`).toBeUndefined();
+    }
+    claims.push({ signature, keys: section.keys });
+    claimsByFile.set(section.file, claims);
+  }
+});
+
+it('a file backing two sections (Homepage + Company editorial selection) is deduped in ALL_FILES and both sections resolve', () => {
+  const file = 'src/_data/cms/home/selectionSection.json';
+  expect(ALL_FILES.filter(f => f === file).length).toBe(1);
+  const owners = sectionsForFile(file);
+  expect(owners.length).toBe(2);
+  expect(owners.map(s => s.pageId).sort()).toEqual(['company', 'homepage']);
+  expect(owners.every(s => s.id === 'editorial-selection')).toBe(true);
+});
+```
+
+Verify: `npm test` 59/59 (58 + 1 new dual-owner regression test), `npm run build` green.
+
+```bash
+git add src/admin/manifest.js src/admin/__tests__/manifest.test.js
+git commit -m "feat(cms-v2): show the Editorial section on Company, where the page has it"
+```
+
+**19e-2: The brand's portrait beside the intro.** `src/brands/brand.njk` renders, next to the
+intro/focus text, an `overview-image__media` portrait whose src is
+`brand.detailGallery[1].image` — the SECOND item of "Visual journal" doubles as the portrait
+beside the intro text (guarded by `{% if brand.detailGallery.length > 1 %}`). The only way to
+change it was to realise it's secretly item #2 of a gallery list — invisible to editors, and the
+owner explicitly asked to be able to change this "2nd image". Added a field to the top of the
+Introduction group in `BrandsScreen.jsx`'s item editor, reusing the Visual journal's own `image`
+field definition from config (same widget, same media picker) so it never drifts from
+`config.yml`, with an honest label/description disclosing it's the same photo:
+
+```jsx
+// BrandsScreen.jsx — inside item mode, before the groups table
+const galleryImageField = findField('detail', 'detailGallery')?.fields?.find(f => f.name === 'image') || null;
+const portraitField = withOverrides(galleryImageField, {
+  label: 'Portrait beside the intro',
+  description: "The photo shown next to this text on the brand's page. It is also the 2nd photo in the Visual journal below — changing one changes the other.",
+});
+const groups = [
+  {
+    title: 'Introduction',
+    help: 'The text block after the page top.',
+    fields: [
+      { custom: 'portrait' },
+      { source: 'detail', name: 'intro', overrides: { label: 'First paragraph' } },
+      // ...focus, atmosphere, categories unchanged
+    ],
+  },
+  // ...
+];
+```
+
+```jsx
+// BrandsScreen.jsx — groups.map field renderer, custom 'portrait' branch
+{group.fields.map(({ source, name, overrides, custom }) => {
+  if (custom === 'portrait') {
+    if (!portraitField) {
+      return null;
+    }
+    return (
+      <FieldRenderer key="detail.detailGallery.1.image" field={portraitField}
+        value={item.detail?.detailGallery?.[1]?.image}
+        onChange={next => updateField('detail.detailGallery.1.image', next)}
+        pathPrefix={`brands.${idx}.detail.detailGallery.1.image`} routeBase={[page.id, section.id]} />
+    );
+  }
+  // ...existing source/name branch unchanged
+})}
+```
+
+It reads/writes `brands.<idx>.detail.detailGallery.1.image` through the SAME pruned-write
+mechanism the screen already uses (`setAtPath` + `pruneEmptyAdditions` against `getRemote` at
+the same path) — no new plumbing. Edge case: if `detailGallery` has fewer than 2 items, the
+portrait doesn't render on the site either, so the field just shows empty; writing to it grows
+the array to create index 1 (`setAtPath` treats a numeric next-segment as an array) without
+reordering or touching index 0.
+
+Verified with a node probe against the real, unmodified `brands.json`:
+- **Case (a)**, a real brand (`Closed`, 28 gallery items): the field's computed value equals
+  `detailGallery[1].image` exactly; writing a new path updates only `detailGallery[1].image`,
+  leaves `detailGallery[1].note` and every other gallery item byte-identical, and leaves the
+  array length unchanged.
+- **Case (b)**, a simulated 1-item gallery: the field shows `undefined` (empty); writing does
+  not throw, grows the gallery to length 2, leaves index 0 byte-identical to before, and creates
+  index 1 as `{"image":"<new path>"}` — nothing else.
+
+Verify: `npm test` 59/59, `npm run build` green.
+
+```bash
+git add src/admin/screens/BrandsScreen.jsx
+git commit -m "feat(cms-v2): edit the brand's intro portrait directly (the Visual journal's 2nd photo)"
+```
+
+**19e-3: Grouped sidebar with the current page's sections nested.** The owner: "make the left
+menu more intelligible, so you can understand where you are navigating... the hierarchy is
+messed up legal, footer, homepage — also the navigation inside is a bit confusing." Two fixes:
+
+*(a) Hierarchy* — each `PAGES` entry now carries a `group: 'pages' | 'site'` (the seven real
+pages keep their existing website-nav order; `site` is Header & Footer then Legal Notice,
+reordered — Header & Footer used to come after Legal Notice in the array). No page `id` changed.
+
+```jsx
+// manifest.js — SITE-WIDE entries, reordered and grouped
+// SITE-WIDE, not a page: Header & Footer first, then Legal Notice
+// (site-wide chrome before the one-off legal page it links to).
+{
+  id: 'site', label: 'Header & Footer', url: '/', group: 'site',
+  sections: [
+    { id: 'navigation', label: 'Navigation menu', file: `${CMS}/site.json`, keys: ['nav'] },
+    { id: 'footer', label: 'Footer', file: `${CMS}/site.json`, keys: ['footer'] },
+  ],
+},
+{
+  id: 'legal', label: 'Legal Notice', url: '/legal-notice/', group: 'site',
+  sections: [
+    { id: 'hero', label: 'Hero banner', file: `${CMS}/legalNotice.json`, keys: ['hero'] },
+    { id: 'company-details', label: 'Company details', file: `${CMS}/legalNotice.json`, keys: ['legal'] },
+    { id: 'liability', label: 'Liability & copyright', file: `${CMS}/legalNotice.json`, keys: ['liability'] },
+    { id: 'privacy', label: 'Privacy policy', hint: 'Privacy text and the downloadable PDF', file: `${CMS}/legalNotice.json`, keys: ['privacy'] },
+  ],
+},
+```
+
+Every one of the seven page entries (`homepage`, `company`, `brands`, `wearhouse`, `stores`,
+`agenda`, `contact`) gained `group: 'pages'` in place, in their existing order.
+
+`Shell.jsx`'s sidebar now renders three labelled groups — PAGES and SITE-WIDE from the
+manifest's `group` field, LIBRARY hard-coded as Media + People (People still admin-only, as
+before) — replacing the old flat list plus `sidebar-divider`.
+
+*(b) "Where am I"* — when a page is active, its sections render as an indented, clickable
+sub-list beneath it, with the current section highlighted; non-active pages show no sub-list.
+The active section is derived from the route (`['page', pageId, sectionId, ...rest]` — the
+section id sits at index 2 regardless of how deep a sub-route goes, so it stays correct while
+editing an item inside a section too):
+
+```jsx
+// Shell.jsx
+function PageNavItem({ page, activePage, activeSection, store }) {
+  const isActivePage = activePage === page.id;
+  return (
+    <div className="sidebar-nav-group">
+      <button
+        type="button"
+        className={`sidebar-nav-item ${isActivePage ? 'is-active' : ''}`}
+        onClick={() => navigate('page', page.id)}
+      >
+        <span className="sidebar-nav-label">{page.label}</span>
+        <span className={`dirty-dot ${pageDirty(store, page) ? 'is-dirty' : ''}`} />
+      </button>
+      {isActivePage ? (
+        <ul className="sidebar-subnav">
+          {page.sections.map(section => (
+            <li key={section.id}>
+              <button
+                type="button"
+                className={`sidebar-subnav-item ${activeSection === section.id ? 'is-active' : ''}`}
+                onClick={() => navigate('page', page.id, section.id)}
+              >
+                {section.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
+
+function Sidebar({ route }) {
+  const { user, store } = useAdmin();
+  useStoreVersion(store);
+  const activePage = route[0] === 'page' ? route[1] : route[0];
+  const activeSection = route[0] === 'page' ? route[2] : null;
+
+  const pagesGroup = PAGES.filter(page => page.group === 'pages');
+  const siteGroup = PAGES.filter(page => page.group === 'site');
+
+  return (
+    <aside className="sidebar">
+      <div className="sidebar-top">
+        <div>
+          <div className="sidebar-kicker">Bollag CMS</div>
+          <h1 className="sidebar-title">Website</h1>
+          <div className="sidebar-user">{user?.email}</div>
+        </div>
+      </div>
+
+      <nav className="sidebar-nav">
+        <div className="sidebar-group-heading">Pages</div>
+        {pagesGroup.map(page => (
+          <PageNavItem key={page.id} page={page} activePage={activePage} activeSection={activeSection} store={store} />
+        ))}
+
+        <div className="sidebar-group-heading">Site-wide</div>
+        {siteGroup.map(page => (
+          <PageNavItem key={page.id} page={page} activePage={activePage} activeSection={activeSection} store={store} />
+        ))}
+
+        <div className="sidebar-group-heading">Library</div>
+        <button type="button" className={`sidebar-nav-item ${activePage === 'media' ? 'is-active' : ''}`} onClick={() => navigate('media')}>
+          <span className="sidebar-nav-label">Media</span>
+        </button>
+        {user?.role === 'admin' ? (
+          <button type="button" className={`sidebar-nav-item ${activePage === 'people' ? 'is-active' : ''}`} onClick={() => navigate('people')}>
+            <span className="sidebar-nav-label">People</span>
+          </button>
+        ) : null}
+      </nav>
+    </aside>
+  );
+}
+```
+
+`admin.css` gained the group-heading and sub-nav styles (`.sidebar-group-heading` reuses the
+`.sidebar-kicker` small-caps type treatment but in `var(--muted)` so it never reads as the
+accent-coloured "BOLLAG CMS" brand kicker; `.sidebar-subnav`/`.sidebar-subnav-item` add a
+left-rail indent, hover state, and an `is-active` state consistent with
+`.sidebar-nav-item.is-active`), and the now-unused `.sidebar-divider` rule (nothing renders it
+any more — the three group headings replace it) was removed:
+
+```css
+/* PAGES / SITE-WIDE / LIBRARY group headings — same small-caps type
+   treatment as .sidebar-kicker, but muted rather than accent-coloured so it
+   never reads as the "BOLLAG CMS" brand kicker at the top of the sidebar. */
+.sidebar-group-heading {
+  margin: 14px 4px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.sidebar-group-heading:first-child {
+  margin-top: 2px;
+}
+
+.sidebar-nav-group {
+  display: grid;
+  gap: 4px;
+}
+
+/* Sub-list of a page's sections, shown only under the active page — the
+   "where am I" cue: indented, smaller, with a left rail and an is-active
+   state that mirrors .sidebar-nav-item.is-active. */
+.sidebar-subnav {
+  display: grid;
+  gap: 2px;
+  margin: 2px 0 4px 14px;
+  padding-left: 10px;
+  border-left: 2px solid var(--line);
+  list-style: none;
+}
+
+.sidebar-subnav-item {
+  display: block;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--muted);
+  padding: 6px 8px;
+  text-align: left;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.sidebar-subnav-item:hover {
+  background: var(--panel-soft);
+  color: var(--text);
+}
+
+.sidebar-subnav-item.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+```
+
+The pre-existing global `:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }`
+rule already applies to every focusable element, so the new sub-nav buttons get keyboard focus
+rings for free — no new focus-visible rule was needed.
+
+Verify: `npm test` 59/59, `npm run build` green, `src/admin/main.jsx` untouched, `PAGES` order
+otherwise unchanged (`Search.jsx` and `allSections()` iterate it order-independently).
+
+```bash
+git add src/admin/manifest.js src/admin/shell/Shell.jsx src/admin/admin.css docs/superpowers/plans/2026-07-14-cms-v2-phase1-site-mirror-admin.md
+git commit -m "feat(cms-v2): grouped sidebar with the current page's sections nested"
+```
+
+---
+
 ## Chunk 7: Cutover, verification, walkthrough, handoff
 
 ### Task 20: Delete the old monolith

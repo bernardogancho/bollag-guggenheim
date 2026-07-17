@@ -8,7 +8,7 @@ const CMS = 'src/_data/cms';
 
 export const PAGES = [
   {
-    id: 'homepage', label: 'Homepage', url: '/',
+    id: 'homepage', label: 'Homepage', url: '/', group: 'pages',
     sections: [
       { id: 'hero', label: 'Hero banner', hint: 'Opening video, title and subheading', file: `${CMS}/home/hero.json`, keys: ['hero'] },
       { id: 'intro', label: 'Introduction', hint: 'Small label, title, summary and image', file: `${CMS}/home/intro.json`, keys: ['intro'] },
@@ -18,7 +18,7 @@ export const PAGES = [
     ],
   },
   {
-    id: 'company', label: 'Company', url: '/company/',
+    id: 'company', label: 'Company', url: '/company/', group: 'pages',
     sections: [
       { id: 'hero', label: 'Hero banner', file: `${CMS}/company.json`, keys: ['hero'] },
       { id: 'intro', label: 'Introduction', file: `${CMS}/company.json`, keys: ['intro'] },
@@ -28,7 +28,7 @@ export const PAGES = [
     ],
   },
   {
-    id: 'brands', label: 'Brands', url: '/brands/',
+    id: 'brands', label: 'Brands', url: '/brands/', group: 'pages',
     sections: [
       { id: 'hero', label: 'Hero banner', file: `${CMS}/brandsPage/hero.json`, keys: ['hero'] },
       { id: 'portfolio-heading', label: 'Portfolio heading', file: `${CMS}/brandsPage/portfolio.json`, keys: ['portfolioSection'] },
@@ -37,7 +37,7 @@ export const PAGES = [
     ],
   },
   {
-    id: 'wearhouse', label: 'The Wearhouse', url: '/wearhouse/',
+    id: 'wearhouse', label: 'The Wearhouse', url: '/wearhouse/', group: 'pages',
     sections: [
       { id: 'hero', label: 'Hero banner', file: `${CMS}/wearhousePage/hero.json`, keys: ['hero'] },
       { id: 'overview', label: 'Overview', file: `${CMS}/wearhousePage/overview.json`, keys: ['overview'] },
@@ -52,7 +52,7 @@ export const PAGES = [
     ],
   },
   {
-    id: 'stores', label: 'Stores', url: '/stores/',
+    id: 'stores', label: 'Stores', url: '/stores/', group: 'pages',
     sections: [
       { id: 'hero', label: 'Hero banner', file: `${CMS}/stores.json`, keys: ['hero', 'heroStats'] },
       { id: 'network', label: 'Network introduction', file: `${CMS}/stores.json`, keys: ['networkSection'] },
@@ -60,7 +60,7 @@ export const PAGES = [
     ],
   },
   {
-    id: 'agenda', label: 'Agenda', url: '/agenda/',
+    id: 'agenda', label: 'Agenda', url: '/agenda/', group: 'pages',
     sections: [
       { id: 'hero', label: 'Hero banner', file: `${CMS}/agenda.json`, keys: ['hero'] },
       { id: 'calendar', label: 'Calendar introduction', file: `${CMS}/agenda.json`, keys: ['calendarSection'] },
@@ -69,7 +69,7 @@ export const PAGES = [
     ],
   },
   {
-    id: 'contact', label: 'Contact', url: '/contact/',
+    id: 'contact', label: 'Contact', url: '/contact/', group: 'pages',
     sections: [
       { id: 'hero', label: 'Hero banner', file: `${CMS}/contact.json`, keys: ['hero'] },
       { id: 'offices-intro', label: 'Offices introduction', file: `${CMS}/contact.json`, keys: ['officeSection'] },
@@ -79,20 +79,22 @@ export const PAGES = [
       { id: 'cta', label: 'Call to action', file: `${CMS}/contact.json`, keys: ['cta'] },
     ],
   },
+  // SITE-WIDE, not a page: Header & Footer first, then Legal Notice
+  // (site-wide chrome before the one-off legal page it links to).
   {
-    id: 'legal', label: 'Legal Notice', url: '/legal-notice/',
+    id: 'site', label: 'Header & Footer', url: '/', group: 'site',
+    sections: [
+      { id: 'navigation', label: 'Navigation menu', file: `${CMS}/site.json`, keys: ['nav'] },
+      { id: 'footer', label: 'Footer', file: `${CMS}/site.json`, keys: ['footer'] },
+    ],
+  },
+  {
+    id: 'legal', label: 'Legal Notice', url: '/legal-notice/', group: 'site',
     sections: [
       { id: 'hero', label: 'Hero banner', file: `${CMS}/legalNotice.json`, keys: ['hero'] },
       { id: 'company-details', label: 'Company details', file: `${CMS}/legalNotice.json`, keys: ['legal'] },
       { id: 'liability', label: 'Liability & copyright', file: `${CMS}/legalNotice.json`, keys: ['liability'] },
       { id: 'privacy', label: 'Privacy policy', hint: 'Privacy text and the downloadable PDF', file: `${CMS}/legalNotice.json`, keys: ['privacy'] },
-    ],
-  },
-  {
-    id: 'site', label: 'Header & Footer', url: '/',
-    sections: [
-      { id: 'navigation', label: 'Navigation menu', file: `${CMS}/site.json`, keys: ['nav'] },
-      { id: 'footer', label: 'Footer', file: `${CMS}/site.json`, keys: ['footer'] },
     ],
   },
 ];
