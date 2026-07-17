@@ -128,7 +128,7 @@ collections:
             fields:
               - { label: Title, name: title, widget: string }
               - { label: Subline, name: subline, widget: string }
-              - { label: Poster Image, name: poster, widget: image, description: "Still image shown while the video loads (and if it cannot play)." }
+              - { label: Poster Image, name: poster, widget: image, description: "Still image shown while the video loads (and if it cannot play). Best size: a wide photo around 2560×1440 px." }
               - { label: Video File, name: video, widget: file }
               - { label: Video Alt Text, name: videoAlt, widget: string, description: "Short description of the video for screen readers and SEO, e.g. 'Atelier craftspeople at work'." }
               - { label: Mobile Object Position, name: mobileObjectPosition, widget: string, description: "Which part of the video stays visible on phones. Use words like 'center', 'top', or 'center top'. Leave as 'center' if unsure." }
@@ -148,7 +148,7 @@ collections:
               - { label: Summary, name: summary, widget: text }
               - { label: CTA Label, name: ctaLabel, widget: string }
               - { label: CTA Link, name: ctaHref, widget: string }
-              - { label: Image, name: image, widget: image }
+              - { label: Image, name: image, widget: image, description: "Best size: at least 1200 px wide." }
               - { label: Image Alt Text, name: imageAlt, widget: string }
       - label: Bollag Portfolio Div
         name: home_brands_wall
@@ -170,7 +170,7 @@ collections:
                   - { label: Name, name: name, widget: string }
                   - { label: Link, name: href, widget: string }
                   - { label: Logo Image, name: logoImage, widget: image }
-                  - { label: Hero Image, name: heroImage, widget: image, required: false }
+                  - { label: Hero Image, name: heroImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
       - label: Wearhouse Portfolio Div
         name: home_wearhouse_wall
         file: src/_data/cms/home/wearhouseWall.json
@@ -191,7 +191,7 @@ collections:
                   - { label: Name, name: name, widget: string }
                   - { label: Segment, name: segment, widget: string }
                   - { label: Page Link, name: pageHref, widget: string }
-                  - { label: Hover Image, name: hoverImage, widget: image, required: false }
+                  - { label: Hover Image, name: hoverImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
       - label: Editorial Selection Div
         name: home_selection
         file: src/_data/cms/home/selectionSection.json
@@ -209,7 +209,7 @@ collections:
                 summary: "{{fields.brand}}"
                 fields:
                   - { label: Brand, name: brand, widget: string }
-                  - { label: Image, name: image, widget: image }
+                  - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px on the long side." }
                   - { label: Link, name: href, widget: string }
                   - { label: Note, name: note, widget: string }
                   - { label: Size, name: size, widget: select, options: ["standard", "wide", "tall", "feature"] }
@@ -248,7 +248,7 @@ collections:
                 name: paragraphs
                 widget: list
                 field: { label: Paragraph, name: paragraph, widget: text }
-              - { label: Image, name: image, widget: image }
+              - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px wide." }
               - { label: Image Alt Text, name: imageAlt, widget: string }
           - label: History Section
             name: history
@@ -260,7 +260,7 @@ collections:
                 name: paragraphs
                 widget: list
                 field: { label: Paragraph, name: paragraph, widget: text }
-              - { label: Image, name: image, widget: image }
+              - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px wide." }
               - { label: Image Alt Text, name: imageAlt, widget: string }
           - label: Distribution Section
             name: distribution
@@ -275,7 +275,7 @@ collections:
                 name: images
                 widget: list
                 fields:
-                  - { label: Image, name: src, widget: image }
+                  - { label: Image, name: src, widget: image, description: "Best size: at least 1600 px wide." }
                   - { label: Alt Text, name: alt, widget: string }
               - label: Wholesale
                 name: wholesale
@@ -315,7 +315,7 @@ collections:
               - { label: Quote, name: quote, widget: string, required: false }
               - { label: Title, name: title, widget: string }
               - { label: Summary, name: summary, widget: text }
-              - { label: Poster Image, name: poster, widget: image }
+              - { label: Poster Image, name: poster, widget: image, description: "Best size: a wide photo around 2560×1440 px." }
               - { label: Video File, name: video, widget: file }
               - { label: Video Alt Text, name: videoAlt, widget: string }
           - label: Office Section
@@ -415,7 +415,7 @@ collections:
               - { label: Eyebrow, name: eyebrow, widget: string }
               - { label: Title, name: title, widget: string }
               - { label: Summary, name: summary, widget: text }
-              - { label: Poster Image, name: poster, widget: image }
+              - { label: Poster Image, name: poster, widget: image, description: "Best size: a wide photo around 2560×1440 px." }
               - { label: Video File, name: video, widget: file }
               - { label: Video Alt Text, name: videoAlt, widget: string }
           - label: Hero Stats
@@ -444,7 +444,7 @@ collections:
                 summary: "{{fields.name}}"
                 fields:
                   - { label: Name, name: name, widget: string }
-                  - { label: Image, name: image, widget: image }
+                  - { label: Image, name: image, widget: image, description: "Best size: at least 1200 px wide." }
                   - { label: Address, name: address, widget: list, field: { label: Line, name: line, widget: string } }
                   - { label: Phone Label, name: phoneLabel, widget: string }
                   - { label: Phone Link, name: phoneHref, widget: string }
@@ -477,7 +477,7 @@ collections:
               - { label: Quote, name: quote, widget: string, required: false }
               - { label: Title, name: title, widget: string }
               - { label: Summary, name: summary, widget: text }
-              - { label: Poster Image, name: poster, widget: image }
+              - { label: Poster Image, name: poster, widget: image, description: "Best size: a wide photo around 2560×1440 px." }
               - { label: Video File, name: video, widget: file }
               - { label: Video Alt Text, name: videoAlt, widget: string }
           - label: Calendar Section
@@ -531,7 +531,7 @@ collections:
               - { label: Summary, name: summary, widget: text }
               - { label: Stats, name: stats, widget: list, field: { label: Stat, name: stat, widget: string } }
               - { label: Hero Brand Name, name: brandName, widget: string }
-              - { label: Hero Image, name: image, widget: image }
+              - { label: Hero Image, name: image, widget: image, description: "Best size: portrait, around 1200×1500 px." }
       - label: Portfolio Grid Div
         name: brands_page_portfolio
         file: src/_data/cms/brandsPage/portfolio.json
@@ -571,7 +571,7 @@ collections:
             fields:
               - { label: Name, name: name, widget: string }
               - { label: Slug, name: slug, widget: string, description: "The brand's web-address piece: lowercase, words joined by hyphens (e.g. 'cuoieria-fiorentina'). Changing it changes the page's URL." }
-              - { label: Logo Image, name: logoImage, widget: image, required: false }
+              - { label: Logo Image, name: logoImage, widget: image, required: false, description: "Use an SVG or a transparent PNG at least 400 px wide." }
               - label: Card on the Brands page
                 name: card
                 widget: object
@@ -579,7 +579,7 @@ collections:
                   - { label: Eyebrow, name: eyebrow, widget: string }
                   - { label: Hero Title, name: heroTitle, widget: string }
                   - { label: Summary, name: summary, widget: text }
-                  - { label: Photo, name: heroImage, widget: image, required: false, description: "Shown on the brand's card in the brands overview and on the homepage wall." }
+                  - { label: Photo, name: heroImage, widget: image, required: false, description: "Shown on the brand's card in the brands overview and on the homepage wall. Best size: portrait, around 1200×1500 px." }
               - label: Detail page
                 name: detail
                 widget: object
@@ -588,14 +588,15 @@ collections:
                   - { label: Focus, name: focus, widget: text, required: false }
                   - { label: Atmosphere, name: atmosphere, widget: string }
                   - { label: Categories, name: categories, widget: list, field: { label: Category, name: category, widget: string } }
-                  - { label: Detail Hero Image, name: detailHeroImage, widget: image, required: false, description: "The big banner at the top of the brand's own page." }
+                  - { label: Detail Hero Image, name: detailHeroImage, widget: image, required: false, description: "The big banner at the top of the brand's own page. Best size: a wide photo around 2560×1440 px." }
+                  - { label: Image focus, name: detailHeroFocus, widget: select, options: ["center", "top", "bottom"], required: false, description: "Which part of the background image stays visible when the screen crops it." }
                   - label: Visual journal
                     name: detailGallery
                     widget: list
                     summary: "{{fields.note}}"
                     description: "The image mosaic on the brand's page. The 2nd image also appears as the portrait beside the intro text."
                     fields:
-                      - { label: Image, name: image, widget: image }
+                      - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px on the long side." }
                       - { label: Note, name: note, widget: string }
                       - { label: Source, name: source, widget: string, required: false }
 
@@ -617,7 +618,7 @@ collections:
               - { label: Eyebrow, name: eyebrow, widget: string }
               - { label: Title, name: title, widget: string }
               - { label: Summary, name: summary, widget: text }
-              - { label: Hero Image, name: image, widget: image }
+              - { label: Hero Image, name: image, widget: image, description: "Best size: a wide photo around 2560×1440 px." }
               - { label: Hero Image Alt Text, name: imageAlt, widget: string }
               - { label: Stats, name: stats, widget: list, field: { label: Stat, name: stat, widget: string } }
       - label: Overview Div
@@ -634,7 +635,7 @@ collections:
               - { label: Intro, name: intro, widget: text }
               - { label: Focus, name: focus, widget: text }
               - { label: Pillars, name: pillars, widget: list, field: { label: Pillar, name: pillar, widget: string } }
-              - { label: Image, name: image, widget: image }
+              - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px wide." }
               - { label: Image Alt Text, name: imageAlt, widget: string }
       - label: Roster Section Div
         name: wearhouse_page_roster
@@ -656,8 +657,8 @@ collections:
                   - { label: Slug, name: slug, widget: string, description: "The brand's web-address piece: lowercase, words joined by hyphens (e.g. 'cuoieria-fiorentina'). Changing it changes the page's URL." }
                   - { label: Segment, name: segment, widget: string }
                   - { label: Page Link, name: pageHref, widget: string }
-                  - { label: Logo Image, name: logoSrc, widget: image, required: false }
-                  - { label: Hover Image, name: hoverImage, widget: image, required: false }
+                  - { label: Logo Image, name: logoSrc, widget: image, required: false, description: "Use an SVG or a transparent PNG at least 400 px wide." }
+                  - { label: Hover Image, name: hoverImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
       - label: Showroom Intro Div
         name: wearhouse_page_showroom
         file: src/_data/cms/wearhousePage/showroom.json
@@ -675,7 +676,7 @@ collections:
                 widget: list
                 summary: "{{fields.note}}"
                 fields:
-                  - { label: Image, name: image, widget: image }
+                  - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px on the long side." }
                   - { label: Note, name: note, widget: string }
       - label: CTA Div
         name: wearhouse_page_cta
@@ -742,9 +743,9 @@ collections:
                 fields:
                   - { label: Segment, name: segment, widget: string }
                   - { label: Official Website, name: websiteHref, widget: string }
-                  - { label: Logo Asset, name: logoSrc, widget: image, required: false }
-                  - { label: Hover Image, name: hoverImage, widget: image, required: false }
-                  - { label: Detail Image, name: detailImage, widget: image, required: false }
+                  - { label: Logo Asset, name: logoSrc, widget: image, required: false, description: "Use an SVG or a transparent PNG at least 400 px wide." }
+                  - { label: Hover Image, name: hoverImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
+                  - { label: Detail Image, name: detailImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
                   - { label: Logo Lines, name: logoLines, widget: list, required: false, field: { label: Line, name: line, widget: string } }
               - label: Detail page text
                 name: detail

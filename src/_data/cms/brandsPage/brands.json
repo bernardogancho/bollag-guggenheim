@@ -945,6 +945,7 @@
         ],
         "tone": "Commercially clear fashion with a softer, feminine practicality.",
         "detailHeroImage": "/assets/media/feed/more-and-more-social-5.jpg",
+        "detailHeroFocus": "top",
         "gallery": [
           {
             "image": "/assets/media/brand-pages/more-and-more-page-1.jpg",

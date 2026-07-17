@@ -4864,6 +4864,201 @@ git commit -m "feat(cms-v2): page-shaped cascade for the brand editor; retire de
 
 ---
 
+### Task 19d: Editor guidance (view-page, optional focus, image sizing/focus)
+
+Three small, independent editor-experience improvements requested by the owner, landed as
+three commits on `editor-guidance` (branched from `main` at `086e96a`).
+
+**19d-1: "View page ↗" on every editor screen.** `SectionScreen`, `PageScreen`,
+`BrandsScreen` (item mode), and `WearhouseScreen` (item mode, brand-half present) already had
+the button. Added the same `<a className="button button-ghost" href={...} target="_blank"
+rel="noreferrer">View page ↗</a>` to the four screens that were missing it: the two generic
+managed-list screens (`ItemListScreen`, `ItemEditScreen` — both already receive `page` as a
+prop, so `page.url` was available with no new plumbing) and the two brand-roster LIST-mode
+headers (`WearhouseScreen`, `BrandsScreen`), which link to the fixed roster URLs (`/wearhouse/`,
+`/brands/`) rather than a per-item page.
+
+```jsx
+// ItemListScreen.jsx — screen-header actions
+<div className="screen-actions">
+  <a className="button button-ghost" href={page.url} target="_blank" rel="noreferrer">View page ↗</a>
+  <button type="button" className="button button-primary" onClick={addItem}>Add item</button>
+</div>
+```
+
+```jsx
+// ItemEditScreen.jsx — screen-header actions
+<div className="screen-actions">
+  <a className="button button-ghost" href={page.url} target="_blank" rel="noreferrer">View page ↗</a>
+  <button type="button" className="button button-danger" onClick={() => { /* delete item */ }}>Delete item</button>
+</div>
+```
+
+```jsx
+// WearhouseScreen.jsx — list-mode screen-header actions
+<div className="screen-actions">
+  <a className="button button-ghost" href="/wearhouse/" target="_blank" rel="noreferrer">View page ↗</a>
+  <input className="input" placeholder="New brand name" value={newName} onChange={event => setNewName(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') addBrand(); }} />
+  <button type="button" className="button button-primary" onClick={addBrand} disabled={!newName.trim()}>Add brand</button>
+</div>
+```
+
+```jsx
+// BrandsScreen.jsx — list-mode screen-header actions
+<div className="screen-actions">
+  <a className="button button-ghost" href="/brands/" target="_blank" rel="noreferrer">View page ↗</a>
+  <input className="input" placeholder="New brand name" value={newName} onChange={event => setNewName(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') addBrand(); }} />
+  <button type="button" className="button button-primary" onClick={addBrand} disabled={!newName.trim()}>Add brand</button>
+</div>
+```
+
+Verify: `npm test` 58/58, `npm run build` green, `src/admin/main.jsx` untouched.
+
+```bash
+git add src/admin/screens/BrandsScreen.jsx src/admin/screens/ItemEditScreen.jsx src/admin/screens/ItemListScreen.jsx src/admin/screens/WearhouseScreen.jsx
+git commit -m "feat(cms-v2): view-page button on every editor screen"
+```
+
+**19d-2: Focus paragraph can be blank.** The brand detail page's second overview paragraph
+(`detail.focus`) was `required: true` in `config.yml` even though `src/brands/brand.njk`
+rendered it unconditionally next to `intro` — an editor who wanted a single-paragraph intro
+had no way to express that. Set `required: false` on `brands_page_brands.brands.detail.focus`
+(label/description overrides in `BrandsScreen.jsx`'s layout table shallow-copy over this same
+config field, so `required` still flows through untouched) and wrapped the paragraph in the
+template so an empty value renders nothing rather than an empty `<p>`.
+
+```yaml
+# config.yml — brands_page_brands → brands → detail
+- { label: Focus, name: focus, widget: text, required: false }
+```
+
+```njk
+{# src/brands/brand.njk #}
+<p data-reveal>{{ brand.intro }}</p>
+{% if brand.focus %}<p data-reveal>{{ brand.focus }}</p>{% endif %}
+```
+
+```jsx
+// BrandsScreen.jsx — Introduction group layout table
+{ source: 'detail', name: 'focus', overrides: { label: 'Second paragraph', description: 'Leave empty to show only the first.' } },
+```
+
+Verify: `npm test` 58/58, `npm run build` green. Confirmed with a scratch edit (blanked
+`closed`'s `detail.focus`, rebuilt, checked the output, restored the file with no residual
+diff) that an empty focus renders no second `<p>` and no template artifacts — and with the
+real, unmodified data that every current brand (all still have `focus` text) still renders its
+second paragraph verbatim, e.g. `_site/brands/closed/index.html` contains `<p
+data-reveal>The brand&#39;s strength comes from long-standing Italian production
+partnerships...</p>`.
+
+```bash
+git add src/admin/config.yml src/admin/screens/BrandsScreen.jsx src/brands/brand.njk
+git commit -m "feat(cms-v2): focus paragraph optional; skip empty paragraph on the page"
+```
+
+**19d-3: Image size guidance, picker dimensions, brand hero focus control.** Three related
+changes to reduce image-related guesswork for editors:
+
+*(a) Size hints in `config.yml` descriptions* — appended (or set) a plain-language size hint
+on every image field the owner specified (poster/hero images → "a wide photo around
+2560×1440 px"; portrait card/roster images → "portrait, around 1200×1500 px"; gallery/showroom
+images → "at least 1600 px on the long side"; wide content images → "at least 1600 px wide" or
+"at least 1200 px wide"; logo fields → "Use an SVG or a transparent PNG at least 400 px wide.").
+Where a field already had a description the hint was appended with a leading space; where it
+had none, the hint became the field's whole description. All 25 fields named in the spec were
+found and updated — none were skipped. Representative examples:
+
+```yaml
+# homepage hero.poster — existing description, appended
+- { label: Poster Image, name: poster, widget: image, description: "Still image shown while the video loads (and if it cannot play). Best size: a wide photo around 2560×1440 px." }
+
+# home intro.image — no prior description
+- { label: Image, name: image, widget: image, description: "Best size: at least 1200 px wide." }
+
+# brands card.heroImage — existing description, appended
+- { label: Photo, name: heroImage, widget: image, required: false, description: "Shown on the brand's card in the brands overview and on the homepage wall. Best size: portrait, around 1200×1500 px." }
+```
+
+*(b) Natural dimensions in the picker and Media screen* — `MediaPicker.jsx` and
+`MediaScreen.jsx` each render image cells through a small subcomponent (`PickerCell`,
+`MediaCard`) that reads `naturalWidth`/`naturalHeight` off the thumbnail's `onLoad` and shows
+e.g. `· 1200×800` next to the filename. Each file keeps its own module-level `Map`
+(`dimensionsCache`, keyed by file path) so dimensions already seen aren't re-decoded on
+re-render; videos and not-yet-loaded images degrade silently (no dimension suffix).
+
+```jsx
+// MediaPicker.jsx
+const dimensionsCache = new Map();
+
+function PickerCell({ file, onSelect }) {
+  const [dims, setDims] = useState(() => dimensionsCache.get(file.path) || null);
+  const isImage = IMAGE_SHAPE.test(file.path);
+  return (
+    <button type="button" className="picker-cell" onClick={() => onSelect(file.path)}>
+      {isImage ? (
+        <img src={file.path} alt="" loading="lazy" onLoad={event => {
+          const { naturalWidth, naturalHeight } = event.target;
+          if (naturalWidth && naturalHeight) {
+            const next = { width: naturalWidth, height: naturalHeight };
+            dimensionsCache.set(file.path, next);
+            setDims(next);
+          }
+        }} />
+      ) : (
+        <div className="item-card-thumb"><span className="item-card-thumb-empty">{file.path.split('.').pop().toUpperCase()}</span></div>
+      )}
+      <div className="picker-cell-name">{file.name || file.path.split('/').pop()}{dims ? ` · ${dims.width}×${dims.height}` : ''}</div>
+    </button>
+  );
+}
+```
+
+`MediaScreen.jsx`'s `MediaCard` follows the same shape, folded into the existing
+`item-card`/`item-card-title` markup.
+
+*(c) Brand page background focus control* — replaced the one-off
+`{% if brand.slug == 'more-and-more' %}object-[50%_12%]{% endif %}` hardcode in
+`src/brands/brand.njk` with a data-driven field. Added `detail.detailHeroFocus` (`select`:
+`center`/`top`/`bottom`, `required: false`) to `config.yml` right after `detailHeroImage`, and
+to `BrandsScreen.jsx`'s Page top layout-table group (right after the "Background image" field,
+labeled "Image focus"). The template now maps `top` → `object-[50%_15%]`, `bottom` →
+`object-[50%_85%]`, and `center`/absent → `object-center`.
+
+```yaml
+# config.yml — brands_page_brands → brands → detail, right after detailHeroImage
+- { label: Image focus, name: detailHeroFocus, widget: select, options: ["center", "top", "bottom"], required: false, description: "Which part of the background image stays visible when the screen crops it." }
+```
+
+```njk
+{# src/brands/brand.njk #}
+{% if brand.detailHeroImage %}
+  {% set detailHeroObjectClass = 'object-center' %}
+  {% if brand.detailHeroFocus == 'top' %}
+    {% set detailHeroObjectClass = 'object-[50%_15%]' %}
+  {% elif brand.detailHeroFocus == 'bottom' %}
+    {% set detailHeroObjectClass = 'object-[50%_85%]' %}
+  {% endif %}
+  <img src="{{ brand.detailHeroImage }}" alt="{{ brand.name }} editorial view" class="h-full w-full object-cover {{ detailHeroObjectClass }}">
+```
+
+The only content edit is `src/_data/cms/brandsPage/brands.json`: `more-and-more`'s `detail`
+gained `"detailHeroFocus": "top"` (placed right after `detailHeroImage`) — the same brand the
+old hardcode singled out, now expressed through the new field instead of a slug check.
+
+Verify: `npm test` 58/58, `npm run build` green, `src/admin/main.jsx` untouched. Built-HTML
+check across all 12 brand pages: `more-and-more/index.html` contains `object-cover
+object-[50%_15%]` (the accepted ~3pt shift from the old `12%` crop), and every other brand
+page (`0039-italy`, `closed`, `codello`, `cuoieria-fiorentina`, `drykorn`, `g-lab`, `guess`,
+`iblues`, `rich-royal`, `yaya`, plus the `brands` index page) contains `object-cover
+object-center`.
+
+```bash
+git add src/admin/config.yml src/admin/screens/BrandsScreen.jsx src/admin/fields/MediaPicker.jsx src/admin/screens/MediaScreen.jsx src/brands/brand.njk src/_data/cms/brandsPage/brands.json docs/superpowers/plans/2026-07-14-cms-v2-phase1-site-mirror-admin.md
+git commit -m "feat(cms-v2): image size guidance, picker dimensions, brand hero focus control"
+```
+
+---
+
 ## Chunk 7: Cutover, verification, walkthrough, handoff
 
 ### Task 20: Delete the old monolith

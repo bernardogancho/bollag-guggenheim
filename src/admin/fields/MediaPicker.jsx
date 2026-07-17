@@ -17,6 +17,34 @@ const IMAGE_SHAPE = /\.(avif|gif|jpe?g|png|svg|webp)$/i;
 // encoding adds ~33%, so the practical raw-file ceiling is ~3 MB.
 const MAX_UPLOAD_BYTES = 3 * 1024 * 1024;
 
+// Natural image dimensions, keyed by file path. Populated lazily as
+// thumbnails load and kept for the life of the page so re-opening the
+// picker (or the Media library) doesn't re-decode images it already knows.
+const dimensionsCache = new Map();
+
+function PickerCell({ file, onSelect }) {
+  const [dims, setDims] = useState(() => dimensionsCache.get(file.path) || null);
+  const isImage = IMAGE_SHAPE.test(file.path);
+
+  return (
+    <button type="button" className="picker-cell" onClick={() => onSelect(file.path)}>
+      {isImage ? (
+        <img src={file.path} alt="" loading="lazy" onLoad={event => {
+          const { naturalWidth, naturalHeight } = event.target;
+          if (naturalWidth && naturalHeight) {
+            const next = { width: naturalWidth, height: naturalHeight };
+            dimensionsCache.set(file.path, next);
+            setDims(next);
+          }
+        }} />
+      ) : (
+        <div className="item-card-thumb"><span className="item-card-thumb-empty">{file.path.split('.').pop().toUpperCase()}</span></div>
+      )}
+      <div className="picker-cell-name">{file.name || file.path.split('/').pop()}{dims ? ` · ${dims.width}×${dims.height}` : ''}</div>
+    </button>
+  );
+}
+
 export function useMediaUpload(onUploaded, successMessage = 'Uploaded. Use it in a section and publish to show it on the website.') {
   const { api, setMediaIndex } = useAdmin();
   const toast = useToast();
@@ -80,10 +108,7 @@ export function MediaPicker({ kind, onSelect, onClose }) {
         </div>
         <div className="picker-grid">
           {files.length ? files.map(file => (
-            <button key={file.path} type="button" className="picker-cell" onClick={() => onSelect(file.path)}>
-              {IMAGE_SHAPE.test(file.path) ? <img src={file.path} alt="" loading="lazy" /> : <div className="item-card-thumb"><span className="item-card-thumb-empty">{file.path.split('.').pop().toUpperCase()}</span></div>}
-              <div className="picker-cell-name">{file.name || file.path.split('/').pop()}</div>
-            </button>
+            <PickerCell key={file.path} file={file} onSelect={onSelect} />
           )) : (
             <div className="empty-state">
               <div className="empty-state-title">{mediaIndex ? 'No matching files' : 'Media list unavailable'}</div>

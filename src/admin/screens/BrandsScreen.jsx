@@ -80,6 +80,7 @@ export function BrandsScreen({ page, section, rest }) {
         help: "The opening of the brand's own page, in the order visitors see it.",
         fields: [
           { source: 'detail', name: 'detailHeroImage', overrides: { label: 'Background image', description: 'Full-screen photo behind the text. A dark gradient is used if empty.' } },
+          { source: 'detail', name: 'detailHeroFocus', overrides: { label: 'Image focus' } },
           { source: 'card', name: 'eyebrow', overrides: { label: 'Small line above the logo' } },
           { source: 'card', name: 'heroTitle', overrides: { label: 'Big headline', description: 'If left empty, the description below is shown as the headline.' } },
           { source: 'card', name: 'summary', overrides: { label: 'Description', description: 'The paragraph under the headline.' } },

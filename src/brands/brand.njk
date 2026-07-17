@@ -19,8 +19,10 @@ eleventyComputed:
   <div class="absolute inset-0">
     {% if brand.detailHeroImage %}
       {% set detailHeroObjectClass = 'object-center' %}
-      {% if brand.slug == 'more-and-more' %}
-        {% set detailHeroObjectClass = 'object-[50%_12%]' %}
+      {% if brand.detailHeroFocus == 'top' %}
+        {% set detailHeroObjectClass = 'object-[50%_15%]' %}
+      {% elif brand.detailHeroFocus == 'bottom' %}
+        {% set detailHeroObjectClass = 'object-[50%_85%]' %}
       {% endif %}
       <img src="{{ brand.detailHeroImage }}" alt="{{ brand.name }} editorial view" class="h-full w-full object-cover {{ detailHeroObjectClass }}">
       <div class="page-hero-overlay absolute inset-0"></div>

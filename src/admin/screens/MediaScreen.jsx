@@ -7,6 +7,40 @@ import { useToast } from '../shell/Toasts.jsx';
 const IMAGE_SHAPE = /\.(avif|gif|jpe?g|png|svg|webp)$/i;
 const formatSize = bytes => (bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`);
 
+// Natural image dimensions, keyed by file path. Populated lazily as
+// thumbnails load and kept for the life of the page so re-rendering the
+// grid (search, sort) doesn't re-decode images it already knows.
+const dimensionsCache = new Map();
+
+function MediaCard({ file, uses, onCopy }) {
+  const [dims, setDims] = useState(() => dimensionsCache.get(file.path) || null);
+  const isImage = IMAGE_SHAPE.test(file.path);
+
+  return (
+    <div className="item-card">
+      <div className="item-card-thumb">
+        {isImage ? (
+          <img src={file.path} alt="" loading="lazy" onLoad={event => {
+            const { naturalWidth, naturalHeight } = event.target;
+            if (naturalWidth && naturalHeight) {
+              const next = { width: naturalWidth, height: naturalHeight };
+              dimensionsCache.set(file.path, next);
+              setDims(next);
+            }
+          }} />
+        ) : <span className="item-card-thumb-empty">{file.path.split('.').pop().toUpperCase()}</span>}
+      </div>
+      <div className="item-card-body">
+        <div className="item-card-title" style={{ wordBreak: 'break-all', fontSize: 12 }}>{file.name || file.path.split('/').pop()}{dims ? ` · ${dims.width}×${dims.height}` : ''}</div>
+        <div className="item-card-subtitle">{formatSize(file.size)} · {uses.length ? uses.slice(0, 2).join(', ') + (uses.length > 2 ? '…' : '') : 'Not used'}</div>
+      </div>
+      <div className="item-card-flags">
+        <button type="button" className="button button-ghost" onClick={onCopy}>Copy path</button>
+      </div>
+    </div>
+  );
+}
+
 export function MediaScreen() {
   const { store, mediaIndex } = useAdmin();
   useStoreVersion(store);
@@ -64,23 +98,10 @@ export function MediaScreen() {
 
       {mediaIndex ? (
         <div className="item-grid">
-          {files.map(file => {
-            const uses = usedIn.get(file.path) || [];
-            return (
-              <div key={file.path} className="item-card">
-                <div className="item-card-thumb">
-                  {IMAGE_SHAPE.test(file.path) ? <img src={file.path} alt="" loading="lazy" /> : <span className="item-card-thumb-empty">{file.path.split('.').pop().toUpperCase()}</span>}
-                </div>
-                <div className="item-card-body">
-                  <div className="item-card-title" style={{ wordBreak: 'break-all', fontSize: 12 }}>{file.name || file.path.split('/').pop()}</div>
-                  <div className="item-card-subtitle">{formatSize(file.size)} · {uses.length ? uses.slice(0, 2).join(', ') + (uses.length > 2 ? '…' : '') : 'Not used'}</div>
-                </div>
-                <div className="item-card-flags">
-                  <button type="button" className="button button-ghost" onClick={() => { navigator.clipboard.writeText(file.path); toast('Path copied.'); }}>Copy path</button>
-                </div>
-              </div>
-            );
-          })}
+          {files.map(file => (
+            <MediaCard key={file.path} file={file} uses={usedIn.get(file.path) || []}
+              onCopy={() => { navigator.clipboard.writeText(file.path); toast('Path copied.'); }} />
+          ))}
         </div>
       ) : (
         <div className="empty-state">
