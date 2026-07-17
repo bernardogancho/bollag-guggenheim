@@ -4,7 +4,7 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
 ---
 {% include "components/site-header.njk" %}
 
-<section class="relative isolate overflow-hidden bg-ink text-bone">
+<section class="relative isolate overflow-hidden bg-ink text-bone" data-cms-section="legal.hero">
   <div class="relative mx-auto flex min-h-[54svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[64rem]">
       <p class="type-eyebrow-hero mb-4 text-bone/54" data-reveal>{{ cms.legalNotice.hero.eyebrow }}</p>
@@ -29,7 +29,7 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
       </aside>
 
       <div class="space-y-10">
-        <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
+        <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal data-cms-section="legal.company-details">
           <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.legal.title }}</p>
           <div class="type-body type-body-stack text-black/72">
             <p>
@@ -56,7 +56,7 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
           </div>
         </section>
 
-        <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
+        <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal data-cms-section="legal.liability">
           <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.liability.title }}</p>
           <div class="type-body type-body-stack text-black/72">
             {%- for paragraph in cms.legalNotice.liability.paragraphs %}
@@ -67,7 +67,7 @@ title: Legal Notice & Privacy Policy | Bollag-Guggenheim
           </div>
         </section>
 
-        <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
+        <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal data-cms-section="legal.privacy">
           <p class="type-label mb-4 text-black/38">{{ cms.legalNotice.privacy.title }}</p>
           <div class="type-body type-body-stack text-black/72">
             <p>

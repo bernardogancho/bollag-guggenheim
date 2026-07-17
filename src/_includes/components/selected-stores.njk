@@ -1,4 +1,4 @@
-<section class="bg-[{{ selectedStoresTone or '#FAF7F4' }}] text-ink">
+<section class="bg-[{{ selectedStoresTone or '#FAF7F4' }}] text-ink"{% if cmsSection %} data-cms-section="{{ cmsSection }}"{% endif %}>
   <div class="mx-auto w-full max-w-[1600px] px-6 py-20 sm:px-10 lg:px-16 lg:py-28">
     <div class="mb-12 border-t border-black/10 pt-8 lg:mb-16">
       {% if cms.home.selection.eyebrow and not selectedStoresHideEyebrow %}

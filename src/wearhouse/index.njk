@@ -4,7 +4,7 @@ title: Wearhouse | Bollag-Guggenheim
 ---
 {% include "components/site-header.njk" %}
 
-<section class="relative isolate overflow-hidden bg-ink text-bone">
+<section class="relative isolate overflow-hidden bg-ink text-bone" data-cms-section="wearhouse.hero">
   <div class="absolute inset-0">
     <img src="{{ wearhouse.hero.image }}" alt="{{ wearhouse.hero.imageAlt }}" class="h-full w-full object-cover object-center">
   </div>
@@ -25,7 +25,7 @@ title: Wearhouse | Bollag-Guggenheim
   </div>
 </section>
 
-<section class="bg-[#FAF8F6] text-ink">
+<section class="bg-[#FAF8F6] text-ink" data-cms-section="wearhouse.overview">
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="grid gap-10 lg:grid-cols-[minmax(0,0.98fr)_minmax(20rem,0.62fr)] lg:items-center lg:gap-16">
       <div class="max-w-[62rem]">
@@ -52,7 +52,7 @@ title: Wearhouse | Bollag-Guggenheim
   </div>
 </section>
 
-<section class="bg-[#FAF7F4] text-ink">
+<section class="bg-[#FAF7F4] text-ink" data-cms-section="wearhouse.wearhouse-brands">
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[38rem]">
@@ -102,7 +102,7 @@ title: Wearhouse | Bollag-Guggenheim
 </section>
 
 {% if wearhouse.showroomSection.items.length %}
-<section class="bg-[#FAF7F4] text-ink">
+<section class="bg-[#FAF7F4] text-ink" data-cms-section="wearhouse.showroom">
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-[34rem]">
@@ -146,7 +146,7 @@ title: Wearhouse | Bollag-Guggenheim
 </section>
 {% endif %}
 
-<section class="bg-[#FAF8F6] text-ink">
+<section class="bg-[#FAF8F6] text-ink" data-cms-section="wearhouse.cta">
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
     <div class="grid gap-8 border-t border-black/10 pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
       <div>

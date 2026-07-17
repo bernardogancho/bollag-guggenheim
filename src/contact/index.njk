@@ -4,7 +4,7 @@ title: Contact | Bollag-Guggenheim
 ---
 {% include "components/site-header.njk" %}
 
-<section class="relative isolate overflow-hidden bg-ink text-bone">
+<section class="relative isolate overflow-hidden bg-ink text-bone" data-cms-section="contact.hero">
   <div class="absolute inset-0 overflow-hidden">
     <video
       class="hero-image h-full w-full object-cover object-center"
@@ -40,7 +40,7 @@ title: Contact | Bollag-Guggenheim
 
 <section class="bg-[#FAF8F6] text-ink">
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
-    <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
+    <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between" data-cms-section="contact.offices-intro">
       <div class="max-w-[38rem]">
         <p class="type-eyebrow mb-4 text-black/40" data-reveal>{{ contact.officeSection.eyebrow }}</p>
         <h2 class="type-section-title max-w-[11ch] text-black" data-reveal>
@@ -54,7 +54,7 @@ title: Contact | Bollag-Guggenheim
 
     <div class="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-8">
       <div class="grid gap-6">
-        <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
+        <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal data-cms-section="contact.bollag-office">
           <p class="type-label mb-4 text-black/38">Main Office</p>
           <h3 class="type-section-title-block text-black">{{ contact.office.name }}</h3>
           <div class="mt-8 grid gap-8 lg:grid-cols-2">
@@ -87,7 +87,7 @@ title: Contact | Bollag-Guggenheim
           </div>
         </section>
 
-        <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
+        <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal data-cms-section="contact.wearhouse-partner">
           <p class="type-label mb-4 text-black/38">{{ contact.wearhousePartner.sectionLabel }}</p>
           <h3 class="type-section-title-block text-black">{{ contact.wearhousePartner.name }}</h3>
           <div class="mt-8 grid gap-8 lg:grid-cols-2">
@@ -116,7 +116,7 @@ title: Contact | Bollag-Guggenheim
         </section>
       </div>
 
-      <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal>
+      <section class="border border-black/10 bg-white/40 p-6 lg:p-8" data-reveal data-cms-section="contact.form">
         <p class="type-label mb-4 text-black/38">{{ contact.form.sectionLabel }}</p>
         <div class="mb-8 max-w-[28rem]">
           <h3 class="type-section-title-block text-black">{{ contact.form.title }}</h3>
@@ -170,7 +170,7 @@ title: Contact | Bollag-Guggenheim
   </div>
 </section>
 
-<section class="bg-[#FAF7F4] text-ink">
+<section class="bg-[#FAF7F4] text-ink" data-cms-section="contact.cta">
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
     <div class="grid gap-8 border-t border-black/10 pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
       <div>
