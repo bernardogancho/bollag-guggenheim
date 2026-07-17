@@ -10,8 +10,8 @@ export const PAGES = [
   {
     id: 'homepage', label: 'Homepage', url: '/',
     sections: [
-      { id: 'hero', label: 'Hero banner', hint: 'Opening video, title and subline', file: `${CMS}/home/hero.json`, keys: ['hero'] },
-      { id: 'intro', label: 'Introduction', hint: 'Eyebrow, title, summary and image', file: `${CMS}/home/intro.json`, keys: ['intro'] },
+      { id: 'hero', label: 'Hero banner', hint: 'Opening video, title and subheading', file: `${CMS}/home/hero.json`, keys: ['hero'] },
+      { id: 'intro', label: 'Introduction', hint: 'Small label, title, summary and image', file: `${CMS}/home/intro.json`, keys: ['intro'] },
       { id: 'bollag-portfolio', label: 'Bollag portfolio', hint: 'Brand logo wall', file: `${CMS}/home/brandsWall.json`, keys: ['brandsWall'] },
       { id: 'wearhouse-portfolio', label: 'Wearhouse portfolio', hint: 'Wearhouse brand wall', file: `${CMS}/home/wearhouseWall.json`, keys: ['wearhouseWall'] },
       { id: 'editorial-selection', label: 'Editorial selection', hint: 'Curated image mosaic', file: `${CMS}/home/selectionSection.json`, keys: ['selection'] },
@@ -47,7 +47,7 @@ export const PAGES = [
       },
       { id: 'showroom', label: 'Showroom', file: `${CMS}/wearhousePage/showroom.json`, keys: ['showroomSection'] },
       { id: 'cta', label: 'Call to action', file: `${CMS}/wearhousePage/cta.json`, keys: ['cta'] },
-      { id: 'page-settings', label: 'Brand page settings', file: `${CMS}/wearhousePage/detail.json`, keys: ['detailPage'] },
+      { id: 'page-settings', label: 'Brand detail page text', hint: 'Text shared across individual brand pages', file: `${CMS}/wearhousePage/detail.json`, keys: ['detailPage'] },
     ],
   },
   {

@@ -15,18 +15,18 @@ collections:
         file: src/_data/cms/site.json
         format: json
         fields:
-          - label: Left Navigation
+          - label: Header navigation
             name: nav
             widget: object
             fields:
-              - label: Left Items
+              - label: Left menu items
                 name: left
                 widget: list
                 summary: "{{fields.label}} -> {{fields.href}}"
                 fields:
                   - { label: Label, name: label, widget: string }
                   - { label: Link, name: href, widget: string }
-              - label: Right Items
+              - label: Right menu items
                 name: right
                 widget: list
                 summary: "{{fields.label}} -> {{fields.href}}"
@@ -41,11 +41,11 @@ collections:
                 name: wearhouseWordmark
                 widget: object
                 fields:
-                  - label: Suffix Lines
+                  - label: Small text under the Wearhouse logo
                     name: suffix
                     widget: list
                     field: { label: Line, name: line, widget: string }
-              - label: Bollag Contact
+              - label: Bollag-Guggenheim contact card
                 name: bgContact
                 widget: object
                 fields:
@@ -81,8 +81,8 @@ collections:
                 name: navigation
                 widget: object
                 fields:
-                  - { label: Title, name: title, widget: string }
-                  - label: Links
+                  - { label: Footer links heading, name: title, widget: string }
+                  - label: Footer page links
                     name: items
                     widget: list
                     summary: "{{fields.label}} -> {{fields.href}}"
@@ -93,8 +93,8 @@ collections:
                 name: legal
                 widget: object
                 fields:
-                  - { label: Title, name: title, widget: string }
-                  - label: Items
+                  - { label: Legal column heading, name: title, widget: string }
+                  - label: Legal links
                     name: links
                     widget: list
                     summary: "{{fields.label}} -> {{fields.href}}"
@@ -105,8 +105,10 @@ collections:
                 name: meta
                 widget: object
                 fields:
-                  - { label: Since Label, name: since, widget: string }
-                  - { label: Group Name, name: groupName, widget: string }
+                  - { label: Founding tagline, name: since, widget: string }
+                  - label: "Group name (bottom bar)"
+                    name: groupName
+                    widget: string
 
   - name: homepage
     label: Homepage
@@ -114,7 +116,7 @@ collections:
     editor:
       preview: false
     files:
-      - label: Hero Div
+      - label: Hero
         name: home_hero
         file: src/_data/cms/home/hero.json
         format: json
@@ -123,15 +125,17 @@ collections:
             name: hero
             widget: object
             fields:
-              - { label: Title, name: title, widget: string }
-              - { label: Subline, name: subline, widget: string }
-              - { label: Poster Image, name: poster, widget: image, description: "Still image shown while the video loads (and if it cannot play). Best size: a wide photo around 2560×1440 px." }
-              - { label: Video File, name: video, widget: file }
-              - { label: Video Alt Text, name: videoAlt, widget: string, description: "Short description of the video for screen readers and SEO, e.g. 'Atelier craftspeople at work'." }
-              - { label: Mobile Object Position, name: mobileObjectPosition, widget: string, description: "Which part of the video stays visible on phones. Use words like 'center', 'top', or 'center top'. Leave as 'center' if unsure." }
-              - { label: Small Screen Object Position, name: smallObjectPosition, widget: string, description: "Same as above, for small tablets. Leave as 'center' if unsure." }
-              - { label: Desktop Object Position, name: desktopObjectPosition, widget: string, description: "Same as above, for large screens. Leave as 'center' if unsure." }
-      - label: Intro Div
+              - { label: Headline, name: title, widget: string }
+              - label: "Subheading (small line under the headline)"
+                name: subline
+                widget: string
+              - { label: Fallback image, name: poster, widget: image, description: "Still image shown while the video loads (and if it cannot play). Best size: a wide photo around 2560×1440 px." }
+              - { label: Background video, name: video, widget: file }
+              - { label: Video description (for screen readers), name: videoAlt, widget: string, description: "Accessibility text read by screen readers, and shown if the video can't load, e.g. 'Atelier craftspeople at work'." }
+              - { label: Focus point — phones, name: mobileObjectPosition, widget: string, description: "Which part of the video stays visible when the screen crops it." }
+              - { label: Focus point — tablets, name: smallObjectPosition, widget: string, description: "Which part of the video stays visible when the screen crops it." }
+              - { label: Focus point — large screens, name: desktopObjectPosition, widget: string, description: "Which part of the video stays visible when the screen crops it." }
+      - label: Introduction
         name: home_intro
         file: src/_data/cms/home/intro.json
         format: json
@@ -140,14 +144,14 @@ collections:
             name: intro
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Title, name: title, widget: text }
-              - { label: Summary, name: summary, widget: text }
-              - { label: CTA Label, name: ctaLabel, widget: string }
-              - { label: CTA Link, name: ctaHref, widget: string }
-              - { label: Image, name: image, widget: image, description: "Best size: at least 1200 px wide." }
-              - { label: Image Alt Text, name: imageAlt, widget: string }
-      - label: Bollag Portfolio Div
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: Headline, name: title, widget: text }
+              - { label: Body text, name: summary, widget: text }
+              - { label: Button text, name: ctaLabel, widget: string }
+              - { label: Button link, name: ctaHref, widget: string }
+              - { label: Photo, name: image, widget: image, description: "Best size: at least 1200 px wide." }
+              - { label: Photo description (for screen readers), name: imageAlt, widget: string, description: "Accessibility text read by screen readers, and shown if the photo can't load." }
+      - label: Bollag portfolio
         name: home_brands_wall
         file: src/_data/cms/home/brandsWall.json
         format: json
@@ -156,19 +160,19 @@ collections:
             name: brandsWall
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: Section heading, name: title, widget: string, description: "These logos/photos are a separate homepage-only list — editing a brand on the Brands page does not change them here." }
+              - { label: Section text, name: summary, widget: text }
               - label: Brand Cards
                 name: items
                 widget: list
                 summary: "{{fields.name}}"
                 fields:
-                  - { label: Name, name: name, widget: string }
+                  - { label: Brand name, name: name, widget: string, description: "Used as the logo's accessibility text; not shown as visible text." }
+                  - { label: Logo (always shown), name: logoImage, widget: image }
+                  - { label: Photo (appears on hover), name: heroImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
                   - { label: Link, name: href, widget: string }
-                  - { label: Logo Image, name: logoImage, widget: image }
-                  - { label: Hero Image, name: heroImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
-      - label: Wearhouse Portfolio Div
+      - label: Wearhouse portfolio
         name: home_wearhouse_wall
         file: src/_data/cms/home/wearhouseWall.json
         format: json
@@ -177,19 +181,19 @@ collections:
             name: wearhouseWall
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: Section heading, name: title, widget: string, description: "These logos/photos are a separate homepage-only list — editing a brand on the Wearhouse page does not change them here." }
+              - { label: Section text, name: summary, widget: text }
               - label: Brand Cards
                 name: items
                 widget: list
                 summary: "{{fields.name}}"
                 fields:
-                  - { label: Name, name: name, widget: string }
-                  - { label: Segment, name: segment, widget: string }
-                  - { label: Page Link, name: pageHref, widget: string }
-                  - { label: Hover Image, name: hoverImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
-      - label: Editorial Selection Div
+                  - { label: Photo (appears on hover), name: hoverImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
+                  - { label: Category label (small text above the name), name: segment, widget: string }
+                  - { label: Brand name, name: name, widget: string }
+                  - { label: Link to brand page, name: pageHref, widget: string }
+      - label: Editorial selection
         name: home_selection
         file: src/_data/cms/home/selectionSection.json
         format: json
@@ -198,18 +202,18 @@ collections:
             name: selection
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Title, name: title, widget: string }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Note: this is hidden on the homepage. It only appears where this same content is reused on the Company page." }
+              - { label: Section heading, name: title, widget: string, description: "This section also appears on the Company page." }
               - label: Items
                 name: items
                 widget: list
                 summary: "{{fields.brand}}"
                 fields:
-                  - { label: Brand, name: brand, widget: string }
-                  - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px on the long side." }
-                  - { label: Link, name: href, widget: string }
-                  - { label: Note, name: note, widget: string }
-                  - { label: Size, name: size, widget: select, options: ["standard", "wide", "tall", "feature"] }
+                  - { label: Photo, name: image, widget: image, description: "Best size: at least 1600 px on the long side." }
+                  - { label: Brand name, name: brand, widget: string }
+                  - { label: Caption, name: note, widget: string }
+                  - { label: Link to brand page, name: href, widget: string }
+                  - { label: Tile size, name: size, widget: select, options: ["standard", "wide", "tall", "feature"], description: "How big this photo appears in the grid." }
 
   - name: company
     label: Company Page
@@ -226,59 +230,60 @@ collections:
             name: hero
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
-              - { label: Poster Image, name: poster, widget: image }
-              - { label: Video File, name: video, widget: file }
-              - { label: Video Alt Text, name: videoAlt, widget: string }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: Headline, name: title, widget: string }
+              - { label: Intro paragraph, name: summary, widget: text }
+              - { label: Fallback image, name: poster, widget: image, description: "Still image shown while the video loads (and if it cannot play). Best size: at least 1600 px on the long side." }
+              - { label: Video File, name: video, widget: file, description: "Best size: at least 1600 px on the long side." }
+              - { label: Video description (for screen readers), name: videoAlt, widget: string, description: "Accessibility text read by screen readers, and shown if the video can't load." }
           - label: Intro Section
             name: intro
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - label: Title Lines
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - label: "Headline (one line per entry)"
                 name: titleLines
                 widget: list
                 field: { label: Line, name: line, widget: string }
-              - label: Paragraphs
+              - label: Body paragraphs
                 name: paragraphs
                 widget: list
                 field: { label: Paragraph, name: paragraph, widget: text }
-              - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px wide." }
-              - { label: Image Alt Text, name: imageAlt, widget: string }
+              - { label: Side photo, name: image, widget: image, description: "Best size: at least 1600 px wide." }
+              - { label: Photo description (for screen readers), name: imageAlt, widget: string, description: "Accessibility text read by screen readers, and shown if the photo can't load." }
           - label: History Section
             name: history
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
               - { label: Title, name: title, widget: string }
-              - label: Paragraphs
+              - label: Body paragraphs
                 name: paragraphs
                 widget: list
                 field: { label: Paragraph, name: paragraph, widget: text }
-              - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px wide." }
-              - { label: Image Alt Text, name: imageAlt, widget: string }
+              - { label: Side photo, name: image, widget: image, description: "Best size: at least 1600 px wide." }
+              - { label: Photo description (for screen readers), name: imageAlt, widget: string, description: "Accessibility text read by screen readers, and shown if the photo can't load." }
           - label: Distribution Section
             name: distribution
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - label: Title Lines
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - label: "Headline (one line per entry)"
                 name: titleLines
                 widget: list
                 field: { label: Line, name: line, widget: string }
-              - label: Images
+              - label: Two side-by-side photos
                 name: images
                 widget: list
+                description: "Exactly two photos are shown side by side — a third added here will not appear on the page."
                 fields:
                   - { label: Image, name: src, widget: image, description: "Best size: at least 1600 px wide." }
-                  - { label: Alt Text, name: alt, widget: string }
+                  - { label: Photo description (for screen readers), name: alt, widget: string, description: "Accessibility text read by screen readers, and shown if the photo can't load." }
               - label: Wholesale
                 name: wholesale
                 widget: object
                 fields:
-                  - { label: Eyebrow, name: eyebrow, widget: string }
+                  - { label: Small label, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
                   - label: Paragraphs
                     name: paragraphs
                     widget: list
@@ -287,7 +292,7 @@ collections:
                 name: retail
                 widget: object
                 fields:
-                  - { label: Eyebrow, name: eyebrow, widget: string }
+                  - { label: Small label, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
                   - label: Paragraphs
                     name: paragraphs
                     widget: list
@@ -308,84 +313,84 @@ collections:
             name: hero
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Quote, name: quote, widget: string, required: false }
-              - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
-              - { label: Poster Image, name: poster, widget: image, description: "Best size: a wide photo around 2560×1440 px." }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: "Quote (optional, above the headline)", name: quote, widget: string, required: false }
+              - { label: Page title, name: title, widget: string }
+              - { label: Page summary, name: summary, widget: text }
+              - { label: Fallback image, name: poster, widget: image, description: "Still image shown while the video loads (and if it cannot play). Best size: a wide photo around 2560×1440 px." }
               - { label: Video File, name: video, widget: file }
-              - { label: Video Alt Text, name: videoAlt, widget: string }
-          - label: Office Section
+              - { label: Video description (for screen readers), name: videoAlt, widget: string, description: "Accessibility text read by screen readers, and shown if the video can't load." }
+          - label: "Section intro (office + form)"
             name: officeSection
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Title, name: title, widget: string }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: Title, name: title, widget: string, description: "Heading shown above BOTH the office cards and the contact form." }
               - { label: Summary, name: summary, widget: text }
           - label: Bollag Office
             name: office
             widget: object
             fields:
-              - { label: Name, name: name, widget: string }
-              - { label: Address, name: address, widget: list, field: { label: Line, name: line, widget: string } }
-              - { label: Phone Label, name: phoneLabel, widget: string }
-              - { label: Phone Link, name: phoneHref, widget: string }
-              - { label: Fax, name: fax, widget: string }
-              - { label: Email Label, name: emailLabel, widget: string }
-              - { label: Email Link, name: emailHref, widget: string }
-              - { label: Route Map Link, name: routeMapHref, widget: string }
-              - { label: Google Maps Link, name: googleMapsHref, widget: string }
+              - { label: Company name, name: name, widget: string }
+              - { label: Address lines, name: address, widget: list, field: { label: Line, name: line, widget: string } }
+              - { label: "Phone (shown to visitors)", name: phoneLabel, widget: string }
+              - { label: "Phone link (tel:)", name: phoneHref, widget: string }
+              - { label: Fax number, name: fax, widget: string }
+              - { label: "Email (shown to visitors)", name: emailLabel, widget: string }
+              - { label: "Email link (mailto:)", name: emailHref, widget: string }
+              - { label: Route map PDF link, name: routeMapHref, widget: string }
+              - { label: Google Maps link, name: googleMapsHref, widget: string }
           - label: Wearhouse Partner
             name: wearhousePartner
             widget: object
             fields:
-              - { label: Section Label, name: sectionLabel, widget: string }
-              - { label: Name, name: name, widget: string }
-              - { label: Address, name: address, widget: list, field: { label: Line, name: line, widget: string } }
-              - { label: Phone Label, name: phoneLabel, widget: string }
-              - { label: Phone Link, name: phoneHref, widget: string }
-              - { label: Email Label, name: emailLabel, widget: string }
-              - { label: Email Link, name: emailHref, widget: string }
-              - { label: Maps Link, name: mapsHref, widget: string }
+              - { label: Card label, name: sectionLabel, widget: string }
+              - { label: Company name, name: name, widget: string }
+              - { label: Address lines, name: address, widget: list, field: { label: Line, name: line, widget: string } }
+              - { label: "Phone (shown to visitors)", name: phoneLabel, widget: string }
+              - { label: "Phone link (tel:)", name: phoneHref, widget: string }
+              - { label: "Email (shown to visitors)", name: emailLabel, widget: string }
+              - { label: "Email link (mailto:)", name: emailHref, widget: string }
+              - { label: Google Maps link, name: mapsHref, widget: string }
           - label: Form Copy
             name: form
             widget: object
             fields:
-              - { label: Section Label, name: sectionLabel, widget: string }
-              - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
-              - { label: Disclaimer, name: disclaimer, widget: text }
-              - { label: Button Label, name: buttonLabel, widget: string }
+              - { label: Card label, name: sectionLabel, widget: string }
+              - { label: Form title, name: title, widget: string }
+              - { label: Form intro text, name: summary, widget: text }
+              - { label: "Reassurance text (next to the submit button)", name: disclaimer, widget: text }
+              - { label: Submit button text, name: buttonLabel, widget: string }
               - label: Field Labels
                 name: fields
                 widget: object
                 fields:
-                  - { label: First Name, name: firstName, widget: string }
-                  - { label: Last Name, name: lastName, widget: string }
-                  - { label: Email, name: email, widget: string }
-                  - { label: Company, name: company, widget: string }
-                  - { label: Subject, name: subject, widget: string }
-                  - { label: Message, name: message, widget: string }
+                  - { label: "'First name' field label", name: firstName, widget: string }
+                  - { label: "'Last name' field label", name: lastName, widget: string }
+                  - { label: "'Email' field label", name: email, widget: string }
+                  - { label: "'Company' field label", name: company, widget: string }
+                  - { label: "'Subject' field label", name: subject, widget: string }
+                  - { label: "'Message' field label", name: message, widget: string }
               - label: Placeholders
                 name: placeholders
                 widget: object
                 fields:
-                  - { label: First Name Placeholder, name: firstName, widget: string }
-                  - { label: Last Name Placeholder, name: lastName, widget: string }
-                  - { label: Email Placeholder, name: email, widget: string }
-                  - { label: Company Placeholder, name: company, widget: string }
-                  - { label: Subject Placeholder, name: subject, widget: string }
-                  - { label: Message Placeholder, name: message, widget: string }
+                  - { label: "'First name' placeholder", name: firstName, widget: string }
+                  - { label: "'Last name' placeholder", name: lastName, widget: string }
+                  - { label: "'Email' placeholder", name: email, widget: string }
+                  - { label: "'Company' placeholder", name: company, widget: string }
+                  - { label: "'Subject' placeholder", name: subject, widget: string }
+                  - { label: "'Message' placeholder", name: message, widget: string }
           - label: CTA
             name: cta
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Title, name: title, widget: string }
-              - { label: Button Label, name: buttonLabel, widget: string }
-              - { label: Button Link, name: buttonHref, widget: string }
-              - { label: Secondary Button Label, name: secondaryButtonLabel, widget: string, required: false }
-              - { label: Secondary Button Link, name: secondaryButtonHref, widget: string, required: false }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: Closing headline, name: title, widget: string }
+              - { label: Primary button text, name: buttonLabel, widget: string }
+              - { label: Primary button link, name: buttonHref, widget: string }
+              - { label: "Secondary button text (optional)", name: secondaryButtonLabel, widget: string, required: false }
+              - { label: "Secondary button link (optional)", name: secondaryButtonHref, widget: string, required: false }
 
   - name: stores_page
     label: Stores Page
@@ -402,21 +407,22 @@ collections:
             name: hero
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
-              - { label: Poster Image, name: poster, widget: image, description: "Best size: a wide photo around 2560×1440 px." }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: Headline, name: title, widget: string }
+              - { label: Intro paragraph, name: summary, widget: text }
+              - { label: Fallback image, name: poster, widget: image, description: "Still image shown while the video loads (and if it cannot play). Best size: a wide photo around 2560×1440 px." }
               - { label: Video File, name: video, widget: file }
-              - { label: Video Alt Text, name: videoAlt, widget: string }
-          - label: Hero Stats
+              - { label: Video description (for screen readers), name: videoAlt, widget: string, description: "Accessibility text read by screen readers, and shown if the video can't load." }
+          - label: Hero stat badges
             name: heroStats
             widget: list
+            description: "Short stat chips under the hero text, e.g. '30+ Stores'. Leave blank to hide."
             field: { label: Stat, name: stat, widget: string }
           - label: Network Section
             name: networkSection
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
               - { label: Title, name: title, widget: string }
               - { label: Summary, name: summary, widget: text }
           - label: Store Groups
@@ -424,20 +430,20 @@ collections:
             widget: list
             summary: "{{fields.title}}"
             fields:
-              - { label: Label, name: label, widget: string }
-              - { label: Title, name: title, widget: string }
-              - { label: Intro, name: intro, widget: text }
+              - { label: Group eyebrow, name: label, widget: string, description: "Short kicker line shown above the group name." }
+              - { label: Group name, name: title, widget: string, description: "The group heading; also shown as a small label on each store photo below." }
+              - { label: Group description, name: intro, widget: text }
               - label: Stores in this group
                 name: stores
                 widget: list
                 summary: "{{fields.name}}"
                 fields:
-                  - { label: Name, name: name, widget: string }
-                  - { label: Image, name: image, widget: image, description: "Best size: at least 1200 px wide." }
+                  - { label: Store photo, name: image, widget: image, description: "Best size: at least 1200 px wide." }
+                  - { label: Store name, name: name, widget: string }
                   - { label: Address, name: address, widget: list, field: { label: Line, name: line, widget: string } }
-                  - { label: Phone Label, name: phoneLabel, widget: string }
-                  - { label: Phone Link, name: phoneHref, widget: string }
-                  - { label: Hours, name: hours, widget: list, field: { label: Line, name: line, widget: string } }
+                  - { label: "Phone (shown to visitors)", name: phoneLabel, widget: string }
+                  - { label: "Phone link (tel:)", name: phoneHref, widget: string }
+                  - { label: Opening hours, name: hours, widget: list, field: { label: Line, name: line, widget: string } }
 
   - name: agenda_page
     label: Agenda Page
@@ -454,42 +460,42 @@ collections:
             name: hero
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Quote, name: quote, widget: string, required: false }
-              - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
-              - { label: Poster Image, name: poster, widget: image, description: "Best size: a wide photo around 2560×1440 px." }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: "Quote (optional, above the headline)", name: quote, widget: string, required: false }
+              - { label: Page title, name: title, widget: string }
+              - { label: Page summary, name: summary, widget: text }
+              - { label: Fallback image, name: poster, widget: image, description: "Still image shown while the video loads (and if it cannot play). Best size: a wide photo around 2560×1440 px." }
               - { label: Video File, name: video, widget: file }
-              - { label: Video Alt Text, name: videoAlt, widget: string }
+              - { label: Video description (for screen readers), name: videoAlt, widget: string, description: "Accessibility text read by screen readers, and shown if the video can't load." }
           - label: Calendar Section
             name: calendarSection
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
               - { label: Title, name: title, widget: string }
               - { label: Summary, name: summary, widget: text }
           - label: CTA
             name: cta
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Title, name: title, widget: string }
-              - { label: Button Label, name: buttonLabel, widget: string }
-              - { label: Button Link, name: buttonHref, widget: string }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: Closing headline, name: title, widget: string }
+              - { label: Button text, name: buttonLabel, widget: string }
+              - { label: Button link, name: buttonHref, widget: string }
           - label: Months
             name: months
             widget: list
             summary: "{{fields.month}}"
             fields:
-              - { label: Month, name: month, widget: string }
+              - { label: "Month label (e.g. 'April 2026')", name: month, widget: string }
               - label: Events
                 name: events
                 widget: list
                 summary: "{{fields.brand}} - {{fields.dateLabel}}"
                 fields:
-                  - { label: Date Label, name: dateLabel, widget: string }
-                  - { label: Brand, name: brand, widget: string }
-                  - { label: Detail, name: detail, widget: text }
+                  - { label: Date range, name: dateLabel, widget: string }
+                  - { label: Brand name, name: brand, widget: string }
+                  - { label: Details, name: detail, widget: text }
                   - { label: Location, name: location, widget: string }
 
   - name: brands_page
@@ -498,7 +504,7 @@ collections:
     editor:
       preview: false
     files:
-      - label: Hero Div
+      - label: Hero
         name: brands_page_hero
         file: src/_data/cms/brandsPage/hero.json
         format: json
@@ -507,13 +513,13 @@ collections:
             name: hero
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
               - { label: Title, name: title, widget: text }
               - { label: Summary, name: summary, widget: text }
               - { label: Stats, name: stats, widget: list, field: { label: Stat, name: stat, widget: string } }
               - { label: Hero Brand Name, name: brandName, widget: string }
               - { label: Hero Image, name: image, widget: image, description: "Best size: portrait, around 1200×1500 px." }
-      - label: Portfolio Grid Div
+      - label: Portfolio Grid
         name: brands_page_portfolio
         file: src/_data/cms/brandsPage/portfolio.json
         format: json
@@ -522,9 +528,9 @@ collections:
             name: portfolioSection
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
               - { label: Title, name: title, widget: string }
-      - label: Brand Detail Page Div
+      - label: Brand Detail Page
         name: brands_page_detail
         file: src/_data/cms/brandsPage/detail.json
         format: json
@@ -540,7 +546,7 @@ collections:
               - { label: CTA Title, name: ctaTitle, widget: string }
               - { label: CTA Button Label, name: ctaButtonLabel, widget: string }
               - { label: CTA Button Link, name: ctaButtonHref, widget: string }
-      - label: Brand Entries Div
+      - label: Brand Entries
         name: brands_page_brands
         file: src/_data/cms/brandsPage/brands.json
         format: json
@@ -557,7 +563,7 @@ collections:
                 name: card
                 widget: object
                 fields:
-                  - { label: Eyebrow, name: eyebrow, widget: string }
+                  - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
                   - { label: Hero Title, name: heroTitle, widget: string }
                   - { label: Summary, name: summary, widget: text }
                   - { label: Photo, name: heroImage, widget: image, required: false, description: "Shown on the brand's card in the brands overview. Best size: portrait, around 1200×1500 px. (The homepage brand wall uses its own separate images, edited under Homepage.)" }
@@ -587,7 +593,7 @@ collections:
     editor:
       preview: false
     files:
-      - label: Hero Div
+      - label: Hero
         name: wearhouse_page_hero
         file: src/_data/cms/wearhousePage/hero.json
         format: json
@@ -596,12 +602,12 @@ collections:
             name: hero
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Summary, name: summary, widget: text }
-              - { label: Hero Image, name: image, widget: image, description: "Best size: a wide photo around 2560×1440 px." }
-              - { label: Hero Image Alt Text, name: imageAlt, widget: string }
-              - { label: Stats, name: stats, widget: list, field: { label: Stat, name: stat, widget: string } }
-      - label: Overview Div
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: "Hero statement (the big text over the photo)", name: summary, widget: text }
+              - { label: Hero background photo, name: image, widget: image, description: "Best size: a wide photo around 2560×1440 px." }
+              - { label: Photo description (for screen readers), name: imageAlt, widget: string, description: "Accessibility text read by screen readers, and shown if the photo can't load." }
+              - { label: "Key facts (small line under the hero text)", name: stats, widget: list, field: { label: Stat, name: stat, widget: string } }
+      - label: Overview
         name: wearhouse_page_overview
         file: src/_data/cms/wearhousePage/overview.json
         format: json
@@ -610,23 +616,23 @@ collections:
             name: overview
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
               - { label: Title, name: title, widget: string }
-              - { label: Intro, name: intro, widget: text }
-              - { label: Focus, name: focus, widget: text }
-              - { label: Pillars, name: pillars, widget: list, field: { label: Pillar, name: pillar, widget: string } }
-              - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px wide." }
-              - { label: Image Alt Text, name: imageAlt, widget: string }
-      - label: Roster Section Div
+              - { label: First paragraph, name: intro, widget: text }
+              - { label: Second paragraph, name: focus, widget: text }
+              - { label: Highlight tags, name: pillars, widget: list, field: { label: Pillar, name: pillar, widget: string } }
+              - { label: "Portrait photo (right side)", name: image, widget: image, description: "Shown as a tall portrait — use a portrait-oriented photo, long side ≥1600px." }
+              - { label: Photo description (for screen readers), name: imageAlt, widget: string, description: "Accessibility text read by screen readers, and shown if the photo can't load." }
+      - label: Roster Section
         name: wearhouse_page_roster
         file: src/_data/cms/wearhousePage/roster.json
         format: json
         fields:
-          - label: Roster Section Div
+          - label: Roster Section
             name: rosterSection
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
               - { label: Title, name: title, widget: string }
               - label: Brand Cards
                 name: items
@@ -639,7 +645,7 @@ collections:
                   - { label: Page Link, name: pageHref, widget: string }
                   - { label: Logo Image, name: logoSrc, widget: image, required: false, description: "Use an SVG or a transparent PNG at least 400 px wide." }
                   - { label: Hover Image, name: hoverImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
-      - label: Showroom Intro Div
+      - label: Showroom Intro
         name: wearhouse_page_showroom
         file: src/_data/cms/wearhousePage/showroom.json
         format: json
@@ -648,17 +654,17 @@ collections:
             name: showroomSection
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
               - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
+              - { label: Section description, name: summary, widget: text }
               - label: Gallery Items
                 name: items
                 widget: list
                 summary: "{{fields.note}}"
                 fields:
-                  - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px on the long side." }
-                  - { label: Note, name: note, widget: string }
-      - label: CTA Div
+                  - { label: Gallery photo, name: image, widget: image, description: "Photo tile in a mixed-size gallery; crop varies by position, so keep the subject centered. Long side ≥1600px." }
+                  - { label: "Caption (screen readers only — not shown on the page)", name: note, widget: string }
+      - label: CTA
         name: wearhouse_page_cta
         file: src/_data/cms/wearhousePage/cta.json
         format: json
@@ -667,28 +673,29 @@ collections:
             name: cta
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Title, name: title, widget: string }
-              - { label: Button Label, name: buttonLabel, widget: string }
-              - { label: Button Link, name: buttonHref, widget: string }
-      - label: Brand Detail Page Div
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: Closing headline, name: title, widget: string }
+              - { label: Button text, name: buttonLabel, widget: string }
+              - { label: Button link, name: buttonHref, widget: string }
+      - label: "Brand detail pages (shared text)"
         name: wearhouse_page_detail
         file: src/_data/cms/wearhousePage/detail.json
         format: json
         fields:
-          - label: Brand Detail Page
+          - label: "Brand detail pages (shared text)"
             name: detailPage
             widget: object
+            description: "Controls text shown on every /wearhouse/<brand> page — not the main Wearhouse page."
             fields:
-              - { label: Hero Eyebrow, name: heroEyebrow, widget: string }
-              - { label: Overview Eyebrow, name: overviewEyebrow, widget: string }
-              - { label: CTA Eyebrow, name: ctaEyebrow, widget: string }
-              - { label: CTA Title, name: ctaTitle, widget: string }
-              - { label: CTA Button Label, name: ctaButtonLabel, widget: string }
-              - { label: CTA Button Link, name: ctaButtonHref, widget: string }
-              - { label: Represented Label, name: representedLabel, widget: string }
-              - { label: Market Label, name: marketLabel, widget: string }
-      - label: Brand Entries Div
+              - { label: Small label (brand page hero), name: heroEyebrow, widget: string }
+              - { label: "'Represented by' tag", name: representedLabel, widget: string }
+              - { label: Market tag, name: marketLabel, widget: string }
+              - { label: Small label (brand page overview), name: overviewEyebrow, widget: string }
+              - { label: Small label (brand page CTA), name: ctaEyebrow, widget: string }
+              - { label: CTA headline, name: ctaTitle, widget: string }
+              - { label: CTA button text, name: ctaButtonLabel, widget: string }
+              - { label: CTA button link, name: ctaButtonHref, widget: string }
+      - label: Brand Entries
         name: wearhouse_page_brands
         file: src/_data/cms/wearhousePage/brands.json
         format: json
@@ -735,7 +742,7 @@ collections:
             name: hero
             widget: object
             fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
               - { label: Title, name: title, widget: string }
               - { label: Summary, name: summary, widget: text }
           - label: Company Details
