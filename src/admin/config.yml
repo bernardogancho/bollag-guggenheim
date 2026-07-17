@@ -643,7 +643,7 @@ collections:
                   - { label: Name, name: name, widget: string }
                   - { label: Slug, name: slug, widget: string, description: "The brand's web-address piece: lowercase, words joined by hyphens (e.g. 'cuoieria-fiorentina'). Changing it changes the page's URL." }
                   - { label: Card label, name: cardLabel, widget: string, required: false, description: "The small line above the logo on this brand's card on the Wearhouse page." }
-                  - { label: Segment, name: segment, widget: string }
+                  - { label: Segment, name: segment, widget: string, description: "Shown in the small info row on the brand's own page — not on the card." }
                   - { label: Page Link, name: pageHref, widget: string }
                   - { label: Logo Image, name: logoSrc, widget: image, required: false, description: "Use an SVG or a transparent PNG at least 400 px wide." }
                   - { label: Hover Image, name: hoverImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
@@ -713,7 +713,6 @@ collections:
                 name: rosterCard
                 widget: object
                 fields:
-                  - { label: Segment, name: segment, widget: string }
                   - { label: Official Website, name: websiteHref, widget: string }
                   - { label: Logo Asset, name: logoSrc, widget: image, required: false, description: "Use an SVG or a transparent PNG at least 400 px wide." }
                   - { label: Hover Image, name: hoverImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }

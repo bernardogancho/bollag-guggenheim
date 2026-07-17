@@ -5419,6 +5419,102 @@ git commit -m "feat(cms-v2): grouped sidebar with the current page's sections ne
 
 ---
 
+### Task 19f: Editable card label; Segment filed correctly
+
+Two owner-reported bugs, fixed on `card-label` (branched from `main` at `6315b32`) in two
+commits.
+
+**Discovery: a third hardcoded copy.** The small `Women & Men` line above the logo on every
+brand card — `/brands/` and `/wearhouse/` overviews — turned out to be a literal string baked
+into the templates, not CMS data at all: `<p class="type-label mb-3 text-white/80">Women &amp;
+Men</p>` in `src/brands/index.njk` and `src/wearhouse/index.njk`. A pre-brief said only those
+two files were hardcoded, but the same literal was also in
+`src/_includes/components/wearhouse-brands-wall.njk` — a shared partial included by both
+`src/index.njk` (homepage) and `src/brands/index.njk`, rendering the Wearhouse roster a *third*
+time. Skipping it would have left 15 un-editable labels behind (the homepage's Wearhouse wall,
+plus a duplicate set on `/brands/`) even after "fixing" the two files the brief named. Found by
+diffing a pre-change and post-change build and seeing stray unrendered lines survive in
+`/brands/index.html` — the extra occurrences came from this third include, confirmed by `grep -rn
+"Women &amp; Men" src/`.
+
+**The seed-then-read approach.** Rather than invent new copy, the fix seeds a `cardLabel` field
+onto every existing brand/roster record with the exact string that was already hardcoded
+(`Women & Men`, plain ampersand — Nunjucks' auto-escaping turns it into `&amp;` on output, same
+as the literal), then swaps each hardcoded `<p>` for a guarded
+`{% if brand.cardLabel %}<p class="type-label mb-3 text-white/80">{{ brand.cardLabel
+}}</p>{% endif %}`. Because the seeded value round-trips through the same auto-escaping the
+literal always went through, and the guard is a no-op whenever the field is populated (as it now
+always is), the rendered byte stream for every existing page is unchanged — only the *source* of
+that byte stream moved from template literal to editable data. `cardLabel` was added as the
+first key of `card` in `src/_data/cms/brandsPage/brands.json` (12 brands) and as the first
+"content" field (after identity fields `name`/`slug`) in every item of
+`src/_data/cms/wearhousePage/roster.json` (15 roster items).
+
+**Byte-identical proof.** Before any edit, `npm run build` was run against a clean `origin/main`
+checkout and `_site` copied aside (excluding `_site/admin`, which is the bundled admin app, not a
+public page). After the full change:
+
+```bash
+diff -rq --exclude=admin --exclude=cms-data <pre-change _site> <post-change _site>
+# (no output — zero differences)
+```
+
+`--exclude=cms-data` is needed alongside `--exclude=admin`: `.eleventy.js` passthrough-copies
+`src/_data/cms` to `_site/cms-data` as a raw JSON mirror the admin app reads to diff local drafts
+against the published state (`src/admin/lib/content.js`, `ChangesTray.jsx`) — it is not a
+rendered page, and it necessarily differs because it mirrors the sanctioned `cardLabel` data
+seed. Every actual page — every brand and Wearhouse card, the homepage Wearhouse wall, all other
+routes and assets — came back byte-for-byte identical.
+
+`config.yml`, `BrandsScreen.jsx` (new "Card label" field, first in the "Card in the brand
+overviews" group), and `blankRosterItem()`/`addBrand()` (new records default to `Women & Men`)
+were wired up in the same commit so the field is immediately editable and new brands match house
+style; `WearhouseScreen.jsx` needed no code change — its "Card on the Wearhouse page" group
+already renders every roster field except `name`/`slug`, so the new config field appears there
+automatically.
+
+**Second bug: Segment filed under the wrong page.** `wearhouse/brand.njk:33` renders `{{
+brand.segment }}` (the roster item's `segment`) in the small info row on a brand's *own* detail
+page — the Wearhouse roster *card* never renders segment at all. The CMS nonetheless grouped
+`segment` inside "Card on the Wearhouse page" (it's a flat field on the roster item, alongside
+`pageHref`/`logoSrc`/`hoverImage`, which *are* card fields), so editors saw it in the wrong
+place. Moved it in `WearhouseScreen.jsx`: excluded from the "Card on the Wearhouse page" field
+list, and rendered explicitly at the top of "Brand detail page" instead (still reading/writing
+`record.roster.segment` — the data doesn't move, only where it's edited) with description "Shown
+in the small info row on the brand's own page — not on the card."
+
+While there, checked whether `rosterCard.segment` in `src/_data/cms/wearhousePage/brands.json`
+(a *second*, differently-scoped `segment` field, editable under "Card details" in the same
+screen) is live. `src/_data/wearhouse.js` builds each card's merged record as `{...detailBrand,
+...rosterItem, ...detail}` and only ever reads `rosterCard.logoLines` off `detailBrand` — never
+`rosterCard.segment`. No `.njk` template references `rosterCard` at all; every site read of
+"segment" resolves to the roster item's field (confirmed by grep across `src/**/*.njk` and
+`src/_data/wearhouse.js`). `rosterCard.segment` is dead on the site. It removed cleanly from
+`config.yml` only — the JSON data and `blankBrandEntry()` were left untouched, since the field
+still exists on records and the task was to stop presenting a phantom duplicate, not to migrate
+data. (One nuance for the record: `WearhouseScreen.jsx`'s list-view subtitle badge already reads
+`record.roster?.segment || record.brand?.rosterCard?.segment || '—'` as a fallback — an
+admin-only usage, not a site read, and out of this task's scope to change.)
+
+Also corrected an inaccurate field description while auditing the same area: `card.summary`
+(labelled "Description" in `BrandsScreen.jsx`'s "Page top" group) said only "The paragraph under
+the headline" — true on the brand's own page (`brand.njk:44`), but the same field is *also* the
+body text on the brand's card in the `/brands/` overview (`index.njk` — `{{ brand.summary }}`).
+Updated to: "The paragraph under the headline on the brand's page. It also appears on the
+brand's card in the Brands overview." `card.eyebrow` and `card.heroTitle` were checked the same
+way and found already accurate — both render only on the detail-page hero (zero occurrences on
+`/brands/`), matching their existing descriptions.
+
+Verify: `npm test` 59/59 and `npm run build` green before each commit; the byte-identical `diff
+-rq` proof above re-run (and still empty) after every template/data change.
+
+```bash
+git commit -m "feat: make the brand card label editable without changing the page"
+git commit -m "fix(cms-v2): file the Segment field where it renders; correct card/detail descriptions"
+```
+
+---
+
 ## Chunk 7: Cutover, verification, walkthrough, handoff
 
 ### Task 20: Delete the old monolith

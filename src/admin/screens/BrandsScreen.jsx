@@ -94,7 +94,7 @@ export function BrandsScreen({ page, section, rest }) {
           { source: 'detail', name: 'detailHeroFocus', overrides: { label: 'Image focus' } },
           { source: 'card', name: 'eyebrow', overrides: { label: 'Small line above the logo' } },
           { source: 'card', name: 'heroTitle', overrides: { label: 'Big headline', description: 'If left empty, the description below is shown as the headline.' } },
-          { source: 'card', name: 'summary', overrides: { label: 'Description', description: 'The paragraph under the headline.' } },
+          { source: 'card', name: 'summary', overrides: { label: 'Description', description: "The paragraph under the headline on the brand's page. It also appears on the brand's card in the Brands overview." } },
         ],
       },
       {

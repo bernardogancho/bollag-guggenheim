@@ -27,6 +27,9 @@ export function WearhouseScreen({ page, section, rest }) {
 
   const rosterItemFields = resolveListField(rosterEntry.fields, 'rosterSection.items')?.fields || [];
   const brandEntryFields = resolveListField(brandsEntry.fields, 'brands')?.fields || [];
+  // Segment is stored on the roster half but is shown in the "Brand detail
+  // page" group below, since that's the only place it actually renders.
+  const segmentField = rosterItemFields.find(field => field.name === 'segment') || null;
   const { records } = joinWearhouse(rosterDraft.rosterSection.items || [], brandsDraft.brands || []);
 
   const writeRecords = nextRecords => {
@@ -138,7 +141,7 @@ export function WearhouseScreen({ page, section, rest }) {
           <h3 className="group-card-title">Card on the Wearhouse page</h3>
           {record.roster ? (
             <div className="field-grid">
-              {rosterItemFields.filter(field => !['name', 'slug'].includes(field.name)).map(field => (
+              {rosterItemFields.filter(field => !['name', 'slug', 'segment'].includes(field.name)).map(field => (
                 <FieldRenderer key={field.name} field={field} value={record.roster[field.name]}
                   onChange={next => updateRecord(idx, { roster: { ...record.roster, [field.name]: next } })}
                   pathPrefix={`__wearhouse.${idx}.roster.${field.name}`} routeBase={[page.id, section.id]} />
@@ -157,6 +160,16 @@ export function WearhouseScreen({ page, section, rest }) {
           <h3 className="group-card-title">Brand detail page</h3>
           {record.brand ? (
             <div className="field-grid">
+              {/* Segment lives on the roster half (roster.json), not the brand
+                  half, but it only renders on the brand's own page (see
+                  wearhouse/brand.njk) — not on the card — so it's shown here
+                  with the rest of the detail-page fields, sourced from
+                  record.roster. */}
+              {segmentField && record.roster ? (
+                <FieldRenderer key="roster.segment" field={segmentField} value={record.roster.segment}
+                  onChange={next => updateRecord(idx, { roster: { ...record.roster, segment: next } })}
+                  pathPrefix={`__wearhouse.${idx}.roster.segment`} routeBase={[page.id, section.id]} />
+              ) : null}
               {brandEntryFields.filter(field => !['name', 'slug'].includes(field.name)).map(field => (
                 <FieldRenderer key={field.name} field={field} value={record.brand[field.name]}
                   onChange={next => updateRecord(idx, { brand: { ...record.brand, [field.name]: next } })}
