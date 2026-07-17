@@ -46,6 +46,7 @@ export function ItemListScreen({ page, section, listPath }) {
           <p className="screen-subtitle">{items.length} item{items.length === 1 ? '' : 's'}. Click one to edit it.</p>
         </div>
         <div className="screen-actions">
+          <a className="button button-ghost" href={page.url} target="_blank" rel="noreferrer">View page ↗</a>
           <button type="button" className="button button-primary" onClick={addItem}>Add item</button>
         </div>
       </div>

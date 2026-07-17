@@ -231,6 +231,7 @@ export function BrandsScreen({ page, section, rest }) {
           <p className="screen-subtitle">Each brand has a card on the Brands page and its own detail page — edited together here.</p>
         </div>
         <div className="screen-actions">
+          <a className="button button-ghost" href="/brands/" target="_blank" rel="noreferrer">View page ↗</a>
           <input className="input" placeholder="New brand name" value={newName} onChange={event => setNewName(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') addBrand(); }} />
           <button type="button" className="button button-primary" onClick={addBrand} disabled={!newName.trim()}>Add brand</button>
         </div>

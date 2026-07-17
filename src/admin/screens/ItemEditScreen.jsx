@@ -45,6 +45,7 @@ export function ItemEditScreen({ page, section, listPath, index }) {
           <p className="screen-subtitle">Item {index + 1} of {items.length} in {listField.label || listField.name}.</p>
         </div>
         <div className="screen-actions">
+          <a className="button button-ghost" href={page.url} target="_blank" rel="noreferrer">View page ↗</a>
           <button type="button" className="button button-danger" onClick={() => {
             if (window.confirm(`Delete “${itemTitle(item)}”? This is removed from the website on your next publish.`)) {
               store.update(section.file, draftCopy => setAtPath(draftCopy, listPath, items.filter((_, i) => i !== index)));
