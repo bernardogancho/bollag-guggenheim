@@ -68,7 +68,7 @@ title: Wearhouse | Bollag-Guggenheim
         {% set logoClass = 'h-10 sm:h-12 lg:h-14 w-auto max-w-[12rem] object-contain object-left' %}
         {% set bodyClass = 'type-body-sm max-w-[24rem]' %}
         {% set imageClass = 'object-center' %}
-        {% set cardImage = brand.detailHeroImage or brand.hoverImage %}
+        {% set cardImage = brand.hoverImage or brand.detailHeroImage %}
         {% set logoImage = brand.logoSrc or brand.logoSvg %}
         {% if brand.slug == 'save-the-duck' %}
           {% set logoImage = brand.logoSvg %}
