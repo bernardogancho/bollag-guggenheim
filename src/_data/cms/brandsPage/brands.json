@@ -151,10 +151,10 @@
       "logoImage": "/assets/media/brands/cuoieria-fiorentina.png",
       "card": {
         "cardLabel": "Accessory",
-        "eyebrow": "Traditional Italian Craftsmanship",
-        "heroTitle": "Timeless yet modern design made in Italy",
+        "eyebrow": "Timeless yet modern design",
+        "heroTitle": "Traditional Italian Craftsmanship",
         "summary": "-",
-        "heroImage": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg"
+        "heroImage": ""
       },
       "detail": {
         "intro": "Cuoieria Fiorentina is a premium Italian leather goods brand from Tuscany, renowned for its handcrafted handbags and accessories. Combining traditional Florentine leatherworking techniques with modern design, the brand creates elegant, durable pieces from high-quality natural leather. Every product is proudly Made in Italy and designed to offer timeless style, exceptional craftsmanship, and lasting quality.",
@@ -162,7 +162,7 @@
         "atmosphere": "-",
         "categories": [],
         "tone": "Placeholder tone copy for a refined accessories brand built around craft, everyday utility, and a polished Italian product language.",
-        "detailHeroImage": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg",
+        "detailHeroImage": "",
         "gallery": [
           {
             "image": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg",
@@ -173,13 +173,7 @@
             "note": "Cuoieria Fiorentina placeholder editorial selection"
           }
         ],
-        "detailGallery": [
-          {
-            "image": "/assets/media/uploads/1784529811551-codello_picture-brand_portrait.jpg",
-            "note": "Cuoieria-Fiorentina",
-            "source": "Cuoieria Fiorentina "
-          }
-        ]
+        "detailGallery": []
       }
     },
     {
