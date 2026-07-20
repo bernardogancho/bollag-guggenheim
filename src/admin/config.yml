@@ -646,7 +646,9 @@ collections:
                   - { label: Segment, name: segment, widget: string, description: "Shown in the small info row on the brand's own page — not on the card." }
                   - { label: Page Link, name: pageHref, widget: string }
                   - { label: Logo Image, name: logoSrc, widget: image, required: false, description: "Use an SVG or a transparent PNG at least 400 px wide." }
-                  - { label: Hover Image, name: hoverImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
+                  - { label: Photo, name: hoverImage, widget: image, required: false, description: "The brand's photo on the Wearhouse overview card." }
+                  - { label: Background photo, name: detailImage, widget: image, required: false, description: "The large photo behind the brand name on its own page. Leave empty to reuse the card photo. Best size: a wide photo around 2560×1440 px." }
+                  - { label: Portrait beside the intro, name: portraitImage, widget: image, required: false, description: "The tall photo next to the introduction text. Leave empty to reuse the background photo. Best size: portrait, around 1200×1500 px." }
       - label: Showroom Intro
         name: wearhouse_page_showroom
         file: src/_data/cms/wearhousePage/showroom.json

@@ -13,7 +13,7 @@ eleventyComputed:
 <section class="relative isolate overflow-hidden bg-ink text-bone">
   <div class="absolute inset-0">
     {% if brand.detailHeroImage %}
-      <img src="{{ brand.detailHeroImage }}" alt="{{ brand.name }} editorial view" class="h-full w-full object-cover object-center">
+      <img src="{{ brand.detailHeroImage }}" alt="{{ brand.name }} editorial view" class="h-full w-full object-cover object-center" data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.detailImage">
       <div class="page-hero-overlay absolute inset-0"></div>
     {% else %}
       <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_28%),linear-gradient(160deg,#4a433d,#1f1a17_55%,#3d3631)]"></div>
@@ -64,9 +64,9 @@ eleventyComputed:
           </div>
         {% endif %}
       </div>
-      {% if brand.detailHeroImage %}
+      {% if brand.detailPortraitImage %}
         <figure class="overview-image relative hidden aspect-[4/5] overflow-hidden shadow-[0_34px_90px_rgba(20,18,16,0.14)] lg:block" data-reveal data-scroll-drift>
-          <img src="{{ brand.detailHeroImage }}" alt="{{ brand.name }} editorial portrait" class="overview-image__media h-full w-full object-cover object-center">
+          <img src="{{ brand.detailPortraitImage }}" alt="{{ brand.name }} editorial portrait" class="overview-image__media h-full w-full object-cover object-center" data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.portraitImage">
         </figure>
       {% endif %}
     </div>

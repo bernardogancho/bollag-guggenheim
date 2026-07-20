@@ -5870,6 +5870,82 @@ git commit -m "feat(cms-v2): wearhouse brand editor mirrors the Bollag structure
 
 ---
 
+### Task 23: Wearhouse brands get three independent images
+
+Task 22 mirrored the Bollag *editor structure* but left the underlying Wearhouse data model
+short one axis: a single stored image (`rosterSection.items[].hoverImage`) drove all three of the
+card photo on the Wearhouse index, the full-bleed background at the top of the brand's own page,
+and the portrait beside its intro text — "one photo, three jobs", called out explicitly in Task
+22's own mapping table. Bollag brands, by contrast, already have three separate images
+(`card.heroImage`, `detail.detailHeroImage`, `detail.detailGallery[1].image`). This task closes
+that gap so Wearhouse brands work "almost the same": three independent, optional images, each with
+a graceful fallback so nothing on the live site changes until an owner actually fills one in.
+
+**Data model** (`rosterSection.items[]`, unchanged shape — no values added to `roster.json`):
+- `hoverImage` (existing) — the card photo on the Wearhouse index.
+- `detailImage` (new, optional) — the page-top background on the brand's own page. Falls back to
+  `hoverImage` when empty.
+- `portraitImage` (new, optional) — the portrait beside the intro text. Falls back to `detailImage`,
+  then `hoverImage`.
+
+**Fallback chain**, computed in `src/_data/wearhouse.js`:
+```
+detailHeroImage:      detailBrand.detailImage || brand.detailImage || brand.hoverImage || null   (unchanged)
+detailPortraitImage:  brand.portraitImage     || brand.detailImage || brand.hoverImage || null   (new)
+```
+`brand` here is the roster item; `detailBrand.detailImage` is always `undefined` (that data lives
+one level deeper, at `detailBrand.rosterCard.detailImage` — left alone; the owner declined moving
+it). `detailHeroImage`'s formula already read `brand.detailImage`, so simply giving roster items an
+optional `detailImage` key activates a genuinely separate page-top background with zero JS change
+beyond the new `detailPortraitImage` line. Since every existing roster item carries only
+`hoverImage`, both computed fields resolve to the same value they always did — the fallback chain
+reproduces today's rendering exactly, which is what the byte-identical proof below confirms.
+
+**Site changes** (2 files, output byte-identical): `src/_data/wearhouse.js` gained the
+`detailPortraitImage` line above. `src/wearhouse/brand.njk`'s intro-portrait `<figure>` now guards
+on and renders `brand.detailPortraitImage` instead of reusing `brand.detailHeroImage`, and both the
+page-top background `<img>` and the portrait `<img>` picked up `data-cms-bind` attributes
+(`...rosterSection.items.{{ pagination.pageNumber }}.detailImage` /
+`...portraitImage`) so live preview patches each independently. `previewLogic.js`'s `patchNode`
+already refused to write an empty-string `src` onto an `IMG` (a pre-existing guard, covered by an
+existing test — "refuses an empty-string image src") — so live-patching an emptied `detailImage`/
+`portraitImage` field can never blank the rendered fallback image; no change was needed there.
+
+**Admin changes**: `config.yml`'s roster-item fields gained `detailImage` ("Background photo") and
+`portraitImage` ("Portrait beside the intro"), both optional images; `hoverImage` was relabeled
+"Photo" with a description matching its actual one job now (the card photo). `WearhouseScreen.jsx`'s
+item-mode groups were re-pointed to match: **Page top** now binds its background photo to
+`roster.detailImage` (was wrongly bound to `roster.hoverImage`, the field Task 22 had folded three
+jobs into); **Introduction** gained a **Portrait beside the intro** field (`roster.portraitImage`)
+as its first field, mirroring `BrandsScreen`'s placement of the equivalent Bollag field; **Card on
+the Wearhouse page** got its **Photo** field back (`roster.hoverImage`) — Task 22 had omitted it
+entirely on the reasoning that the card "reuses the Page top background photo above", which stops
+being true now that the two are independent fields. Every image field binds a distinct path; no
+two inputs share a path. `adapters/wearhouse.js`'s `blankRosterItem()` now seeds `detailImage: ''`
+and `portraitImage: ''` so brands created through the editor get the same shape as existing ones.
+
+**Verify**:
+- `node_modules/.bin/vitest run` 107/107 and `npm run build` green.
+- **Byte-identical proof**: clean-built `origin/main` (via a separate git worktree) and this branch
+  into temp `_site` dirs, stripped ` data-cms-section="..."` / ` data-cms-bind="..."` from every
+  rendered `.html` file in both trees (excluding `admin/` and `cms-data/`), then `diff -rq` the two
+  stripped trees across all 35 rendered pages — zero differences.
+- **Fallback probe** (Node, against the real `roster.json`): a brand with only `hoverImage` set →
+  `detailHeroImage === hoverImage` and `detailPortraitImage === hoverImage`; a brand with
+  `detailImage` set → hero uses it, portrait falls back to it; a brand with `portraitImage` set →
+  portrait uses it, hero is unaffected. All 15 real roster items confirmed output-identical under
+  the new formula.
+- **Publish round-trip probe**: `joinWearhouse` → edited `detailImage`/`portraitImage` on every one
+  of the 15 records → `splitWearhouse` → all 15 roster items and all 15 brand entries survived,
+  edits landed at `rosterSection.items[i].detailImage`/`.portraitImage`, no key-order churn (new
+  keys appended after existing ones), brand entries passed through untouched.
+
+```bash
+git commit -m "feat: separate wearhouse card, background and portrait images"
+```
+
+---
+
 ## Chunk 7: Cutover, verification, walkthrough, handoff
 
 ### Task 20: Delete the old monolith

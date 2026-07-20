@@ -138,7 +138,7 @@ export function WearhouseScreen({ page, section, rest }) {
         title: 'Page top',
         help: "The opening of the brand's own page, in the order visitors see it.",
         fields: [
-          { source: 'roster', name: 'hoverImage', overrides: { label: 'Background photo', description: "The large photo behind the brand name. This same photo is also used as the brand's card photo on the Wearhouse page and as the portrait beside the introduction. Best size: a wide photo around 2560×1440 px." } },
+          { source: 'roster', name: 'detailImage', overrides: { label: 'Background photo', description: "The large photo behind the brand name on this brand's own page. Leave empty to reuse the card photo. Best size: a wide photo around 2560×1440 px." } },
           { source: 'detail', name: 'summary', overrides: { label: 'Description', description: "The paragraph under the brand name. It also appears on the brand's card." } },
           { source: 'roster', name: 'segment', overrides: { description: 'Shown in the small info row under the heading, e.g. "Women & Men".' } },
         ],
@@ -148,6 +148,7 @@ export function WearhouseScreen({ page, section, rest }) {
         title: 'Introduction',
         help: 'The text block after the page top.',
         fields: [
+          { source: 'roster', name: 'portraitImage', overrides: { label: 'Portrait beside the intro', description: 'The tall photo next to this text. Leave empty to reuse the background photo. Best size: portrait, around 1200×1500 px.' } },
           { source: 'detail', name: 'intro', overrides: { label: 'First paragraph' } },
           { source: 'detail', name: 'focus', overrides: { label: 'Second paragraph' } },
           { source: 'detail', name: 'atmosphere', overrides: { label: 'Style tag', description: 'Short phrase shown in the small info row.' } },
@@ -156,9 +157,10 @@ export function WearhouseScreen({ page, section, rest }) {
       },
       {
         title: 'Card on the Wearhouse page',
-        help: "The brand's tile in the Wearhouse overview. It uses the Background photo above.",
+        help: "The brand's tile in the Wearhouse overview. The logo and name appear on top of this photo.",
         fields: [
           { source: 'roster', name: 'cardLabel', overrides: { label: 'Card label', description: 'The small line above the logo on the card.' } },
+          { source: 'roster', name: 'hoverImage', overrides: { label: 'Photo', description: "The brand's tile in the Wearhouse overview." } },
         ],
       },
     ];
