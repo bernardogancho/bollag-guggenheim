@@ -173,7 +173,13 @@
             "note": "Cuoieria Fiorentina placeholder editorial selection"
           }
         ],
-        "detailGallery": []
+        "detailGallery": [
+          {
+            "image": "/assets/media/uploads/1784530151582-post-3-cuoieria-fiorentina.jpg",
+            "note": "Cuoieria-Fiorentina ",
+            "source": "Picture1"
+          }
+        ]
       }
     },
     {
