@@ -153,7 +153,7 @@
       "name": "Codello",
       "slug": "codello",
       "card": {
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women",
         "eyebrow": "Accessory Color",
         "heroTitle": "Accessories that makes people happy.",
         "summary": "Scarves and accessories driven by print, color, craft, and a long-standing signature in silk.",
@@ -162,12 +162,8 @@
       "detail": {
         "intro": "Codello grew from a single silk scarf idea into a broad accessories brand with a recognisable visual signature. Material, color, and pattern remain central to the label's identity, as does a persistent attention to craft and detail.",
         "focus": "What distinguishes Codello is not minimalism but expression: scarves and accessories designed to add personality, movement, and graphic energy while maintaining quality and brand recognisability.",
-        "atmosphere": "Expressive, graphic, uplifting.",
-        "categories": [
-          "Scarves",
-          "Accessories",
-          "Print-led Capsules"
-        ],
+        "atmosphere": "-",
+        "categories": [],
         "tone": "An accessory system built to inject character rather than simply complete a look.",
         "detailHeroImage": "/assets/media/brand-pages/codello-header.jpg",
         "gallery": [
@@ -184,22 +180,6 @@
           {
             "image": "/assets/media/brand-pages/codello-page-1.jpg",
             "note": "Codello editorial image 1"
-          },
-          {
-            "image": "/assets/media/brand-pages/codello-page-2.jpg",
-            "note": "Codello editorial image 2"
-          },
-          {
-            "image": "/assets/media/brand-pages/codello-page-3.jpg",
-            "note": "Codello editorial image 3"
-          },
-          {
-            "image": "/assets/media/brand-pages/codello-page-4.jpg",
-            "note": "Codello editorial image 4"
-          },
-          {
-            "image": "/assets/media/brand-pages/codello-page-5.jpg",
-            "note": "Codello editorial image 5"
           },
           {
             "image": "/assets/media/feed/codello-wall-18076293125104322.jpg",
