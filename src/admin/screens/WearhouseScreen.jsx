@@ -114,8 +114,24 @@ export function WearhouseScreen({ page, section, rest }) {
     // A group field's config `source` maps to the {half, path} it's actually
     // stored at: roster-level fields live directly on the roster half;
     // rosterCard/detail fields are nested one level inside the brand half.
+    // The background photo and the portrait are optional: when empty the page
+    // falls back to another image, so show that image in the field rather than
+    // an empty dropzone (which would read as "there is no photo here").
+    const rosterHalf = record.roster || {};
+    const INHERITS = {
+      detailImage: {
+        inheritedSrc: rosterHalf.hoverImage,
+        inheritedNote: 'Currently using the card photo. Choose one here to give this page its own.',
+      },
+      portraitImage: {
+        inheritedSrc: rosterHalf.detailImage || rosterHalf.hoverImage,
+        inheritedNote: 'Currently using the background photo. Choose one here to give the portrait its own.',
+      },
+    };
+
     const renderField = ({ source, name, overrides }) => {
-      const fieldDef = withOverrides(findField(source, name), overrides);
+      const inherit = source === 'roster' ? INHERITS[name] : undefined;
+      const fieldDef = withOverrides(findField(source, name), { ...overrides, ...inherit });
       if (!fieldDef) {
         return null;
       }

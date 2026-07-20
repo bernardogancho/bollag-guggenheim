@@ -67,7 +67,18 @@ export function FieldRenderer({ field, value, onChange, pathPrefix, routeBase, h
   }
 
   if (widget === 'image' || widget === 'file') {
-    return <ImageField field={field} value={value} onChange={onChange} kind={widget} />;
+    // inheritedSrc/inheritedNote let an optional image field show the picture
+    // the page actually falls back to, instead of an empty dropzone.
+    return (
+      <ImageField
+        field={field}
+        value={value}
+        onChange={onChange}
+        kind={widget}
+        inheritedSrc={field.inheritedSrc}
+        inheritedNote={field.inheritedNote}
+      />
+    );
   }
   if (widget === 'select') {
     return <SelectField field={field} value={value} onChange={onChange} />;

@@ -1434,6 +1434,24 @@ button:disabled {
   gap: 8px;
 }
 
+/* An optional image field that is empty but still shows a picture on the site,
+   because it falls back to another field. Dashed border + note distinguish it
+   from a photo actually stored on this field. */
+.asset-card.is-inherited {
+  border-style: dashed;
+  background: var(--panel-soft);
+}
+
+.asset-card.is-inherited .asset-card-image {
+  opacity: 0.82;
+}
+
+.asset-card-note {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
 .asset-path-toggle {
   appearance: none;
   border: 0;

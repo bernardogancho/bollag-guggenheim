@@ -5,7 +5,7 @@ import { useToast } from '../shell/Toasts.jsx';
 
 const IMAGE_SHAPE = /\.(avif|gif|jpe?g|png|svg|webp)$/i;
 
-export function ImageField({ field, value, onChange, kind = 'image' }) {
+export function ImageField({ field, value, onChange, kind = 'image', inheritedSrc, inheritedNote }) {
   const [pickerOpen, setPickerOpen] = useState(false);
   const [showPath, setShowPath] = useState(false);
   const [dragOver, setDragOver] = useState(false);
@@ -13,10 +13,23 @@ export function ImageField({ field, value, onChange, kind = 'image' }) {
   const toast = useToast();
   const current = String(value || '');
   const hasPreview = current && IMAGE_SHAPE.test(current);
+  // An empty optional field can still render a picture on the site, because it
+  // falls back to another field (e.g. the Wearhouse background photo reuses the
+  // card photo). Showing a bare dropzone there reads as "no image", so show the
+  // picture the page is actually using, marked as inherited.
+  const inherited = !current && inheritedSrc && IMAGE_SHAPE.test(String(inheritedSrc)) ? String(inheritedSrc) : '';
 
   return (
     <FieldShell field={field}>
-      {current ? (
+      {inherited ? (
+        <div className="asset-card is-inherited">
+          <img className="asset-card-image" src={inherited} alt="" />
+          <div className="asset-card-note">{inheritedNote || 'Using another photo until you set one here.'}</div>
+          <div className="asset-card-actions">
+            <button type="button" className="button button-secondary" onClick={() => setPickerOpen(true)}>Choose a different photo</button>
+          </div>
+        </div>
+      ) : current ? (
         <div className="asset-card">
           {hasPreview ? <img className="asset-card-image" src={current} alt="" /> : <a className="asset-card-file" href={current} target="_blank" rel="noreferrer">{current}</a>}
           <div className="asset-card-actions">
