@@ -76,13 +76,22 @@ export function PreviewPane({ page, section, previewUrl, previewTargets, isManag
       const doc = iframe.contentDocument;
       const win = iframe.contentWindow;
       const found = locateAndHighlight(doc, win, targetPageId, targetSectionId);
-      setStatus(found ? 'ready' : 'unavailable');
+      // "No section block to outline" is not the same as "preview broken".
+      // When the pane shows an item's OWN page (a brand detail page), the whole
+      // document is the subject, so there is deliberately no section marker —
+      // and live patching still works. Only report trouble when we genuinely
+      // could not reach the document.
+      if (found || (!found && previewUrl && doc)) {
+        setStatus('ready');
+      } else {
+        setStatus('unavailable');
+      }
     } catch {
       // Cross-origin, a not-yet-navigated frame, or any other timing issue —
       // never let this reach React as an error.
       setStatus('unavailable');
     }
-  }, [targetPageId, targetSectionId]);
+  }, [targetPageId, targetSectionId, previewUrl]);
 
   // Locate/highlight can run before the target has finished laying out
   // (fonts, images, or reveal-triggered layout shifts land a frame late), so
