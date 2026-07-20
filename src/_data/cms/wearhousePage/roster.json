@@ -6,11 +6,11 @@
       {
         "name": "CALIBAN",
         "slug": "caliban",
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women",
         "segment": "Women",
         "pageHref": "/wearhouse/caliban/",
         "logoSrc": "/assets/media/wearhouse/logos/caliban.clean.png",
-        "hoverImage": "/assets/media/wearhouse/brands/caliban-matrix.jpg"
+        "hoverImage": ""
       },
       {
         "name": "CIRCOLO 1901",
