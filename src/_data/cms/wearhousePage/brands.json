@@ -237,7 +237,7 @@
       "rosterCard": {
         "segment": "Women & Men",
         "websiteHref": "https://www.wearhouse.ch/savetheduck",
-        "logoSrc": "/assets/media/wearhouse/logos/save-the-duck.clean.png",
+        "logoSrc": "",
         "hoverImage": "/assets/media/wearhouse/brands/savetheduck-matrix.jpg",
         "detailImage": "/assets/media/wearhouse/brands/savetheduck.jpg",
         "logoLines": [
