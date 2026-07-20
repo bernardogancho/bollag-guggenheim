@@ -150,21 +150,17 @@
       "slug": "cuoieria-fiorentina",
       "logoImage": "/assets/media/brands/cuoieria-fiorentina.png",
       "card": {
-        "cardLabel": "Women & Men",
-        "eyebrow": "Leather Goods",
-        "heroTitle": "Placeholder title for Cuoieria Fiorentina.",
-        "summary": "Placeholder copy for Cuoieria Fiorentina, ready to be replaced with the final brand description.",
+        "cardLabel": "Accessory",
+        "eyebrow": "Traditional Italian Craftsmanship",
+        "heroTitle": "Timeless yet modern design made in Italy",
+        "summary": "-",
         "heroImage": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg"
       },
       "detail": {
-        "intro": "Placeholder intro copy for Cuoieria Fiorentina. This section can describe the brand story, product world, materials, and its role inside the Bollag-Guggenheim portfolio once final copy is available.",
-        "focus": "Placeholder focus copy for Cuoieria Fiorentina. Use this area to explain the commercial angle, the customer profile, and the specific leather-goods categories represented by the brand.",
-        "atmosphere": "Italian leather goods, placeholder copy.",
-        "categories": [
-          "Leather Goods",
-          "Accessories",
-          "Made in Italy"
-        ],
+        "intro": "Cuoieria Fiorentina is a premium Italian leather goods brand from Tuscany, renowned for its handcrafted handbags and accessories. Combining traditional Florentine leatherworking techniques with modern design, the brand creates elegant, durable pieces from high-quality natural leather. Every product is proudly Made in Italy and designed to offer timeless style, exceptional craftsmanship, and lasting quality.",
+        "focus": "-",
+        "atmosphere": "-",
+        "categories": [],
         "tone": "Placeholder tone copy for a refined accessories brand built around craft, everyday utility, and a polished Italian product language.",
         "detailHeroImage": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg",
         "gallery": [
