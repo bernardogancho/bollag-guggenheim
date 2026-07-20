@@ -3,13 +3,21 @@ import { useAdmin, useStoreVersion } from '../lib/context.js';
 import { navigate } from '../lib/router.js';
 import { resolveListField } from '../lib/configPath.js';
 import { joinWearhouse, splitWearhouse, blankRosterItem, blankBrandEntry } from '../adapters/wearhouse.js';
-import { reorder } from '../lib/paths.js';
+import { reorder, setAtPath, deepClone } from '../lib/paths.js';
 import { pruneEmptyAdditions } from '../lib/prune.js';
 import { slugify } from '../lib/slugify.js';
 import { FieldRenderer } from '../fields/FieldRenderer.jsx';
 import { Breadcrumbs } from './SectionScreen.jsx';
 import { useToast } from '../shell/Toasts.jsx';
 
+// Mirrors BrandsScreen's UX for the two-file Wearhouse roster: a list of
+// index-identity cards (joined by adapters/wearhouse.js) plus an item editor
+// whose groups cascade in the exact order the real brand page
+// (src/wearhouse/brand.njk) renders them: Brand (identity) → Page top (hero)
+// → Introduction (overview text) → Card on the Wearhouse page (grid tile).
+// Unlike BrandsScreen, a record's two halves (roster.json / brands.json) can
+// each be independently missing — every group below degrades gracefully
+// instead of assuming both halves exist.
 export function WearhouseScreen({ page, section, rest }) {
   const { store, fieldConfig } = useAdmin();
   useStoreVersion(store);
@@ -27,9 +35,8 @@ export function WearhouseScreen({ page, section, rest }) {
 
   const rosterItemFields = resolveListField(rosterEntry.fields, 'rosterSection.items')?.fields || [];
   const brandEntryFields = resolveListField(brandsEntry.fields, 'brands')?.fields || [];
-  // Segment is stored on the roster half but is shown in the "Brand detail
-  // page" group below, since that's the only place it actually renders.
-  const segmentField = rosterItemFields.find(field => field.name === 'segment') || null;
+  const rosterCardFields = brandEntryFields.find(field => field.name === 'rosterCard')?.fields || [];
+  const detailFields = brandEntryFields.find(field => field.name === 'detail')?.fields || [];
   const { records } = joinWearhouse(rosterDraft.rosterSection.items || [], brandsDraft.brands || []);
 
   const writeRecords = nextRecords => {
@@ -70,6 +77,92 @@ export function WearhouseScreen({ page, section, rest }) {
         </div>
       );
     }
+
+    // Writes a single leaf path within one half ('roster' or 'brand'),
+    // cloning that half so sibling keys are untouched, then routes the
+    // clone through updateRecord so it still gets pruned against that
+    // half's remote counterpart (matched by slug). Never creates a missing
+    // half implicitly — a field whose half is absent isn't rendered at all
+    // (see renderField below), so this is never called for one.
+    const updateField = (half, path, value) => {
+      const current = record[half];
+      if (!current) {
+        return;
+      }
+      const nextHalf = deepClone(current);
+      setAtPath(nextHalf, path, value);
+      updateRecord(idx, { [half]: nextHalf });
+    };
+
+    // Resolves a field definition from config (roster item fields, or the
+    // brand entry's card/detail object children) so widget types and
+    // `required` stay in sync with config.yml; only label/description are
+    // overridden per placement.
+    const findField = (source, name) => {
+      const fields = source === 'roster' ? rosterItemFields : source === 'rosterCard' ? rosterCardFields : detailFields;
+      return fields.find(field => field.name === name) || null;
+    };
+    const withOverrides = (fieldDef, overrides) => {
+      if (!fieldDef) {
+        return null;
+      }
+      if (!overrides) {
+        return fieldDef;
+      }
+      return { ...fieldDef, ...overrides };
+    };
+    // A group field's config `source` maps to the {half, path} it's actually
+    // stored at: roster-level fields live directly on the roster half;
+    // rosterCard/detail fields are nested one level inside the brand half.
+    const renderField = ({ source, name, overrides }) => {
+      const fieldDef = withOverrides(findField(source, name), overrides);
+      if (!fieldDef) {
+        return null;
+      }
+      const half = source === 'roster' ? 'roster' : 'brand';
+      const path = source === 'roster' ? name : `${source}.${name}`;
+      const data = record[half];
+      if (!data) {
+        return null; // this record has no data for this field's half
+      }
+      const value = source === 'roster' ? data[name] : data[source]?.[name];
+      return (
+        <FieldRenderer key={`${source}.${name}`} field={fieldDef} value={value}
+          onChange={next => updateField(half, path, next)}
+          pathPrefix={`__wearhouse.${idx}.${half}.${path}`} routeBase={[page.id, section.id]} />
+      );
+    };
+
+    const groups = [
+      {
+        title: 'Page top',
+        help: "The opening of the brand's own page, in the order visitors see it.",
+        fields: [
+          { source: 'roster', name: 'hoverImage', overrides: { label: 'Background photo', description: "The large photo behind the brand name. This same photo is also used as the brand's card photo on the Wearhouse page and as the portrait beside the introduction. Best size: a wide photo around 2560×1440 px." } },
+          { source: 'detail', name: 'summary', overrides: { label: 'Description', description: "The paragraph under the brand name. It also appears on the brand's card." } },
+          { source: 'roster', name: 'segment', overrides: { description: 'Shown in the small info row under the heading, e.g. "Women & Men".' } },
+        ],
+        footerHelp: 'The small label above the heading is the same for every brand — edit it under The Wearhouse → Brand page settings.',
+      },
+      {
+        title: 'Introduction',
+        help: 'The text block after the page top.',
+        fields: [
+          { source: 'detail', name: 'intro', overrides: { label: 'First paragraph' } },
+          { source: 'detail', name: 'focus', overrides: { label: 'Second paragraph' } },
+          { source: 'detail', name: 'atmosphere', overrides: { label: 'Style tag', description: 'Short phrase shown in the small info row.' } },
+          { source: 'detail', name: 'categories' },
+        ],
+      },
+      {
+        title: 'Card on the Wearhouse page',
+        help: "The brand's tile in the Wearhouse overview. It uses the Background photo above.",
+        fields: [
+          { source: 'roster', name: 'cardLabel', overrides: { label: 'Card label', description: 'The small line above the logo on the card.' } },
+        ],
+      },
+    ];
+
     return (
       <div>
         <Breadcrumbs parts={[
@@ -95,7 +188,8 @@ export function WearhouseScreen({ page, section, rest }) {
         </div>
 
         <section className="group-card">
-          <h3 className="group-card-title">Name & web address</h3>
+          <h3 className="group-card-title">Brand</h3>
+          <div className="field-help">The basics. The logo appears on this brand's card on the Wearhouse page.</div>
           <div className="field-grid two-col">
             <label className="field">
               <span className="field-label">Brand name</span>
@@ -108,6 +202,8 @@ export function WearhouseScreen({ page, section, rest }) {
                 });
               }} />
             </label>
+            {renderField({ source: 'roster', name: 'logoSrc', overrides: { label: 'Logo', description: "Shown on the brand's card on the Wearhouse page. Use an SVG or a transparent PNG at least 400 px wide." } })}
+            {renderField({ source: 'rosterCard', name: 'logoLines', overrides: { label: 'Logo text lines', description: 'Only used when no logo image is set: the brand name is drawn as text instead.' } })}
             <div className="field">
               <span className="field-label">Web address</span>
               <div className="field-help">/wearhouse/{record.slug}/ — renaming changes the page's link.</div>
@@ -137,53 +233,16 @@ export function WearhouseScreen({ page, section, rest }) {
           </div>
         </section>
 
-        <section className="group-card">
-          <h3 className="group-card-title">Card on the Wearhouse page</h3>
-          {record.roster ? (
+        {groups.map(group => (
+          <section className="group-card" key={group.title}>
+            <h3 className="group-card-title">{group.title}</h3>
+            {group.help ? <div className="field-help">{group.help}</div> : null}
             <div className="field-grid">
-              {rosterItemFields.filter(field => !['name', 'slug', 'segment'].includes(field.name)).map(field => (
-                <FieldRenderer key={field.name} field={field} value={record.roster[field.name]}
-                  onChange={next => updateRecord(idx, { roster: { ...record.roster, [field.name]: next } })}
-                  pathPrefix={`__wearhouse.${idx}.roster.${field.name}`} routeBase={[page.id, section.id]} />
-              ))}
+              {group.fields.map(renderField)}
             </div>
-          ) : (
-            <div className="empty-state">
-              <div className="empty-state-title">No card yet</div>
-              <div className="empty-state-description">This brand has a detail page but no card on the Wearhouse page.</div>
-              <button type="button" className="button button-secondary" onClick={() => updateRecord(idx, { roster: blankRosterItem(record), missing: null })}>Create the card</button>
-            </div>
-          )}
-        </section>
-
-        <section className="group-card">
-          <h3 className="group-card-title">Brand detail page</h3>
-          {record.brand ? (
-            <div className="field-grid">
-              {/* Segment lives on the roster half (roster.json), not the brand
-                  half, but it only renders on the brand's own page (see
-                  wearhouse/brand.njk) — not on the card — so it's shown here
-                  with the rest of the detail-page fields, sourced from
-                  record.roster. */}
-              {segmentField && record.roster ? (
-                <FieldRenderer key="roster.segment" field={segmentField} value={record.roster.segment}
-                  onChange={next => updateRecord(idx, { roster: { ...record.roster, segment: next } })}
-                  pathPrefix={`__wearhouse.${idx}.roster.segment`} routeBase={[page.id, section.id]} />
-              ) : null}
-              {brandEntryFields.filter(field => !['name', 'slug'].includes(field.name)).map(field => (
-                <FieldRenderer key={field.name} field={field} value={record.brand[field.name]}
-                  onChange={next => updateRecord(idx, { brand: { ...record.brand, [field.name]: next } })}
-                  pathPrefix={`__wearhouse.${idx}.brand.${field.name}`} routeBase={[page.id, section.id]} />
-              ))}
-            </div>
-          ) : (
-            <div className="empty-state">
-              <div className="empty-state-title">No detail page yet</div>
-              <div className="empty-state-description">This brand has a card but no detail page of its own.</div>
-              <button type="button" className="button button-secondary" onClick={() => updateRecord(idx, { brand: blankBrandEntry(record), missing: null })}>Create the detail page</button>
-            </div>
-          )}
-        </section>
+            {group.footerHelp ? <div className="field-help">{group.footerHelp}</div> : null}
+          </section>
+        ))}
       </div>
     );
   }
@@ -241,7 +300,7 @@ export function WearhouseScreen({ page, section, rest }) {
 
       <div className="item-grid" style={{ marginTop: 12 }}>
         {records.map((record, index) => {
-          const thumb = record.roster?.hoverImage || record.roster?.logoSrc || record.brand?.rosterCard?.detailImage || null;
+          const thumb = record.roster?.hoverImage || record.roster?.logoSrc || null;
           return (
             <div key={index} className="item-card" role="button" tabIndex={0}
               onClick={() => navigate('page', page.id, section.id, String(index))}
@@ -251,7 +310,7 @@ export function WearhouseScreen({ page, section, rest }) {
               </div>
               <div className="item-card-body">
                 <div className="item-card-title">{record.name}</div>
-                <div className="item-card-subtitle">{record.roster?.segment || record.brand?.rosterCard?.segment || '—'}</div>
+                <div className="item-card-subtitle">{record.roster?.segment || '—'}</div>
               </div>
               <div className="item-card-flags" onClick={event => event.stopPropagation()}>
                 {record.missing === 'brand' ? <span className="badge badge-warning">Missing detail page</span> : null}

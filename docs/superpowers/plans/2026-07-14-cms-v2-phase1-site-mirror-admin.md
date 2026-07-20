@@ -5804,6 +5804,72 @@ git commit -m "feat(cms-v2): live preview — patch text and images in the pane 
 
 ---
 
+### Task 22: Wearhouse brand editor mirrors Bollag
+
+**Editor-only rebuild** (`src/admin/**` only — no `.njk`, no `src/_data/**` touched). Rebuilt
+`WearhouseScreen.jsx`'s item mode to mirror `BrandsScreen.jsx`'s structure: explicit field-path
+groups cascading in the exact order `src/wearhouse/brand.njk` renders them, field defs resolved
+from `config.yml` (`findField`/`withOverrides`) so widget types and `required` stay in sync, only
+label/description overridden per placement, and a per-path `updateField(half, path, value)` (clone
+the touched half with `deepClone` + `setAtPath`, then route through the existing `updateRecord`
+so it's still pruned against that half's remote counterpart by slug) — adapted from BrandsScreen's
+single-file `setAtPath`/`pruneEmptyAdditions` pattern to the two-file roster/brand join.
+
+**Verified mapping** (what the live site actually reads, confirmed against `src/_data/wearhouse.js`
+and the templates — `src/_data/wearhouse.js` merges `{...detailBrand, ...rosterItem, ...detail}`
+and reads `detailBrand.detailImage`/`detailBrand.websiteHref`, which don't exist at that level, so
+those two rosterCard fields were always dead):
+
+| Editor field | Stored at | Where it renders |
+|---|---|---|
+| Brand name | `roster.name` AND `brand.name` (kept in sync) | brand page H1 + card |
+| Logo | `roster.logoSrc` | card on the Wearhouse page (not the brand's own page) |
+| Web address | `roster.slug` + `brand.slug` + `roster.pageHref` | the page URL |
+| Background photo | `roster.hoverImage` | brand page hero background + intro portrait + card photo (one image, three jobs) |
+| Description | `brand.detail.summary` | paragraph under the brand name + card body text |
+| Segment | `roster.segment` | small meta row under the hero on the brand's own page |
+| First paragraph | `brand.detail.intro` | overview paragraph 1 |
+| Second paragraph | `brand.detail.focus` | overview paragraph 2 |
+| Style tag | `brand.detail.atmosphere` | meta row in the overview |
+| Categories | `brand.detail.categories` | meta row (list) |
+| Card label | `roster.cardLabel` | small line above the logo on the card |
+| Logo text lines | `brand.rosterCard.logoLines` | text-logo fallback when `logoSrc` is empty (only `via-masini`) |
+
+Wearhouse brand pages have no gallery/visual journal and no per-brand eyebrow (shared
+`detailPage.heroEyebrow`, called out in a `field-help` line at the end of the "Page top" group
+instead of a fake per-brand field) — so, unlike BrandsScreen, there is no "Visual journal" group.
+
+**Groups implemented** (item mode): **Brand** (name, logo, logo text lines, web address + rename) →
+**Page top** (background photo, description, segment, + the shared-eyebrow help line) →
+**Introduction** (first/second paragraph, style tag, categories) → **Card on the Wearhouse page**
+(card label only — reuses the Page top background photo, never binds a second field to the same
+path).
+
+**Dead `rosterCard` fields removed from `config.yml`** (data untouched): `websiteHref`, `logoSrc`,
+`hoverImage`, `detailImage` — all four were shadowed or read at the wrong level by
+`src/_data/wearhouse.js`, so editing them changed nothing on the site. `logoLines` was kept
+(genuinely live as the no-logo text fallback) and relabeled "Logo text lines". Note: the intended
+fifth removal, `rosterCard.segment`, turned out to already be absent from `config.yml` — the
+JSON data carries a `segment` key under `rosterCard` on every brand entry, but no field ever
+exposed it in the editor, so there was nothing to delete there.
+
+Also repointed `WearhouseScreen.jsx`'s own list-mode subtitle/thumbnail fallbacks off the dead
+`record.brand?.rosterCard?.segment` / `...detailImage` onto the live `record.roster?.segment` /
+`roster.hoverImage`+`logoSrc` (`Search.jsx` had no such reference to begin with).
+
+Verify: `node_modules/.bin/vitest run` 107/107 and `npm run build` green; a standalone Node probe
+loaded the real `roster.json`/`brands.json`, ran `joinWearhouse` → edited one field from each group
+→ `splitWearhouse`, and confirmed: all 15 roster items and 15 brand entries preserved, no key-order
+churn on touched or untouched records, edits landed at the correct file/path with no cross-file
+leakage, and (via a synthetic missing-half fixture, since the real data has none) a record missing
+either half round-trips without inventing the missing one.
+
+```bash
+git commit -m "feat(cms-v2): wearhouse brand editor mirrors the Bollag structure; drop dead fields"
+```
+
+---
+
 ## Chunk 7: Cutover, verification, walkthrough, handoff
 
 ### Task 20: Delete the old monolith

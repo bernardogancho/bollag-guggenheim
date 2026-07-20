@@ -713,11 +713,7 @@ collections:
                 name: rosterCard
                 widget: object
                 fields:
-                  - { label: Official Website, name: websiteHref, widget: string }
-                  - { label: Logo Asset, name: logoSrc, widget: image, required: false, description: "Use an SVG or a transparent PNG at least 400 px wide." }
-                  - { label: Hover Image, name: hoverImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
-                  - { label: Detail Image, name: detailImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
-                  - { label: Logo Lines, name: logoLines, widget: list, required: false, field: { label: Line, name: line, widget: string } }
+                  - { label: Logo text lines, name: logoLines, widget: list, required: false, field: { label: Line, name: line, widget: string }, description: "Only used when no logo image is set: the brand name is drawn as text instead." }
               - label: Detail page text
                 name: detail
                 widget: object
