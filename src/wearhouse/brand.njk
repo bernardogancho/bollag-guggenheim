@@ -50,15 +50,7 @@ eleventyComputed:
         <p class="type-eyebrow mb-4 text-black/42" data-reveal data-cms-bind="wearhouse.page-settings#detailPage.overviewEyebrow">{{ wearhouse.detailPage.overviewEyebrow }}</p>
         <div class="type-body-lg type-body-stack text-black/72">
           <p data-reveal>{{ brand.intro }}</p>
-          <p data-reveal>{{ brand.focus }}</p>
-        </div>
-        <div class="type-meta mt-8 flex flex-wrap gap-x-6 gap-y-3 text-black/44" data-reveal>
-          <span>{{ brand.atmosphere }}</span>
-          {% for item in brand.categories %}
-            {% if loop.index0 < 2 %}
-              <span>{{ item }}</span>
-            {% endif %}
-          {% endfor %}
+          {% if brand.focus %}<p data-reveal>{{ brand.focus }}</p>{% endif %}
         </div>
       </div>
       {% if brand.detailPortraitImage %}

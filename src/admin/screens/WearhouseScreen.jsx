@@ -168,8 +168,6 @@ export function WearhouseScreen({ page, section, rest }) {
           { source: 'roster', name: 'portraitImage', overrides: { label: 'Portrait beside the intro', description: 'The tall photo next to this text. Leave empty to reuse the background photo. Best size: portrait, around 1200×1500 px.' } },
           { source: 'detail', name: 'intro', overrides: { label: 'First paragraph' } },
           { source: 'detail', name: 'focus', overrides: { label: 'Second paragraph' } },
-          { source: 'detail', name: 'atmosphere', overrides: { label: 'Style tag', description: 'Short phrase shown in the small info row.' } },
-          { source: 'detail', name: 'categories' },
         ],
       },
       {

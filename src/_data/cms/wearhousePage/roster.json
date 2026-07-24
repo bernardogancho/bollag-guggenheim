@@ -10,7 +10,8 @@
         "segment": "Women",
         "pageHref": "/wearhouse/caliban/",
         "logoSrc": "/assets/media/wearhouse/logos/caliban.png",
-        "hoverImage": "/assets/media/uploads/1784533363975-caliban_banner.jpg"
+        "hoverImage": "/assets/media/uploads/1784533363975-caliban_banner.jpg",
+        "heroTitle": "Italian Shirting"
       },
       {
         "name": "CIRCOLO 1901",
@@ -19,7 +20,9 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/circolo-1901/",
         "logoSrc": "/assets/media/wearhouse/logos/circolo-1901.png",
-        "hoverImage": "/assets/media/wearhouse/brands/circolo1901-matrix.jpg"
+        "hoverImage": "/assets/media/wearhouse/brands/circolo1901-matrix.jpg",
+        "heroTitle": "Comfort Tailoring",
+        "detailImage": "/assets/media/wearhouse/brands/circolo1901.jpg"
       },
       {
         "name": "DANIELE FIESOLI",
@@ -28,7 +31,8 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/daniele-fiesoli/",
         "logoSrc": "/assets/media/wearhouse/logos/daniele-fiesoli.png",
-        "hoverImage": "/assets/media/wearhouse/brands/danielefiesoli-matrix.jpg"
+        "hoverImage": "/assets/media/wearhouse/brands/danielefiesoli-matrix.jpg",
+        "heroTitle": "Italian Knitwear"
       },
       {
         "name": "DEA KUDIBAL",
@@ -37,7 +41,8 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/dea-kudibal/",
         "logoSrc": "/assets/media/wearhouse/logos/dea-kudibal.png",
-        "hoverImage": "/assets/media/wearhouse/brands/deakudibal-matrix.webp"
+        "hoverImage": "/assets/media/wearhouse/brands/deakudibal-matrix.webp",
+        "heroTitle": "Luxury Womenswear"
       },
       {
         "name": "DUNO",
@@ -46,7 +51,9 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/duno/",
         "logoSrc": "/assets/media/wearhouse/logos/duno.png",
-        "hoverImage": "/assets/media/wearhouse/brands/duno-matrix.jpg"
+        "hoverImage": "/assets/media/wearhouse/brands/duno-matrix.jpg",
+        "heroTitle": "Urban Outerwear",
+        "detailImage": "/assets/media/wearhouse/brands/duno.jpg"
       },
       {
         "name": "edelle",
@@ -55,7 +62,8 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/edelle/",
         "logoSrc": "/assets/media/wearhouse/logos/edelle.png",
-        "hoverImage": "/assets/media/wearhouse/brands/edelle-matrix.jpg"
+        "hoverImage": "/assets/media/wearhouse/brands/edelle-matrix.jpg",
+        "heroTitle": "Feminine Essentials"
       },
       {
         "name": "FFC",
@@ -64,7 +72,8 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/ffc/",
         "logoSrc": "/assets/media/wearhouse/logos/ffc.png",
-        "hoverImage": "/assets/media/wearhouse/brands/ffc-matrix.jpg"
+        "hoverImage": "/assets/media/wearhouse/brands/ffc-matrix.jpg",
+        "heroTitle": "Premium Knitwear"
       },
       {
         "name": "IBELIV",
@@ -73,7 +82,9 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/ibeliv/",
         "logoSrc": "/assets/media/wearhouse/logos/ibeliv.png",
-        "hoverImage": "/assets/media/wearhouse/brands/ibeliv-matrix.jpg"
+        "hoverImage": "/assets/media/wearhouse/brands/ibeliv-matrix.jpg",
+        "heroTitle": "Craft-Led Accessories",
+        "detailImage": "/assets/media/wearhouse/brands/ibeliv.jpg"
       },
       {
         "name": "MASON`S",
@@ -82,7 +93,9 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/masons/",
         "logoSrc": "/assets/media/wearhouse/logos/masons.png",
-        "hoverImage": "/assets/media/wearhouse/brands/masons-matrix.jpg"
+        "hoverImage": "/assets/media/wearhouse/brands/masons-matrix.jpg",
+        "heroTitle": "Smart Casual",
+        "detailImage": "/assets/media/wearhouse/brands/masons.jpg"
       },
       {
         "name": "SASSENBACH",
@@ -91,7 +104,8 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/sassenbach/",
         "logoSrc": "/assets/media/wearhouse/logos/sassenbach.png",
-        "hoverImage": "/assets/media/wearhouse/brands/sassenbach-matrix.jpg"
+        "hoverImage": "/assets/media/wearhouse/brands/sassenbach-matrix.jpg",
+        "heroTitle": "Everyday Elegance"
       },
       {
         "name": "SAVE THE DUCK",
@@ -100,7 +114,9 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/save-the-duck/",
         "logoSrc": "/assets/media/wearhouse/logos/save-the-duck.png",
-        "hoverImage": "/assets/media/wearhouse/brands/savetheduck-matrix.jpg"
+        "hoverImage": "/assets/media/wearhouse/brands/savetheduck-matrix.jpg",
+        "heroTitle": "Ethical Outerwear",
+        "detailImage": "/assets/media/wearhouse/brands/savetheduck.jpg"
       },
       {
         "name": "TANTÄ",
@@ -109,7 +125,8 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/tanta/",
         "logoSrc": "/assets/media/wearhouse/logos/tanta.png",
-        "hoverImage": "/assets/media/wearhouse/brands/tanta-matrix.webp"
+        "hoverImage": "/assets/media/wearhouse/brands/tanta-matrix.webp",
+        "heroTitle": "Colourful Rainwear"
       },
       {
         "name": "TINTORIA MATTEI",
@@ -118,7 +135,9 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/tintoria-mattei/",
         "logoSrc": "/assets/media/wearhouse/logos/tintoria-mattei.png",
-        "hoverImage": "/assets/media/wearhouse/brands/tintoriamattei-matrix.jpg"
+        "hoverImage": "/assets/media/wearhouse/brands/tintoriamattei-matrix.jpg",
+        "heroTitle": "Washed Shirting",
+        "detailImage": "/assets/media/wearhouse/brands/tintoriamattei.jpg"
       },
       {
         "name": "VELVET",
@@ -127,7 +146,8 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/velvet/",
         "logoSrc": "/assets/media/wearhouse/logos/velvet.png",
-        "hoverImage": "/assets/media/wearhouse/brands/velvet-matrix.jpg"
+        "hoverImage": "/assets/media/wearhouse/brands/velvet-matrix.jpg",
+        "heroTitle": "Californian Ease"
       },
       {
         "name": "VIA MASINI",
@@ -136,7 +156,8 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/via-masini/",
         "logoSrc": "/assets/media/wearhouse/logos/via-masini.png",
-        "hoverImage": "/assets/media/wearhouse/brands/viamasini-matrix.jpg"
+        "hoverImage": "/assets/media/wearhouse/brands/viamasini-matrix.jpg",
+        "heroTitle": "Italian Womenswear"
       },
       {
         "name": "Flora di Venezia",
@@ -147,7 +168,8 @@
         "logoSrc": "/assets/media/wearhouse/logos/flora-di-venezia.png",
         "hoverImage": "",
         "detailImage": "",
-        "portraitImage": ""
+        "portraitImage": "",
+        "heroTitle": "Venetian Craft"
       },
       {
         "name": "No Map Society",
@@ -158,7 +180,8 @@
         "logoSrc": "/assets/media/wearhouse/logos/no-map-society.png",
         "hoverImage": "",
         "detailImage": "",
-        "portraitImage": ""
+        "portraitImage": "",
+        "heroTitle": "Keep Wandering"
       },
       {
         "name": "The Jack Leathers",
@@ -169,7 +192,8 @@
         "logoSrc": "/assets/media/wearhouse/logos/the-jack-leathers.png",
         "hoverImage": "",
         "detailImage": "",
-        "portraitImage": ""
+        "portraitImage": "",
+        "heroTitle": "Leather Goods"
       },
       {
         "name": "SoSue",
@@ -180,7 +204,8 @@
         "logoSrc": "/assets/media/wearhouse/logos/sosue.png",
         "hoverImage": "",
         "detailImage": "",
-        "portraitImage": ""
+        "portraitImage": "",
+        "heroTitle": "SoSue"
       },
       {
         "name": "Helmur",
@@ -191,7 +216,8 @@
         "logoSrc": "/assets/media/wearhouse/logos/helmur.png",
         "hoverImage": "",
         "detailImage": "",
-        "portraitImage": ""
+        "portraitImage": "",
+        "heroTitle": "Helmur"
       }
     ]
   }
