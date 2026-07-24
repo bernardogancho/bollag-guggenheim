@@ -643,12 +643,22 @@ collections:
                   - { label: Name, name: name, widget: string }
                   - { label: Slug, name: slug, widget: string, description: "The brand's web-address piece: lowercase, words joined by hyphens (e.g. 'cuoieria-fiorentina'). Changing it changes the page's URL." }
                   - { label: Card label, name: cardLabel, widget: string, required: false, description: "The small line above the logo on this brand's card on the Wearhouse page." }
-                  - { label: Segment, name: segment, widget: string, description: "Shown in the small info row on the brand's own page — not on the card." }
+                  - { label: Segment, name: segment, widget: string, description: "Editorial note only — not shown on the page or the card." }
                   - { label: Page Link, name: pageHref, widget: string }
                   - { label: Logo Image, name: logoSrc, widget: image, required: false, description: "Use an SVG or a transparent PNG at least 400 px wide." }
                   - { label: Photo, name: hoverImage, widget: image, required: false, description: "The brand's photo on the Wearhouse overview card." }
                   - { label: Background photo, name: detailImage, widget: image, required: false, description: "The large photo behind the brand name on its own page. Leave empty to reuse the card photo. Best size: a wide photo around 2560×1440 px." }
+                  - { label: Big headline, name: heroTitle, widget: string, required: false, description: "Shown large under the logo. If left empty, the brand name is shown." }
                   - { label: Portrait beside the intro, name: portraitImage, widget: image, required: false, description: "The tall photo next to the introduction text. Leave empty to reuse the background photo. Best size: portrait, around 1200×1500 px." }
+                  - label: Visual journal
+                    name: gallery
+                    widget: list
+                    required: false
+                    summary: "{{fields.note}}"
+                    description: "The image mosaic at the bottom of the brand's page."
+                    fields:
+                      - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px on the long side." }
+                      - { label: Note, name: note, widget: string }
       - label: Showroom Intro
         name: wearhouse_page_showroom
         file: src/_data/cms/wearhousePage/showroom.json
@@ -692,9 +702,9 @@ collections:
             description: "Controls text shown on every /wearhouse/<brand> page — not the main Wearhouse page."
             fields:
               - { label: Small label (brand page hero), name: heroEyebrow, widget: string }
-              - { label: "'Represented by' tag", name: representedLabel, widget: string }
-              - { label: Market tag, name: marketLabel, widget: string }
               - { label: Small label (brand page overview), name: overviewEyebrow, widget: string }
+              - { label: Visual Journal Eyebrow, name: visualJournalEyebrow, widget: string }
+              - { label: Visual Journal Title Template, name: visualJournalTitleTemplate, widget: string, description: "Heading for each brand's image gallery. Write %BRAND% where the brand name should appear, e.g. '%BRAND% — Visual Journal'." }
               - { label: Small label (brand page CTA), name: ctaEyebrow, widget: string }
               - { label: CTA headline, name: ctaTitle, widget: string }
               - { label: CTA button text, name: ctaButtonLabel, widget: string }

@@ -155,8 +155,9 @@ export function WearhouseScreen({ page, section, rest }) {
         help: "The opening of the brand's own page, in the order visitors see it.",
         fields: [
           { source: 'roster', name: 'detailImage', overrides: { label: 'Background photo', description: "The large photo behind the brand name on this brand's own page. Leave empty to reuse the card photo. Best size: a wide photo around 2560×1440 px." } },
+          { source: 'roster', name: 'heroTitle', overrides: { label: 'Big headline', description: 'Shown large under the logo. If left empty, the brand name is shown.' } },
           { source: 'detail', name: 'summary', overrides: { label: 'Description', description: "The paragraph under the brand name. It also appears on the brand's card." } },
-          { source: 'roster', name: 'segment', overrides: { description: 'Shown in the small info row under the heading, e.g. "Women & Men".' } },
+          { source: 'roster', name: 'segment', overrides: { description: 'Editorial note only — not shown on the page. E.g. "Women & Men".' } },
         ],
         footerHelp: 'The small label above the heading is the same for every brand — edit it under The Wearhouse → Brand page settings.',
       },
@@ -169,6 +170,12 @@ export function WearhouseScreen({ page, section, rest }) {
           { source: 'detail', name: 'focus', overrides: { label: 'Second paragraph' } },
           { source: 'detail', name: 'atmosphere', overrides: { label: 'Style tag', description: 'Short phrase shown in the small info row.' } },
           { source: 'detail', name: 'categories' },
+        ],
+      },
+      {
+        title: 'Visual journal',
+        fields: [
+          { source: 'roster', name: 'gallery', overrides: { label: 'Visual journal', description: "The image mosaic at the bottom of the brand's page." } },
         ],
       },
       {

@@ -37,13 +37,15 @@ module.exports = {
       logoSvg: createWearhouseLogoSvg({ name: brand.name, logoLines: brand.logoLines || detailBrand.logoLines || rosterCard.logoLines }),
       detailHeroImage: detailBrand.detailImage || brand.detailImage || brand.hoverImage || null,
       detailPortraitImage: brand.portraitImage || brand.detailImage || brand.hoverImage || null,
-      detailGallery: [detailBrand.detailImage, brand.hoverImage]
-      .filter(Boolean)
-      .filter((image, index, images) => images.indexOf(image) === index)
-      .map((image, index) => ({
-        image,
-        note: `${brand.name} image ${index + 1}`
-      })),
+      detailGallery: (brand.gallery && brand.gallery.length)
+        ? brand.gallery
+        : [detailBrand.detailImage, brand.hoverImage]
+          .filter(Boolean)
+          .filter((image, index, images) => images.indexOf(image) === index)
+          .map((image, index) => ({
+            image,
+            note: `${brand.name} image ${index + 1}`
+          })),
       officialHref: detailBrand.websiteHref || brand.websiteHref
     };
 

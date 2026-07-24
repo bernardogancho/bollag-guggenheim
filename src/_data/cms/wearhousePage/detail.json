@@ -2,11 +2,11 @@
   "detailPage": {
     "heroEyebrow": "Wearhouse Brand",
     "overviewEyebrow": "Brand Overview",
+    "visualJournalEyebrow": "Visual Journal",
+    "visualJournalTitleTemplate": "A broader image world for %BRAND%.",
     "ctaEyebrow": "Explore More",
     "ctaTitle": "Continue through the Wearhouse portfolio.",
     "ctaButtonLabel": "Back to Wearhouse",
-    "ctaButtonHref": "/wearhouse/",
-    "representedLabel": "Represented by The Wearhouse",
-    "marketLabel": "Switzerland"
+    "ctaButtonHref": "/wearhouse/"
   }
 }

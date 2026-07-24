@@ -9,6 +9,8 @@ eleventyComputed:
   title: "{{ brand.name }} | The Wearhouse"
 ---
 {% include "components/site-header.njk" %}
+{% set brandLogo = brand.logoSrc or brand.logoSvg %}
+{% set brandLogoClass = "max-h-10 w-auto brightness-0 invert drop-shadow-[0_8px_22px_rgba(0,0,0,0.28)]" %}
 
 <section class="relative isolate overflow-hidden bg-ink text-bone">
   <div class="absolute inset-0">
@@ -23,17 +25,15 @@ eleventyComputed:
   <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[60rem]">
       <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal data-cms-bind="wearhouse.page-settings#detailPage.heroEyebrow">{{ brand.eyebrow }}</p>
-      <h1 class="type-hero-title max-w-[10ch] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)]" data-reveal data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.name">
-        {{ brand.name }}
+      <div class="mb-7 max-w-[14rem]" data-reveal>
+        <img src="{{ brandLogo }}" alt="{{ brand.name }}" class="{{ brandLogoClass }}" data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.logoSrc">
+      </div>
+      <h1 class="type-hero-title max-w-[14ch] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)]" data-reveal data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.heroTitle">
+        {{ brand.heroTitle or brand.name }}
       </h1>
       <p class="type-body-lg mt-6 max-w-[40rem] text-bone/82 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)]" data-reveal>
         {{ brand.summary }}
       </p>
-      <div class="type-meta mt-8 flex flex-wrap gap-x-8 gap-y-3 text-bone/56 [text-shadow:0_5px_16px_rgba(0,0,0,0.4)]" data-reveal>
-        <span data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.segment">{{ brand.segment }}</span>
-        <span data-cms-bind="wearhouse.page-settings#detailPage.representedLabel">{{ wearhouse.detailPage.representedLabel }}</span>
-        <span data-cms-bind="wearhouse.page-settings#detailPage.marketLabel">{{ wearhouse.detailPage.marketLabel }}</span>
-      </div>
     </div>
   </div>
 </section>
@@ -55,14 +55,6 @@ eleventyComputed:
             {% endif %}
           {% endfor %}
         </div>
-        {% if brand.officialHref %}
-          <div class="mt-8" data-reveal>
-            <a href="{{ brand.officialHref }}" target="_blank" rel="noopener" class="cta-button cta-button--dark">
-              <span>Official Website</span>
-              <span aria-hidden="true">→</span>
-            </a>
-          </div>
-        {% endif %}
       </div>
       {% if brand.detailPortraitImage %}
         <figure class="overview-image relative hidden aspect-[4/5] overflow-hidden shadow-[0_34px_90px_rgba(20,18,16,0.14)] lg:block" data-reveal data-scroll-drift>
@@ -72,6 +64,48 @@ eleventyComputed:
     </div>
   </div>
 </section>
+
+{% if brand.detailGallery.length %}
+<section class="bg-[#FAF7F4] text-ink">
+  <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
+    <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
+      <div class="max-w-[34rem]">
+        <p class="type-eyebrow mb-4 text-black/40" data-reveal data-cms-bind="wearhouse.page-settings#detailPage.visualJournalEyebrow">{{ wearhouse.detailPage.visualJournalEyebrow }}</p>
+        <h2 class="type-section-title-md max-w-[10ch] text-black" data-reveal>
+          {{ wearhouse.detailPage.visualJournalTitleTemplate | replace("%BRAND%", brand.name) }}
+        </h2>
+      </div>
+    </div>
+    <div class="brand-editorial-columns">
+      {% for frame in brand.detailGallery %}
+        {% set pattern = loop.index0 % 7 %}
+        {% set cardClass = 'aspect-[4/5]' %}
+        {% if pattern == 0 %}
+          {% set cardClass = 'aspect-[4/5]' %}
+        {% elif pattern == 1 %}
+          {% set cardClass = 'aspect-[5/7]' %}
+        {% elif pattern == 2 %}
+          {% set cardClass = 'aspect-[3/4]' %}
+        {% elif pattern == 3 %}
+          {% set cardClass = 'aspect-[3/2]' %}
+        {% elif pattern == 4 %}
+          {% set cardClass = 'aspect-[4/5]' %}
+        {% elif pattern == 5 %}
+          {% set cardClass = 'aspect-[1/1]' %}
+        {% elif pattern == 6 %}
+          {% set cardClass = 'aspect-[5/4]' %}
+        {% endif %}
+        <figure class="brand-editorial-item group relative overflow-hidden bg-white/[0.04] {{ cardClass }}" data-reveal>
+          <img src="{{ frame.image }}" alt="{{ brand.name }} editorial image {{ loop.index }}" class="h-full w-full object-cover transition duration-[900ms] group-hover:scale-[1.035] group-hover:opacity-92" data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.gallery.{{ loop.index0 }}.image">
+          <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.36)_100%)]"></div>
+          <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.12),transparent_32%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
+          <figcaption class="sr-only" data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.gallery.{{ loop.index0 }}.note">{{ frame.note }}</figcaption>
+        </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
 
 <section class="bg-[#FAF8F6] text-ink">
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
