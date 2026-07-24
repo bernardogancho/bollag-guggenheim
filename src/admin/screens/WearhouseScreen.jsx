@@ -158,7 +158,6 @@ export function WearhouseScreen({ page, section, rest }) {
           { source: 'roster', name: 'eyebrow', overrides: { label: 'Small line above the logo' } },
           { source: 'roster', name: 'heroTitle', overrides: { label: 'Big headline', description: 'Shown large under the logo. If left empty, the brand name is shown.' } },
           { source: 'detail', name: 'summary', overrides: { label: 'Description', description: "The paragraph under the brand name. It also appears on the brand's card." } },
-          { source: 'roster', name: 'segment', overrides: { description: 'Editorial note only — not shown on the page. E.g. "Women & Men".' } },
         ],
       },
       {
