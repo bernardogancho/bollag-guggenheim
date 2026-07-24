@@ -32,7 +32,6 @@ module.exports = {
       ...detailBrand,
       ...brand,
       ...detail,
-      eyebrow: pageContent.detailPage.heroEyebrow,
       pageHref: brand.pageHref || `/wearhouse/${brand.slug}/`,
       logoSvg: createWearhouseLogoSvg({ name: brand.name, logoLines: brand.logoLines || detailBrand.logoLines || rosterCard.logoLines }),
       detailHeroImage: detailBrand.detailImage || brand.detailImage || brand.hoverImage || null,

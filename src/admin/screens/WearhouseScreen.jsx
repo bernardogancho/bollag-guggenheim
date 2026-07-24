@@ -35,7 +35,6 @@ export function WearhouseScreen({ page, section, rest }) {
 
   const rosterItemFields = resolveListField(rosterEntry.fields, 'rosterSection.items')?.fields || [];
   const brandEntryFields = resolveListField(brandsEntry.fields, 'brands')?.fields || [];
-  const rosterCardFields = brandEntryFields.find(field => field.name === 'rosterCard')?.fields || [];
   const detailFields = brandEntryFields.find(field => field.name === 'detail')?.fields || [];
   const { records } = joinWearhouse(rosterDraft.rosterSection.items || [], brandsDraft.brands || []);
 
@@ -95,11 +94,11 @@ export function WearhouseScreen({ page, section, rest }) {
     };
 
     // Resolves a field definition from config (roster item fields, or the
-    // brand entry's card/detail object children) so widget types and
-    // `required` stay in sync with config.yml; only label/description are
-    // overridden per placement.
+    // brand entry's detail object children) so widget types and `required`
+    // stay in sync with config.yml; only label/description are overridden
+    // per placement.
     const findField = (source, name) => {
-      const fields = source === 'roster' ? rosterItemFields : source === 'rosterCard' ? rosterCardFields : detailFields;
+      const fields = source === 'roster' ? rosterItemFields : detailFields;
       return fields.find(field => field.name === name) || null;
     };
     const withOverrides = (fieldDef, overrides) => {
@@ -113,7 +112,7 @@ export function WearhouseScreen({ page, section, rest }) {
     };
     // A group field's config `source` maps to the {half, path} it's actually
     // stored at: roster-level fields live directly on the roster half;
-    // rosterCard/detail fields are nested one level inside the brand half.
+    // detail fields are nested one level inside the brand half.
     // The background photo and the portrait are optional: when empty the page
     // falls back to another image, so show that image in the field rather than
     // an empty dropzone (which would read as "there is no photo here").
@@ -154,12 +153,13 @@ export function WearhouseScreen({ page, section, rest }) {
         title: 'Page top',
         help: "The opening of the brand's own page, in the order visitors see it.",
         fields: [
-          { source: 'roster', name: 'detailImage', overrides: { label: 'Background photo', description: "The large photo behind the brand name on this brand's own page. Leave empty to reuse the card photo. Best size: a wide photo around 2560×1440 px." } },
+          { source: 'roster', name: 'detailImage', overrides: { label: 'Background image', description: "The large photo behind the brand name on this brand's own page. Leave empty to reuse the card photo. Best size: a wide photo around 2560×1440 px." } },
+          { source: 'roster', name: 'detailHeroFocus', overrides: { label: 'Image focus' } },
+          { source: 'roster', name: 'eyebrow', overrides: { label: 'Small line above the logo' } },
           { source: 'roster', name: 'heroTitle', overrides: { label: 'Big headline', description: 'Shown large under the logo. If left empty, the brand name is shown.' } },
           { source: 'detail', name: 'summary', overrides: { label: 'Description', description: "The paragraph under the brand name. It also appears on the brand's card." } },
           { source: 'roster', name: 'segment', overrides: { description: 'Editorial note only — not shown on the page. E.g. "Women & Men".' } },
         ],
-        footerHelp: 'The small label above the heading is the same for every brand — edit it under The Wearhouse → Brand page settings.',
       },
       {
         title: 'Introduction',
@@ -168,6 +168,8 @@ export function WearhouseScreen({ page, section, rest }) {
           { source: 'roster', name: 'portraitImage', overrides: { label: 'Portrait beside the intro', description: 'The tall photo next to this text. Leave empty to reuse the background photo. Best size: portrait, around 1200×1500 px.' } },
           { source: 'detail', name: 'intro', overrides: { label: 'First paragraph' } },
           { source: 'detail', name: 'focus', overrides: { label: 'Second paragraph' } },
+          { source: 'detail', name: 'atmosphere', overrides: { label: 'Style tag', description: 'Short phrase shown in the small info row, e.g. "Relaxed tailoring".' } },
+          { source: 'detail', name: 'categories', overrides: { label: 'Categories', description: 'Only the first two are shown on the page.' } },
         ],
       },
       {
@@ -225,8 +227,7 @@ export function WearhouseScreen({ page, section, rest }) {
                 });
               }} />
             </label>
-            {renderField({ source: 'roster', name: 'logoSrc', overrides: { label: 'Logo', description: "Shown on the brand's card on the Wearhouse page. Use an SVG or a transparent PNG at least 400 px wide." } })}
-            {renderField({ source: 'rosterCard', name: 'logoLines', overrides: { label: 'Logo text lines', description: 'Only used when no logo image is set: the brand name is drawn as text instead.' } })}
+            {renderField({ source: 'roster', name: 'logoSrc', overrides: { label: 'Logo Image', description: "Shown on the brand's card on the Wearhouse page. Use an SVG or a transparent PNG at least 400 px wide." } })}
             <div className="field">
               <span className="field-label">Web address</span>
               <div className="field-help">/wearhouse/{record.slug}/ — renaming changes the page's link.</div>

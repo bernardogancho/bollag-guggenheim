@@ -15,7 +15,13 @@ eleventyComputed:
 <section class="relative isolate overflow-hidden bg-ink text-bone">
   <div class="absolute inset-0">
     {% if brand.detailHeroImage %}
-      <img src="{{ brand.detailHeroImage }}" alt="{{ brand.name }} editorial view" class="h-full w-full object-cover object-center" data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.detailImage">
+      {% set detailHeroObjectClass = 'object-center' %}
+      {% if brand.detailHeroFocus == 'top' %}
+        {% set detailHeroObjectClass = 'object-[50%_15%]' %}
+      {% elif brand.detailHeroFocus == 'bottom' %}
+        {% set detailHeroObjectClass = 'object-[50%_85%]' %}
+      {% endif %}
+      <img src="{{ brand.detailHeroImage }}" alt="{{ brand.name }} editorial view" class="h-full w-full object-cover {{ detailHeroObjectClass }}" data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.detailImage">
       <div class="page-hero-overlay absolute inset-0"></div>
     {% else %}
       <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_28%),linear-gradient(160deg,#4a433d,#1f1a17_55%,#3d3631)]"></div>
@@ -24,7 +30,7 @@ eleventyComputed:
   </div>
   <div class="relative mx-auto flex min-h-[78svh] w-full max-w-[1600px] items-end px-6 pb-12 pt-32 sm:px-10 lg:px-16 lg:pb-16">
     <div class="max-w-[60rem]">
-      <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal data-cms-bind="wearhouse.page-settings#detailPage.heroEyebrow">{{ brand.eyebrow }}</p>
+      <p class="type-eyebrow-hero mb-4 text-bone/54 [text-shadow:0_4px_14px_rgba(0,0,0,0.18)]" data-reveal data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.eyebrow">{{ brand.eyebrow }}</p>
       <div class="mb-7 max-w-[14rem]" data-reveal>
         <img src="{{ brandLogo }}" alt="{{ brand.name }}" class="{{ brandLogoClass }}" data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.logoSrc">
       </div>
@@ -51,6 +57,14 @@ eleventyComputed:
         <div class="type-body-lg type-body-stack text-black/72">
           <p data-reveal>{{ brand.intro }}</p>
           {% if brand.focus %}<p data-reveal>{{ brand.focus }}</p>{% endif %}
+        </div>
+        <div class="type-meta mt-8 flex flex-wrap gap-x-6 gap-y-3 text-black/44" data-reveal>
+          <span>{{ brand.atmosphere }}</span>
+          {% for item in brand.categories %}
+            {% if loop.index0 < 2 %}
+              <span>{{ item }}</span>
+            {% endif %}
+          {% endfor %}
         </div>
       </div>
       {% if brand.detailPortraitImage %}
