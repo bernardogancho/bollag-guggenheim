@@ -348,6 +348,114 @@
           "Womenswear"
         ]
       }
+    },
+    {
+      "name": "Flora di Venezia",
+      "slug": "flora-di-venezia",
+      "rosterCard": {
+        "segment": "",
+        "websiteHref": "",
+        "logoSrc": "",
+        "hoverImage": "",
+        "detailImage": "",
+        "logoLines": [
+          "FLORA DI",
+          "VENEZIA"
+        ]
+      },
+      "detail": {
+        "summary": "",
+        "intro": "",
+        "focus": "",
+        "atmosphere": "",
+        "categories": []
+      }
+    },
+    {
+      "name": "No Map Society",
+      "slug": "no-map-society",
+      "rosterCard": {
+        "segment": "",
+        "websiteHref": "",
+        "logoSrc": "",
+        "hoverImage": "",
+        "detailImage": "",
+        "logoLines": [
+          "NO MAP",
+          "SOCIETY"
+        ]
+      },
+      "detail": {
+        "summary": "",
+        "intro": "",
+        "focus": "",
+        "atmosphere": "",
+        "categories": []
+      }
+    },
+    {
+      "name": "The Jack Leathers",
+      "slug": "the-jack-leathers",
+      "rosterCard": {
+        "segment": "",
+        "websiteHref": "",
+        "logoSrc": "",
+        "hoverImage": "",
+        "detailImage": "",
+        "logoLines": [
+          "THE JACK",
+          "LEATHERS"
+        ]
+      },
+      "detail": {
+        "summary": "",
+        "intro": "",
+        "focus": "",
+        "atmosphere": "",
+        "categories": []
+      }
+    },
+    {
+      "name": "SoSue",
+      "slug": "sosue",
+      "rosterCard": {
+        "segment": "",
+        "websiteHref": "",
+        "logoSrc": "",
+        "hoverImage": "",
+        "detailImage": "",
+        "logoLines": [
+          "SOSUE"
+        ]
+      },
+      "detail": {
+        "summary": "",
+        "intro": "",
+        "focus": "",
+        "atmosphere": "",
+        "categories": []
+      }
+    },
+    {
+      "name": "Helmur",
+      "slug": "helmur",
+      "rosterCard": {
+        "segment": "",
+        "websiteHref": "",
+        "logoSrc": "",
+        "hoverImage": "",
+        "detailImage": "",
+        "logoLines": [
+          "HELMUR"
+        ]
+      },
+      "detail": {
+        "summary": "",
+        "intro": "",
+        "focus": "",
+        "atmosphere": "",
+        "categories": []
+      }
     }
   ]
 }

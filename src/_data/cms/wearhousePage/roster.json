@@ -9,7 +9,7 @@
         "cardLabel": "Women",
         "segment": "Women",
         "pageHref": "/wearhouse/caliban/",
-        "logoSrc": "/assets/media/wearhouse/logos/caliban.clean.png",
+        "logoSrc": "/assets/media/wearhouse/logos/caliban.png",
         "hoverImage": "/assets/media/uploads/1784533363975-caliban_banner.jpg"
       },
       {
@@ -18,7 +18,7 @@
         "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/circolo-1901/",
-        "logoSrc": "/assets/media/wearhouse/logos/circolo-1901.clean.png",
+        "logoSrc": "/assets/media/wearhouse/logos/circolo-1901.png",
         "hoverImage": "/assets/media/wearhouse/brands/circolo1901-matrix.jpg"
       },
       {
@@ -27,7 +27,7 @@
         "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/daniele-fiesoli/",
-        "logoSrc": "/assets/media/wearhouse/logos/daniele-fiesoli.clean.png",
+        "logoSrc": "/assets/media/wearhouse/logos/daniele-fiesoli.png",
         "hoverImage": "/assets/media/wearhouse/brands/danielefiesoli-matrix.jpg"
       },
       {
@@ -36,7 +36,7 @@
         "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/dea-kudibal/",
-        "logoSrc": "/assets/media/wearhouse/logos/dea-kudibal.svg",
+        "logoSrc": "/assets/media/wearhouse/logos/dea-kudibal.png",
         "hoverImage": "/assets/media/wearhouse/brands/deakudibal-matrix.webp"
       },
       {
@@ -45,7 +45,7 @@
         "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/duno/",
-        "logoSrc": "/assets/media/wearhouse/logos/duno.clean.png",
+        "logoSrc": "/assets/media/wearhouse/logos/duno.png",
         "hoverImage": "/assets/media/wearhouse/brands/duno-matrix.jpg"
       },
       {
@@ -54,7 +54,7 @@
         "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/edelle/",
-        "logoSrc": "/assets/media/wearhouse/logos/edelle.svg",
+        "logoSrc": "/assets/media/wearhouse/logos/edelle.png",
         "hoverImage": "/assets/media/wearhouse/brands/edelle-matrix.jpg"
       },
       {
@@ -63,7 +63,7 @@
         "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/ffc/",
-        "logoSrc": "/assets/media/wearhouse/logos/ffc.clean.png",
+        "logoSrc": "/assets/media/wearhouse/logos/ffc.png",
         "hoverImage": "/assets/media/wearhouse/brands/ffc-matrix.jpg"
       },
       {
@@ -72,7 +72,7 @@
         "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/ibeliv/",
-        "logoSrc": "/assets/media/wearhouse/logos/ibeliv.clean.png",
+        "logoSrc": "/assets/media/wearhouse/logos/ibeliv.png",
         "hoverImage": "/assets/media/wearhouse/brands/ibeliv-matrix.jpg"
       },
       {
@@ -81,7 +81,7 @@
         "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/masons/",
-        "logoSrc": "/assets/media/wearhouse/logos/masons.clean.png",
+        "logoSrc": "/assets/media/wearhouse/logos/masons.png",
         "hoverImage": "/assets/media/wearhouse/brands/masons-matrix.jpg"
       },
       {
@@ -90,7 +90,7 @@
         "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/sassenbach/",
-        "logoSrc": "/assets/media/wearhouse/logos/sassenbach.svg",
+        "logoSrc": "/assets/media/wearhouse/logos/sassenbach.png",
         "hoverImage": "/assets/media/wearhouse/brands/sassenbach-matrix.jpg"
       },
       {
@@ -99,7 +99,7 @@
         "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/save-the-duck/",
-        "logoSrc": "",
+        "logoSrc": "/assets/media/wearhouse/logos/save-the-duck.png",
         "hoverImage": "/assets/media/wearhouse/brands/savetheduck-matrix.jpg"
       },
       {
@@ -117,7 +117,7 @@
         "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/tintoria-mattei/",
-        "logoSrc": "/assets/media/wearhouse/logos/tintoria-mattei.clean.png",
+        "logoSrc": "/assets/media/wearhouse/logos/tintoria-mattei.png",
         "hoverImage": "/assets/media/wearhouse/brands/tintoriamattei-matrix.jpg"
       },
       {
@@ -126,7 +126,7 @@
         "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/velvet/",
-        "logoSrc": "/assets/media/wearhouse/logos/velvet.svg",
+        "logoSrc": "/assets/media/wearhouse/logos/velvet.png",
         "hoverImage": "/assets/media/wearhouse/brands/velvet-matrix.jpg"
       },
       {
@@ -135,8 +135,63 @@
         "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/via-masini/",
-        "logoSrc": null,
+        "logoSrc": "/assets/media/wearhouse/logos/via-masini.png",
         "hoverImage": "/assets/media/wearhouse/brands/viamasini-matrix.jpg"
+      },
+      {
+        "name": "Flora di Venezia",
+        "slug": "flora-di-venezia",
+        "cardLabel": "Women & Men",
+        "segment": "",
+        "pageHref": "/wearhouse/flora-di-venezia/",
+        "logoSrc": "/assets/media/wearhouse/logos/flora-di-venezia.png",
+        "hoverImage": "",
+        "detailImage": "",
+        "portraitImage": ""
+      },
+      {
+        "name": "No Map Society",
+        "slug": "no-map-society",
+        "cardLabel": "Women & Men",
+        "segment": "",
+        "pageHref": "/wearhouse/no-map-society/",
+        "logoSrc": "/assets/media/wearhouse/logos/no-map-society.png",
+        "hoverImage": "",
+        "detailImage": "",
+        "portraitImage": ""
+      },
+      {
+        "name": "The Jack Leathers",
+        "slug": "the-jack-leathers",
+        "cardLabel": "Women & Men",
+        "segment": "",
+        "pageHref": "/wearhouse/the-jack-leathers/",
+        "logoSrc": "/assets/media/wearhouse/logos/the-jack-leathers.png",
+        "hoverImage": "",
+        "detailImage": "",
+        "portraitImage": ""
+      },
+      {
+        "name": "SoSue",
+        "slug": "sosue",
+        "cardLabel": "Women & Men",
+        "segment": "",
+        "pageHref": "/wearhouse/sosue/",
+        "logoSrc": "/assets/media/wearhouse/logos/sosue.png",
+        "hoverImage": "",
+        "detailImage": "",
+        "portraitImage": ""
+      },
+      {
+        "name": "Helmur",
+        "slug": "helmur",
+        "cardLabel": "Women & Men",
+        "segment": "",
+        "pageHref": "/wearhouse/helmur/",
+        "logoSrc": "/assets/media/wearhouse/logos/helmur.png",
+        "hoverImage": "",
+        "detailImage": "",
+        "portraitImage": ""
       }
     ]
   }
