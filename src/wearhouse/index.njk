@@ -70,9 +70,6 @@ title: Wearhouse | Bollag-Guggenheim
         {% set imageClass = 'object-center' %}
         {% set cardImage = brand.hoverImage or brand.detailHeroImage %}
         {% set logoImage = brand.logoSrc or brand.logoSvg %}
-        {% if brand.slug == 'save-the-duck' %}
-          {% set logoImage = brand.logoSvg %}
-        {% endif %}
         <a href="{{ brand.pageHref }}" class="group relative block min-h-[24rem] overflow-hidden border border-black/5 bg-[#FAF7F4]" data-reveal>
           {% if cardImage %}
             <img src="{{ cardImage }}" alt="{{ brand.name }} image" class="absolute inset-0 h-full w-full object-cover {{ imageClass }} transition duration-[1100ms] group-hover:scale-[1.04] group-hover:opacity-92">
