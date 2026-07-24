@@ -29,11 +29,16 @@ eleventyComputed:
         <img src="{{ brandLogo }}" alt="{{ brand.name }}" class="{{ brandLogoClass }}" data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.logoSrc">
       </div>
       <h1 class="type-hero-title max-w-[14ch] [text-shadow:0_10px_28px_rgba(0,0,0,0.2)]" data-reveal data-cms-bind="wearhouse.wearhouse-brands#rosterSection.items.{{ pagination.pageNumber }}.heroTitle">
-        {{ brand.heroTitle or brand.name }}
+        {{ brand.heroTitle or brand.summary }}
       </h1>
-      <p class="type-body-lg mt-6 max-w-[40rem] text-bone/82 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)]" data-reveal>
-        {{ brand.summary }}
-      </p>
+      {# The logo already states the brand name, so the headline is a tagline —
+         mirroring the Bollag brand pages. Until a brand has its own headline the
+         summary fills that slot, so it is not repeated as a paragraph below. #}
+      {% if brand.heroTitle %}
+        <p class="type-body-lg mt-6 max-w-[40rem] text-bone/82 [text-shadow:0_6px_18px_rgba(0,0,0,0.18)]" data-reveal>
+          {{ brand.summary }}
+        </p>
+      {% endif %}
     </div>
   </div>
 </section>
