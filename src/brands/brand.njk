@@ -74,7 +74,11 @@ eleventyComputed:
   </div>
 </section>
 
-{% if brand.feedId %}
+{# A brand shows its own social feed when it has one; brands without a specific
+   feed fall back to the general homepage feed. The image gallery only shows if
+   there is no feed at all. #}
+{% set brandFeedId = brand.feedId or cms.home.selection.feedId %}
+{% if brandFeedId %}
 <section class="bg-[#FAF7F4] text-ink">
   <div class="mx-auto w-full max-w-[1600px] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
     <div class="mb-12 flex flex-col gap-6 border-t border-black/10 pt-8 lg:flex-row lg:items-end lg:justify-between">
@@ -85,7 +89,7 @@ eleventyComputed:
         </h2>
       </div>
     </div>
-    {% set feedId = brand.feedId %}{% include "components/contentfry-feed.njk" %}
+    {% set feedId = brandFeedId %}{% include "components/contentfry-feed.njk" %}
   </div>
 </section>
 {% elif brand.detailGallery.length %}
