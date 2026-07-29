@@ -1,0 +1,7 @@
+{% if feedId %}
+<div class="mx-auto w-full max-w-[1600px] px-6 sm:px-10 lg:px-16">
+  <div class="jscf min-h-[320px]" data-cf-display-id="{{ feedId }}"></div>
+</div>
+<script>window.cfAsyncInit = function() { cfLoader.init(document.getElementsByClassName("jscf")); };</script>
+<script async src="https://platform.contentfry.com/sdk/embed.js"></script>
+{% endif %}

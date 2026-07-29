@@ -11,6 +11,9 @@
       </h2>
     </div>
 
+    {% if selectedStoresUseFeed and cms.home.selection.feedId %}
+      {% set feedId = cms.home.selection.feedId %}{% include "components/contentfry-feed.njk" %}
+    {% else %}
     <div class="grid gap-4 md:grid-cols-2 md:auto-rows-[14rem] xl:grid-flow-dense xl:grid-cols-4 xl:auto-rows-[9rem]">
       {% for item in selection %}
         {% set cardClass = 'min-h-[18rem] xl:col-span-1 xl:row-span-2' %}
@@ -32,5 +35,6 @@
         </a>
       {% endfor %}
     </div>
+    {% endif %}
   </div>
 </section>

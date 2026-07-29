@@ -111,6 +111,7 @@ export function BrandsScreen({ page, section, rest }) {
       {
         title: 'Visual journal',
         fields: [
+          { source: 'detail', name: 'feedId', overrides: { label: 'Social feed (Contentfry ID)' } },
           { source: 'detail', name: 'detailGallery' },
         ],
       },

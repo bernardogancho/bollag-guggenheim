@@ -204,6 +204,7 @@ collections:
             fields:
               - { label: Small label above the title, name: eyebrow, widget: string, description: "The small grey label above the heading on the Company page (not shown on the homepage)." }
               - { label: Section heading, name: title, widget: string, description: "This section also appears on the Company page." }
+              - { label: Social feed (Contentfry ID), name: feedId, widget: string, required: false, description: "Paste a Contentfry display ID (e.g. malina/all-2) to show a social feed instead of the image mosaic on the homepage." }
               - label: Items
                 name: items
                 widget: list
@@ -578,6 +579,7 @@ collections:
                   - { label: Categories, name: categories, widget: list, field: { label: Category, name: category, widget: string } }
                   - { label: Detail Hero Image, name: detailHeroImage, widget: image, required: false, description: "The big banner at the top of the brand's own page. Best size: a wide photo around 2560×1440 px." }
                   - { label: Image focus, name: detailHeroFocus, widget: select, options: ["center", "top", "bottom"], required: false, description: "Which part of the background image stays visible when the screen crops it." }
+                  - { label: Social feed (Contentfry ID), name: feedId, widget: string, required: false, description: "Paste a Contentfry display ID (e.g. malina/closed) to show that brand's social feed instead of the Visual journal below. Leave empty to keep the image gallery." }
                   - label: Visual journal
                     name: detailGallery
                     widget: list

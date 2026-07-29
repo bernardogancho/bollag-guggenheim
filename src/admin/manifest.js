@@ -24,7 +24,7 @@ export const PAGES = [
       { id: 'intro', label: 'Introduction', file: `${CMS}/company.json`, keys: ['intro'] },
       { id: 'history', label: 'History', file: `${CMS}/company.json`, keys: ['history'] },
       { id: 'distribution', label: 'Distribution', file: `${CMS}/company.json`, keys: ['distribution'] },
-      { id: 'editorial-selection', label: 'Editorial selection', hint: 'Shared with the homepage — editing this changes both pages', file: `${CMS}/home/selectionSection.json`, keys: ['selection'] },
+      { id: 'editorial-selection', label: 'Editorial selection', hint: 'Shared with the homepage — editing this changes both pages', file: `${CMS}/home/selectionSection.json`, keys: ['selection'], hideFields: ['selection.feedId'] },
     ],
   },
   {
