@@ -83,7 +83,7 @@ export function BrandsScreen({ page, section, rest }) {
     const galleryImageField = findField('detail', 'detailGallery')?.fields?.find(f => f.name === 'image') || null;
     const portraitField = withOverrides(galleryImageField, {
       label: 'Portrait beside the intro',
-      description: "The photo shown next to this text on the brand's page. It is also the 2nd photo in the Visual journal below — changing one changes the other.",
+      description: "The photo shown next to this text on the brand's page.",
     });
     const groups = [
       {
@@ -109,10 +109,10 @@ export function BrandsScreen({ page, section, rest }) {
         ],
       },
       {
-        title: 'Visual journal',
+        title: 'Social feed',
+        help: "The social feed shown near the bottom of the brand's page.",
         fields: [
           { source: 'detail', name: 'feedId', overrides: { label: 'Social feed (Contentfry ID)' } },
-          { source: 'detail', name: 'detailGallery' },
         ],
       },
       {
