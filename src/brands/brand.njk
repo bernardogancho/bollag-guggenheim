@@ -56,14 +56,6 @@ eleventyComputed:
           <p data-reveal data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.detail.intro">{{ brand.intro }}</p>
           {% if brand.focus %}<p data-reveal data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.detail.focus">{{ brand.focus }}</p>{% endif %}
         </div>
-        <div class="type-meta mt-8 flex flex-wrap gap-x-6 gap-y-3 text-black/44" data-reveal>
-          <span data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.detail.atmosphere">{{ brand.atmosphere }}</span>
-          {% for item in brand.categories %}
-            {% if loop.index0 < 2 %}
-              <span data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.detail.categories.{{ loop.index0 }}">{{ item }}</span>
-            {% endif %}
-          {% endfor %}
-        </div>
       </div>
       {% if brand.detailGallery.length > 1 %}
         <figure class="overview-image relative hidden aspect-[4/5] overflow-hidden shadow-[0_34px_90px_rgba(20,18,16,0.14)] lg:block" data-reveal data-scroll-drift>
