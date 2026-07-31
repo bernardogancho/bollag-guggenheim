@@ -1,0 +1,88 @@
+# Publishes the PUBLIC website to cyon.
+#
+# The CMS/admin and the /api functions stay on Vercel. This workflow only
+# builds the static site and syncs it to cyon's document root, so the public
+# domain (bollag-guggenheim.ch) is served from cyon.
+#
+# It runs on every push to main — which includes CMS "Publish" actions, since
+# those commit content to this repo — so the cyon site stays in sync
+# automatically. If the cyon secrets are not configured yet, it exits cleanly
+# without doing anything.
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   CYON_SSH_HOST     the SSH host cyon gives you (e.g. sXXX.cyon.net)
+#   CYON_SSH_USER     your cyon SSH username
+#   CYON_SSH_KEY      a private SSH key whose public half is added in cyon
+#   CYON_TARGET_PATH  the document root for the domain (e.g. /home/USER/www or the domain's htdocs folder)
+#   CYON_SSH_PORT     (optional) SSH port; defaults to 22
+
+name: Deploy public site to cyon
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-cyon
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check that cyon deploy is configured
+        id: gate
+        env:
+          HOST: ${{ secrets.CYON_SSH_HOST }}
+        run: |
+          if [ -z "$HOST" ]; then
+            echo "::notice::cyon secrets not set yet — skipping deploy. Add CYON_SSH_* secrets to enable."
+            echo "go=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout
+        if: steps.gate.outputs.go == 'true'
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        if: steps.gate.outputs.go == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        if: steps.gate.outputs.go == 'true'
+        run: npm ci
+
+      - name: Build the site
+        if: steps.gate.outputs.go == 'true'
+        run: npm run build
+
+      - name: Sync _site to cyon
+        if: steps.gate.outputs.go == 'true'
+        env:
+          SSH_KEY: ${{ secrets.CYON_SSH_KEY }}
+          SSH_HOST: ${{ secrets.CYON_SSH_HOST }}
+          SSH_USER: ${{ secrets.CYON_SSH_USER }}
+          SSH_PORT: ${{ secrets.CYON_SSH_PORT }}
+          TARGET: ${{ secrets.CYON_TARGET_PATH }}
+        run: |
+          set -euo pipefail
+          PORT="${SSH_PORT:-22}"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -p "$PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          # --delete makes cyon an exact mirror of the built site. The CMS
+          # (admin/, cms-data/) is Vercel-only and never shipped here, and
+          # .well-known/ is preserved so cyon can keep managing SSL.
+          rsync -az --delete \
+            --exclude 'admin/' \
+            --exclude 'cms-data/' \
+            --exclude '.well-known/' \
+            -e "ssh -i ~/.ssh/id_deploy -p $PORT -o StrictHostKeyChecking=accept-new" \
+            _site/ "$SSH_USER@$SSH_HOST:$TARGET"
