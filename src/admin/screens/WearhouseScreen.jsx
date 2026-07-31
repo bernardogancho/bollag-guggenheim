@@ -128,7 +128,11 @@ export function WearhouseScreen({ page, section, rest }) {
       },
     };
 
-    const renderField = ({ source, name, overrides }) => {
+    const renderField = (fieldSpec) => {
+      if (fieldSpec.custom === 'gallery') {
+        return renderGalleryField();
+      }
+      const { source, name, overrides } = fieldSpec;
       const inherit = source === 'roster' ? INHERITS[name] : undefined;
       const fieldDef = withOverrides(findField(source, name), { ...overrides, ...inherit });
       if (!fieldDef) {
@@ -145,6 +149,57 @@ export function WearhouseScreen({ page, section, rest }) {
         <FieldRenderer key={`${source}.${name}`} field={fieldDef} value={value}
           onChange={next => updateField(half, path, next)}
           pathPrefix={`__wearhouse.${idx}.${half}.${path}`} routeBase={[page.id, section.id]} />
+      );
+    };
+
+    // The Visual journal gallery is rendered inline (not via the generic
+    // managed-list route) because this record's roster half lives in a
+    // JOINED section (section.files, not section.file) — ItemListScreen
+    // resolves lists through `fieldConfig.get(section.file)`, which is
+    // undefined here, so "Manage items" would silently do nothing. Reuses
+    // the gallery item's own `image` field def from config (same widget,
+    // same picker) so it stays in sync with config.yml.
+    const galleryImageFieldDef = findField('roster', 'gallery')?.fields?.find(f => f.name === 'image') || null;
+    const renderGalleryField = () => {
+      // Never create the roster half implicitly: if this record has no
+      // roster data, there is nowhere to store gallery items, so render
+      // nothing (mirrors renderField's `if (!data) return null;` guard).
+      if (!record.roster) {
+        return null;
+      }
+      const items = record.roster.gallery || [];
+      const setItems = nextItems => updateField('roster', 'gallery', nextItems);
+      return (
+        <div className="field" key="roster.gallery">
+          <span className="field-label">Visual journal</span>
+          <div className="field-help">The image mosaic at the bottom of the brand's page.</div>
+          <div style={{ display: 'grid', gap: 10, marginTop: 8 }}>
+            {items.map((item, i) => (
+              <div className="item-card" key={i} style={{ cursor: 'default' }}>
+                <div className="item-card-body">
+                  <div className="field-grid two-col">
+                    {galleryImageFieldDef ? (
+                      <FieldRenderer key="image" field={galleryImageFieldDef} value={item.image}
+                        onChange={next => updateField('roster', `gallery.${i}.image`, next)}
+                        pathPrefix={`__wearhouse.${idx}.roster.gallery.${i}.image`} routeBase={[page.id, section.id]} />
+                    ) : null}
+                    <label className="field">
+                      <span className="field-label">Note</span>
+                      <input className="input" value={item.note || ''}
+                        onChange={event => updateField('roster', `gallery.${i}.note`, event.target.value)} />
+                    </label>
+                  </div>
+                </div>
+                <div className="item-card-flags">
+                  <button type="button" className="icon-button" title="Move up" disabled={i === 0} onClick={() => setItems(reorder(items, i, i - 1))}>↑</button>
+                  <button type="button" className="icon-button" title="Move down" disabled={i === items.length - 1} onClick={() => setItems(reorder(items, i, i + 1))}>↓</button>
+                  <button type="button" className="button button-danger" onClick={() => setItems(items.filter((_, j) => j !== i))}>Remove</button>
+                </div>
+              </div>
+            ))}
+            <button type="button" className="button button-secondary" onClick={() => setItems([...items, { image: '', note: '' }])}>Add photo</button>
+          </div>
+        </div>
       );
     };
 
@@ -172,7 +227,7 @@ export function WearhouseScreen({ page, section, rest }) {
       {
         title: 'Visual journal',
         fields: [
-          { source: 'roster', name: 'gallery', overrides: { label: 'Visual journal', description: "The image mosaic at the bottom of the brand's page." } },
+          { custom: 'gallery' },
         ],
       },
       {

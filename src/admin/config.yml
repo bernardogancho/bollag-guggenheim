@@ -575,8 +575,6 @@ collections:
                 fields:
                   - { label: Intro, name: intro, widget: text }
                   - { label: Focus, name: focus, widget: text, required: false }
-                  - { label: Atmosphere, name: atmosphere, widget: string }
-                  - { label: Categories, name: categories, widget: list, field: { label: Category, name: category, widget: string } }
                   - { label: Detail Hero Image, name: detailHeroImage, widget: image, required: false, description: "The big banner at the top of the brand's own page. Best size: a wide photo around 2560×1440 px." }
                   - { label: Image focus, name: detailHeroFocus, widget: select, options: ["center", "top", "bottom"], required: false, description: "Which part of the background image stays visible when the screen crops it." }
                   - { label: Social feed (Contentfry ID), name: feedId, widget: string, required: false, description: "Paste a Contentfry display ID (e.g. malina/closed) to show that brand's own social feed. Leave empty to show the general feed instead." }
@@ -645,7 +643,6 @@ collections:
                   - { label: Name, name: name, widget: string }
                   - { label: Slug, name: slug, widget: string, description: "The brand's web-address piece: lowercase, words joined by hyphens (e.g. 'cuoieria-fiorentina'). Changing it changes the page's URL." }
                   - { label: Card label, name: cardLabel, widget: string, required: false, description: "The small line above the logo on this brand's card on the Wearhouse page." }
-                  - { label: Segment, name: segment, widget: string, description: "Editorial note only — not shown on the page or the card." }
                   - { label: Page Link, name: pageHref, widget: string }
                   - { label: Logo Image, name: logoSrc, widget: image, required: false, description: "Use an SVG or a transparent PNG at least 400 px wide." }
                   - { label: Photo, name: hoverImage, widget: image, required: false, description: "The brand's photo on the Wearhouse overview card." }
@@ -731,8 +728,6 @@ collections:
                   - { label: Summary, name: summary, widget: text }
                   - { label: Intro, name: intro, widget: text }
                   - { label: Focus, name: focus, widget: text }
-                  - { label: Atmosphere, name: atmosphere, widget: string }
-                  - { label: Categories, name: categories, widget: list, field: { label: Category, name: category, widget: string } }
 
   - name: legal_page
     label: Legal Notice
