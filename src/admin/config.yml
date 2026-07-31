@@ -585,7 +585,7 @@ collections:
                     description: "The image mosaic on the brand's page. The 2nd image also appears as the portrait beside the intro text."
                     fields:
                       - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px on the long side." }
-                      - { label: Note, name: note, widget: string }
+                      - { label: Note, name: note, widget: string, required: false }
                       - { label: Source, name: source, widget: string, required: false }
 
   - name: wearhouse_page
@@ -659,7 +659,7 @@ collections:
                     description: "The image mosaic at the bottom of the brand's page."
                     fields:
                       - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px on the long side." }
-                      - { label: Note, name: note, widget: string }
+                      - { label: Note, name: note, widget: string, required: false }
       - label: Showroom Intro
         name: wearhouse_page_showroom
         file: src/_data/cms/wearhousePage/showroom.json
