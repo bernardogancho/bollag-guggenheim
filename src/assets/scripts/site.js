@@ -200,3 +200,31 @@ if (contactForm) {
     statusEl.textContent = defaultStatus;
   }
 }
+
+// Reliable muted autoplay for the hero background video. iOS Safari sometimes
+// ignores the `muted` HTML attribute for autoplay and needs `.muted` set from
+// JS plus an explicit play() call. If the browser still refuses (e.g. an OS
+// autoplay block), the first tap/click or a return to the tab starts it — so a
+// stuck poster never leaves the hero frozen.
+const heroVideo = document.querySelector("video");
+if (heroVideo) {
+  const playHeroVideo = () => {
+    heroVideo.muted = true;
+    heroVideo.setAttribute("muted", "");
+    const attempt = heroVideo.play();
+    if (attempt && typeof attempt.catch === "function") {
+      attempt.catch(() => {});
+    }
+  };
+  playHeroVideo();
+  if (heroVideo.readyState < 2) {
+    heroVideo.addEventListener("loadeddata", playHeroVideo, { once: true });
+  }
+  document.addEventListener("touchstart", playHeroVideo, { once: true, passive: true });
+  document.addEventListener("click", playHeroVideo, { once: true });
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      playHeroVideo();
+    }
+  });
+}
