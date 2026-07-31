@@ -4,6 +4,8 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/assets/scripts": "assets/scripts" });
   eleventyConfig.addPassthroughCopy({ "src/admin/config.yml": "admin/config.yml" });
   eleventyConfig.addPassthroughCopy({ "src/_data/cms": "cms-data" });
+  eleventyConfig.addPassthroughCopy({ "src/favicon.ico": "favicon.ico" });
+  eleventyConfig.addPassthroughCopy({ "src/apple-touch-icon.png": "apple-touch-icon.png" });
 
   return {
     dir: {
