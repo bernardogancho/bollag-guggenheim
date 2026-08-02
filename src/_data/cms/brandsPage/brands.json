@@ -756,11 +756,11 @@
       "name": "More & More",
       "slug": "more-and-more",
       "card": {
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women",
         "eyebrow": "Everyday Elegance",
         "heroTitle": "More Inspiration",
         "summary": "German womenswear built around feminine dressing, practical coordination, and strong day-to-day value.",
-        "heroImage": "/assets/media/brand-pages/more-and-more-page-1.jpg"
+        "heroImage": "/assets/media/uploads/1785687940807-more-more_overview-picture-brand_portrait.jpg"
       },
       "detail": {
         "intro": "Founded in 1982 in Starnberg, More & More has developed a consistent proposition across feminine businesswear, polished everyday dressing, and casual pieces with easy coordination.",
@@ -772,7 +772,7 @@
           "Casual Coordinates"
         ],
         "tone": "Commercially clear fashion with a softer, feminine practicality.",
-        "detailHeroImage": "/assets/media/feed/more-and-more-social-5.jpg",
+        "detailHeroImage": "/assets/media/uploads/1785687878676-more-more_banner.jpg",
         "detailHeroFocus": "top",
         "gallery": [
           {
@@ -790,7 +790,7 @@
             "note": "More & More editorial image 1"
           },
           {
-            "image": "/assets/media/brand-pages/more-and-more-page-2.jpg",
+            "image": "/assets/media/uploads/1785687912638-more-more_picture-brand_portrait.jpg",
             "note": "More & More editorial image 2"
           },
           {
