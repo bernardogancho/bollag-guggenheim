@@ -1021,11 +1021,11 @@
       "name": "YAYA",
       "slug": "yaya",
       "card": {
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women",
         "eyebrow": "Soft Modernity",
         "heroTitle": "It's A State of Mind",
         "summary": "A lifestyle brand built around soft fabrics, toned-down color, and accessible design with long-term wearability.",
-        "heroImage": "/assets/media/brand-pages/yaya-page-1.jpg"
+        "heroImage": "/assets/media/uploads/1785688441655-yaya_overwiev_picture-brand_portrait.jpg"
       },
       "detail": {
         "intro": "Founded in 1992 near Amsterdam, YAYA extends beyond womenswear into home accessories, but keeps the same values across both worlds: comfort, femininity, and a calm, desirable design language.",
@@ -1037,7 +1037,7 @@
           "Soft Essentials"
         ],
         "tone": "A quieter lifestyle proposition defined by warmth, accessibility, and understated charm.",
-        "detailHeroImage": "/assets/media/brand-pages/yaya-header.jpg",
+        "detailHeroImage": "/assets/media/uploads/1785688195500-yaya_banner.jpg",
         "gallery": [
           {
             "image": "/assets/media/brand-pages/yaya-page-1.jpg",
@@ -1054,7 +1054,7 @@
             "note": "YAYA editorial image 1"
           },
           {
-            "image": "/assets/media/brand-pages/yaya-page-2.jpg",
+            "image": "/assets/media/uploads/1785688219105-yaya_picture-brand_portrait.jpg",
             "note": "YAYA editorial image 2"
           },
           {
@@ -1170,7 +1170,8 @@
             "source": "https://www.instagram.com/p/DTcjeOQjOJe/"
           }
         ],
-        "feedId": "malina/yaya"
+        "feedId": "malina/yaya",
+        "detailHeroFocus": "center"
       }
     },
     {
