@@ -618,7 +618,7 @@
         "eyebrow": "Modern Femininity",
         "heroTitle": "Glamour for Fashionable Women",
         "summary": "Italian womenswear with bold shapes, expressive color, and an effortless version of glamour.",
-        "heroImage": "/assets/media/brand-pages/iblues-page-1.jpg"
+        "heroImage": "/assets/media/uploads/1785686565538-iblues_overview_picture-brand_portrait.jpg"
       },
       "detail": {
         "intro": "Founded in 1975 within the Max Mara Fashion Group, iBlues developed into a total-look collection spanning ready-to-wear, shoes, bags, and accessories.",
@@ -630,7 +630,7 @@
           "Effortless Glamour"
         ],
         "tone": "A more fashion-forward feminine voice that remains wearable and composed.",
-        "detailHeroImage": "/assets/media/brand-pages/iblues-header.jpg",
+        "detailHeroImage": "/assets/media/uploads/1785686632765-iblues_banner.jpg",
         "gallery": [
           {
             "image": "/assets/media/brand-pages/iblues-page-1.jpg",
@@ -647,7 +647,7 @@
             "note": "iBlues editorial image 1"
           },
           {
-            "image": "/assets/media/brand-pages/iblues-page-2.jpg",
+            "image": "/assets/media/uploads/1785686595400-iblues_picture-brand_portrait.jpg",
             "note": "iBlues editorial image 2"
           },
           {
@@ -748,7 +748,8 @@
             "source": "https://www.instagram.com/p/DSK_q18iPCn/"
           }
         ],
-        "feedId": "malina/iblues"
+        "feedId": "malina/iblues",
+        "detailHeroFocus": "center"
       }
     },
     {
