@@ -194,7 +194,7 @@
     {
       "name": " Daniele Fiesoli",
       "slug": "daniele-fiesoli",
-      "logoImage": "/assets/media/uploads/1784538675032-logo_daniele-fiesoli-n01_.jpg",
+      "logoImage": "/assets/media/uploads/1785686060427-logo_daniele-fiesoli-n01-post-format.png",
       "card": {
         "cardLabel": "Women",
         "heroTitle": "Crafted for Modern Living",
@@ -206,12 +206,18 @@
         "atmosphere": "Women",
         "categories": [],
         "gallery": [],
-        "detailGallery": [],
-        "detailHeroImage": "/assets/media/uploads/1784126378750-daniele-fiesoli_women_banner.jpg",
+        "detailGallery": [
+          null,
+          {
+            "image": "/assets/media/uploads/1785686168632-daniele-fiesoli_women_overwiew_picture-brand_portrait.jpg"
+          }
+        ],
+        "detailHeroImage": "/assets/media/uploads/1785686111710-daniele-fiesoli_women_banner.jpg",
         "intro": "Daniele Fiesoli is a premium Italian fashion brand from Tuscany that specializes in high-quality knitwear and casual luxury for Women and Men. \nThe brand combines traditional craftsmanship with modern design and is firmly committed to “Absolutely Made in Italy”—from the yarns to the finishing touches. It is characterized by luxurious materials such as cashmere, merino wool, and mohair, minimalist cuts, and timeless, elegant looks with a focus on sustainability.",
         "focus": "The brand combines traditional craftsmanship with modern design and is firmly committed to “Absolutely Made in Italy”—from the yarns to the finishing touches.",
         "tone": "It is characterized by luxurious materials such as cashmere, merino wool, and mohair, minimalist cuts, and timeless, elegant looks with a focus on sustainability.",
-        "feedId": ""
+        "feedId": "",
+        "detailHeroFocus": "center"
       }
     },
     {
