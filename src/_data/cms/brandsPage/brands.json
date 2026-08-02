@@ -903,11 +903,11 @@
       "name": "Rich & Royal",
       "slug": "rich-royal",
       "card": {
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women",
         "eyebrow": "Premium Lifestyle",
         "heroTitle": "Live rich - act royal",
         "summary": "Contemporary premium fashion with expressive color, tactile fabrics, and a strong feminine self-image.",
-        "heroImage": "/assets/media/uploads/1784125798679-rich-royal_picture-brand_portrait.jpg"
+        "heroImage": "/assets/media/uploads/1785688084068-rich-royal_overviewpicture-brand_portrait.jpg"
       },
       "detail": {
         "intro": "Rich & Royal positions itself as a modern German lifestyle brand, built around premium dressing that feels current, feminine, and responsive to trend without becoming disposable.",
@@ -915,7 +915,7 @@
         "atmosphere": "Women",
         "categories": [],
         "tone": "A premium fashion voice that combines femininity, confidence, and material attention.",
-        "detailHeroImage": "/assets/media/uploads/1784125674077-rich-royal_banner.jpg",
+        "detailHeroImage": "/assets/media/uploads/1785688031800-rich-royal_banner.jpg",
         "gallery": [
           {
             "image": "/assets/media/uploads/1782910136661-rich-royal_banner.jpg",
@@ -933,7 +933,7 @@
             "source": "https://www.instagram.com/p/DVeTYZBDQ_C/"
           },
           {
-            "image": "/assets/media/feed/rich-royal-wall-18338193397214619.jpg",
+            "image": "/assets/media/uploads/1785688055622-rich-royal_picture-brand_portrait.jpg",
             "note": "Preppy, playful, and powerful – our Pre-Summer collection captures the elegance of the sea and the spirit of the city.",
             "source": "https://www.instagram.com/p/DVZC5r4CXcm/"
           },
@@ -1013,7 +1013,8 @@
             "source": "https://www.instagram.com/p/DSiHWckDPr-/"
           }
         ],
-        "feedId": "malina/rich-royal"
+        "feedId": "malina/rich-royal",
+        "detailHeroFocus": "center"
       }
     },
     {
