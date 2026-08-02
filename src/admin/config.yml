@@ -567,13 +567,13 @@ collections:
                   - { label: Card label, name: cardLabel, widget: string, required: false, description: "The small line above the logo on this brand's card in the Brands overview." }
                   - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
                   - { label: Hero Title, name: heroTitle, widget: string }
-                  - { label: Summary, name: summary, widget: text }
+                  - { label: Summary, name: summary, widget: text, required: false }
                   - { label: Photo, name: heroImage, widget: image, required: false, description: "Shown on the brand's card in the brands overview. Best size: portrait, around 1200×1500 px. (The homepage brand wall uses its own separate images, edited under Homepage.)" }
               - label: Detail page
                 name: detail
                 widget: object
                 fields:
-                  - { label: Intro, name: intro, widget: text }
+                  - { label: Intro, name: intro, widget: text, required: false }
                   - { label: Focus, name: focus, widget: text, required: false }
                   - { label: Detail Hero Image, name: detailHeroImage, widget: image, required: false, description: "The big banner at the top of the brand's own page. Best size: a wide photo around 2560×1440 px." }
                   - { label: Image focus, name: detailHeroFocus, widget: select, options: ["center", "top", "bottom"], required: false, description: "Which part of the background image stays visible when the screen crops it." }
@@ -725,9 +725,9 @@ collections:
                 name: detail
                 widget: object
                 fields:
-                  - { label: Summary, name: summary, widget: text }
-                  - { label: Intro, name: intro, widget: text }
-                  - { label: Focus, name: focus, widget: text }
+                  - { label: Summary, name: summary, widget: text, required: false }
+                  - { label: Intro, name: intro, widget: text, required: false }
+                  - { label: Focus, name: focus, widget: text, required: false }
 
   - name: legal_page
     label: Legal Notice
