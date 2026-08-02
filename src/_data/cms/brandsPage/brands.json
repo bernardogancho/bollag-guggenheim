@@ -228,7 +228,7 @@
         "eyebrow": "Contemporary Tailoring",
         "heroTitle": "For Beautiful People",
         "summary": "Sharper silhouettes and modern tailoring for independent dressers with a metropolitan point of view.",
-        "heroImage": "/assets/media/brand-pages/drykorn-page-1.jpg"
+        "heroImage": "/assets/media/uploads/1785686416611-drykorn_overview_picture-brand_portrait.jpg"
       },
       "detail": {
         "intro": "Drykorn began with a simple proposition: fashionable trousers at accessible prices. From that focused start, it expanded into an international label defined by contemporary tailoring, urban clarity, and a more self-possessed kind of dressing.",
@@ -240,7 +240,7 @@
           "Modern Separates"
         ],
         "tone": "A sharper editorial voice carried through fit, attitude, and metropolitan precision.",
-        "detailHeroImage": "/assets/media/brand-pages/drykorn-header.jpg",
+        "detailHeroImage": "/assets/media/uploads/1785686344330-drykorn_banner.jpg",
         "gallery": [
           {
             "image": "/assets/media/brand-pages/drykorn-page-1.jpg",
@@ -257,7 +257,7 @@
             "note": "Drykorn editorial image 1"
           },
           {
-            "image": "/assets/media/brand-pages/drykorn-page-2.jpg",
+            "image": "/assets/media/uploads/1785686376849-drykorn_picture-brand_portrait.jpg",
             "note": "Drykorn editorial image 2"
           },
           {
@@ -388,7 +388,8 @@
             "source": "https://www.instagram.com/p/DSSj6KHDL7O/"
           }
         ],
-        "feedId": "malina/drykorn"
+        "feedId": "malina/drykorn",
+        "detailHeroFocus": "center"
       }
     },
     {
