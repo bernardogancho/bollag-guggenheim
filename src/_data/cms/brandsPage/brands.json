@@ -1178,11 +1178,11 @@
       "name": "0039 Italy",
       "slug": "0039-italy",
       "card": {
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women",
         "eyebrow": "Blouse Expertise",
         "heroTitle": "True to itself and to its Roots",
         "summary": "A German label with an Italian sensibility, built around blouses as the enduring center of its identity.",
-        "heroImage": "/assets/media/brand-pages/0039-italy-page-1.jpg"
+        "heroImage": "/assets/media/uploads/1785688608010-italy-0039_overview_picture-brand_portrait.jpg"
       },
       "detail": {
         "intro": "0039 Italy began in 2000 and built its reputation by rethinking the blouse beyond its conservative stereotype, turning it into a contemporary fashion proposition with longevity.",
@@ -1194,7 +1194,7 @@
           "Italian-Informed Essentials"
         ],
         "tone": "A tightly defined brand built on consistency, signature product focus, and quiet evolution.",
-        "detailHeroImage": "/assets/media/brand-pages/0039-italy-header.jpg",
+        "detailHeroImage": "/assets/media/uploads/1785688547931-italy-0039_banner.jpg",
         "gallery": [
           {
             "image": "/assets/media/brand-pages/0039-italy-page-1.jpg",
@@ -1211,7 +1211,7 @@
             "note": "0039 Italy editorial image 1"
           },
           {
-            "image": "/assets/media/brand-pages/0039-italy-page-2.jpg",
+            "image": "/assets/media/uploads/1785688585275-italy-0039_picture-brand_portrait.jpg",
             "note": "0039 Italy editorial image 2"
           },
           {
@@ -1252,7 +1252,8 @@
             "source": "https://www.instagram.com/p/DUJDIVij-4A/"
           }
         ],
-        "feedId": "malina/0039italy"
+        "feedId": "malina/0039italy",
+        "detailHeroFocus": "center"
       }
     }
   ]
