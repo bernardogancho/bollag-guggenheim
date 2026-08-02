@@ -18,15 +18,21 @@
       {
         "name": "CIRCOLO 1901",
         "slug": "circolo-1901",
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women & Men ",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/circolo-1901/",
         "logoSrc": "/assets/media/wearhouse/logos/circolo-1901.png",
-        "hoverImage": "/assets/media/wearhouse/brands/circolo1901-matrix.jpg",
-        "heroTitle": "Comfort Tailoring",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand",
-        "detailImage": "/assets/media/wearhouse/brands/circolo1901.jpg"
+        "hoverImage": "/assets/media/uploads/1785695235407-circolo-1901_picture-brand_portrait.jpg",
+        "heroTitle": "Italian Tailoring. Effortless Comfort.",
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand",
+        "detailImage": "/assets/media/uploads/1785695041929-circolo-1901_banner.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785695371682-circolo-1901_bild-3.jpg"
+          }
+        ],
+        "portraitImage": "/assets/media/uploads/1785695278436-circolo-1901_picture-brand_portrait.jpg"
       },
       {
         "name": "DANIELE FIESOLI",
