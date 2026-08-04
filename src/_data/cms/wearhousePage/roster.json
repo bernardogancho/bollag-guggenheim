@@ -466,12 +466,29 @@
         "segment": "",
         "pageHref": "/wearhouse/the-jack-leathers/",
         "logoSrc": "/assets/media/wearhouse/logos/the-jack-leathers.png",
-        "hoverImage": "",
-        "detailImage": "",
-        "portraitImage": "",
-        "heroTitle": "Leather Goods",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand"
+        "hoverImage": "/assets/media/uploads/1785856241957-the-jack-leather_picture-brand_portrait.jpg",
+        "detailImage": "/assets/media/uploads/1785856159084-the-jack-leather_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1785856211781-the-jack-leather_picture-brand_portrait.jpg",
+        "heroTitle": "Not just leather- it's a statement",
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785856253279-the-jack-leather_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785856261928-the-jack-leather_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785856271200-the-jack-leather_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785856282120-the-jack-leather_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785856292365-the-jack-leather_bild-5.jpg"
+          }
+        ]
       },
       {
         "name": "TINTORIA MATTEI",
