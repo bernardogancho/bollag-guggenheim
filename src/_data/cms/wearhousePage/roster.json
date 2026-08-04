@@ -310,16 +310,33 @@
       {
         "name": "No Map Society",
         "slug": "no-map-society",
-        "cardLabel": "Women & Men",
+        "cardLabel": "Shoes",
         "segment": "",
         "pageHref": "/wearhouse/no-map-society/",
         "logoSrc": "/assets/media/wearhouse/logos/no-map-society.png",
-        "hoverImage": "",
-        "detailImage": "",
-        "portraitImage": "",
-        "heroTitle": "Keep Wandering",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand"
+        "hoverImage": "/assets/media/uploads/1785854368769-nomap-society_picture-brand_portrait.jpg",
+        "detailImage": "/assets/media/uploads/1785854281542-nomap-society_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1785854342912-nomap-society_picture-brand_portrait.jpg",
+        "heroTitle": "The Journey Starts Underfoot.",
+        "detailHeroFocus": "top",
+        "eyebrow": "The Wearhouse Brand",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785854382794-nomap-society_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785854390890-nomap-society_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785854398692-nomap-society_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785854406282-nomap-society_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785854416663-nomap-society_bild-5.jpg"
+          }
+        ]
       },
       {
         "name": "SASSENBACH",
