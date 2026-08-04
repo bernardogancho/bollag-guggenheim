@@ -376,11 +376,29 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/save-the-duck/",
         "logoSrc": "/assets/media/wearhouse/logos/save-the-duck.png",
-        "hoverImage": "/assets/media/wearhouse/brands/savetheduck-matrix.jpg",
-        "heroTitle": "Ethical Outerwear",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand",
-        "detailImage": "/assets/media/wearhouse/brands/savetheduck.jpg"
+        "hoverImage": "/assets/media/uploads/1785855558453-save-the-duck_bild-5.jpg",
+        "heroTitle": "Performance Outerwear, Without Compromise",
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand",
+        "detailImage": "/assets/media/uploads/1785855455052-save-the-duck_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1785855527009-save-the-duck_picture-brand_portrait.jpeg",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785855573576-save-the-duck_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785855582372-save-the-duck_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785855595496-save-the-duck_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785855607503-save-the-duck_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785855616421-save-the-duck_bild-5.jpg"
+          }
+        ]
       },
       {
         "name": "SoSue",
