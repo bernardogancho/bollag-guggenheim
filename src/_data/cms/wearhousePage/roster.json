@@ -156,14 +156,33 @@
       {
         "name": "edelle",
         "slug": "edelle",
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/edelle/",
         "logoSrc": "/assets/media/wearhouse/logos/edelle.png",
-        "hoverImage": "/assets/media/wearhouse/brands/edelle-matrix.jpg",
-        "heroTitle": "Feminine Essentials",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand"
+        "hoverImage": "/assets/media/uploads/1785844589077-edelle_bild-1.jpg",
+        "heroTitle": "Where Sophistication Meets Simplicity",
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand",
+        "detailImage": "/assets/media/uploads/1785844428651-edelle_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1785844480291-edelle_picture-brand_portrait.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785844524160-edelle_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785844532588-edelle_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785844539502-edelle_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785844551801-edelle_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785844557581-edelle_bild-5.jpg"
+          }
+        ]
       },
       {
         "name": "FFC",
