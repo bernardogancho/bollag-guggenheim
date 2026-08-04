@@ -43,10 +43,22 @@
         "detailImage": "/assets/media/uploads/1785695041929-circolo-1901_banner.jpg",
         "gallery": [
           {
+            "image": "/assets/media/uploads/1785843670497-circolo-1901_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785843682848-circolo-1901_bild-2.jpg"
+          },
+          {
             "image": "/assets/media/uploads/1785695371682-circolo-1901_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785843692266-circolo-1901_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785843703930-circolo-1901_bild-5.jpg"
           }
         ],
-        "portraitImage": "/assets/media/uploads/1785695278436-circolo-1901_picture-brand_portrait.jpg"
+        "portraitImage": "/assets/media/uploads/1785843617248-circolo-1901_picture-brand_portrait.jpg"
       },
       {
         "name": "DANIELE FIESOLI",
