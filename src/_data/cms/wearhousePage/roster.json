@@ -238,12 +238,12 @@
         "segment": "",
         "pageHref": "/wearhouse/helmur/",
         "logoSrc": "/assets/media/wearhouse/logos/helmur.png",
-        "hoverImage": "",
-        "detailImage": "",
-        "portraitImage": "",
-        "heroTitle": "Helmur",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand"
+        "hoverImage": "/assets/media/uploads/1785847568231-helmur_picture-brand_portrait.jpg",
+        "detailImage": "/assets/media/uploads/1785847301716-helmur_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1785847487903-helmur_picture-brand_portrait.jpg",
+        "heroTitle": "Fashion That Feels Right",
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand"
       },
       {
         "name": "IBELIV",
