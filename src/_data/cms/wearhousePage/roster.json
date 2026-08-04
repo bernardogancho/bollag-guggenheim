@@ -102,12 +102,6 @@
         "detailImage": "/assets/media/uploads/1785842947070-dea-kudibal_banner.jpg",
         "gallery": [
           {
-            "image": "/assets/media/uploads/1785843012996-dea-kudibal_bild-1.jpg"
-          },
-          {
-            "image": "/assets/media/uploads/1785843022048-dea-kudibal_bild-2.jpg"
-          },
-          {
             "image": "/assets/media/uploads/1785843053358-dea-kudibal_bild-4.jpg"
           },
           {
@@ -115,6 +109,15 @@
           },
           {
             "image": "/assets/media/uploads/1785843063648-dea-kudibal_bild-5.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785843022048-dea-kudibal_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785843012996-dea-kudibal_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785844057971-deakudibal_w26ps27_49997.jpg"
           }
         ],
         "portraitImage": "/assets/media/uploads/1785843131008-dea-kudibal_women_picture-brand_portrait.jpg"
