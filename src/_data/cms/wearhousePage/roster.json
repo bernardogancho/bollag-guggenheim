@@ -403,16 +403,33 @@
       {
         "name": "SoSue",
         "slug": "sosue",
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women",
         "segment": "",
         "pageHref": "/wearhouse/sosue/",
         "logoSrc": "/assets/media/wearhouse/logos/sosue.png",
-        "hoverImage": "",
-        "detailImage": "",
-        "portraitImage": "",
-        "heroTitle": "SoSue",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand"
+        "hoverImage": "/assets/media/uploads/1785855750849-sosue_bild-1.jpg",
+        "detailImage": "/assets/media/uploads/1785855696538-sosue_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1785855726184-sosue_picture-brand_portrait.jpeg",
+        "heroTitle": "Effortless Style, Modern Elegance",
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785855876541-sosue_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785855885824-sosue_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785855893910-sosue_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785855904753-sosue_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785855913259-sosue_bild-5.jpg"
+          }
+        ]
       },
       {
         "name": "TANTÄ",
