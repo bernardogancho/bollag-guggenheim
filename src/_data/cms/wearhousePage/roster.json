@@ -129,11 +129,29 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/duno/",
         "logoSrc": "/assets/media/wearhouse/logos/duno.png",
-        "hoverImage": "/assets/media/wearhouse/brands/duno-matrix.jpg",
-        "heroTitle": "Urban Outerwear",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand",
-        "detailImage": "/assets/media/wearhouse/brands/duno.jpg"
+        "hoverImage": "/assets/media/uploads/1785844332019-duno_bild-2.jpg",
+        "heroTitle": "Urban Performance, Italian Design",
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand",
+        "detailImage": "/assets/media/uploads/1785844157752-duno_banner.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785844246118-duno_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785844254229-duno_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785844261222-duno_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785844268513-duno_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785844275943-duno_bild-5.jpg"
+          }
+        ],
+        "portraitImage": "/assets/media/uploads/1785844354065-duno_picture-brand_portrait.jpg"
       },
       {
         "name": "edelle",
