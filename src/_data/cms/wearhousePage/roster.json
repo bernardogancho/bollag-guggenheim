@@ -493,15 +493,33 @@
       {
         "name": "TINTORIA MATTEI",
         "slug": "tintoria-mattei",
-        "cardLabel": "Women & Men",
+        "cardLabel": "Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/tintoria-mattei/",
         "logoSrc": "/assets/media/wearhouse/logos/tintoria-mattei.png",
-        "hoverImage": "/assets/media/wearhouse/brands/tintoriamattei-matrix.jpg",
-        "heroTitle": "Washed Shirting",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand",
-        "detailImage": "/assets/media/wearhouse/brands/tintoriamattei.jpg"
+        "hoverImage": "/assets/media/uploads/1785856689509-tintoria-mattei_portrait.jpg",
+        "heroTitle": "Italian Heritage Shirts ",
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand",
+        "detailImage": "/assets/media/uploads/1785856486642-tintoria-mattei_banner.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785856637853-tintoria-mattei_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785856645956-tintoria-mattei_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785856656392-tintoria-mattei_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785856665663-tintoria-mattei_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785856676849-tintoria-mattei_bild-5.jpg"
+          }
+        ],
+        "portraitImage": "/assets/media/uploads/1785856712665-tintoria-mattei_portrait.jpg"
       },
       {
         "name": "VELVET",
