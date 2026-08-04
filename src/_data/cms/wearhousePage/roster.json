@@ -189,14 +189,33 @@
       {
         "name": "FFC",
         "slug": "ffc",
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/ffc/",
         "logoSrc": "/assets/media/wearhouse/logos/ffc.png",
-        "hoverImage": "/assets/media/wearhouse/brands/ffc-matrix.jpg",
-        "heroTitle": "Premium Knitwear",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand"
+        "hoverImage": "/assets/media/uploads/1785847083451-ffc_picture-brand_portrait.jpg",
+        "heroTitle": "Modern Knitwear, Timeless Style",
+        "detailHeroFocus": "top",
+        "eyebrow": "The Wearhouse Brand",
+        "detailImage": "/assets/media/uploads/1785846958130-ffc_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1785847110798-ffc_picture-brand_portrait.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785847134710-ffc_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785847138594-ffc_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785847142673-ffc_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785847163162-ffc_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785847229339-ffc_5.jpg"
+          }
+        ]
       },
       {
         "name": "Flora di Venezia",
