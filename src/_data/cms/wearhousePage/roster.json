@@ -341,14 +341,33 @@
       {
         "name": "SASSENBACH",
         "slug": "sassenbach",
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/sassenbach/",
         "logoSrc": "/assets/media/wearhouse/logos/sassenbach.png",
-        "hoverImage": "/assets/media/wearhouse/brands/sassenbach-matrix.jpg",
-        "heroTitle": "Everyday Elegance",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand"
+        "hoverImage": "/assets/media/uploads/1785854708513-sassenbach_bild-1.jpg",
+        "heroTitle": "Minimalist Fashion. Made to Last.",
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand",
+        "detailImage": "/assets/media/uploads/1785854573380-sassenbach_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1785854678096-sassenbach_picture-brand_portrait.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785854722827-sassenbach_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785854732305-sassenbach_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785854742044-sassenbach_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785854751204-sassenbach_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785854767753-sassenbach_bild-5.jpg"
+          }
+        ]
       },
       {
         "name": "SAVE THE DUCK",
