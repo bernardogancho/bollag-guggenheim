@@ -283,11 +283,29 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/masons/",
         "logoSrc": "/assets/media/wearhouse/logos/masons.png",
-        "hoverImage": "/assets/media/wearhouse/brands/masons-matrix.jpg",
-        "heroTitle": "Smart Casual",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand",
-        "detailImage": "/assets/media/wearhouse/brands/masons.jpg"
+        "hoverImage": "/assets/media/uploads/1785853559296-mason-s_bild-4.jpg",
+        "heroTitle": "Elevate Your Everyday Style",
+        "detailHeroFocus": "top",
+        "eyebrow": "The Wearhouse Brand",
+        "detailImage": "/assets/media/uploads/1785854190913-mason-s_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1785853581635-masons_picture-brand_portrait.jpeg",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785853612875-mason-s_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785853620094-mason-s_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785853626871-mason-s_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785853646065-mason-s_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785853660250-mason-s_bild-5.jpg"
+          }
+        ]
       },
       {
         "name": "No Map Society",
