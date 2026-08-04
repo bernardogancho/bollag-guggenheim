@@ -248,15 +248,33 @@
       {
         "name": "IBELIV",
         "slug": "ibeliv",
-        "cardLabel": "Women & Men",
+        "cardLabel": "Accessory",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/ibeliv/",
         "logoSrc": "/assets/media/wearhouse/logos/ibeliv.png",
-        "hoverImage": "/assets/media/wearhouse/brands/ibeliv-matrix.jpg",
-        "heroTitle": "Craft-Led Accessories",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand",
-        "detailImage": "/assets/media/wearhouse/brands/ibeliv.jpg"
+        "hoverImage": "/assets/media/uploads/1785848229352-ibeliv_picture-brand_portrait.jpg",
+        "heroTitle": "Modern Elegance Meets Nature's Uniqueness",
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand",
+        "detailImage": "/assets/media/uploads/1785848045611-ibeliv_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1785848133938-ibeliv_picture-brand_portrait.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785848290770-ibeliv_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785848311158-ibeliv_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785848314539-ibeliv_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785848333116-ibeliv_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785848346307-ibeliv_bild-5.jpg"
+          }
+        ]
       },
       {
         "name": "MASON`S",
