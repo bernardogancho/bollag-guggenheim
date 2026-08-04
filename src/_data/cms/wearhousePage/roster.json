@@ -10,10 +10,24 @@
         "segment": "Women",
         "pageHref": "/wearhouse/caliban/",
         "logoSrc": "/assets/media/wearhouse/logos/caliban.png",
-        "hoverImage": "/assets/media/uploads/1784533363975-caliban_banner.jpg",
+        "hoverImage": "/assets/media/uploads/1785843478731-caliban_bild-1.jpg",
         "heroTitle": "Italian Shirting",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand"
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785843487355-caliban_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785843496012-caliban_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785843504799-caliban_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785843514370-caliban_bild-5.jpg"
+          }
+        ]
       },
       {
         "name": "CIRCOLO 1901",
