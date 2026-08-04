@@ -37,14 +37,21 @@
       {
         "name": "DANIELE FIESOLI",
         "slug": "daniele-fiesoli",
-        "cardLabel": "Women & Men",
+        "cardLabel": "Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/daniele-fiesoli/",
         "logoSrc": "/assets/media/wearhouse/logos/daniele-fiesoli.png",
-        "hoverImage": "/assets/media/wearhouse/brands/danielefiesoli-matrix.jpg",
-        "heroTitle": "Italian Knitwear",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand"
+        "hoverImage": "/assets/media/uploads/1785836391884-daniele-fiesoli_men_bild-1.jpg",
+        "heroTitle": "Timeless Italian Knitwear",
+        "detailHeroFocus": "top",
+        "eyebrow": "The Wearhouse Brand",
+        "detailImage": "/assets/media/uploads/1785836219170-daniele-fiesoli_men_banner.jpg",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785836355094-daniele-fiesoli_men_bild-1.jpg"
+          }
+        ],
+        "portraitImage": "/assets/media/uploads/1785836429326-daniele-fiesoli_men_picture-brand_portrait.jpg"
       },
       {
         "name": "DEA KUDIBAL",
