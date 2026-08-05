@@ -198,7 +198,14 @@
     },
     {
       "month": "March 2027",
-      "events": []
+      "events": [
+        {
+          "dateLabel": "17 MARCH - 19 APRIL 2027",
+          "brand": "YAYA",
+          "detail": "Collection Fall 2027, delivery Oct - Nov 2027",
+          "location": "Showroom Zurich"
+        }
+      ]
     },
     {
       "month": "April 2027",
