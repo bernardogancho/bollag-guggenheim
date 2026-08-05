@@ -524,14 +524,33 @@
       {
         "name": "VELVET",
         "slug": "velvet",
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/velvet/",
         "logoSrc": "/assets/media/wearhouse/logos/velvet.png",
-        "hoverImage": "/assets/media/wearhouse/brands/velvet-matrix.jpg",
-        "heroTitle": "Californian Ease",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand"
+        "hoverImage": "/assets/media/uploads/1785912978343-velvet_picture-brand_portrait.jpeg",
+        "heroTitle": "Timeless Luxury with a Modern Edge",
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand",
+        "detailImage": "/assets/media/uploads/1785912767352-velvet_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1785912811878-velvet_picture-brand_portrait.jpeg",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785912883889-velvet_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785912892032-velvet_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785912913792-velvet_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785912920830-velvet_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785912931781-velvet_bild-5.jpg"
+          }
+        ]
       },
       {
         "name": "VIA MASINI",
