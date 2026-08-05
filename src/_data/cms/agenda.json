@@ -171,7 +171,7 @@
         {
           "dateLabel": "16 - 27 November 2026",
           "brand": "More & More",
-          "detail": "Collection High Summer and Pre Fall 2027, delivery March - June 2027",
+          "detail": "Collection High Summer and Pre Fall 2027, delivery May- June 2027",
           "location": "Showroom Zurich"
         },
         {
@@ -190,7 +190,20 @@
     },
     {
       "month": "January 2027",
-      "events": []
+      "events": [
+        {
+          "dateLabel": "25 JANUARY - 5 FEBRUARY 2026",
+          "brand": "More & More",
+          "detail": "Collection Fall 2027, delivery Aug - Sep 2027",
+          "location": "Showroom Zurich"
+        },
+        {
+          "dateLabel": "13 JANUARY - 15 FEBRUARY 2027",
+          "brand": "YAYA",
+          "detail": "Collection Fall 2027, delivery Aug - Sep 2027",
+          "location": "Showroom Zurich"
+        }
+      ]
     },
     {
       "month": "February 2027",
