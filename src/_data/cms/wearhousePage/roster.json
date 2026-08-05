@@ -497,91 +497,53 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/tintoria-mattei/",
         "logoSrc": "/assets/media/wearhouse/logos/tintoria-mattei.png",
-        "hoverImage": "/assets/media/uploads/1785856689509-tintoria-mattei_portrait.jpg",
-        "heroTitle": "Italian Heritage Shirts ",
+        "hoverImage": "/assets/media/uploads/1785912437415-tintoria-mattei_bild-5.jpg",
+        "heroTitle": "Italian Heritage Shirts",
         "detailHeroFocus": "center",
         "eyebrow": "The Wearhouse Brand",
-        "detailImage": "/assets/media/uploads/1785856486642-tintoria-mattei_banner.jpg",
+        "detailImage": "/assets/media/uploads/1785912338029-tintoria-mattei_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1785912384809-tintoria-mattei_portrait.jpg",
         "gallery": [
           {
-            "image": "/assets/media/uploads/1785856637853-tintoria-mattei_bild-1.jpg"
+            "image": "/assets/media/uploads/1785912462549-daniele-fiesoli_men_bild-1.jpg"
           },
           {
-            "image": "/assets/media/uploads/1785856645956-tintoria-mattei_bild-2.jpg"
+            "image": "/assets/media/uploads/1785912469406-daniele-fiesoli_men_bild-2.jpg"
           },
           {
-            "image": "/assets/media/uploads/1785856656392-tintoria-mattei_bild-3.jpg"
+            "image": "/assets/media/uploads/1785912481656-daniele-fiesoli_men_bild-3.jpg"
           },
           {
-            "image": "/assets/media/uploads/1785856665663-tintoria-mattei_bild-4.jpg"
+            "image": "/assets/media/uploads/1785912488801-daniele-fiesoli_men_bild-4.jpg"
           },
           {
-            "image": "/assets/media/uploads/1785856676849-tintoria-mattei_bild-5.jpg"
+            "image": "/assets/media/uploads/1785912496440-daniele-fiesoli_men_bild-5.jpg"
           }
-        ],
-        "portraitImage": "/assets/media/uploads/1785856712665-tintoria-mattei_portrait.jpg"
+        ]
       },
       {
         "name": "VELVET",
         "slug": "velvet",
-        "cardLabel": "Women",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/velvet/",
         "logoSrc": "/assets/media/wearhouse/logos/velvet.png",
-        "hoverImage": "/assets/media/uploads/1785856932619-velvet_picture-brand_portrait.jpeg",
-        "heroTitle": "Timeless Luxury with a Modern Edge",
-        "detailHeroFocus": "center",
-        "eyebrow": "The Wearhouse Brand",
-        "detailImage": "/assets/media/uploads/1785856854110-velvet_banner.jpg",
-        "portraitImage": "/assets/media/uploads/1785856890491-velvet_picture-brand_portrait.jpeg",
-        "gallery": [
-          {
-            "image": "/assets/media/uploads/1785856946170-velvet_bild-1.jpg"
-          },
-          {
-            "image": "/assets/media/uploads/1785856953997-velvet_bild-2.jpg"
-          },
-          {
-            "image": "/assets/media/uploads/1785856960989-velvet_bild-3.jpg"
-          },
-          {
-            "image": "/assets/media/uploads/1785856967930-velvet_bild-4.jpg"
-          },
-          {
-            "image": "/assets/media/uploads/1785856977819-velvet_bild-5.jpg"
-          }
-        ]
+        "hoverImage": "/assets/media/wearhouse/brands/velvet-matrix.jpg",
+        "heroTitle": "Californian Ease",
+        "detailHeroFocus": "",
+        "eyebrow": "Wearhouse Brand"
       },
       {
         "name": "VIA MASINI",
         "slug": "via-masini",
-        "cardLabel": "Women",
+        "cardLabel": "Women & Men",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/via-masini/",
         "logoSrc": "/assets/media/wearhouse/logos/via-masini.png",
-        "hoverImage": "/assets/media/uploads/1785857145521-via-masini_bild-1.jpg",
-        "heroTitle": "Elevated Italian Luxury",
-        "detailHeroFocus": "center",
-        "eyebrow": "The Wearhouse Brand",
-        "detailImage": "/assets/media/uploads/1785857037255-via-masini_banner.jpg",
-        "portraitImage": "/assets/media/uploads/1785857083188-via-masini_picture-brand_portrait.jpeg",
-        "gallery": [
-          {
-            "image": "/assets/media/uploads/1785857161164-via-masini_bild-1.jpg"
-          },
-          {
-            "image": "/assets/media/uploads/1785857170458-via-masini_bild-2.jpg"
-          },
-          {
-            "image": "/assets/media/uploads/1785857179536-via-masini_bild-3.jpg"
-          },
-          {
-            "image": "/assets/media/uploads/1785857188123-via-masini_bild-4.jpg"
-          },
-          {
-            "image": "/assets/media/uploads/1785857197576-via-masini_bild-5.jpg"
-          }
-        ]
+        "hoverImage": "/assets/media/wearhouse/brands/viamasini-matrix.jpg",
+        "heroTitle": "Italian Womenswear",
+        "detailHeroFocus": "",
+        "eyebrow": "Wearhouse Brand"
       }
     ]
   }
