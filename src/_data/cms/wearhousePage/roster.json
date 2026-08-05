@@ -555,14 +555,33 @@
       {
         "name": "VIA MASINI",
         "slug": "via-masini",
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/via-masini/",
         "logoSrc": "/assets/media/wearhouse/logos/via-masini.png",
-        "hoverImage": "/assets/media/wearhouse/brands/viamasini-matrix.jpg",
-        "heroTitle": "Italian Womenswear",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand"
+        "hoverImage": "/assets/media/uploads/1785913184983-via-masini_bild-1.jpg",
+        "heroTitle": "Elevated Italian Luxury",
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand",
+        "detailImage": "/assets/media/uploads/1785913075037-via-masini_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1785913137013-via-masini_picture-brand_portrait.jpeg",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1785913195617-via-masini_bild-1.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785913202973-via-masini_bild-2.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785913213354-via-masini_bild-3.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785913223132-via-masini_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1785913230007-via-masini_bild-5.jpg"
+          }
+        ]
       }
     ]
   }
