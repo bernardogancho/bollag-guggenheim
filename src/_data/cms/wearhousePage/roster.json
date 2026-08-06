@@ -220,16 +220,16 @@
       {
         "name": "Flora di Venezia",
         "slug": "flora-di-venezia",
-        "cardLabel": "Women & Men",
+        "cardLabel": "Women",
         "segment": "",
         "pageHref": "/wearhouse/flora-di-venezia/",
         "logoSrc": "/assets/media/wearhouse/logos/flora-di-venezia.png",
-        "hoverImage": "",
-        "detailImage": "",
-        "portraitImage": "",
-        "heroTitle": "Venetian Craft",
-        "detailHeroFocus": "",
-        "eyebrow": "Wearhouse Brand"
+        "hoverImage": "/assets/media/uploads/1786005899139-flora-di-venezia_bild-1.jpg",
+        "detailImage": "/assets/media/uploads/1786005782699-flora-di-venezia_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1786005863224-flora-di-venezia_picture-brand_portrait.jpg",
+        "heroTitle": "Timeless Elegance Inspired by Venice",
+        "detailHeroFocus": "center",
+        "eyebrow": "The Wearhouse Brand"
       },
       {
         "name": "Helmur",
