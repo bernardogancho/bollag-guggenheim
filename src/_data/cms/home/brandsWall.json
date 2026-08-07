@@ -69,6 +69,18 @@
         "href": "/brands/cuoieria-fiorentina/",
         "logoImage": "/assets/media/brands/cuoieria-fiorentina.png",
         "heroImage": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg"
+      },
+      {
+        "name": "Daniele Fiesoli",
+        "href": "/brands/daniele-fiesoli/",
+        "logoImage": "/assets/media/wearhouse/logos/daniele-fiesoli.png",
+        "heroImage": "/assets/media/uploads/1784126471550-daniele-fiesoli_women_picture-brand_portrait.jpg"
+      },
+      {
+        "name": "Le Tricot Perugia",
+        "href": "/brands/le-tricot-perugia/",
+        "logoImage": "/assets/media/brands/le-tricot-perugia.png",
+        "heroImage": ""
       }
     ]
   }
