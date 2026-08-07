@@ -578,11 +578,13 @@ collections:
                   - { label: Detail Hero Image, name: detailHeroImage, widget: image, required: false, description: "The big banner at the top of the brand's own page. Best size: a wide photo around 2560×1440 px." }
                   - { label: Image focus, name: detailHeroFocus, widget: select, options: ["center", "top", "bottom"], required: false, description: "Which part of the background image stays visible when the screen crops it." }
                   - { label: Social feed (Contentfry ID), name: feedId, widget: string, required: false, description: "Paste a Contentfry display ID (e.g. malina/closed) to show that brand's own social feed. Leave empty to show the general feed instead." }
-                  - label: Visual journal
+                  - { label: Show my own photos instead of a feed, name: useOwnPhotos, widget: boolean, required: false, description: "Switch on to show the photos below instead of a social feed." }
+                  - label: Photos
                     name: detailGallery
                     widget: list
+                    required: false
                     summary: "{{fields.note}}"
-                    description: "The image mosaic on the brand's page. The 2nd image also appears as the portrait beside the intro text."
+                    description: "Your own photos, shown at the bottom of the brand's page when the switch above is on. The 2nd photo is also the portrait beside the intro text."
                     fields:
                       - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px on the long side." }
                       - { label: Note, name: note, widget: string, required: false }

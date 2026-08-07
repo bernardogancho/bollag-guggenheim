@@ -107,10 +107,12 @@ export function BrandsScreen({ page, section, rest }) {
         ],
       },
       {
-        title: 'Social feed',
-        help: "The social feed shown near the bottom of the brand's page.",
+        title: 'Bottom of the page',
+        help: "Either a social feed or your own photos — the switch decides which one visitors see.",
         fields: [
           { source: 'detail', name: 'feedId', overrides: { label: 'Social feed (Contentfry ID)' } },
+          { source: 'detail', name: 'useOwnPhotos', overrides: { label: 'Show my own photos instead of a feed' } },
+          { source: 'detail', name: 'detailGallery', overrides: { label: 'Photos' } },
         ],
       },
       {

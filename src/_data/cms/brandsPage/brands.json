@@ -192,9 +192,9 @@
       }
     },
     {
-      "name": " Daniele Fiesoli",
+      "name": "Daniele Fiesoli",
       "slug": "daniele-fiesoli",
-      "logoImage": "/assets/media/uploads/1785686060427-logo_daniele-fiesoli-n01-post-format.png",
+      "logoImage": "/assets/media/wearhouse/logos/daniele-fiesoli.png",
       "card": {
         "cardLabel": "Women",
         "heroTitle": "Crafted for Modern Living",
@@ -216,7 +216,7 @@
         "intro": "Daniele Fiesoli is a premium Italian fashion brand from Tuscany that specializes in high-quality knitwear and casual luxury for Women and Men. \nThe brand combines traditional craftsmanship with modern design and is firmly committed to “Absolutely Made in Italy”—from the yarns to the finishing touches. It is characterized by luxurious materials such as cashmere, merino wool, and mohair, minimalist cuts, and timeless, elegant looks with a focus on sustainability.",
         "focus": "The brand combines traditional craftsmanship with modern design and is firmly committed to “Absolutely Made in Italy”—from the yarns to the finishing touches.",
         "tone": "It is characterized by luxurious materials such as cashmere, merino wool, and mohair, minimalist cuts, and timeless, elegant looks with a focus on sustainability.",
-        "feedId": "",
+        "feedId": "malina/daniele-fiesoli",
         "detailHeroFocus": "center"
       }
     },
@@ -445,7 +445,8 @@
             "note": "G-Lab editorial image 5"
           }
         ],
-        "feedId": ""
+        "feedId": "",
+        "useOwnPhotos": true
       }
     },
     {
@@ -1255,6 +1256,29 @@
         "feedId": "malina/0039italy",
         "detailHeroFocus": "center"
       }
+    },
+    {
+      "name": "Le Tricot Perugia",
+      "slug": "le-tricot-perugia",
+      "card": {
+        "cardLabel": "Women & Men",
+        "eyebrow": "",
+        "heroTitle": "",
+        "summary": "Italian knitwear, made in Italy.",
+        "heroImage": ""
+      },
+      "detail": {
+        "intro": "",
+        "focus": "",
+        "atmosphere": "",
+        "categories": [],
+        "tone": "",
+        "detailHeroImage": "",
+        "gallery": [],
+        "detailGallery": [],
+        "feedId": "malina/le-tricot-perugia"
+      },
+      "logoImage": "/assets/media/brands/le-tricot-perugia.png"
     }
   ]
 }

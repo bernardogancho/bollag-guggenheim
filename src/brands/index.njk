@@ -58,7 +58,9 @@ title: Brands | Bollag-Guggenheim
           {% set imageClass = 'object-[58%_24%]' %}
         {% endif %}
         <a href="{{ brand.href }}" class="group relative block min-h-[24rem] overflow-hidden border border-black/5 bg-[#FAF7F4]" data-reveal>
-          <img src="{{ brand.heroImage }}" alt="{{ brand.name }} image" class="absolute inset-0 h-full w-full object-cover {{ imageClass }} transition duration-[1100ms] group-hover:scale-[1.04] group-hover:opacity-92" data-cms-bind="brands.all-brands#brands.{{ loop.index0 }}.card.heroImage">
+          {% if brand.heroImage %}
+            <img src="{{ brand.heroImage }}" alt="{{ brand.name }} image" class="absolute inset-0 h-full w-full object-cover {{ imageClass }} transition duration-[1100ms] group-hover:scale-[1.04] group-hover:opacity-92" data-cms-bind="brands.all-brands#brands.{{ loop.index0 }}.card.heroImage">
+          {% endif %}
           <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.22),rgba(0,0,0,0.34)_28%,rgba(0,0,0,0.86)_100%)]"></div>
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_34%),linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0)_30%,rgba(0,0,0,0.24)_100%)] opacity-90"></div>
           <div class="relative flex h-full flex-col justify-between p-6 lg:p-7">
