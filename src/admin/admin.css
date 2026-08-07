@@ -1485,6 +1485,13 @@ button:disabled {
   margin-top: 2px;
 }
 
+/* The label and its description are both spans, so without this they run
+   together on one line ("…instead of a feedSwitch on to show…"). */
+.field-check > span {
+  display: grid;
+  gap: 3px;
+}
+
 .menu-content {
   min-width: 160px;
   padding: 6px;

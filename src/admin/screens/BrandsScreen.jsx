@@ -112,7 +112,7 @@ export function BrandsScreen({ page, section, rest }) {
         fields: [
           { source: 'detail', name: 'feedId', overrides: { label: 'Social feed (Contentfry ID)' } },
           { source: 'detail', name: 'useOwnPhotos', overrides: { label: 'Show my own photos instead of a feed' } },
-          { source: 'detail', name: 'detailGallery', overrides: { label: 'Photos' } },
+          { custom: 'gallery' },
         ],
       },
       {
@@ -192,6 +192,45 @@ export function BrandsScreen({ page, section, rest }) {
             {group.help ? <div className="field-help">{group.help}</div> : null}
             <div className="field-grid">
               {group.fields.map(({ source, name, overrides, custom }) => {
+                if (custom === 'gallery') {
+                  // Rendered inline (not via the generic managed-list route) so
+                  // adding a photo is one obvious click instead of a trip
+                  // through a separate "Manage items" screen.
+                  const items = item.detail?.detailGallery || [];
+                  const setItems = next => updateField('detail.detailGallery', next);
+                  return (
+                    <div className="field" key="detail.detailGallery">
+                      <span className="field-label">Photos</span>
+                      <div className="field-help">Your own photos, shown at the bottom of the brand&apos;s page when the switch above is on. The 2nd photo is also the portrait beside the intro text.</div>
+                      <div style={{ display: 'grid', gap: 10, marginTop: 8 }}>
+                        {items.map((photo, i) => (
+                          <div className="item-card" key={i} style={{ cursor: 'default' }}>
+                            <div className="item-card-body">
+                              <div className="field-grid two-col">
+                                {galleryImageField ? (
+                                  <FieldRenderer key="image" field={galleryImageField} value={photo.image}
+                                    onChange={next => updateField(`detail.detailGallery.${i}.image`, next)}
+                                    pathPrefix={`brands.${idx}.detail.detailGallery.${i}.image`} routeBase={[page.id, section.id]} />
+                                ) : null}
+                                <label className="field">
+                                  <span className="field-label">Note</span>
+                                  <input className="input" value={photo.note || ''}
+                                    onChange={event => updateField(`detail.detailGallery.${i}.note`, event.target.value)} />
+                                </label>
+                              </div>
+                            </div>
+                            <div className="item-card-flags">
+                              <button type="button" className="icon-button" title="Move up" disabled={i === 0} onClick={() => setItems(reorder(items, i, i - 1))}>↑</button>
+                              <button type="button" className="icon-button" title="Move down" disabled={i === items.length - 1} onClick={() => setItems(reorder(items, i, i + 1))}>↓</button>
+                              <button type="button" className="button button-danger" onClick={() => setItems(items.filter((_, j) => j !== i))}>Remove</button>
+                            </div>
+                          </div>
+                        ))}
+                        <button type="button" className="button button-secondary" onClick={() => setItems([...items, { image: '', note: '' }])}>Add photo</button>
+                      </div>
+                    </div>
+                  );
+                }
                 if (custom === 'portrait') {
                   if (!portraitField) {
                     return null;
