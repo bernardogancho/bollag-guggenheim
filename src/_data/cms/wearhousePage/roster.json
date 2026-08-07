@@ -229,7 +229,12 @@
         "portraitImage": "/assets/media/uploads/1786005863224-flora-di-venezia_picture-brand_portrait.jpg",
         "heroTitle": "Timeless Elegance Inspired by Venice",
         "detailHeroFocus": "center",
-        "eyebrow": "The Wearhouse Brand"
+        "eyebrow": "The Wearhouse Brand",
+        "gallery": [
+          {
+            "image": "/assets/media/uploads/1786104527706-flora-di-venezia_bild-1.jpg"
+          }
+        ]
       },
       {
         "name": "Helmur",
