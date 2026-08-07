@@ -755,6 +755,29 @@
       }
     },
     {
+      "name": "Le Tricot Perugia",
+      "slug": "le-tricot-perugia",
+      "card": {
+        "cardLabel": "Women & Men",
+        "eyebrow": "",
+        "heroTitle": "",
+        "summary": "Italian knitwear, made in Italy.",
+        "heroImage": ""
+      },
+      "detail": {
+        "intro": "",
+        "focus": "",
+        "atmosphere": "",
+        "categories": [],
+        "tone": "",
+        "detailHeroImage": "",
+        "gallery": [],
+        "detailGallery": [],
+        "feedId": "malina/le-tricot-perugia"
+      },
+      "logoImage": "/assets/media/brands/le-tricot-perugia.png"
+    },
+    {
       "name": "More & More",
       "slug": "more-and-more",
       "card": {
@@ -1257,29 +1280,6 @@
         "feedId": "malina/0039italy",
         "detailHeroFocus": "center"
       }
-    },
-    {
-      "name": "Le Tricot Perugia",
-      "slug": "le-tricot-perugia",
-      "card": {
-        "cardLabel": "Women & Men",
-        "eyebrow": "",
-        "heroTitle": "",
-        "summary": "Italian knitwear, made in Italy.",
-        "heroImage": ""
-      },
-      "detail": {
-        "intro": "",
-        "focus": "",
-        "atmosphere": "",
-        "categories": [],
-        "tone": "",
-        "detailHeroImage": "",
-        "gallery": [],
-        "detailGallery": [],
-        "feedId": "malina/le-tricot-perugia"
-      },
-      "logoImage": "/assets/media/brands/le-tricot-perugia.png"
     }
   ]
 }
