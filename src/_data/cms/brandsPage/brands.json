@@ -400,7 +400,7 @@
         "eyebrow": "Performance Outerwear",
         "heroTitle": "Always in Your Element",
         "summary": "Technical outerwear that bridges functional protection with a cleaner contemporary fashion sensibility.",
-        "heroImage": "/assets/media/brand-pages/g-lab-page-1.jpg"
+        "heroImage": "/assets/media/uploads/1786104722380-g-lab_picture-brand_overwiew_portrait.jpg"
       },
       "detail": {
         "intro": "Founded in Dusseldorf in 2009 by Bjorn Gericke, g-lab was built around one premise: outerwear should perform at a high level without sacrificing design. The result is a brand that moves between weather protection and fashion clarity with unusual ease.",
@@ -412,7 +412,7 @@
           "Performance Lifestyle"
         ],
         "tone": "A performance-led brand made credible through understatement rather than noise.",
-        "detailHeroImage": "/assets/media/brand-pages/g-lab-header.jpg",
+        "detailHeroImage": "/assets/media/uploads/1786104594594-g-lab_banner.jpg",
         "gallery": [
           {
             "image": "/assets/media/brand-pages/g-lab-page-1.jpg",
@@ -429,7 +429,7 @@
             "note": "G-Lab editorial image 1"
           },
           {
-            "image": "/assets/media/brand-pages/g-lab-page-2.jpg",
+            "image": "/assets/media/uploads/1786104652457-g-lab_picture-brand_portrait.jpg",
             "note": "G-Lab editorial image 2"
           },
           {
@@ -446,7 +446,8 @@
           }
         ],
         "feedId": "",
-        "useOwnPhotos": true
+        "useOwnPhotos": true,
+        "detailHeroFocus": "center"
       }
     },
     {
