@@ -425,24 +425,24 @@
         ],
         "detailGallery": [
           {
-            "image": "/assets/media/brand-pages/g-lab-page-1.jpg",
-            "note": "G-Lab editorial image 1"
-          },
-          {
             "image": "/assets/media/uploads/1786104652457-g-lab_picture-brand_portrait.jpg",
             "note": "G-Lab editorial image 2"
           },
           {
-            "image": "/assets/media/brand-pages/g-lab-page-3.jpg",
-            "note": "G-Lab editorial image 3"
+            "image": "/assets/media/uploads/1786112984866-g-lab_picture-brand_overwiew_portrait.jpg",
+            "note": ""
           },
           {
-            "image": "/assets/media/brand-pages/g-lab-page-4.jpg",
-            "note": "G-Lab editorial image 4"
+            "image": "/assets/media/uploads/1786113046714-m1150_fend_af12_640_01_0673.jpg",
+            "note": ""
           },
           {
-            "image": "/assets/media/brand-pages/g-lab-page-5.jpg",
-            "note": "G-Lab editorial image 5"
+            "image": "/assets/media/uploads/1786113063558-m1157_edge_af12_640_03_0251.jpg",
+            "note": ""
+          },
+          {
+            "image": "/assets/media/uploads/1786113090322-w114_luna_af02_790_01_2120.jpg",
+            "note": ""
           }
         ],
         "feedId": "",
