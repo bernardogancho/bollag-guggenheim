@@ -1,0 +1,24 @@
+# Cache policy for the static site on cyon.
+#
+# Without this, Apache sends no Cache-Control for pages and browsers guess —
+# which is why freshly published changes could keep showing the old page.
+#
+# Pages, CSS and JS revalidate on every request. That is cheap: the browser
+# sends an If-None-Match and normally gets a 304 with no body, so published
+# changes appear immediately without re-downloading unchanged files.
+# CSS and JS are included because their filenames are not content-hashed
+# (site.css / site.js), so a long cache would hide updates for days.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|css|js)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # Media keeps a short cache: uploads carry a timestamp in the filename, but
+  # logos and brand images are replaced in place, so a day keeps them fresh.
+  <FilesMatch "\.(jpe?g|png|gif|webp|avif|svg|ico|mp4|webm|woff2?)$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+</IfModule>
+
+# Serve the right thing when a directory is requested.
+DirectoryIndex index.html
