@@ -565,8 +565,8 @@ collections:
                 widget: object
                 fields:
                   - { label: Card label, name: cardLabel, widget: string, required: false, description: "The small line above the logo on this brand's card in the Brands overview." }
-                  - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
-                  - { label: Hero Title, name: heroTitle, widget: string }
+                  - { label: Small label above the title, name: eyebrow, widget: string, required: false, description: "Short kicker line shown above the heading." }
+                  - { label: Hero Title, name: heroTitle, widget: string, required: false }
                   - { label: Summary, name: summary, widget: text, required: false }
                   - { label: Photo, name: heroImage, widget: image, required: false, description: "Shown on the brand's card in the brands overview. Best size: portrait, around 1200×1500 px. (The homepage brand wall uses its own separate images, edited under Homepage.)" }
               - label: Detail page
@@ -586,7 +586,7 @@ collections:
                     summary: "{{fields.note}}"
                     description: "Your own photos, shown at the bottom of the brand's page when the switch above is on. The 2nd photo is also the portrait beside the intro text."
                     fields:
-                      - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px on the long side." }
+                      - { label: Image, name: image, widget: image, required: false, description: "Best size: at least 1600 px on the long side." }
                       - { label: Note, name: note, widget: string, required: false }
                       - { label: Source, name: source, widget: string, required: false }
 
@@ -660,7 +660,7 @@ collections:
                     summary: "{{fields.note}}"
                     description: "The image mosaic at the bottom of the brand's page."
                     fields:
-                      - { label: Image, name: image, widget: image, description: "Best size: at least 1600 px on the long side." }
+                      - { label: Image, name: image, widget: image, required: false, description: "Best size: at least 1600 px on the long side." }
                       - { label: Note, name: note, widget: string, required: false }
       - label: Showroom Intro
         name: wearhouse_page_showroom

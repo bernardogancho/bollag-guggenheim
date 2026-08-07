@@ -97,6 +97,7 @@ eleventyComputed:
     </div>
     <div class="brand-editorial-columns">
       {% for frame in brand.detailGallery %}
+        {% if frame.image %}
         {% set pattern = loop.index0 % 7 %}
         {% set cardClass = 'aspect-[4/5]' %}
         {% if pattern == 0 %}
@@ -120,6 +121,7 @@ eleventyComputed:
           <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.12),transparent_32%)] opacity-0 transition duration-700 group-hover:opacity-100"></div>
           <figcaption class="sr-only" data-cms-bind="brands.all-brands#brands.{{ pagination.pageNumber }}.detail.detailGallery.{{ loop.index0 }}.note">{{ frame.note }}</figcaption>
         </figure>
+        {% endif %}
       {% endfor %}
     </div>
   </div>
