@@ -758,22 +758,28 @@
       "name": "Le Tricot Perugia",
       "slug": "le-tricot-perugia",
       "card": {
-        "cardLabel": "Women & Men",
-        "eyebrow": "",
-        "heroTitle": "",
-        "summary": "Italian knitwear, made in Italy.",
-        "heroImage": ""
+        "cardLabel": "Women",
+        "eyebrow": "Tradition, Craftsmanship, Timeless Style.",
+        "heroTitle": "Luxury Knitwear with Italian Soul",
+        "summary": "-",
+        "heroImage": "/assets/media/uploads/1786106431628-le-tricot-perugia_picture-brand_portrait.jpg"
       },
       "detail": {
-        "intro": "",
-        "focus": "",
+        "intro": "contemporary elegance. Founded in 1975 in Perugia, Italy, the brand began as a specialist in premium knitwear before evolving into a total-look fashion house offering knitwear, tailored separates, dresses, trousers, outerwear, and coordinated collections.",
+        "focus": "The company states that it sources its raw materials in Italy where possible, monitors its production chain closely, uses eco-compatible materials, and incorporates environmentally conscious manufacturing practices.\nQuiet Luxury.\n",
         "atmosphere": "",
         "categories": [],
         "tone": "",
-        "detailHeroImage": "",
+        "detailHeroImage": "/assets/media/uploads/1786106318249-le-tricot-perugia_made-in-italy_banner.jpg",
         "gallery": [],
-        "detailGallery": [],
-        "feedId": "malina/le-tricot-perugia"
+        "detailGallery": [
+          null,
+          {
+            "image": "/assets/media/uploads/1786106386620-le-tricot-perugia_picture-brand_portrait.jpg"
+          }
+        ],
+        "feedId": "malina/le-tricot-perugia",
+        "detailHeroFocus": "center"
       },
       "logoImage": "/assets/media/brands/le-tricot-perugia.png"
     },
