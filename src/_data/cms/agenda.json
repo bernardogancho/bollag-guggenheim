@@ -237,15 +237,15 @@
       "month": "March 2027",
       "events": [
         {
-          "dateLabel": "17 MARCH - 19 APRIL 2027",
-          "brand": "YAYA",
-          "detail": "Collection Fall 2027, delivery Oct - Nov 2027",
-          "location": "Showroom Zurich"
-        },
-        {
           "dateLabel": "15 - 25 MARCH 2027",
           "brand": "More & More",
           "detail": "Collection High Winter 2027, delivery Oct - Nov 2027",
+          "location": "Showroom Zurich"
+        },
+        {
+          "dateLabel": "17 MARCH - 19 APRIL 2027",
+          "brand": "YAYA",
+          "detail": "Collection Fall 2027, delivery Oct - Nov 2027",
           "location": "Showroom Zurich"
         }
       ]
