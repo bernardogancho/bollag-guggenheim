@@ -192,6 +192,30 @@
       "month": "January 2027",
       "events": [
         {
+          "dateLabel": "25 JANUARY - 20 FEBRUARY 2027",
+          "brand": "Codello",
+          "detail": "Collection Fall 2027, delivery Jun - Aug 2027",
+          "location": "Showroom Zurich"
+        },
+        {
+          "dateLabel": "25 JANUARY - 25 FEBRUARY 2027",
+          "brand": "Cuoieria Fiorentina",
+          "detail": "Collection Fall 2027, delivery Jul - Sep 2027",
+          "location": "Showroom Zurich"
+        },
+        {
+          "dateLabel": "25 JANUARY - 25 FEBRUARY 2027",
+          "brand": "Daniele Fiesoli",
+          "detail": "Collection Fall 2027, delivery Aug - Sep 2027",
+          "location": "Showroom Zurich"
+        },
+        {
+          "dateLabel": "25 JANUARY - 25 FEBRUARY 2027",
+          "brand": "Le Tricot Perugia",
+          "detail": "Collection Fall 2027, delivery Aug - Sep 2027",
+          "location": "Showroom Zurich"
+        },
+        {
           "dateLabel": "25 JANUARY - 5 FEBRUARY 2026",
           "brand": "More & More",
           "detail": "Collection Fall 2027, delivery Aug - Sep 2027",
