@@ -171,7 +171,10 @@ if (contactForm) {
     setStatus("Sending your message...", "neutral");
 
     try {
-      const response = await fetch("/api/contact", {
+      // Use the form's own action so the endpoint is defined in one place
+      // (see the comment on the <form> in src/contact/index.njk).
+      const endpoint = contactForm.getAttribute("action") || "/api/contact";
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

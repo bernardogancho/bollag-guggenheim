@@ -120,7 +120,46 @@ function readBody(req) {
   });
 }
 
+// The public site is served from cyon while this function runs on Vercel, so
+// the browser sends the enquiry cross-origin. Only the live site's own origins
+// are allowed — the form is public, but this keeps other sites from posting
+// through it.
+const ALLOWED_ORIGINS = [
+  'https://www.bollag-guggenheim.ch',
+  'https://bollag-guggenheim.ch'
+];
+
+// Without JavaScript the browser follows this function's redirect, and a bare
+// "/contact/" would resolve against the Vercel domain rather than the website.
+// Send the visitor back to the site they actually came from.
+const SITE_BASE = process.env.SITE_BASE_URL || 'https://www.bollag-guggenheim.ch';
+
+function backToContact(req, sent) {
+  const origin = String(req.headers.origin || '');
+  const base = ALLOWED_ORIGINS.includes(origin) ? origin : SITE_BASE;
+  return `${base}/contact/?sent=${sent}`;
+}
+
+function applyCors(req, res) {
+  const origin = String(req.headers.origin || '');
+  if (!ALLOWED_ORIGINS.includes(origin)) {
+    return;
+  }
+  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Vary', 'Origin');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
+  res.setHeader('Access-Control-Max-Age', '86400');
+}
+
 module.exports = async function handler(req, res) {
+  applyCors(req, res);
+
+  if (req.method === 'OPTIONS') {
+    res.statusCode = 204;
+    return res.end();
+  }
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return json(res, 405, { error: 'Method not allowed.' });
@@ -137,7 +176,7 @@ module.exports = async function handler(req, res) {
       }
 
       res.statusCode = 303;
-      res.setHeader('Location', '/contact/?sent=1');
+      res.setHeader('Location', backToContact(req, 1));
       return res.end();
     }
 
@@ -181,7 +220,7 @@ module.exports = async function handler(req, res) {
     }
 
     res.statusCode = 303;
-    res.setHeader('Location', '/contact/?sent=1');
+    res.setHeader('Location', backToContact(req, 1));
     return res.end();
   } catch (error) {
     if (wantsJson(req)) {
@@ -192,7 +231,7 @@ module.exports = async function handler(req, res) {
     }
 
     res.statusCode = 303;
-    res.setHeader('Location', '/contact/?sent=0');
+    res.setHeader('Location', backToContact(req, 0));
     return res.end();
   }
 };
