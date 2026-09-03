@@ -34,7 +34,7 @@
       {
         "name": "CIRCOLO 1901",
         "slug": "circolo-1901",
-        "cardLabel": "Women & Men ",
+        "cardLabel": "",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/circolo-1901/",
         "logoSrc": "/assets/media/wearhouse/logos/circolo-1901.png",
@@ -127,7 +127,7 @@
       {
         "name": "DUNO",
         "slug": "duno",
-        "cardLabel": "Women & Men",
+        "cardLabel": "",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/duno/",
         "logoSrc": "/assets/media/wearhouse/logos/duno.png",
@@ -239,7 +239,7 @@
       {
         "name": "Helmur",
         "slug": "helmur",
-        "cardLabel": "Women & Men",
+        "cardLabel": "",
         "segment": "",
         "pageHref": "/wearhouse/helmur/",
         "logoSrc": "/assets/media/wearhouse/logos/helmur.png",
@@ -284,7 +284,7 @@
       {
         "name": "MASON`S",
         "slug": "masons",
-        "cardLabel": "Women & Men",
+        "cardLabel": "",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/masons/",
         "logoSrc": "/assets/media/wearhouse/logos/masons.png",
@@ -377,7 +377,7 @@
       {
         "name": "SAVE THE DUCK",
         "slug": "save-the-duck",
-        "cardLabel": "Women & Men",
+        "cardLabel": "",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/save-the-duck/",
         "logoSrc": "/assets/media/wearhouse/logos/save-the-duck.png",
@@ -439,7 +439,7 @@
       {
         "name": "TANTÄ",
         "slug": "tanta",
-        "cardLabel": "Women & Men",
+        "cardLabel": "",
         "segment": "Women & Men",
         "pageHref": "/wearhouse/tanta/",
         "logoSrc": "/assets/media/wearhouse/logos/tanta.png",
@@ -467,7 +467,7 @@
       {
         "name": "The Jack Leathers",
         "slug": "the-jack-leathers",
-        "cardLabel": "Women & Men",
+        "cardLabel": "",
         "segment": "",
         "pageHref": "/wearhouse/the-jack-leathers/",
         "logoSrc": "/assets/media/wearhouse/logos/the-jack-leathers.png",

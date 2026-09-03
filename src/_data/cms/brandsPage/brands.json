@@ -4,7 +4,7 @@
       "name": "Closed",
       "slug": "closed",
       "card": {
-        "cardLabel": "Women & Men",
+        "cardLabel": "",
         "eyebrow": "Modern Essentials",
         "heroTitle": "Made with Love",
         "summary": "European denim and wardrobe foundations shaped through French vision, Italian making, and German precision.",
@@ -224,7 +224,7 @@
       "name": "Drykorn",
       "slug": "drykorn",
       "card": {
-        "cardLabel": "Women & Men",
+        "cardLabel": "",
         "eyebrow": "Contemporary Tailoring",
         "heroTitle": "For Beautiful People",
         "summary": "Sharper silhouettes and modern tailoring for independent dressers with a metropolitan point of view.",
@@ -396,7 +396,7 @@
       "name": "G-Lab",
       "slug": "g-lab",
       "card": {
-        "cardLabel": "Women & Men",
+        "cardLabel": "",
         "eyebrow": "Performance Outerwear ",
         "heroTitle": "Always in Your Element",
         "summary": "Technical outerwear that bridges functional protection with a cleaner contemporary fashion sensibility.",
@@ -454,7 +454,7 @@
       "name": "GUESS",
       "slug": "guess",
       "card": {
-        "cardLabel": "Women & Men",
+        "cardLabel": "",
         "eyebrow": "Global Lifestyle",
         "heroTitle": "The Essence of Sexyness",
         "summary": "A globally recognised lifestyle label combining denim heritage, accessories, and a more overt sense of fashion image-making.",
