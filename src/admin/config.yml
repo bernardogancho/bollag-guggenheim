@@ -182,15 +182,14 @@ collections:
             widget: object
             fields:
               - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
-              - { label: Section heading, name: title, widget: string, description: "These logos/photos are a separate homepage-only list — editing a brand on the Wearhouse page does not change them here." }
+              - { label: Section heading, name: title, widget: string, description: "The photo shown when a visitor hovers a card is the brand page's own background image — change it under The Wearhouse, and this section follows automatically." }
               - { label: Section text, name: summary, widget: text }
               - label: Brand Cards
                 name: items
                 widget: list
                 summary: "{{fields.name}}"
                 fields:
-                  - { label: Photo (appears on hover), name: hoverImage, widget: image, required: false, description: "Best size: portrait, around 1200×1500 px." }
-                  - { label: Category label (small text above the name), name: segment, widget: string }
+                  - { label: Category label (small text above the name), name: segment, widget: string, required: false, description: "Optional. Leave empty for no label above the brand name." }
                   - { label: Brand name, name: name, widget: string }
                   - { label: Link to brand page, name: pageHref, widget: string }
       - label: Editorial selection

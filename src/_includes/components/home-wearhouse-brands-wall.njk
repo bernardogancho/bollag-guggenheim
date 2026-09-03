@@ -22,9 +22,15 @@
           data-reveal
           aria-label="View {{ brand.name }} via The Wearhouse"
         >
-          {% if brand.hoverImage %}
+          {# The hover photo is the brand page's own hero image, looked up by the
+             slug in pageHref, so editing a hero in the CMS updates the homepage
+             too. The stored hoverImage is only a fallback for a wall entry with
+             no brand page (and therefore no hero) behind it. #}
+          {% set brandSlug = brand.pageHref | replace("/wearhouse/", "") | replace("/", "") %}
+          {% set hoverSrc = wearhouse.heroBySlug[brandSlug] or brand.hoverImage %}
+          {% if hoverSrc %}
             <img
-              src="{{ brand.hoverImage }}"
+              src="{{ hoverSrc }}"
               alt=""
               class="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100 group-focus-visible:opacity-100" data-cms-bind="homepage.wearhouse-portfolio#wearhouseWall.items.{{ loop.index0 }}.hoverImage"
             >

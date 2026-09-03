@@ -22,9 +22,7 @@ const createWearhouseLogoSvg = (brand) => {
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 };
 
-module.exports = {
-  ...pageContent,
-  brands: rosterItems.map((brand) => {
+const brands = rosterItems.map((brand) => {
     const detailBrand = detailBrandsBySlug.get(brand.slug) || {};
     const rosterCard = detailBrand.rosterCard || {};
     const detail = detailBrand.detail || {};
@@ -49,5 +47,21 @@ module.exports = {
     };
 
     return merged;
-  })
+});
+
+// The homepage Wearhouse wall shows a brand's page hero on hover, so it reads
+// the same value the brand page itself renders. Keyed by slug because the wall
+// stores only a link (/wearhouse/<slug>/), and kept as derived data so changing
+// a hero in the CMS updates the homepage with no second edit.
+const heroBySlug = {};
+for (const brand of brands) {
+  if (brand.slug && brand.detailHeroImage) {
+    heroBySlug[brand.slug] = brand.detailHeroImage;
+  }
+}
+
+module.exports = {
+  ...pageContent,
+  brands,
+  heroBySlug
 };
