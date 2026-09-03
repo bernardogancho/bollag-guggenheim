@@ -473,7 +473,8 @@ collections:
             fields:
               - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
               - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
+              - { label: Summary, name: summary, widget: text, required: false }
+              - { label: Message when nothing is scheduled, name: emptyMessage, widget: string, required: false, description: "Shown on the Agenda if every appointment has passed. Leave empty for the default wording." }
           - label: CTA
             name: cta
             widget: object
@@ -486,6 +487,7 @@ collections:
             name: months
             widget: list
             summary: "{{fields.month}}"
+            description: "Appointments disappear from the website by themselves once their last day has passed, so you can leave old ones here. Keep the date range in the usual format (e.g. '21 April - 21 May 2026') so the last day can be read."
             fields:
               - { label: "Month label (e.g. 'April 2026')", name: month, widget: string }
               - label: Events
@@ -493,7 +495,7 @@ collections:
                 widget: list
                 summary: "{{fields.brand}} - {{fields.dateLabel}}"
                 fields:
-                  - { label: Date range, name: dateLabel, widget: string }
+                  - { label: Date range, name: dateLabel, widget: string, description: "e.g. '21 April - 21 May 2026'. The appointment hides itself the day after the last date." }
                   - { label: Brand name, name: brand, widget: string }
                   - { label: Details, name: detail, widget: text }
                   - { label: Location, name: location, widget: string }

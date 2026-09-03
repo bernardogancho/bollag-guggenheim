@@ -22,6 +22,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch: {}
+  # The Agenda drops appointments once their last day has passed, and that is
+  # decided when the site is built. Without a rebuild the page would keep
+  # showing a finished appointment until someone next published, so rebuild
+  # once a day (05:15 UTC, before Swiss office hours).
+  schedule:
+    - cron: "15 5 * * *"
 
 concurrency:
   group: deploy-cyon

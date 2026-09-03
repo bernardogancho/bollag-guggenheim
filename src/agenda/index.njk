@@ -53,10 +53,13 @@ title: Agenda | Bollag-Guggenheim
     </div>
 
     <div class="space-y-14 lg:space-y-20" data-cms-section="agenda.months">
+      {% if not agenda.months.length %}
+        <p class="type-body-lg text-black/56" data-reveal>{{ agenda.calendarSection.emptyMessage or "No appointments are currently scheduled. Please check back soon." }}</p>
+      {% endif %}
       {% for month in agenda.months %}
         <section class="grid gap-8 lg:grid-cols-[minmax(0,0.28fr)_minmax(0,0.72fr)] lg:gap-10">
           <div class="lg:sticky lg:top-28 lg:self-start">
-            <h3 class="type-section-title-block text-black lg:text-[3.6rem]" data-reveal data-cms-bind="agenda.months#months.{{ loop.index0 }}.month">{{ month.month }}</h3>
+            <h3 class="type-section-title-block text-black lg:text-[3.6rem]" data-reveal data-cms-bind="agenda.months#months.{{ month.sourceIndex }}.month">{{ month.month }}</h3>
           </div>
           <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {% for event in month.events %}
