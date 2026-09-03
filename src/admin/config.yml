@@ -15,6 +15,11 @@ collections:
         file: src/_data/cms/site.json
         format: json
         fields:
+          - label: Analytics
+            name: analytics
+            widget: object
+            fields:
+              - { label: Google Tag Manager ID, name: gtmId, widget: string, required: false, description: "Looks like GTM-XXXXXXX. Leave empty to switch off all tracking — nothing is loaded until an ID is entered here." }
           - label: Header navigation
             name: nav
             widget: object
