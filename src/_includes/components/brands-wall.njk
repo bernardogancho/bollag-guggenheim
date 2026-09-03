@@ -2,9 +2,11 @@
   <div class="relative mx-auto w-full max-w-[1600px] px-6 pb-28 pt-8 sm:px-10 lg:px-16 lg:pb-36 lg:pt-10">
     <div class="mb-10 border-t border-black/10 pt-8 lg:mb-12">
       <div class="max-w-[42rem]">
+        {% if cms.home.brandsWall.eyebrow %}
         <p class="type-eyebrow mb-4 text-black/40" data-reveal data-cms-bind="homepage.bollag-portfolio#brandsWall.eyebrow">
           {{ cms.home.brandsWall.eyebrow }}
         </p>
+        {% endif %}
         <h2 class="type-section-title max-w-[13ch] text-black" data-reveal data-cms-bind="homepage.bollag-portfolio#brandsWall.title">
           {{ cms.home.brandsWall.title }}
         </h2>

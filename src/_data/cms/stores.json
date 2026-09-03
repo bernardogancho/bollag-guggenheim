@@ -7,12 +7,7 @@
     "video": "/assets/media/stores/stores-hero.mp4",
     "videoAlt": "Bollag-Guggenheim retail environment"
   },
-  "heroStats": [
-    "",
-    "",
-    "",
-    ""
-  ],
+  "heroStats": [],
   "networkSection": {
     "eyebrow": "Store Network",
     "title": "Physical retail with a sharper point of view.",

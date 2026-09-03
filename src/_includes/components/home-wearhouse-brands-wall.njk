@@ -2,9 +2,11 @@
   <div class="relative mx-auto w-full max-w-[1600px] px-6 pb-28 pt-8 sm:px-10 lg:px-16 lg:pb-36 lg:pt-10">
     <div class="mb-10 border-t border-black/10 pt-8 lg:mb-12">
       <div class="max-w-[42rem]">
+        {% if cms.home.wearhouseWall.eyebrow %}
         <p class="mb-4 text-[0.7rem] uppercase tracking-[0.32em] text-black/40" data-reveal data-cms-bind="homepage.wearhouse-portfolio#wearhouseWall.eyebrow">
           {{ cms.home.wearhouseWall.eyebrow }}
         </p>
+        {% endif %}
         <h2 class="max-w-[11ch] font-display text-[1.9rem] leading-[0.92] tracking-[-0.045em] text-black sm:text-[2.55rem] lg:text-[3.4rem]" data-reveal data-cms-bind="homepage.wearhouse-portfolio#wearhouseWall.title">
           {{ cms.home.wearhouseWall.title }}
         </h2>

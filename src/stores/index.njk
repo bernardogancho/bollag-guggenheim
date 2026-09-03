@@ -50,9 +50,11 @@ title: Stores | Bollag-Guggenheim
           {{ stores.networkSection.title }}
         </h2>
       </div>
+      {% if stores.networkSection.summary %}
       <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal data-cms-bind="stores.network#networkSection.summary">
         {{ stores.networkSection.summary }}
       </p>
+      {% endif %}
     </div>
 
     <div class="space-y-16 lg:space-y-24" data-cms-section="stores.store-list">

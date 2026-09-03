@@ -47,9 +47,11 @@ title: Contact | Bollag-Guggenheim
           {{ contact.officeSection.title }}
         </h2>
       </div>
+      {% if contact.officeSection.summary %}
       <p class="type-body-sm max-w-[24rem] text-black/58" data-reveal data-cms-bind="contact.offices-intro#officeSection.summary">
         {{ contact.officeSection.summary }}
       </p>
+      {% endif %}
     </div>
 
     <div class="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-8">

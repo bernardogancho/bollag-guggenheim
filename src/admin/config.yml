@@ -160,7 +160,7 @@ collections:
             name: brandsWall
             widget: object
             fields:
-              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: Small label above the title, name: eyebrow, widget: string, required: false, description: "Short kicker line shown above the heading." }
               - { label: Section heading, name: title, widget: string, description: "These logos/photos are a separate homepage-only list — editing a brand on the Brands page does not change them here." }
               - { label: Section text, name: summary, widget: text }
               - label: Brand Cards
@@ -181,7 +181,7 @@ collections:
             name: wearhouseWall
             widget: object
             fields:
-              - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
+              - { label: Small label above the title, name: eyebrow, widget: string, required: false, description: "Short kicker line shown above the heading." }
               - { label: Section heading, name: title, widget: string, description: "The photo shown when a visitor hovers a card is the brand page's own background image — change it under The Wearhouse, and this section follows automatically." }
               - { label: Section text, name: summary, widget: text }
               - label: Brand Cards
@@ -326,7 +326,7 @@ collections:
             fields:
               - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
               - { label: Title, name: title, widget: string, description: "Heading shown above BOTH the office cards and the contact form." }
-              - { label: Summary, name: summary, widget: text }
+              - { label: Summary, name: summary, widget: text, required: false }
           - label: Bollag Office
             name: office
             widget: object
@@ -417,14 +417,14 @@ collections:
             name: heroStats
             widget: list
             description: "Short stat chips under the hero text, e.g. '30+ Stores'. Leave blank to hide."
-            field: { label: Stat, name: stat, widget: string }
+            field: { label: Stat, name: stat, widget: string, required: false }
           - label: Network Section
             name: networkSection
             widget: object
             fields:
               - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
               - { label: Title, name: title, widget: string }
-              - { label: Summary, name: summary, widget: text }
+              - { label: Summary, name: summary, widget: text, required: false }
           - label: Store Groups
             name: groups
             widget: list
@@ -517,7 +517,7 @@ collections:
             fields:
               - { label: Small label above the title, name: eyebrow, widget: string, description: "Short kicker line shown above the heading." }
               - { label: Title, name: title, widget: text }
-              - { label: Summary, name: summary, widget: text }
+              - { label: Summary, name: summary, widget: text, required: false }
               - { label: Stats, name: stats, widget: list, field: { label: Stat, name: stat, widget: string } }
               - { label: Hero Brand Name, name: brandName, widget: string }
               - { label: Hero Image, name: image, widget: image, description: "Best size: portrait, around 1200×1500 px." }
