@@ -14,22 +14,8 @@
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="stylesheet" href="/assets/styles/site.css">
-    {# Google Tag Manager. Nothing loads until a container ID is entered in the
-       CMS (Site Settings > Analytics), so the site ships no tracking by default.
-       dataLayer is declared before GTM so events pushed by site.js are never
-       lost, whichever finishes loading first. #}
-    {% if cms.site.analytics.gtmId %}
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-      </script>
-      <script async src="https://www.googletagmanager.com/gtm.js?id={{ cms.site.analytics.gtmId }}"></script>
-    {% endif %}
   </head>
   <body class="bg-bone text-bone antialiased">
-    {% if cms.site.analytics.gtmId %}
-      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ cms.site.analytics.gtmId }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    {% endif %}
     <div class="min-h-screen bg-bone">
       {{ content | safe }}
     </div>
