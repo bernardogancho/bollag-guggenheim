@@ -205,16 +205,16 @@
           "location": "Showroom Erlenbach"
         },
         {
-          "dateLabel": "18 November - 14 December 2026",
-          "brand": "YAYA",
-          "detail": "Collection Pre Fall 2027, delivery June - July 2027",
-          "location": "Showroom Zurich"
-        },
-        {
           "dateLabel": "30 NOVEMBER 2026 - 26 FEBRUARY 2027",
           "brand": "SAVE THE DUCK",
           "detail": "Collection Main Fall 2027, delivery Jul - Sep 2027",
           "location": "Showroom Erlenbach"
+        },
+        {
+          "dateLabel": "18 November - 14 December 2026",
+          "brand": "YAYA",
+          "detail": "Collection Pre Fall 2027, delivery June - July 2027",
+          "location": "Showroom Zurich"
         }
       ]
     },
