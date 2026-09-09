@@ -181,21 +181,33 @@
           "location": "Showroom Zurich"
         },
         {
+          "dateLabel": "30 NOVEMBER 2026 - 29 JANUARY 2027",
+          "brand": "MASON'S",
+          "detail": "Collection Pre Fall 2027, delivery Jul - Sep 2027",
+          "location": "Showroom Erlenbach"
+        },
+        {
           "dateLabel": "16 - 27 November 2026",
           "brand": "More & More",
           "detail": "Collection High Summer and Pre Fall 2027, delivery May- June 2027",
           "location": "Showroom Zurich"
         },
         {
-          "dateLabel": "18 November - 14 December 2026",
-          "brand": "YAYA",
-          "detail": "Collection Pre Fall 2027, delivery June - July 2027",
-          "location": "Showroom Zurich"
-        },
-        {
           "dateLabel": "19 - 27 November 2026",
           "brand": "Rich & Royal",
           "detail": "Collection Summer 2027, delivery May 2027 & Outdoor Fall Winter 2027",
+          "location": "Showroom Zurich"
+        },
+        {
+          "dateLabel": "30 NOVEMBER - 21 DECEMBER 2026",
+          "brand": "SAVE THE DUCK",
+          "detail": "Collection Pre Fall 2027, delivery Jul - Sep 2027",
+          "location": "Showroom Erlenbach"
+        },
+        {
+          "dateLabel": "18 November - 14 December 2026",
+          "brand": "YAYA",
+          "detail": "Collection Pre Fall 2027, delivery June - July 2027",
           "location": "Showroom Zurich"
         }
       ]
@@ -226,6 +238,12 @@
           "brand": "Le Tricot Perugia",
           "detail": "Collection Fall 2027, delivery Aug - Sep 2027",
           "location": "Showroom Zurich"
+        },
+        {
+          "dateLabel": "15 JANUARY - 5 MARCH 2027",
+          "brand": "MASON'S",
+          "detail": "Collection Main Fall 2027, delivery Jul - Sep 2027",
+          "location": "Showroom Erlenbach"
         },
         {
           "dateLabel": "25 JANUARY - 5 FEBRUARY 2026",
