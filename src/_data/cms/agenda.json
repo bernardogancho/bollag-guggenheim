@@ -129,21 +129,33 @@
       "month": "September 2026",
       "events": [
         {
+          "dateLabel": "30 SEPTEMBER - 9 NOVEMBER 2026",
+          "brand": "Dea Kudibal",
+          "detail": "Collection Summer / Pre-Fall 2027, delivery March - May 2027",
+          "location": "Showroom Erlenbach"
+        },
+        {
           "dateLabel": "21 September - 2 October 2026",
           "brand": "More & More",
           "detail": "Collection Summer 2027, delivery March - April 2027",
           "location": "Showroom Zurich"
         },
         {
-          "dateLabel": "23 September - 9 October 2026",
-          "brand": "YAYA",
-          "detail": "Collection Summer 2027, delivery April - May 2027",
-          "location": "Showroom Zurich"
-        },
-        {
           "dateLabel": "28 September - 14 October 2026",
           "brand": "Rich & Royal",
           "detail": "Collection Main Spring 2027, delivery March - April 2027",
+          "location": "Showroom Zurich"
+        },
+        {
+          "dateLabel": "1 SEPTEMBER - 15 OCTOBER 2026",
+          "brand": "Velvet",
+          "detail": "Collection Spring 2027, delivery February - March2027",
+          "location": "Showroom Erlenbach"
+        },
+        {
+          "dateLabel": "23 September - 9 October 2026",
+          "brand": "YAYA",
+          "detail": "Collection Summer 2027, delivery April - May 2027",
           "location": "Showroom Zurich"
         }
       ]
