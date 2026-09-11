@@ -477,7 +477,12 @@
             "note": "GUESS editorial selection"
           }
         ],
-        "detailGallery": [],
+        "detailGallery": [
+          null,
+          {
+            "image": "/assets/media/uploads/1789119249773-guess_picture-brand_portrait.jpg"
+          }
+        ],
         "feedId": "malina/guess-2",
         "detailHeroFocus": "center",
         "useOwnPhotos": true
