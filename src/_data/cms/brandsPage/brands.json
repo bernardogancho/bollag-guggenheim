@@ -16,7 +16,7 @@
         "atmosphere": "-",
         "categories": [],
         "tone": "A quiet luxury language built around material confidence and enduring fit.",
-        "detailHeroImage": "/assets/media/uploads/1785497499616-closed_banner.jpg",
+        "detailHeroImage": "/assets/media/uploads/1789118261565-closed_banner.jpg",
         "gallery": [
           {
             "image": "/assets/media/brand-pages/closed-page-1.jpg",
@@ -29,21 +29,17 @@
         ],
         "detailGallery": [
           {
-            "image": "/assets/media/brand-pages/closed-page-1.jpg",
+            "image": "/assets/media/uploads/1789118346756-closed_picture-brand_portrait.jpg",
             "note": "Closed editorial image 1"
           },
           {
-            "image": "/assets/media/uploads/1785497552500-closed_picture-brand_portrait.jpg",
+            "image": "/assets/media/uploads/1789118327169-closed_overwiew-picture-brand_portrait.jpg",
             "note": "The barrel shape that everyone continues to require. Our Jazzie. #closedofficial",
             "source": "https://www.instagram.com/p/DTXKdKUkm3D/"
-          },
-          {
-            "image": "/assets/media/feed/closed-wall-18077835998242140.jpg",
-            "note": "Introducing fresh arrivals, yet denim continues to take center stage in 2026 #closedofficial",
-            "source": "https://www.instagram.com/p/DTPZOueAN2s/"
           }
         ],
-        "feedId": "malina/closed"
+        "feedId": "malina/closed",
+        "detailHeroFocus": "center"
       }
     },
     {
