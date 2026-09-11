@@ -443,24 +443,27 @@
         "segment": "Women & Men",
         "pageHref": "/wearhouse/tanta/",
         "logoSrc": "/assets/media/wearhouse/logos/tanta.png",
-        "hoverImage": "/assets/media/uploads/1785856074046-tant-_picture-brand_portrait.jpeg",
+        "hoverImage": "/assets/media/uploads/1789130220341-tant-_picture-brand_portrait.jpg",
         "heroTitle": "Design for Everyday Wet Weather",
         "detailHeroFocus": "center",
         "eyebrow": "The Wearhouse Brand",
-        "detailImage": "/assets/media/uploads/1785855978668-tant-_banner.jpg",
-        "portraitImage": "/assets/media/uploads/1785856014499-tant-_picture-brand_portrait.jpeg",
+        "detailImage": "/assets/media/uploads/1789130183172-tant-_banner.jpg",
+        "portraitImage": "/assets/media/uploads/1789130202464-tant-_picture-brand_portrait.jpg",
         "gallery": [
           {
-            "image": "/assets/media/uploads/1785856083049-tant-_bild-1.jpg"
+            "image": "/assets/media/uploads/1789130243362-tant-_bild-1.jpg"
           },
           {
-            "image": "/assets/media/uploads/1785856090539-tant-_bild-2.jpg"
+            "image": "/assets/media/uploads/1789130251999-tant-_bild-2.jpg"
           },
           {
-            "image": "/assets/media/uploads/1785856097941-tant-_bild-3.jpg"
+            "image": "/assets/media/uploads/1789130260551-tant-_bild-3.jpg"
           },
           {
-            "image": "/assets/media/uploads/1785856109256-tant-_bild-4.jpg"
+            "image": "/assets/media/uploads/1789130267695-tant-_bild-4.jpg"
+          },
+          {
+            "image": "/assets/media/uploads/1789130280180-tant-_bild-5.jpg"
           }
         ]
       },
