@@ -485,7 +485,7 @@
         ],
         "feedId": "malina/guess-2",
         "detailHeroFocus": "center",
-        "useOwnPhotos": true
+        "useOwnPhotos": false
       }
     },
     {
