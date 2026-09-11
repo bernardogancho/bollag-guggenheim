@@ -454,7 +454,7 @@
         "eyebrow": "Global Lifestyle",
         "heroTitle": "The Essence of Sexyness",
         "summary": "A globally recognised lifestyle label combining denim heritage, accessories, and a more overt sense of fashion image-making.",
-        "heroImage": "/assets/media/uploads/1789118780955-guess_overwiew-picture-brand_portrait.jpg"
+        "heroImage": "/assets/media/uploads/1789119141552-guess_overwiew-picture-brand_portrait.jpg"
       },
       "detail": {
         "intro": "Founded in California in 1981 by the Marciano brothers, GUESS quickly established itself as a defining fashion name, driven by denim, accessories, and an unmistakable image culture.",
@@ -477,54 +477,10 @@
             "note": "GUESS editorial selection"
           }
         ],
-        "detailGallery": [
-          {
-            "image": "/assets/media/uploads/1789118798851-guess_picture-brand_portrait.jpg",
-            "note": "GUESS editorial image 2"
-          },
-          {
-            "image": "/assets/media/feed/guess-wall-18085381091036894.jpg",
-            "note": "Effortless layers for everyday winter. #LoveGUESS",
-            "source": "https://www.instagram.com/p/DTA6MtpjG4E/"
-          },
-          {
-            "image": "/assets/media/feed/guess-wall-17997472598714745.jpg",
-            "note": "Timeless with an edge. #LoveGUESS",
-            "source": "https://www.instagram.com/p/DS-VO6pDIw8/"
-          },
-          {
-            "image": "/assets/media/feed/guess-wall-18053926622682491.jpg",
-            "note": "Serving seasonal sparkle. #LoveGUESS",
-            "source": "https://www.instagram.com/p/DSu4pH6DIfs/"
-          },
-          {
-            "image": "/assets/media/feed/guess-wall-18093958813915463.jpg",
-            "note": "Paws, sparkle, and style. #LoveGUESS",
-            "source": "https://www.instagram.com/p/DSpu-c_DPEt/"
-          },
-          {
-            "image": "/assets/media/feed/guess-wall-17907207774291621.jpg",
-            "note": "Cozy, cute, and full of charm. Warning: last photo may cause excessive smiling and double-taps.  #LoveGUESS",
-            "source": "https://www.instagram.com/p/DSnKQH0jEWf/"
-          },
-          {
-            "image": "/assets/media/feed/guess-wall-17907680784146027.jpg",
-            "note": "Make the holidays stylishly yours. #LoveGUESS",
-            "source": "https://www.instagram.com/p/DSiAm3vDGPA/"
-          },
-          {
-            "image": "/assets/media/feed/guess-wall-18065380808632689.jpg",
-            "note": "Shine bright this season. #LoveGUESS",
-            "source": "https://www.instagram.com/p/DSfbt7NDCVV/"
-          },
-          {
-            "image": "/assets/media/feed/guess-wall-18095970910850213.jpg",
-            "note": "Modern silhouettes for the city. #LoveGUESS",
-            "source": "https://www.instagram.com/p/DSXtwRuDDrZ/"
-          }
-        ],
+        "detailGallery": [],
         "feedId": "malina/guess-2",
-        "detailHeroFocus": "center"
+        "detailHeroFocus": "center",
+        "useOwnPhotos": true
       }
     },
     {
