@@ -17,6 +17,12 @@
         "heroImage": "/assets/media/uploads/1789557575201-codello_picture-brand_portrait.jpg"
       },
       {
+        "name": "Cuoieria Fiorentina",
+        "href": "/brands/cuoieria-fiorentina/",
+        "logoImage": "/assets/media/brands/cuoieria-fiorentina.png",
+        "heroImage": "/assets/media/uploads/1789557885516-cuoieria-fiorentina_picture-brand_portrait.jpg"
+      },
+      {
         "name": "Drykorn",
         "href": "/brands/drykorn/",
         "logoImage": "/assets/media/brands/drykorn.svg",
@@ -63,12 +69,6 @@
         "href": "/brands/0039-italy/",
         "logoImage": "/assets/media/brands/0039-italy.svg",
         "heroImage": "/assets/media/uploads/1789557836420-italy-0039_overview_picture-brand_portrait.jpg"
-      },
-      {
-        "name": "Cuoieria Fiorentina",
-        "href": "/brands/cuoieria-fiorentina/",
-        "logoImage": "/assets/media/brands/cuoieria-fiorentina.png",
-        "heroImage": "/assets/media/brand-pages/cuoieria-fiorentina-page-1.jpg"
       },
       {
         "name": "Daniele Fiesoli",
