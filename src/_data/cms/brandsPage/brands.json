@@ -97,15 +97,9 @@
           }
         ],
         "detailGallery": [
+          {},
           {
-            "image": "/assets/media/uploads/1784530151582-post-3-cuoieria-fiorentina.jpg",
-            "note": "Cuoieria-Fiorentina ",
-            "source": "Picture1"
-          },
-          {
-            "image": "/assets/media/uploads/1785685684148-cuoieria-fiorentina_overwiew-picture-brand_portrait.jpg",
-            "note": "Cuoieria-Fiorentina",
-            "source": "Picture2"
+            "image": "/assets/media/uploads/1789550069764-cuoieria-fiorentina_picture-brand_portrait.jpg"
           }
         ],
         "feedId": "malina/cuoieria-fiorentina",
