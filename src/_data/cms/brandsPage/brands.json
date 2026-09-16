@@ -180,7 +180,7 @@
       "name": "G-Lab",
       "slug": "g-lab",
       "card": {
-        "cardLabel": "",
+        "cardLabel": "Women & Men",
         "eyebrow": "Performance Outerwear ",
         "heroTitle": "Always in Your Element",
         "summary": "Technical outerwear that bridges functional protection with a cleaner contemporary fashion sensibility.",
@@ -231,7 +231,7 @@
         ],
         "feedId": "",
         "useOwnPhotos": true,
-        "detailHeroFocus": "center"
+        "detailHeroFocus": "top"
       }
     },
     {
