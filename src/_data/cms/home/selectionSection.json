@@ -89,13 +89,6 @@
         "size": "standard"
       },
       {
-        "brand": "Save the duck",
-        "image": "/assets/media/uploads/1789559845954-save-the-duck_bild-3.jpg",
-        "href": "/wearhouse/save-the-duck/",
-        "note": "Save the duck editorial selection",
-        "size": "tall"
-      },
-      {
         "brand": "Dea Kudibal",
         "image": "/assets/media/uploads/1785843099841-dea-kudibal_bild-1.jpg",
         "href": "/wearhouse/dea-kudibal/",
@@ -135,6 +128,13 @@
         "image": "/assets/media/uploads/1789129825826-mason-s_picture-brand_portrait.jpg",
         "href": "/wearhouse/masons/",
         "note": "Mason's editorial selection",
+        "size": "tall"
+      },
+      {
+        "brand": "Save the duck",
+        "image": "/assets/media/uploads/1789559845954-save-the-duck_bild-3.jpg",
+        "href": "/wearhouse/save-the-duck/",
+        "note": "Save the duck editorial selection",
         "size": "tall"
       },
       {
