@@ -75,73 +75,73 @@
         "size": "standard"
       },
       {
-        "brand": "Closed",
-        "image": "/assets/media/brand-pages/closed-page-2.jpg",
-        "href": "/brands/closed/",
-        "note": "Closed editorial selection",
+        "brand": "Caliban",
+        "image": "/assets/media/uploads/1785843478731-caliban_bild-1.jpg",
+        "href": "/wearhouse/caliban/",
+        "note": "Caliban editorial selection",
         "size": "tall"
       },
       {
-        "brand": "Codello",
-        "image": "/assets/media/brand-pages/codello-page-2.jpg",
-        "href": "/brands/codello/",
-        "note": "Codello editorial selection",
+        "brand": "Circolo 1901",
+        "image": "/assets/media/uploads/1785695235407-circolo-1901_picture-brand_portrait.jpg",
+        "href": "/wearhouse/circolo-1901/",
+        "note": "Circolo 1901 editorial selection",
         "size": "standard"
       },
       {
-        "brand": "Drykorn",
-        "image": "/assets/media/brand-pages/drykorn-page-2.jpg",
-        "href": "/brands/drykorn/",
-        "note": "Drykorn editorial selection",
+        "brand": "Dea Kudibal",
+        "image": "/assets/media/uploads/1785843099841-dea-kudibal_bild-1.jpg",
+        "href": "/wearhouse/dea-kudibal/",
+        "note": "Dea Kudibal editorial selection",
         "size": "standard"
       },
       {
-        "brand": "G-Lab",
-        "image": "/assets/media/brand-pages/g-lab-page-2.jpg",
-        "href": "/brands/g-lab/",
-        "note": "G-Lab editorial selection",
+        "brand": "Duno",
+        "image": "/assets/media/uploads/1789385735168-duno_banner.jpg",
+        "href": "/wearhouse/duno/",
+        "note": "Duno editorial selection",
         "size": "wide"
       },
       {
-        "brand": "GUESS",
-        "image": "/assets/media/brand-pages/guess-page-2.jpg",
-        "href": "/brands/guess/",
-        "note": "GUESS editorial selection",
+        "brand": "edelle",
+        "image": "/assets/media/uploads/1789120535511-edelle_picture-brand_portrait.jpg",
+        "href": "/wearhouse/edelle/",
+        "note": "edelle editorial selection",
         "size": "standard"
       },
       {
-        "brand": "iBlues",
-        "image": "/assets/media/brand-pages/iblues-page-2.jpg",
-        "href": "/brands/iblues/",
-        "note": "iBlues editorial selection",
+        "brand": "FFC",
+        "image": "/assets/media/uploads/1789463924801-ffc_picture-brand_portrait.jpg",
+        "href": "/wearhouse/ffc/",
+        "note": "FFC editorial selection",
         "size": "tall"
       },
       {
-        "brand": "More & More",
-        "image": "/assets/media/brand-pages/more-and-more-page-2.jpg",
-        "href": "/brands/more-and-more/",
-        "note": "More & More editorial selection",
+        "brand": "Flora di Venezia",
+        "image": "/assets/media/uploads/1786005782699-flora-di-venezia_banner.jpg",
+        "href": "/wearhouse/flora-di-venezia/",
+        "note": "Flora di Venezia editorial selection",
         "size": "wide"
       },
       {
-        "brand": "Rich & Royal",
-        "image": "/assets/media/brand-pages/rich-royal-page-2.jpg",
-        "href": "/brands/rich-royal/",
-        "note": "Rich & Royal editorial selection",
+        "brand": "Helmur",
+        "image": "/assets/media/uploads/1785847568231-helmur_picture-brand_portrait.jpg",
+        "href": "/wearhouse/helmur/",
+        "note": "Helmur editorial selection",
         "size": "standard"
       },
       {
-        "brand": "YAYA",
-        "image": "/assets/media/brand-pages/yaya-page-2.jpg",
-        "href": "/brands/yaya/",
-        "note": "YAYA editorial selection",
+        "brand": "IBELIV",
+        "image": "/assets/media/uploads/1789130072871-ibeliv_picture-brand_portrait.jpg",
+        "href": "/wearhouse/ibeliv/",
+        "note": "IBELIV editorial selection",
         "size": "tall"
       },
       {
-        "brand": "0039 Italy",
-        "image": "/assets/media/brand-pages/0039-italy-page-2.jpg",
-        "href": "/brands/0039-italy/",
-        "note": "0039 Italy editorial selection",
+        "brand": "Mason's",
+        "image": "/assets/media/uploads/1789129825826-mason-s_picture-brand_portrait.jpg",
+        "href": "/wearhouse/masons/",
+        "note": "Mason's editorial selection",
         "size": "standard"
       }
     ]
