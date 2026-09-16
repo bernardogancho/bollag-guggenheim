@@ -53,6 +53,12 @@
         "heroImage": "/assets/media/uploads/1789557691784-iblues_overview_picture-brand_portrait.jpg"
       },
       {
+        "name": "Le Tricot Perugia",
+        "href": "/brands/le-tricot-perugia/",
+        "logoImage": "/assets/media/brands/le-tricot-perugia.png",
+        "heroImage": "/assets/media/uploads/1789557999213-le-tricot-perucia_overwiew-picture-brand_portrait.jpg"
+      },
+      {
         "name": "More & More",
         "href": "/brands/more-and-more/",
         "logoImage": "/assets/media/brands/more-and-more.svg",
@@ -75,12 +81,6 @@
         "href": "/brands/0039-italy/",
         "logoImage": "/assets/media/brands/0039-italy.svg",
         "heroImage": "/assets/media/uploads/1789557836420-italy-0039_overview_picture-brand_portrait.jpg"
-      },
-      {
-        "name": "Le Tricot Perugia",
-        "href": "/brands/le-tricot-perugia/",
-        "logoImage": "/assets/media/brands/le-tricot-perugia.png",
-        "heroImage": ""
       }
     ]
   }
