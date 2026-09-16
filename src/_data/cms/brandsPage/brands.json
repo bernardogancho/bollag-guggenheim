@@ -335,7 +335,12 @@
         "tone": "",
         "detailHeroImage": "/assets/media/uploads/1789549505392-le-tricot-perugia_banner.jpg",
         "gallery": [],
-        "detailGallery": [],
+        "detailGallery": [
+          {},
+          {
+            "image": "/assets/media/uploads/1789550529591-le-tricot-perucia_picture-brand_portrait.jpg"
+          }
+        ],
         "feedId": "malina/le-tricot-perugia",
         "detailHeroFocus": "top"
       },
