@@ -35,6 +35,24 @@ describe('paths', () => {
     expect(obj.a[0].b).toBe(2);
   });
 
+  it('setAtPath never leaves holes when writing past the end of a list', () => {
+    // The brand portrait is stored in the 2nd photo slot. On a brand with no
+    // photos yet, writing slot 1 used to leave slot 0 as a hole, which JSON
+    // saves as null — and the brand editor then crashed reading null.image.
+    const obj = { detail: { detailGallery: [] } };
+    setAtPath(obj, 'detail.detailGallery.1.image', '/p.jpg');
+    expect(obj.detail.detailGallery).toHaveLength(2);
+    expect(obj.detail.detailGallery[0]).toEqual({});
+    expect(obj.detail.detailGallery[1]).toEqual({ image: '/p.jpg' });
+    expect(JSON.stringify(obj)).not.toContain('null');
+  });
+
+  it('setAtPath fills skipped scalar slots with empty strings', () => {
+    const obj = { stats: ['a'] };
+    setAtPath(obj, 'stats.3', 'd');
+    expect(obj.stats).toEqual(['a', '', '', 'd']);
+  });
+
   it('reorder moves an item and returns a new array', () => {
     const list = ['a', 'b', 'c'];
     expect(reorder(list, 0, 2)).toEqual(['b', 'c', 'a']);

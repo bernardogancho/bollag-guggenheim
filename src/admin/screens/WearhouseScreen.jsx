@@ -179,13 +179,13 @@ export function WearhouseScreen({ page, section, rest }) {
                 <div className="item-card-body">
                   <div className="field-grid two-col">
                     {galleryImageFieldDef ? (
-                      <FieldRenderer key="image" field={galleryImageFieldDef} value={item.image}
+                      <FieldRenderer key="image" field={galleryImageFieldDef} value={item?.image}
                         onChange={next => updateField('roster', `gallery.${i}.image`, next)}
                         pathPrefix={`__wearhouse.${idx}.roster.gallery.${i}.image`} routeBase={[page.id, section.id]} />
                     ) : null}
                     <label className="field">
                       <span className="field-label">Note</span>
-                      <input className="input" value={item.note || ''}
+                      <input className="input" value={item?.note || ''}
                         onChange={event => updateField('roster', `gallery.${i}.note`, event.target.value)} />
                     </label>
                   </div>

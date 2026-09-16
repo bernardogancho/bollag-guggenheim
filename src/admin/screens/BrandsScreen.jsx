@@ -208,13 +208,13 @@ export function BrandsScreen({ page, section, rest }) {
                             <div className="item-card-body">
                               <div className="field-grid two-col">
                                 {galleryImageField ? (
-                                  <FieldRenderer key="image" field={galleryImageField} value={photo.image}
+                                  <FieldRenderer key="image" field={galleryImageField} value={photo?.image}
                                     onChange={next => updateField(`detail.detailGallery.${i}.image`, next)}
                                     pathPrefix={`brands.${idx}.detail.detailGallery.${i}.image`} routeBase={[page.id, section.id]} />
                                 ) : null}
                                 <label className="field">
                                   <span className="field-label">Note</span>
-                                  <input className="input" value={photo.note || ''}
+                                  <input className="input" value={photo?.note || ''}
                                     onChange={event => updateField(`detail.detailGallery.${i}.note`, event.target.value)} />
                                 </label>
                               </div>

@@ -203,7 +203,7 @@
         "categories": [],
         "gallery": [],
         "detailGallery": [
-          null,
+          {},
           {
             "image": "/assets/media/uploads/1785686168632-daniele-fiesoli_women_overwiew_picture-brand_portrait.jpg"
           }
@@ -248,7 +248,7 @@
           }
         ],
         "detailGallery": [
-          null,
+          {},
           {
             "image": "/assets/media/uploads/1789385204991-drykorn_picture-brand_portrait.jpg"
           }
@@ -347,7 +347,7 @@
           }
         ],
         "detailGallery": [
-          null,
+          {},
           {
             "image": "/assets/media/uploads/1789119249773-guess_picture-brand_portrait.jpg"
           }
@@ -518,7 +518,7 @@
         "detailHeroImage": "/assets/media/uploads/1786106318249-le-tricot-perugia_made-in-italy_banner.jpg",
         "gallery": [],
         "detailGallery": [
-          null,
+          {},
           {
             "image": "/assets/media/uploads/1786106386620-le-tricot-perugia_picture-brand_portrait.jpg"
           }
