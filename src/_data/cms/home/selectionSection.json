@@ -89,6 +89,13 @@
         "size": "standard"
       },
       {
+        "brand": "Daniele Fiesoli",
+        "image": "/assets/media/uploads/1789551604606-daniele-fiesoli_men_bild-1.jpg",
+        "href": "/wearhouse/daniele-fiesoli/",
+        "note": "Daniele Fiesoli editorial selection",
+        "size": "standard"
+      },
+      {
         "brand": "Dea Kudibal",
         "image": "/assets/media/uploads/1785843099841-dea-kudibal_bild-1.jpg",
         "href": "/wearhouse/dea-kudibal/",
@@ -124,25 +131,18 @@
         "size": "tall"
       },
       {
-        "brand": "Helmur",
-        "image": "/assets/media/uploads/1785847568231-helmur_picture-brand_portrait.jpg",
-        "href": "/wearhouse/helmur/",
-        "note": "Helmur editorial selection",
-        "size": "standard"
-      },
-      {
-        "brand": "Daniele Fiesoli",
-        "image": "/assets/media/uploads/1789551604606-daniele-fiesoli_men_bild-1.jpg",
-        "href": "/wearhouse/daniele-fiesoli/",
-        "note": "Daniele Fiesoli editorial selection",
-        "size": "standard"
-      },
-      {
         "brand": "Mason's",
         "image": "/assets/media/uploads/1789129825826-mason-s_picture-brand_portrait.jpg",
         "href": "/wearhouse/masons/",
         "note": "Mason's editorial selection",
         "size": "standard"
+      },
+      {
+        "brand": "Via Masini",
+        "image": "/assets/media/uploads/1785847568231-helmur_picture-brand_portrait.jpg",
+        "href": "/wearhouse/via-masini/",
+        "note": "Via Masini editorial selection",
+        "size": "feature"
       }
     ]
   }
