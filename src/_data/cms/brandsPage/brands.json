@@ -455,7 +455,12 @@
             "note": "YAYA editorial selection"
           }
         ],
-        "detailGallery": [],
+        "detailGallery": [
+          {},
+          {
+            "image": "/assets/media/uploads/1789550721095-yaya_overwiev_picture-brand_portrait.jpg"
+          }
+        ],
         "feedId": "malina/yaya",
         "detailHeroFocus": "center"
       }
