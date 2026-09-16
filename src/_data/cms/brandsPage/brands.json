@@ -27,7 +27,12 @@
             "note": "Closed editorial selection"
           }
         ],
-        "detailGallery": [],
+        "detailGallery": [
+          {},
+          {
+            "image": "/assets/media/uploads/1789560991215-closed_overwiew-picture-brand_portrait.jpg"
+          }
+        ],
         "feedId": "malina/closed",
         "detailHeroFocus": "top"
       }
