@@ -238,7 +238,7 @@
       "name": "GUESS",
       "slug": "guess",
       "card": {
-        "cardLabel": "",
+        "cardLabel": "Wome, Men & Accessory",
         "eyebrow": "Global Lifestyle",
         "heroTitle": "The Essence of Sexyness",
         "summary": "A globally recognised lifestyle label combining denim heritage, accessories, and a more overt sense of fashion image-making.",
@@ -268,7 +268,7 @@
         "detailGallery": [
           {},
           {
-            "image": "/assets/media/uploads/1789119249773-guess_picture-brand_portrait.jpg"
+            "image": "/assets/media/uploads/1789550398966-guess_picture-brand_portrait.jpg"
           }
         ],
         "feedId": "malina/guess-2",
