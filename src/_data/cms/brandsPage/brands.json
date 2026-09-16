@@ -139,7 +139,7 @@
       "name": "Drykorn",
       "slug": "drykorn",
       "card": {
-        "cardLabel": "",
+        "cardLabel": "Women & Men",
         "eyebrow": "Contemporary Tailoring",
         "heroTitle": "For Beautiful People ",
         "summary": "Sharper silhouettes and modern tailoring for independent dressers with a metropolitan point of view.",
@@ -169,11 +169,11 @@
         "detailGallery": [
           {},
           {
-            "image": "/assets/media/uploads/1789385204991-drykorn_picture-brand_portrait.jpg"
+            "image": "/assets/media/uploads/1789550297235-drykorn_picture-brand_portrait.jpg"
           }
         ],
         "feedId": "malina/drykorn",
-        "detailHeroFocus": "center"
+        "detailHeroFocus": "top"
       }
     },
     {
