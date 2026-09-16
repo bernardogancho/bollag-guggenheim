@@ -114,7 +114,7 @@
         "cardLabel": "Women",
         "heroTitle": "Crafted for Modern Living",
         "summary": "Absolutely Made in Italy—from the yarns to the finishing touches.\n",
-        "heroImage": "/assets/media/uploads/1784126471550-daniele-fiesoli_women_picture-brand_portrait.jpg",
+        "heroImage": "/assets/media/uploads/1789550181672-daniele-fiesoli_women_overwiew_picture-brand_portrait.jpg",
         "eyebrow": "Timeless Italian Knitwear"
       },
       "detail": {
@@ -124,7 +124,7 @@
         "detailGallery": [
           {},
           {
-            "image": "/assets/media/uploads/1785686168632-daniele-fiesoli_women_overwiew_picture-brand_portrait.jpg"
+            "image": "/assets/media/uploads/1789550230279-daniele-fiesoli_women_picture-brand_portrait.jpg"
           }
         ],
         "detailHeroImage": "/assets/media/uploads/1785686111710-daniele-fiesoli_women_banner.jpg",
@@ -132,7 +132,7 @@
         "focus": "The brand combines traditional craftsmanship with modern design and is firmly committed to “Absolutely Made in Italy”—from the yarns to the finishing touches.",
         "tone": "It is characterized by luxurious materials such as cashmere, merino wool, and mohair, minimalist cuts, and timeless, elegant looks with a focus on sustainability.",
         "feedId": "malina/daniele-fiesoli",
-        "detailHeroFocus": "center"
+        "detailHeroFocus": "top"
       }
     },
     {
