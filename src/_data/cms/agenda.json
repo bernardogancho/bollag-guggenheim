@@ -175,6 +175,12 @@
       "month": "November 2026",
       "events": [
         {
+          "dateLabel": "9 November - 9 March 2027",
+          "brand": "Daniele Fiesoli Men",
+          "detail": "Collection Fall 2027, delivery Jul - Sep 2027",
+          "location": "Showroom Erlenbach"
+        },
+        {
           "dateLabel": "2 - 27 November 2026",
           "brand": "GUESS",
           "detail": "Collection Pre Fall 2027, delivery May - July 2027",
@@ -215,12 +221,6 @@
           "brand": "YAYA",
           "detail": "Collection Pre Fall 2027, delivery June - July 2027",
           "location": "Showroom Zurich"
-        },
-        {
-          "dateLabel": "9 November - 9 March 2027",
-          "brand": "Daniele Fiesoli Men",
-          "detail": "Collection Fall 2027, delivery Jul - Sep 2027",
-          "location": "Showroom Erlenbach"
         }
       ]
     },
