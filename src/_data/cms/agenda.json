@@ -234,6 +234,12 @@
       "month": "January 2027",
       "events": [
         {
+          "dateLabel": "18 January - 19 February 2027",
+          "brand": "Closed",
+          "detail": "Collection Fall 2027, delivery Aug - Sep 2027",
+          "location": "Showroom Zurich"
+        },
+        {
           "dateLabel": "25 JANUARY - 20 FEBRUARY 2027",
           "brand": "Codello",
           "detail": "Collection Fall 2027, delivery Jun - Aug 2027",
@@ -272,12 +278,6 @@
         {
           "dateLabel": "13 JANUARY - 15 FEBRUARY 2027",
           "brand": "YAYA",
-          "detail": "Collection Fall 2027, delivery Aug - Sep 2027",
-          "location": "Showroom Zurich"
-        },
-        {
-          "dateLabel": "18 January - 19 February 2027",
-          "brand": "Closed",
           "detail": "Collection Fall 2027, delivery Aug - Sep 2027",
           "location": "Showroom Zurich"
         }
